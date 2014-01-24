@@ -29,15 +29,17 @@ class QuickBooks():
     request_token = ''
     request_token_secret = ''
 
-
     def __init__(self, **args):
+
+        if 'cred_path' in args:
+            self.read_creds_from_file(args['cred_path'])
 
         if 'consumer_key' in args:
             self.consumer_key = args['consumer_key']
 
         if 'consumer_secret' in args:
             self.consumer_secret = args['consumer_secret']
-
+                                   
         if 'access_token' in args:
             self.access_token = args['access_token']
 
@@ -49,6 +51,14 @@ class QuickBooks():
         
         if 'callback_url' in args:
             self.callback_url = args['callback_url']
+
+        self.BUSINESS_OBJECTS = ["Account","Attachable","Bill","BillPayment",
+                                "Class","CompanyInfo","CreditMemo","Customer",
+                                "Department","Employee","Estimate","Invoice",
+                                "Item","JournalEntry","Payment","PaymentMethod",
+                                "Preferences","Purchase","PurchaseOrder",
+                                "SalesReceipt","TaxCode","TaxRate","Term",
+                                "TimeActivity","Vendor","VendorCredit"]
 
 
     def get_authorize_url(self):
@@ -71,9 +81,6 @@ class QuickBooks():
 
         return self.qbService.get_authorize_url(self.request_token)
 
-
-
-
     def get_access_tokens(self, oauth_verifier):
         """Wrapper around get_auth_session, returns session, and sets 
         access_token and access_token_secret on the QB Object.
@@ -89,8 +96,6 @@ class QuickBooks():
 
         return session
 
-
-
     def create_session(self):
         if self.consumer_secret and self.consumer_key and self.access_token_secret and self.access_token:
             session = OAuth1Session(self.consumer_key,
@@ -100,8 +105,7 @@ class QuickBooks():
                 )
             self.session = session
         else:
-            pass
-            #TODO: raise an error
+            raise Exception("Need four creds for Quickbooks.create_session.")
         return self.session
 
     def query_fetch_more(self, r_type, header_auth, realm, qb_object, original_payload =''):
@@ -114,7 +118,7 @@ class QuickBooks():
         start_position = 0
         more = True
         data_set = []
-        url = self.base_url_v3 + "/company/%s/query" % (self.company_id)
+        url = self.base_url_v3 + "/company/%s/query" % self.company_id
 
         # Edit the payload to return more results.
         
@@ -129,22 +133,26 @@ class QuickBooks():
                 access = r_dict['QueryResponse'][qb_object]
             except:
                 print "FAILED", r_dict
-                r_dict = self.keep_trying(r_type, url, True, self.company_id, payload)
+                r_dict = self.keep_trying(r_type,
+                                          url,
+                                          True,
+                                          self.company_id,
+                                          payload)
             # For some reason the totalCount isn't returned for some queries,
             # in that case, check the length, even though that actually requires
             # measuring
             try:
                 if int(r_dict['QueryResponse']['totalCount']) < max_results:
                     more = False
-            except:
+            except KeyError:
                 try:
                     if len(r_dict['QueryResponse'][qb_object]) < max_results:
                         more = False
-                except:
+                except KeyError:
                     print "\n\n ERROR", r_dict
                     pass
 
-            # Just some math
+            # Just some math to prepare for the next iteration, if applicable
             if start_position == 0:
                 start_position = 1
 
@@ -166,6 +174,13 @@ class QuickBooks():
         else:
             session = self.create_session()
             self.session = session
+
+        """
+        print "\n".join([self.session.consumer_key,
+               self.session.consumer_secret,
+               self.session.access_token,
+               self.session.access_token_secret])
+        """
 
         trying = True
         tries = 0
@@ -189,8 +204,38 @@ class QuickBooks():
 
                 if "Fault" not in r_dict or tries > 4:
                     trying = False
+                elif "Fault" in r_dict and r_dict["Fault"]["type"]==\
+                     "AUTHENTICATION":
+                    trying = False
 
         return r_dict
+
+    def query_objects(self,business_object,company,params={}):
+        """
+        runs a query-type request against the QBOv3 API
+        """
+
+        if business_object not in self.BUSINESS_OBJECTS:
+            raise Exception("%s not in list of QBO Business Objects." %  \
+                            business_object + " Please use one of the " + \
+                            "following: %s" % self.BUSINESS_OBJECTS)
+
+        if params == {}:
+            query_string="SELECT * FROM %s" % business_object
+        else:
+            raise NotImplementedError
+
+        #CAN ONE SESSION USE MULTIPLE COMPANIES?
+        #IF NOT, REMOVE THE COMPANY OPTIONALITY
+        url = self.base_url_v3 + "/company/%s/query" % company
+
+        results = self.query_fetch_more(r_type="POST",
+                                        header_auth=True,
+                                        realm=company,
+                                        qb_object=business_object,
+                                        original_payload=query_string)
+
+        return results
 
     def fetch_customer(self, pk):
         if pk:
@@ -458,9 +503,64 @@ class QuickBooks():
         # print bills
         return bills
 
+    def chart_of_accounts(self, attrs = "strict"):
+        """make a tabular data sctructure representing all of a company's 
+        accounts."""
+        
+        #query all the accounts
+        accounts = self.query_objects("Account",self.company_id)
 
+        #by strict, I mean the order the docs say to use when udpating:
+        #https://developer.intuit.com/docs/0025_quickbooksapi/0050_data_services/030_entity_services_reference/account
 
+        if attrs == "strict":
+            attrs = [
+                "Id", "SyncToken", "MetaData", "Name", "SubAccount",
+                "ParentRef", "Description", "FullyQualifiedName", "Active",
+                "Classification", "AccountType", "AccountSubType", "AcctNum",
+                "OpeningBalance", "OpeningBalanceDate", "CurrentBalance",
+                "CurentBalanceWithSubAccounts", "CurrencyRef"
+            ]
+            
+        #As a first cut, we'll sort them by AccountType in trial balance order
+        
+        tb_type_order = [
+            "Bank", "Accounts Receivable", "Other Current Asset",
+            "Fixed Asset", "Other Asset",
+            "Accounts Payable", "Credit Card", "Long Term Liability",
+            "Other Current Liability",
+            "Equity",
+            "Income", "Other Income",
+            "Expense", "Other Expense", "Cost of Goods Sold"
+        ]
+        
+        accounts_by_type = {} #{Accounts_Payable:[row_list]
+        
+        for a in accounts:
+            at = a["AccountType"]
+            if at not in tb_type_order:
+                raise Exception("Unexpected AccountType: %s" % at)
+            
+            if at not in accounts_by_type:
+                accounts_by_type[at]=[]
+            
+            this_row = []
+            for field in attrs:
+                if field not in a:
+                    this_row.append("")
+                else:
+                    value = a[field]
+                    if isinstance(value,(list,tuple,dict)):
+                        this_row.append("<complex>")
+                    else:
+                        this_row.append(a[field])
 
+            accounts_by_type[at].append(this_row)
 
+        rows = [attrs]                     #headers are the first row
+        for at in tb_type_order:
+            if at in accounts_by_type:
+                for row in accounts_by_type[at]:
+                    rows.append(row)
 
-
+        return rows
