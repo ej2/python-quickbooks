@@ -141,11 +141,10 @@ class QuickBooks():
                                               self.company_id,
                                               payload)
 
-            # For some reason the totalCount isn't returned for some queries,
-            # in that case, check the length, even though that actually requires
-            # measuring
+            # Check the returned maxResults to see how many results are
+            # in the query. 
             try:
-                result_count = int(r_dict['QueryResponse']['totalCount']) 
+                result_count = int(r_dict['QueryResponse']['maxResults']) 
                 if result_count < max_results:
                     more = False
             except KeyError:
@@ -221,7 +220,7 @@ class QuickBooks():
         Gives you the option to create an AND-joined query by parameter
             or just pass in a whole query tail
         The parameter dicts should be keyed by parameter name and
-            have twp-item tuples for values, which are operator and criterion
+            have two-item tuples for values, which are operator and criterion
         """
 
         if business_object not in self.BUSINESS_OBJECTS:
@@ -295,73 +294,11 @@ class QuickBooks():
 
 
     def fetch_customers(self, all=False, page_num=0, limit=10):
-        if self.session != None:
-            session = self.session
-        else:
-            session = self.create_session()
-            self.session = session
-
-        # Sometimes we use v2 of the API
-        url = self.base_url_v2
-        url += "/resource/customers/v2/%s" % (self.company_id)
-
-        customers = []
-        
-        if all:
-            counter = 1
-            more = True
-
-            while more:
-                payload = {
-                    "ResultsPerPage":30,
-                    "PageNum":counter,
-                    }
-
-                trying = True
-
-                # Because the QB API is so iffy, let's try until we get an non-error
-
-                # Rewrite this to use same code as above.
-                while trying:
-                    r = session.request("POST", url, header_auth = True, data = payload, realm = self.company_id)
-                    root = ET.fromstring(r.text)
-                    if root[1].tag != "{http://www.intuit.com/sb/cdm/baseexceptionmodel/xsd}ErrorCode":
-                        trying = False
-                    else:
-                        print "Failed"
-
-                session.close()
-                qb_name = "{http://www.intuit.com/sb/cdm/v2}"
-
-                for child in root:
-                    if child.tag == "{http://www.intuit.com/sb/cdm/qbo}Count":
-                        
-                        if int(child.text) < 30:
-                            more = False
-                            print "Found all customers"
-
-                    if child.tag == "{http://www.intuit.com/sb/cdm/qbo}CdmCollections":
-                        for customer in child:
-
-                            customers += [xmltodict.parse(ET.tostring(customer))]
-                                
-                counter += 1
-
-                # more = False
-
-        else:
-
-            payload = {
-                "ResultsPerPage":str(limit),
-                "PageNum":str(page_num),
-                }
-
-            r = session.request("POST", url, header_auth = True, data = payload, realm = self.company_id)
-
-            root = ET.fromstring(r.text)
-
-            #TODO: parse for all customers
-
+        """ Use self.query_object to access all the customers 
+        TODO: add query for 'all'
+        """
+        #query all the customers
+        customers = self.query_object("Customer")
 
         return customers
 
@@ -557,7 +494,7 @@ class QuickBooks():
         accounts."""
         
         #query all the accounts
-        accounts = self.query_object("Account",self.company_id)
+        accounts = self.query_object("Account")
 
         #by strict, I mean the order the docs say to use when udpating:
         #https://developer.intuit.com/docs/0025_quickbooksapi/0050_data_services/030_entity_services_reference/account
