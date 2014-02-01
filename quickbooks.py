@@ -6,7 +6,7 @@ import xmltodict
 try:
 
     """
-    This main module is for taling to the QBOv3 API. There are other
+    This main module is for talking to the QBOv3 API. There are other
     supporting modules for doing stuff with the results or read and query
     operations and for getting stuff ready for update, delete,
     and create operations
