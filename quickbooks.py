@@ -3,6 +3,8 @@ import xml.etree.ElementTree as ET
 
 import xmltodict
 
+import json
+
 try:
 
     """
@@ -79,13 +81,17 @@ class QuickBooks():
         else:
             self.verbose = False
 
-        self._BUSINESS_OBJECTS = ["Account","Attachable","Bill","BillPayment",
-                         "Class","CompanyInfo","CreditMemo","Customer",
-                         "Department","Employee","Estimate","Invoice",
-                         "Item","JournalEntry","Payment","PaymentMethod",
-                         "Preferences","Purchase","PurchaseOrder",
-                         "SalesReceipt","TaxCode","TaxRate","Term",
-                         "TimeActivity","Vendor","VendorCredit"]
+        self._BUSINESS_OBJECTS = [
+
+            "Account","Attachable","Bill","BillPayment",
+            "Class","CompanyInfo","CreditMemo","Customer",
+            "Department","Employee","Estimate","Invoice",
+            "Item","JournalEntry","Payment","PaymentMethod",
+            "Preferences","Purchase","PurchaseOrder",
+            "SalesReceipt","TaxCode","TaxRate","Term",
+            "TimeActivity","Vendor","VendorCredit"
+
+        ]
 
 
     def get_authorize_url(self):
@@ -199,6 +205,148 @@ class QuickBooks():
         #print "Records Found: %d." % len(data_set)
         return data_set
 
+    def create_object(self, qbbo, request_body, content_type = "json"):
+        """
+        One of the four glorious CRUD functions.
+        Getting this right means using the correct object template and
+        and formulating a valid request_body. This doesn't help with that.
+        It just submits the request and adds the newly-created object to the
+        session's brain.
+        """
+    
+        if qbbo not in self._BUSINESS_OBJECTS:
+            raise Exception("%s is not a valid QBO Business Object." % qbbo,
+                            " (Note that this validation is case sensitive.)")
+
+        url = "https://qb.sbfinance.intuit.com/v3/company/%s/%s" % \
+              (self.company_id, qbbo.lower())
+
+        if self.verbose:
+
+            print "About to create a %s object with this request_body:" \
+                % qbbo
+            print request_body
+
+        new_object = self.hammer_it("POST", url, request_body, content_type)\
+                     [qbbo]
+        
+        new_Id     = new_object["Id"]
+
+        attr_name = qbbo+"s"
+        
+        if not hasattr(self,attr_name):
+
+            if self.verbose:
+                print "Creating a %ss attribute for this session." % qbbo
+
+            setattr(self, attr_name, {new_Id:new_object})
+
+        else:
+            
+            if self.verbose:
+                print "Adding this new %s to the existing set of them." \
+                    % qbbo
+                print json.dumps(new_object, indent=4)
+                
+            getattr(self, attr_name)[new_Id] = new_object
+
+        return new_object
+
+    def read_object(self, qbbo, object_id):
+        """Makes things easier for an update because you just do a read,
+        tweak the things you want to change, and send that as the update
+        request body (instead of having to create one from scratch)."""
+
+        pass
+
+    def update_object(self, qbbo, object_id, request_body,
+                      content_type = "json"):
+        """Generally before calling this, you want to call the read_object
+        command on what you want to update. The alternative is forming a valid
+        update request_body from scratch, which doesn't look like fun to me."""
+
+        pass
+
+    def delete_object(self, qbbo, request_body, content_type = "json"):
+        """Don't need to give it an Id, just the whole object as returned by
+        a read operation."""
+
+        pass
+
+    def hammer_it(self, request_type, url, request_body, content_type,
+                  accept = 'json'):
+        """
+        A slim version of simonv3's excellent keep_trying method. Among other
+         trimmings, it assumes we can only use v3 of the
+         QBO API. It also allows for requests and responses
+         in xml OR json. (No xml parsing added yet but the way is paved...)
+        """
+
+        if self.session != None:
+            session = self.session
+        else:
+            session = self.create_session()
+            self.session = session
+
+        #haven't found an example of when this wouldn't be True, but leaving
+        #it for the meantime...
+        header_auth = True
+
+        trying       = True
+        print_error = False
+
+        tries = 0
+
+        while trying:
+            tries += 1
+                  
+
+            headers = {
+                    'Content-Type': 'application/%s' % content_type,
+                    'Accept': 'application/%s' % accept
+                }
+
+            r = session.request(request_type, url, header_auth,
+                                     self.company_id, headers = headers,
+                                     data = request_body)
+
+            if accept == "json":
+                result = r.json()
+                
+                if "Fault" in result and result["Fault"]\
+                   ["type"] == "ValidationFault":
+
+                    if self.verbose:
+
+                        print "Fault alert!"
+
+                    trying = False
+                    print_error = True
+                    
+
+                elif tries >= 6:
+
+                    trying = False
+                  
+                    if "Fault" in result:
+                        print_error = True
+
+                elif "Fault" not in result:
+
+                    #sounds like a success
+                    trying = False
+
+                if not trying and print_error:
+
+                    print json.dumps(result, indent=1)
+
+            else:
+                raise NotImplementedError("How do I parse a %s response?") \
+                    % accept
+
+        return result
+
+
     def keep_trying(self, r_type, url, header_auth, realm, payload=''):
         """ Wrapper script to session.request() to continue trying at the QB
         API until it returns something good, because the QB API is 
@@ -232,7 +380,7 @@ class QuickBooks():
                 
                 r_dict = r.json()
 
-                if "Fault" not in r_dict or tries > 4:
+                if "Fault" not in r_dict or tries >= 5:
                     trying = False
                 elif "Fault" in r_dict and r_dict["Fault"]["type"]==\
                      "AUTHENTICATION":
@@ -240,6 +388,9 @@ class QuickBooks():
                     #it appears that there are 'false' authentication
                     #errors all the time and you just have to keep trying...
                     trying = True
+
+        if "Fault" in r_dict:
+            print r_dict
 
         return r_dict
 
@@ -572,6 +723,8 @@ class QuickBooks():
         #IF NOT, REMOVE THE COMPANY OPTIONALITY
         url = self.base_url_v3 + "/company/%s/query" % self.company_id
 
+        #print query_string
+
         results = self.query_fetch_more(r_type="POST",
                                         header_auth=True,
                                         realm=self.company_id,
@@ -625,13 +778,17 @@ class QuickBooks():
     def object_dicts(self, qbbo_list = [], requery=False,
                      params={}, query_tail=""):
         """
-        returns a dict of lists of ALL the Business Objects of
+        returns a dict of dicts of ALL the Business Objects of
         each of these types (filtering with params and query_tail)
         """
 
         object_dicts = {}       #{qbbo:[object_list]}
 
         for qbbo in qbbo_list:
+
+            if qbbo == "TimeActivity":
+                #for whatever reason, this failed with some basic criteria, so
+                query_tail = ""
 
             object_dicts[qbbo] = self.get_objects(qbbo,
                                                   requery,
@@ -686,18 +843,37 @@ class QuickBooks():
 
         return report.quick_report(self, filter_attributes)
 
+    def chart_of_accounts(self, attrs = "strict"):
+        """see report.chart_of_accounts"""
+
+        return report.chart_of_accounts(self, attrs)
+
+    def name_list(self):
+        """
+        see massage.name_list()
+
+        Note that this sets some attributes of the session object!
+        """
+
+        return massage.name_list(self)
+
     def ledgerize(self, transaction, headers=False):
         """see ledgerize.__doc__ in the massage module"""
         
         return massage.ledgerize(transaction, self, headers)
+
+    def ledger_lines(self, qbbo=None, Id=None, line_number=None, headers=False,
+                     **kwargs):
+        """
+        see massage.ledger_lines.__doc__
+        Note that this sets some attributes of this session object, including:
+         self.ledger_lines_dict (for future reference)
+         self.earliest_date, self.latest_date (for efficiency in reporting)
+        """
+
+        return massage.ledger_lines(self, qbbo, Id, line_number, headers,
+                                    **kwargs)
                     
-    def listize(self,name, headers=False):
-        """see name_list.__doc__ in the massage module"""
-        
-        raise NotImplementedError
-
-        return massage.listize(name_list_item, self, headers)
-
     def entity_list(self,raw_entities_dict):
         """see entity_list.__doc__ in the massage module"""
 
@@ -745,3 +921,32 @@ class QuickBooks():
         Haven't found anything that actually shows the AR account in QBO...
         """
         return "Accounts Receivable"
+
+
+    def gl(self):
+        """
+        For now, this just returns all the lines (we can get...excludes such
+        things as deposits and transfers...thanks, Intuit!)
+        """
+        
+        #the True gives us headers!
+        unsorted_gl = self.ledger_lines(None, None, None, True)
+
+        #sort the thing by account THEN by date, obvi
+
+        sorted_gl   = unsorted_gl   #just for now...fix later!
+
+        return sorted_gl
+
+    def pnl(self, period = "YEARLY", start_date="first", end_date="last",
+            **kwargs):
+        """
+        Again, subject to the missing transactions, this tallies things by
+        period (which is initially either MONTHLY or YEARLY, but will
+        eventually be arbitrary, hopefully)
+        """
+
+        #kwargs can include filter strings (to do a pnl of only recent
+        #additions, for example)
+
+        return report.pnl(self, period, start_date, end_date, **kwargs)
