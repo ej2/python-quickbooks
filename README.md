@@ -3,7 +3,7 @@
 
 A really simple, brute-force, Python class for accessing the Quickbooks API. 
 
-Made much simpler with some major contributions from @HaPsantran. See Jesse's branch [here](https://github.com/HaPsantran/quickbooks-python). It's probably a much more reliable spot for keeping this up to date and evolving. I've cleaned the script up a bit for a semi-clean v0.1.0.
+Made much simpler with some major contributions from @HaPsantran. See HaPsantran's branch [here](https://github.com/HaPsantran/quickbooks-python). It's probably a much more reliable spot for keeping this up to date and evolving. I've cleaned the script up a bit for a semi-clean v0.1.0.
 
 As Jesse says in their ReadMe:
 
