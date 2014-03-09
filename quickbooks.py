@@ -1,7 +1,38 @@
-from rauth import OAuth1Session, OAuth1Service
+
+try:
+    from rauth import OAuth1Session, OAuth1Service
+except:
+    print "Please import Rauth:\n\n"
+    print "http://rauth.readthedocs.org/en/latest/\n"
+
 import xml.etree.ElementTree as ET
 
-import xmltodict
+import json
+
+try:
+
+    """
+    This main module is for talking to the QBOv3 API. There are other
+    supporting modules for doing stuff with the results or read and query
+    operations and for getting stuff ready for update, delete,
+    and create operations
+    """
+
+    import massage
+    import reference
+    import report
+
+except ImportError:
+
+    print "You won't be able to run some of the additional methods"
+
+    """
+    There are convenience-function calls to these companion modules, all
+    listed at the bottom here, and obvi those won't work alone, but
+    the rest of this module should be standalone
+    """
+
+    pass
 
 class QuickBooks():
     """A wrapper class around Python's Rauth module for Quickbooks the API"""
@@ -51,13 +82,22 @@ class QuickBooks():
         if 'callback_url' in args:
             self.callback_url = args['callback_url']
 
-        self.BUSINESS_OBJECTS = ["Account","Attachable","Bill","BillPayment",
-                                "Class","CompanyInfo","CreditMemo","Customer",
-                                "Department","Employee","Estimate","Invoice",
-                                "Item","JournalEntry","Payment","PaymentMethod",
-                                "Preferences","Purchase","PurchaseOrder",
-                                "SalesReceipt","TaxCode","TaxRate","Term",
-                                "TimeActivity","Vendor","VendorCredit"]
+        if 'verbose' in args:
+            self.verbose = True
+        else:
+            self.verbose = False
+
+        self._BUSINESS_OBJECTS = [
+
+            "Account","Attachable","Bill","BillPayment",
+            "Class","CompanyInfo","CreditMemo","Customer",
+            "Department","Employee","Estimate","Invoice",
+            "Item","JournalEntry","Payment","PaymentMethod",
+            "Preferences","Purchase","PurchaseOrder",
+            "SalesReceipt","TaxCode","TaxRate","Term",
+            "TimeActivity","Vendor","VendorCredit"
+
+        ]
 
 
     def get_authorize_url(self):
@@ -96,7 +136,10 @@ class QuickBooks():
         return session
 
     def create_session(self):
-        if self.consumer_secret and self.consumer_key and self.access_token_secret and self.access_token:
+        if (self.consumer_secret and 
+            self.consumer_key and 
+            self.access_token_secret and 
+            self.access_token):
             session = OAuth1Session(self.consumer_key,
                 self.consumer_secret,
                 self.access_token,
@@ -107,7 +150,8 @@ class QuickBooks():
             raise Exception("Need four creds for Quickbooks.create_session.")
         return self.session
 
-    def query_fetch_more(self, r_type, header_auth, realm, qb_object, original_payload =''):
+    def query_fetch_more(self, r_type, header_auth, realm, qb_object, 
+        original_payload =''):
         """ Wrapper script around keep_trying to fetch more results if 
         there are more. """
         
@@ -125,7 +169,11 @@ class QuickBooks():
         
         while more:
             
-            r_dict = self.keep_trying(r_type, url, True, self.company_id, payload)
+            r_dict = self.hammer_it(r_type,
+                                    url, 
+                                    payload, 
+                                    "text"
+                                    )
 
             try:
                 access = r_dict['QueryResponse'][qb_object]
@@ -135,16 +183,17 @@ class QuickBooks():
                     return []
                 else:
                     print "FAILED", r_dict
-                    r_dict = self.keep_trying(r_type,
+                    r_dict = self.hammer_it(r_type,
                                               url,
-                                              True,
-                                              self.company_id,
-                                              payload)
+                                              payload,
+                                              "text"
+                                              )
 
-            # Check the returned maxResults to see how many results are
-            # in the query. 
+            # For some reason the totalCount isn't returned for some queries,
+            # in that case, check the length, even though that actually requires
+            # measuring
             try:
-                result_count = int(r_dict['QueryResponse']['maxResults']) 
+                result_count = int(r_dict['QueryResponse']['totalCount']) 
                 if result_count < max_results:
                     more = False
             except KeyError:
@@ -170,63 +219,179 @@ class QuickBooks():
         #print "Records Found: %d." % len(data_set)
         return data_set
 
-    def keep_trying(self, r_type, url, header_auth, realm, payload=''):
-        """ Wrapper script to session.request() to continue trying at the QB
-        API until it returns something good, because the QB API is 
-        inconsistent """
+    def create_object(self, qbbo, request_body, content_type = "json"):
+        """
+        One of the four glorious CRUD functions.
+        Getting this right means using the correct object template and
+        and formulating a valid request_body. This doesn't help with that.
+        It just submits the request and adds the newly-created object to the
+        session's brain.
+        """
+    
+        if qbbo not in self._BUSINESS_OBJECTS:
+            raise Exception("%s is not a valid QBO Business Object." % qbbo,
+                            " (Note that this validation is case sensitive.)")
+
+        url = "https://qb.sbfinance.intuit.com/v3/company/%s/%s" % \
+              (self.company_id, qbbo.lower())
+
+        if self.verbose:
+
+            print "About to create a %s object with this request_body:" \
+                % qbbo
+            print request_body
+
+        new_object = self.hammer_it("POST", url, request_body, content_type)\
+                     [qbbo]
+        
+        new_Id     = new_object["Id"]
+
+        attr_name = qbbo+"s"
+        
+        if not hasattr(self,attr_name):
+
+            if self.verbose:
+                print "Creating a %ss attribute for this session." % qbbo
+
+            setattr(self, attr_name, {new_Id:new_object})
+
+        else:
+            
+            if self.verbose:
+                print "Adding this new %s to the existing set of them." \
+                    % qbbo
+                print json.dumps(new_object, indent=4)
+                
+            getattr(self, attr_name)[new_Id] = new_object
+
+        return new_object
+
+    def read_object(self, qbbo, object_id):
+        """Makes things easier for an update because you just do a read,
+        tweak the things you want to change, and send that as the update
+        request body (instead of having to create one from scratch)."""
+
+        pass
+
+    def update_object(self, qbbo, object_id, request_body,
+                      content_type = "json"):
+        """Generally before calling this, you want to call the read_object
+        command on what you want to update. The alternative is forming a valid
+        update request_body from scratch, which doesn't look like fun to me."""
+
+        pass
+
+    def delete_object(self, qbbo, request_body, content_type = "json"):
+        """Don't need to give it an Id, just the whole object as returned by
+        a read operation."""
+
+        pass
+
+    def hammer_it(self, request_type, url, request_body = {}, 
+                content_type="text", accept = 'json'):
+        """
+        A slim version of simonv3's excellent keep_trying method. Among other
+         trimmings, it assumes we can only use v3 of the
+         QBO API. It also allows for requests and responses
+         in xml OR json. (No xml parsing added yet but the way is paved...)
+        """
+
         if self.session != None:
             session = self.session
         else:
             session = self.create_session()
             self.session = session
 
-        trying = True
+        #haven't found an example of when this wouldn't be True, but leaving
+        #it for the meantime...
+        header_auth = True
+
+        trying       = True
+        print_error = False
+
         tries = 0
+
         while trying:
             tries += 1
-            if "v2" in url:
-                r = session.request(r_type, url, header_auth, realm, data=payload)
+                  
+
+            headers = {
+                    'Content-Type': 'application/%s' % content_type,
+                    'Accept': 'application/%s' % accept
+                }
+
+            r = session.request(request_type, url, header_auth,
+                                     self.company_id, headers = headers,
+                                     data = request_body)
+
+            if accept == "json":
+                result = r.json()
                 
-                r_dict = xmltodict.parse(r.text)
-                
-                if "FaultInfo" not in r_dict or tries > 4:
+                if "Fault" in result and result["Fault"]\
+                   ["type"] == "ValidationFault":
+
+                    if self.verbose:
+
+                        print "Fault alert!"
+
                     trying = False
+                    print_error = True
+                    
+
+                elif tries >= 6:
+
+                    trying = False
+                  
+                    if "Fault" in result:
+                        print_error = True
+
+                elif "Fault" not in result:
+
+                    #sounds like a success
+                    trying = False
+
+                if not trying and print_error:
+
+                    print json.dumps(result, indent=1)
+
             else:
-                headers = {
-                        'Content-Type': 'application/text',
-                        'Accept': 'application/json'
-                    }
+                raise NotImplementedError("How do I parse a %s response?") \
+                    % accept
 
-                #print r_type,url,header_auth,realm,headers,payload
-                #quit()
-                r = session.request(r_type, url, header_auth, realm, headers = headers, data = payload)
-                
-                r_dict = r.json()
+        return result
 
-                if "Fault" not in r_dict or tries > 4:
-                    trying = False
-                elif "Fault" in r_dict and r_dict["Fault"]["type"]==\
-                     "AUTHENTICATION":
-                    #Initially I thought to quit here, but actually
-                    #it appears that there are 'false' authentication
-                    #errors all the time and you just have to keep trying...
-                    trying = True
+    def get_single_object(self, qbbo, pk=None):
+        if pk:
+            if qbbo not in self._BUSINESS_OBJECTS:
+                raise Exception("%s not in list of QBO Business Objects." %  \
+                            qbbo + " Please use one of the " + \
+                            "following: %s" % self._BUSINESS_OBJECTS)
+            
 
-        return r_dict
+            url = self.base_url_v3 + "/company/%s/%s/%s/" % (
+                                                            self.company_id, 
+                                                            qbbo.lower(),
+                                                            pk)
 
-    def query_object(self,business_object,params={}, query_tail = ""):
+            result = self.hammer_it("GET", url, {}, "text")
+
+            return result
+        else:
+            return {}
+
+    def query_objects(self, business_object, params={}, query_tail = ""):
         """
         Runs a query-type request against the QBOv3 API
         Gives you the option to create an AND-joined query by parameter
             or just pass in a whole query tail
         The parameter dicts should be keyed by parameter name and
-            have two-item tuples for values, which are operator and criterion
+            have twp-item tuples for values, which are operator and criterion
         """
 
-        if business_object not in self.BUSINESS_OBJECTS:
+        if business_object not in self._BUSINESS_OBJECTS:
             raise Exception("%s not in list of QBO Business Objects." %  \
                             business_object + " Please use one of the " + \
-                            "following: %s" % self.BUSINESS_OBJECTS)
+                            "following: %s" % self._BUSINESS_OBJECTS)
 
         #eventually, we should be able to select more than just *,
         #but chances are any further filtering is easier done with Python
@@ -277,6 +442,8 @@ class QuickBooks():
         #IF NOT, REMOVE THE COMPANY OPTIONALITY
         url = self.base_url_v3 + "/company/%s/query" % self.company_id
 
+        #print query_string
+
         results = self.query_fetch_more(r_type="POST",
                                         header_auth=True,
                                         realm=self.company_id,
@@ -285,555 +452,220 @@ class QuickBooks():
 
         return results
 
-    def fetch_customer(self, pk):
-        if pk:
-            url = self.base_url_v3 + "/company/%s/customer/%s" % (self.company_id, pk)
-            # url = self.base_url_v2 + "/resource/customer/v2/%s/%s" % ( self.company_id, pk)
-            r_dict = self.keep_trying("GET", url, True, self.company_id)
-            return r_dict['Customer']
-
-
-    def fetch_customers(self, all=False, page_num=0, limit=10):
-        """ Use self.query_object to access all the customers 
-        TODO: add query for 'all'
+    def get_objects(self, qbbo, requery=False, params = {}, query_tail = ""):
         """
-        #query all the customers
-        customers = self.query_object("Customer")
+        Rather than have to look up the account that's associate with an
+        invoice item, for example, which requires another query, it might
+        be easier to just have a local dict for reference.
 
-        return customers
-
-    def fetch_sales_term(self, pk):
-        if pk:
-            url = self.base_url_v2 + "/resource/sales-term/v2/%s/%s" % ( self.company_id, pk)
-            r_dict = self.keep_trying("GET", url, True, self.company_id)
-            return r_dict
-
-
-    def fetch_invoices(self, **args):
-        qb_object = "Invoice"
-        payload = "SELECT * FROM %s" % (qb_object)
-        if "query" in args:
-            if "customer" in args['query']:
-                payload = ("SELECT * FROM %s WHERE "
-                    "CustomerRef = '%s'") % (
-                        qb_object, args['query']['customer']
-                        )
-
-        r_dict = self.query_fetch_more("POST", True, 
-                self.company_id, qb_object, payload)
-
-        return r_dict
-        
-
-    def fetch_purchases(self, **args):
-        # if "query" in args:
-            qb_object = "Purchase"
-            payload = ""
-            if "query" in args and "customer" in args['query']:
-
-                # if there is a customer, let's get the create date 
-                # for that customer in QB, all relevant purchases will be
-                # after that date, this way we need less from QB
-
-                customer = self.fetch_customer(args['query']['customer'])
-
-                # payload = "SELECT * FROM %s" % (qb_object)
-                payload = "SELECT * FROM %s WHERE MetaData.CreateTime > '%s'"% (
-                        qb_object, 
-                        customer['MetaData']['CreateTime']
-                        )
-
-            else:
-                payload = "SELECT * FROM %s" % (qb_object)
-
-            unfiltered_purchases = self.query_fetch_more("POST", True, 
-                self.company_id, qb_object, payload)
-
-            filtered_purchases = []
-
-            if "query" in args and "customer" in args['query']:
-                for entry in unfiltered_purchases:
-
-                    if (
-                        'Line' in entry
-                        ):
-                        for line in entry['Line']:
-                            if (
-                                'AccountBasedExpenseLineDetail' in line and 
-                                'CustomerRef' in line['AccountBasedExpenseLineDetail'] and
-                                line['AccountBasedExpenseLineDetail']['CustomerRef']['value'] == args['query']['customer']
-                                ):
-                                
-                                filtered_purchases += [entry]
-
-                        
-                return filtered_purchases
-            else:
-                return unfiltered_purchases
-
-    def fetch_journal_entries(self, **args):
-        """ Because of the beautiful way that journal entries are organized
-        with QB, you're still going to have to filter these results for the
-        actual entity you're interested in.
-
-        :param query: a dictionary that includes 'customer', and the QB id of the
-            customer
+        The same is true with linked transactions, so transactions can
+        also be cloned with this method
         """
 
-        payload = {}
-        more = True
-        
-        journal_entries = []
-        max_results = 500
-        start_position = 0
+        #we'll call the attributes by the Business Object's name + 's',
+        #case-sensitive to what Intuit's documentation uses
 
-        if "query" in args and "project" in args['query']:
-            original_payload = "SELECT * FROM JournalEntry"
+        if qbbo not in self._BUSINESS_OBJECTS:
+            raise Exception("%s is not a valid QBO Business Object." % qbbo) 
 
-        elif "query" in args and "raw" in args['query']:
-            original_payload = args['query']['raw']
+        attr_name = qbbo+"s"
 
-        else:
-            original_payload = "SELECT * FROM JournalEntry"
+        #if we've already populated this list, only redo if told to
+        #because, say, we've created another Account or Item or something
+        #during the session
 
-        payload = original_payload + " MAXRESULTS " + str(max_results)
+        if not hasattr(self,attr_name) or requery:
 
-        while more:
+            if self.verbose:
+                print "Caching list of %ss." % qbbo
 
-            url = self.base_url_v3 + "/company/%s/query" % (self.company_id)
+            object_list = self.query_objects(qbbo, params, query_tail)
 
-            r_dict = self.keep_trying("POST", url, True, self.company_id, payload)
+            #let's dictionarize it (keyed by Id), though, for easy lookup later
+
+            object_dict = {}
+
+            for o in object_list:
+                Id = o["Id"]
+
+                object_dict[Id] = o
+
+            setattr(self, attr_name, object_dict)
             
-            if int(r_dict['QueryResponse']['totalCount']) < max_results:
-                more = False
-            if start_position == 0:
-                start_position = 1
-            start_position = start_position + max_results
-            payload = "%s STARTPOSITION %s MAXRESULTS %s" % (original_payload, start_position, max_results)
-            journal_entry_set = r_dict['QueryResponse']['JournalEntry']
-            
-            # This has to happen because the QBO API doesn't support 
-            # filtering along customers apparently.
-            if "query" in args and "class" in args['query']:
-                for entry in journal_entry_set:
-                    for line in entry['Line']:
-                        if 'JournalEntryLineDetail' in line:
-                            if 'ClassRef' in line['JournalEntryLineDetail']:
-                                if args['query']['class'] in line['JournalEntryLineDetail']['ClassRef']['name']:
-                                    journal_entries += [entry]
-                                    break
-            else:
-                journal_entries = journal_entry_set
+        return getattr(self,attr_name)
 
-        return journal_entries
+    def object_dicts(self, qbbo_list = [], requery=False,
+                     params={}, query_tail=""):
+        """
+        returns a dict of dicts of ALL the Business Objects of
+        each of these types (filtering with params and query_tail)
+        """
 
+        object_dicts = {}       #{qbbo:[object_list]}
 
-    def fetch_bills(self, **args):
-        """Fetch the bills relevant to this project."""
-        # if "query" in args:
-        payload = {}
-        more = True
-        counter = 1
-        bills = []
-        max_results = 500
-        start_position = 0
-        if "query" in args and "customer" in args['query']:
-            original_payload = "SELECT * FROM Bill"
-        elif "query" in args and "raw" in args['query']:
-            original_payload = args['query']['raw']
-        else:
-            original_payload = "SELECT * FROM Bill"
+        for qbbo in qbbo_list:
 
-        payload = original_payload + " MAXRESULTS " + str(max_results)
+            if qbbo == "TimeActivity":
+                #for whatever reason, this failed with some basic criteria, so
+                query_tail = ""
 
-        while more:
+            object_dicts[qbbo] = self.get_objects(qbbo,
+                                                  requery,
+                                                  params,
+                                                  query_tail)
 
-            url = self.base_url_v3 + "/company/%s/query" % (self.company_id)
-            
-            r_dict = self.keep_trying("POST", url, True, self.company_id, payload)
-            counter = counter + 1
-            if int(r_dict['QueryResponse']['maxResults']) < max_results:
-                more = False
+        return object_dicts
 
-            #take into account the initial start position
-            if start_position == 0:
-                start_position = 1
-            start_position = start_position + max_results
+    def names(self, requery=False, params = {}, query_tail = ""):
+        """
+        get a dict of every Name List Business Object (of every type)
 
-            # set new payload
-            payload = "%s STARTPOSITION %s MAXRESULTS %s" % (
-                original_payload, 
-                start_position, 
-                max_results)
-            bill = r_dict['QueryResponse']['Bill']
+        results are subject to the filter if applicable
 
-            # This has to happen because the QBO API doesn't support 
-            # filtering along customers apparently.
-            if "query" in args and "class" in args['query']:
+        returned dict has two dimensions:
+        name = names[qbbo][Id]
+        """
+      
 
-                for entry in bill:
-
-                    for line in entry['Line']:
-
-                        if 'AccountBasedExpenseLineDetail' in line:
-                            line_detail = line['AccountBasedExpenseLineDetail']
-
-                            if 'ClassRef' in line_detail:
-                                name = line_detail['ClassRef']['name']
-
-                                if args['query']['class'] in name:
-                                    bills += [entry]
-                                    break
-            else:
-                bills += bill
-        # print bills
-        return bills
-
-    def chart_of_accounts(self, attrs = "strict"):
-        """make a tabular data sctructure representing all of a company's 
-        accounts."""
-        
-        #query all the accounts
-        accounts = self.query_object("Account")
-
-        #by strict, I mean the order the docs say to use when udpating:
-        #https://developer.intuit.com/docs/0025_quickbooksapi/0050_data_services/030_entity_services_reference/account
-
-        if attrs == "strict":
-            attrs = [
-                "Id", "SyncToken", "MetaData", "Name", "SubAccount",
-                "ParentRef", "Description", "FullyQualifiedName", "Active",
-                "Classification", "AccountType", "AccountSubType", "AcctNum",
-                "OpeningBalance", "OpeningBalanceDate", "CurrentBalance",
-                "CurentBalanceWithSubAccounts", "CurrencyRef"
-            ]
-            
-        #As a first cut, we'll sort them by AccountType in trial balance order
-        
-        tb_type_order = [
-            "Bank", "Accounts Receivable", "Other Current Asset",
-            "Fixed Asset", "Other Asset",
-            "Accounts Payable", "Credit Card", "Long Term Liability",
-            "Other Current Liability",
-            "Equity",
-            "Income", "Other Income",
-            "Cost of Goods Sold", "Expense", "Other Expense"
+        name_list_objects = [
+           "Account", "Class", "Customer", "Department", "Employee", "Item",
+            "PaymentMethod", "TaxCode", "TaxRate", "Term", "Vendor"
         ]
-        
-        accounts_by_type = {} #{Accounts_Payable:[row_list]
-        
-        for a in accounts:
-            at = a["AccountType"]
-            if at not in tb_type_order:
-                raise Exception("Unexpected AccountType: %s" % at)
-            
-            if at not in accounts_by_type:
-                accounts_by_type[at]=[]
-            
-            this_row = []
-            for field in attrs:
-                if field not in a:
-                    this_row.append("")
-                else:
-                    value = a[field]
-                    if isinstance(value,(list,tuple,dict)):
-                        this_row.append("<complex>")
-                    else:
-                        this_row.append(a[field])
 
-            accounts_by_type[at].append(this_row)
+        return self.object_dicts(name_list_objects, requery,
+                                 params, query_tail)
 
-        rows = [attrs]                     #headers are the first row
-        for at in tb_type_order:
-            if at in accounts_by_type:
-                for row in accounts_by_type[at]:
-                    rows.append(row)
-
-        return rows
-
-    def quick_report(self, params={}, query_tail=""):
+    def transactions(self, requery=False, params = {}, query_tail = ""):
         """
-        Simulates a 'Quick Report' in QB by pulling down all transactions
-        that touch the account we're passed.
-        
-        Allows (or should eventually allow) date, class, and other filters.
-        """
-        
+        get a dict of every Transaction Business Object (of every type)
 
+        results are subject to the filter if applicable
+
+        returned dict has two dimensions:
+        transaction = transactions[qbbo][Id]
+        """
         transaction_objects = [
             "Bill", "BillPayment", "CreditMemo", "Estimate", "Invoice",
             "JournalEntry", "Payment", "Purchase", "PurchaseOrder", 
             "SalesReceipt", "TimeActivity", "VendorCredit"
         ]
 
-        transactions = {}   #{qbbo:[trnslist]}
+        return self.object_dicts(transaction_objects, requery,
+                                        params, query_tail)
 
-        #transaction_objects = ["JournalEntry"]  #shortlist for debugging stuff
+    # -------------------------------------------------------------
+    # Below are the convenience-function calls that have dependencies
+    # -------------------------------------------------------------
 
-        for qbbo in transaction_objects:
-            print "Querying %ss" % qbbo
-            results = self.query_object(qbbo,params,query_tail)
-            if results == []:
-                #no txns of this type in the result set...
-                continue
-            else:
-                transactions[qbbo]=results
+    def quick_report(self, filter_attributes = {}):
+        """see report.quick_report.__doc__"""
 
-        return transactions
+        return report.quick_report(self, filter_attributes)
 
-    def ledgerize(self,transaction,qbbo=None):
+    def chart_of_accounts(self, attrs = "strict"):
+        """see report.chart_of_accounts"""
+
+        return report.chart_of_accounts(self, attrs)
+
+    def name_list(self):
         """
-        Takes a transaction Business Object (BillPayment, Purchase,
-        whatever), and returns a tabular data structure that identifies the
-        transaction, much like a set of general ledger lines
+        see massage.name_list()
 
-        Where capital letters are used in variable names, it's generally
-        to indicate that it's the case-faithful QuickBooks business object
-        property name...sorry I'm breaking the naming conventions, but
-        I think it's worth it to avoid confusion here
+        Note that this sets some attributes of the session object!
         """
 
-        #first let's set the common properties (required then optional)
+        return massage.name_list(self)
 
-        document_number          = transaction["Id"]
-        TxnDate                  = transaction["TxnDate"]
-        CreateTime               = transaction["MetaData"]["CreateTime"] 
-        LastUpdatedTime          = transaction["MetaData"]["LastUpdatedTime"] 
-        SyncToken                = transaction["SyncToken"]
-        domain                   = transaction["domain"]
-        #add department!
+    def ledgerize(self, transaction, headers=False):
+        """see ledgerize.__doc__ in the massage module"""
         
-        if "PrivateNote" in transaction:
-            head_description     = transaction["PrivateNote"]
-        else:
-            head_description      = ""
+        return massage.ledgerize(transaction, self, headers)
 
-        if "DocNumber" in transaction:
-            reference            = transaction["DocNumber"]
-        else:
-            reference            = ""
+    def ledger_lines(self, qbbo=None, Id=None, line_number=None, headers=False,
+                     **kwargs):
+        """
+        see massage.ledger_lines.__doc__
+        Note that this sets some attributes of this session object, including:
+         self.ledger_lines_dict (for future reference)
+         self.earliest_date, self.latest_date (for efficiency in reporting)
+        """
 
-        if "LinkedTxn" in transaction:
-
-            linked_transactions  = []
-
-            for lt in transaction["LinkedTxn"]:
-                lt_doc           = lt["TxnType"]
-                lt_num           = lt["TxnId"]
-                linked_transactions.append(lt_doc+"/"+lt_num)
-
-            linked_transactions  = "; ".join(linked_transactions)
-
-        else:
-            linked_transactions  = ""
-
-        if "TotalAmt" in transaction:
-            TotalAmt             = transaction["TotalAmt"]
-        #else, it's a JournalEntry and has no TotalAmt...
-
-        #now let's deal with properties unique to certain objects
-
-        if qbbo == "Bill":
-
-            document_type = "Bill"
-            #head_account  = transaction["APAccountRef"]["name"]
-            """
-            really, it maybe be possible to rename and/or have more than
-            one AP account, but because BillPayment objects don't show
-            account information at the split level, it's probably a look-up
-            operation (to the linked transaction) to figure it out.
-            Hence, we're going the easy route and assuming the thing is just
-            called "Accounts Payable."
-            """
-            head_account     = "Accounts Payable"
-            name             = transaction["VendorRef"]["name"]
-            polarity         = "Credit"
-
-        elif qbbo == "BillPayment":
-
-            document_type    = transaction["PayType"]
-
-            #Some "BillPayments" just represent "applying a payment,"
-            #where a check or other item is matched to an oustanding
-            #bill. In this case, whatever entry is so matched ALREADY
-            #must have debited accounts payable, so we're going to just
-            #keep this entry for the transaction linkages (important!)
-            #We'll be debiting AND crediting A/P in the same entry...
-
-            if "BankAccountRef" not in transaction["CheckPayment"]:
-                head_account = "Accounts Payable"
-            else:
-                head_account = transaction["CheckPayment"]\
-                                   ["BankAccountRef"]["name"]
-
-            name             = transaction["VendorRef"]["name"]
-            polarity         = "Credit"
-
-        elif qbbo == "Invoice":
-
-            document_type    = "Invoice"
-            #account isn't explicitly stated, so...
-            head_account     = "Accounts Receivable"
-            name             = transaction["CustomerRef"]["name"]
-            polarity         = "Debit"    
-
-        elif qbbo == "JournalEntry":
-
-            document_type    = "JournalEntry"
-
-        elif qbbo == "Purchase":
-            
-            document_type    = transaction["PaymentType"]
-            head_account     = transaction["AccountRef"]["name"]
-
-            #CC charges, e.g., don't have to have a name...
-
-            if "EntityRef" not in transaction:
-                name         = ""
-            else:
-                name         = transaction["EntityRef"]["name"]
-
-            polarity         = "Credit"
-            
-        else:
-                
-            raise NotImplementedError("Implement QuickBooks.ledgerize()"+\
-                                      " for %s objects!" % qbbo)
-            
-
-        ledger_lines = []
-
-        #add headers:
-        ledger_lines.append([              
-            "TxnDate", "document_type", "document_number", "line_number", 
-            "domain", "reference",
-            "CreateTime", "LastUpdatedTime", "SyncToken",
-            "head_account", "amount", "head_description", "name",
-            "linked_transactions"
-        ])
-
-        #JournalEntries, uniquely, have no 'header', so their first line
-        #(which QB labels with Id=0) is the the first 'Line'
-        #for all other object types though:
-        
-        if not qbbo in "JournalEntry":
-
-            #QB shows all amounts as positive (like many GL systems)
-            #For simplicity, it's sometimes easier to have credits simply
-            #appear as negative numbers, so we're flipping the sign of the
-            #amounts as necessary....        
-
-            if polarity == "Credit":
-                amount = -TotalAmt
-            else:
-                amount = TotalAmt
-
-            ledger_lines.append([
-                TxnDate, document_type, document_number, 0,  #zero-indexed!
-                domain, reference,
-                CreateTime, LastUpdatedTime, SyncToken,
-                head_account, amount, head_description, name,
-                linked_transactions
-            ])
-        
-        #because one (or maybe a few) object types don't include line Ids,
-        #we have to count them
-        
-        this_line_number = 0
-
-        for split_line in transaction["Line"]:
-
-            this_line_number+=1
-
-            #first the common properties, again
-            Amount                   = split_line['Amount']
-            
-            if "Id" in split_line:
-                line_number          = split_line["Id"]
-            else:
-                line_number          = this_line_number
-                
-            if "Description" not in split_line:
-                Description      = ""
-            else:
-                Description      = split_line["Description"]
-
-            if "LinkedTxn" in split_line:
-                linked_transactions = []
-            
-                for lt in split_line["LinkedTxn"]:
-                    lt_doc           = lt["TxnType"]
-                    lt_num           = lt["TxnId"]
-                    linked_transactions.append(lt_doc+"/"+lt_num)
-
-                linked_transactions  = "; ".join(linked_transactions)
-
-            else:
-                linked_transactions  = ""
-
-            #add class!
-
-            #now on to object-specific properties
-    
-            if qbbo == "Bill":
-
-                account  = split_line["AccountBasedExpenseLineDetail"]\
-                          ["AccountRef"]["name"]
-                polarity             = "Debit"
-
-            elif qbbo == "BillPayment":
-
-                #AP, per above, is kind of a special case
-                account              = "Accounts Payable"
-                polarity             = "Debit"
-                
-            elif qbbo == "Invoice":
-                
-                #we only want SalesItemLineDetail split_lines
-                if not split_line["DetailType"] == "SalesItemLineDetail":
-                    continue
-
-                item                 = split_line["SalesItemLineDetail"]\
-                                       ["ItemRef"]["name"]
-                #this lookup functionality needs to query / read an "Item"
-                account              = "Look account for Item %s!" % item
-                polarity             = "Credit"
-                
-            elif qbbo == "JournalEntry":
-                
-                je_deets             = split_line["JournalEntryLineDetail"]
-
-                account              = je_deets["AccountRef"]["name"]
-                if "Entity" in je_deets:
-                    name             = je_deets["Entity"]["EntityRef"]["name"]
-                else:
-                    name             = ""
-
-                polarity             = je_deets["PostingType"]
-
-            elif qbbo == "Purchase":
-
-                account = split_line["AccountBasedExpenseLineDetail"]\
-                          ["AccountRef"]["name"]
-                polarity             = "Debit"
-
-            else:
-                print "This is an object type the method doesn't know."
-                print "However, the script should never have made it here."
-        
-            if polarity == "Credit":
-                amount = -Amount
-            else:
-                amount = Amount
-
-            ledger_lines.append([
-                TxnDate, document_type, document_number, line_number,
-                domain, reference,
-                CreateTime, LastUpdatedTime, SyncToken,
-                account, amount, Description, name,
-                linked_transactions
-            ])
-                                
-        return ledger_lines
-        
+        return massage.ledger_lines(self, qbbo, Id, line_number, headers,
+                                    **kwargs)
                     
+    def entity_list(self,raw_entities_dict):
+        """see entity_list.__doc__ in the massage module"""
+
+        return massage.entity_list(raw_entities_dict)
+
+    def get_entity(self, qbbo, entity_id):
+        """
+        Note that this queries all objects of this type (for later convenience)!
+        
+        Creates (or refers to an attribute that's) a dictionary
+         of all entities (names and transactions) keyed by
+         Id (because every object has a unique one).
+        
+        Returns a tuple in the form (qbbo_type, raw_object_dict)
+        """
+        if not hasattr(self, qbbo+"s"):
+
+            self.get_objects(qbbo)
+
+        return getattr(self,qbbo+"s")[entity_id]
+
+    def get_ap_account(self,name=False):
+        """
+        In QBO, you can only use one A/P account with "Bills" (though you can
+        pro'ly use others with JEs and other entries if you want to.
+        
+        This figures out which A/P account that is (by ID)
+        """
+        if not hasattr(self,"ap_account_id"):
+            
+            Bills        = self.get_objects("Bill")
+
+            first_bill   = Bills[Bills.keys()[0]]
+
+            self.ap_account_id = first_bill["APAccountRef"]["value"]
+            self.ap_account_name   = first_bill["APAccountRef"]["name"]
+
+        if name:
+            return self.ap_account_name
+        else:
+            return self.ap_account_id
+
+    def get_ar_account(self,name=False):
+        """
+        Haven't found anything that actually shows the AR account in QBO...
+        """
+        return "Accounts Receivable"
+
+
+    def gl(self):
+        """
+        For now, this just returns all the lines (we can get...excludes such
+        things as deposits and transfers...thanks, Intuit!)
+        """
+        
+        #the True gives us headers!
+        unsorted_gl = self.ledger_lines(None, None, None, True)
+
+        #sort the thing by account THEN by date, obvi
+
+        sorted_gl   = unsorted_gl   #just for now...fix later!
+
+        return sorted_gl
+
+    def pnl(self, period = "YEARLY", start_date="first", end_date="last",
+            **kwargs):
+        """
+        Again, subject to the missing transactions, this tallies things by
+        period (which is initially either MONTHLY or YEARLY, but will
+        eventually be arbitrary, hopefully)
+        """
+
+        #kwargs can include filter strings (to do a pnl of only recent
+        #additions, for example)
+
+        return report.pnl(self, period, start_date, end_date, **kwargs)

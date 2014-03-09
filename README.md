@@ -1,11 +1,17 @@
 # quickbooks-python
-===================
+-------------------
 
-A really simple, brute-force, hacked-together, Python class for accessing the Quickbooks API. 
+A really simple, brute-force, Python class for accessing the Quickbooks API. 
 
-The API is badly documented and not very flexible, but we've tried to augment that as much as possible. 
+Made much simpler with some major contributions from @HaPsantran. See Jesse's branch [here](https://github.com/HaPsantran/quickbooks-python). It's probably a much more reliable spot for keeping this up to date and evolving. I've cleaned the script up a bit for a semi-clean v0.1.0.
 
-Made much simpler with some major contributions from @HaPsantran.
+As Jesse says in their ReadMe:
+
+>Generally when using this module (or any of the QBO v3 API wrappers out there), keep in mind that there are some glaring omissions in it's functionality that (AFAIK) no one is able to get around programmatically. For example, you can't access (or create, update, or delete, obvi) Deposits or Transfers.
+
+## Running the script
+
+Works like any Python script, but you'll need [rauth](http://rauth.readthedocs.org/en/latest/) for it to work. 
 
 ## Accessing the API
 
@@ -18,34 +24,42 @@ Once you've gotten a hold of your QuickBooks access tokens, you can create a QB 
             company_id = QB_REALM_ID
             )
 
-__Note: the functionality for connecting to the QB API is there as well, I've just not written up proper documentation yet. Have a look at the `get_authorize_url()`, `get_access_tokens()`, and `create_session` methods.__
+__Note:__ the functionality for connecting to the QB API is here as well, I've just not written up proper documentation yet. Have a look at the `get_authorize_url()`, `get_access_tokens()`, and `create_session` methods.
+
+
+### New in v0.1.0
+
+* Well, versioning :)
+* Removed a lot of extraneous method calls that have essentially been replaced with query_object().
 
 ## Available methods
 
-__Note: This is a work-in-progress. It was made public to help developers access the QuickBooks API, it's not a guarantee that it will ever be finished.__
+__Note:__ This is a work-in-progress. It was made public to help other developers access the QuickBooks API, it's not a guarantee that it will ever be finished.
 
 you can access any object via the query_object method.
 
     qb.query_object(business_object, params, query_tail)
 
-Some methods have specialized access parameters. These are a bit more explicit.
+The available business objects are:
 
-    qb.fetch_customers()
+    "Account","Attachable","Bill","BillPayment",
+    "Class","CompanyInfo","CreditMemo","Customer",
+    "Department","Employee","Estimate","Invoice",
+    "Item","JournalEntry","Payment","PaymentMethod",
+    "Preferences","Purchase","PurchaseOrder",
+    "SalesReceipt","TaxCode","TaxRate","Term",
+    "TimeActivity","Vendor","VendorCredit"
 
-    qb.fetch_customer(pk)
+Example:
 
-    qb.fetch_invoices(args**)
+    qb.query_object("Bill")
+    > [{u'DocNumber': ... }]
 
-Currently only accepts {'query' : {'customer':Id}} as an optional argument. 
+## From HaPsantran's README
+------------------
 
-    qb.fetch_purchases()
+Update: As I try using the pnl function in report.py, I notice that not all of the activity is making it in. I have to assume it basically doesn't work then. Rather than rebuild it, though, I'm probably going to use other tools outside the  module to massage the ledger_lines I get out of massage.py (rather than build special reporting tools within the quickbooks package).
 
-    qb.fetch_journal_entries()
+Intuit has promised reporting features, but who knows...
 
-    qb.fetch_bills()
-
-    qb.chart_of_accounts()
-
-    qb.quick_report()
-
-    qb.ledgerize()
+http://stackoverflow.com/questions/19455750/quickbooks-online-api-financial-data
