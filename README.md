@@ -38,7 +38,7 @@ __Note:__ This is a work-in-progress. It was made public to help other developer
 
 you can access any object via the query_object method.
 
-    qb.query_object(business_object, params, query_tail)
+    qb.query_objects(business_object, params, query_tail)
 
 The available business objects are:
 
@@ -52,7 +52,7 @@ The available business objects are:
 
 Example:
 
-    qb.query_object("Bill")
+    qb.query_objects("Bill")
     > [{u'DocNumber': ... }]
 
 ## From HaPsantran's README
