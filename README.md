@@ -3,7 +3,7 @@
 
 A really simple, brute-force, Python class for accessing the Quickbooks API. 
 
-Made much simpler with some major contributions from @HaPsantran. See HaPsantran's branch [here](https://github.com/HaPsantran/quickbooks-python). It's probably a much more reliable spot for keeping this up to date and evolving. I've cleaned the script up a bit for a semi-clean v0.1.0.
+Made much simpler with some major contributions from @HaPsantran. See HaPsantran's branch [here](https://github.com/HaPsantran/quickbooks-python). I've cleaned the script up a bit for a semi-clean v0.1.0.
 
 As HaPsantran says in their ReadMe:
 
@@ -11,7 +11,7 @@ As HaPsantran says in their ReadMe:
 
 ## Running the script
 
-Works like any Python script, but you'll need [rauth](http://rauth.readthedocs.org/en/latest/) for it to work. 
+Works like any Python script, but you'll need [rauth](http://rauth.readthedocs.org/en/latest/). 
 
 ## Accessing the API
 
@@ -55,6 +55,8 @@ Example:
     qb.query_objects("Bill")
     > [{u'DocNumber': ... }]
 
+
+
 ## From HaPsantran's README
 ------------------
 
@@ -63,3 +65,13 @@ Update: As I try using the pnl function in report.py, I notice that not all of t
 Intuit has promised reporting features, but who knows...
 
 http://stackoverflow.com/questions/19455750/quickbooks-online-api-financial-data
+
+### License
+
+The MIT License (MIT)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
