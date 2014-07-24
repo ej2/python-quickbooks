@@ -24,7 +24,7 @@ Works like any Python script, but you'll need [rauth](http://rauth.readthedocs.o
 1. Make sure you have set up your Quickbooks App. You can check whether you have on their [Manage](https://developer.intuit.com/Application/List) page. If you need help doing that, look at [their documentation](https://developer.intuit.com/docs/0025_quickbooksapi/0010_getting_started/0020_connect/0010_from_within_your_app#Implement_the_OAuth_Authorization_Workflow) <- Have fun, this page only works in Firefox. 
 
 2. When your callback method gets triggered, set up a QuickBooks object, and get a URL for authorization, and then access it:
-
+    ```
     qbObject = QuickBooks(
         consumer_key = QB_OAUTH_CONSUMER_KEY,
         consumer_secret = QB_OAUTH_CONSUMER_SECRET,
@@ -34,9 +34,9 @@ Works like any Python script, but you'll need [rauth](http://rauth.readthedocs.o
     authorize_url = qbObject.get_authorize_url() # will create a service, and further set up the qbObject.
 
     # access URL, however you want to
-
+    ```
 3. Access the existing `qbObject`, fetch the `oauth_verifier` and `realmId` from the URL, and set up a session:
-   
+    ```
     oauth_token = request.GET['oauth_token']
     oauth_verifier = request.GET['oauth_verifier']
     realm_id = request.GET['realmId']
@@ -54,9 +54,10 @@ Works like any Python script, but you'll need [rauth](http://rauth.readthedocs.o
         realm = realm_id, 
         params={"format":"json"}
         ) 
-
+    ```
 4. Store the `access_token` and the `access_token_secret` and `realm_id`, use them whenever you want to set up a new QB Object:
 
+    ```
     qb = QuickBooks(
         consumer_key = QB_OAUTH_CONSUMER_KEY, 
         consumer_secret = QB_OAUTH_CONSUMER_SECRET,
@@ -64,7 +65,7 @@ Works like any Python script, but you'll need [rauth](http://rauth.readthedocs.o
         access_token_secret = qbtoken.access_token_secret, # the stored secret
         company_id = qbtoken.realm_id #the stored realm_id
         )
-
+    ```
 ## Accessing the API
 
 Once you've gotten a hold of your QuickBooks access tokens, you can create a QB object:
