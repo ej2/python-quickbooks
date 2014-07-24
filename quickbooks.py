@@ -1,7 +1,7 @@
 '''Main class'''
 import xml.etree.ElementTree as ET
 
-import json
+import simplejson
 
 try:
     from rauth import OAuth1Session, OAuth1Service
@@ -99,12 +99,7 @@ class QuickBooks():
 
         ]
 
-
-    def get_authorize_url(self):
-        """Returns the Authorize URL as returned by QB, 
-        and specified by OAuth 1.0a.
-        :return URI:
-        """
+    def set_up_service(self):
         self.qbService = OAuth1Service(
                 name = None,
                 consumer_key = self.consumer_key,
@@ -114,9 +109,21 @@ class QuickBooks():
                 authorize_url = self.authorize_url,
                 base_url = None
             )
-        self.request_token, self.request_token_secret = self.qbService.get_request_token(
+
+    def get_authorize_url(self):
+        """Returns the Authorize URL as returned by QB, 
+        and specified by OAuth 1.0a.
+        :return URI:
+        """
+        if self.qbService is None:
+            self.set_up_service()
+        
+        self.request_token, self.request_token_secret = self.qbService \
+            .get_request_token(
                 params={'oauth_callback':self.callback_url}
             )
+
+        print self.request_token, self.request_token_secret
 
         return self.qbService.get_authorize_url(self.request_token)
 
@@ -292,9 +299,9 @@ class QuickBooks():
                 content_type="text", accept = 'json'):
         """
         A slim version of simonv3's excellent keep_trying method. Among other
-         trimmings, it assumes we can only use v3 of the
-         QBO API. It also allows for requests and responses
-         in xml OR json. (No xml parsing added yet but the way is paved...)
+        trimmings, it assumes we can only use v3 of the
+        QBO API. It also allows for requests and responses
+        in xml OR json. (No xml parsing added yet but the way is paved...)
         """
 
         if self.session != None:
