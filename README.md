@@ -1,7 +1,9 @@
 # quickbooks-python
 -------------------
 
-A really simple, brute-force, Python class for accessing the Quickbooks API. 
+A really simple, brute-force, Python class for accessing the Quickbooks API.
+
+It was made to work alongside Django, but should work without it.
 
 Made much simpler with some major contributions from @HaPsantran. See HaPsantran's branch [here](https://github.com/HaPsantran/quickbooks-python). I've cleaned the script up a bit for a semi-clean v0.1.0.
 
@@ -17,7 +19,7 @@ As HaPsantran says in their ReadMe:
 
 ## Running the script
 
-Works like any Python script, but you'll need [rauth](http://rauth.readthedocs.org/en/latest/). 
+Works like any Python module, but you'll need [rauth](http://rauth.readthedocs.org/en/latest/). 
 
 ## Getting Access.
 
@@ -35,7 +37,7 @@ Works like any Python script, but you'll need [rauth](http://rauth.readthedocs.o
 
     # access URL, however you want to
     ```
-3. Access the existing `qbObject`, fetch the `oauth_verifier` and `realmId` from the URL, and set up a session:
+3. Access the existing `qbObject`, fetch the `oauth_verifier` and `realmId` from the URL, and set up a session (`request` is Django's [`HttpRequest`](https://docs.djangoproject.com/en/dev/ref/request-response/) object):
     ```
     oauth_token = request.GET['oauth_token']
     oauth_verifier = request.GET['oauth_verifier']
