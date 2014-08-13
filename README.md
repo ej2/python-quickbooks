@@ -23,6 +23,8 @@ Works like any Python module, but you'll need [rauth](http://rauth.readthedocs.o
 
 ## Getting Access.
 
+These instructions were written for a Django application. Make sure to change it to whatever framework/method you're using. 
+
 1. Make sure you have set up your Quickbooks App. You can check whether you have on their [Manage](https://developer.intuit.com/Application/List) page. If you need help doing that, look at [their documentation](https://developer.intuit.com/docs/0025_quickbooksapi/0010_getting_started/0020_connect/0010_from_within_your_app#Implement_the_OAuth_Authorization_Workflow) <- Have fun, this page only works in Firefox. 
 
 2. When your callback method gets triggered, set up a QuickBooks object, and get a URL for authorization, and then access it:
