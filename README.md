@@ -11,6 +11,10 @@ As HaPsantran says in their ReadMe:
 
 >Generally when using this module (or any of the QBO v3 API wrappers out there), keep in mind that there are some glaring omissions in it's functionality that (AFAIK) no one is able to get around programmatically. For example, you can't access (or create, update, or delete, obvi) Deposits or Transfers.
 
+### New in v0.2
+
+* Pip package
+
 ### New in v0.1.1
 
 * Well, versioning :)
