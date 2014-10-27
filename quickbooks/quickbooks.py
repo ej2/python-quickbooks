@@ -1,7 +1,7 @@
 '''Main class'''
 import xml.etree.ElementTree as ET
 
-import simplejson
+import json
 
 try:
     from rauth import OAuth1Session, OAuth1Service
@@ -341,7 +341,7 @@ class QuickBooks():
                 result = r.json()
 
                 if "Fault" in result and result["Fault"]\
-                   ["type"] == "ValidationFault":
+                   ["type"] == "VALIDATION":
 
                     if self.verbose:
 
@@ -422,7 +422,8 @@ class QuickBooks():
             props = {
                 "TxnDate":"Date",
                 "MetaData.CreateTime":"DateTime",      #takes a Date though
-                "MetaData.LastUpdatedTime":"DateTime"  #ditto
+                "MetaData.LastUpdatedTime":"DateTime", #ditto
+                "DocNumber":"Integer"
             }
 
             p = params.keys()
