@@ -45,8 +45,8 @@ class QuickBooks():
     callback_url = ''
     session = None
 
-    base_url_v3 =  "https://quickbooks.api.intuit.com/v3"
-    base_url_v2 = "https://qbo.intuit.com/qbo1"
+    sandbox_api_url_v3 = "https://sandbox-quickbooks.api.intuit.com/v3"
+    api_url_v3 = "https://quickbooks.api.intuit.com/v3"
 
     request_token_url = "https://oauth.intuit.com/oauth/v1/get_request_token"
     access_token_url = "https://oauth.intuit.com/oauth/v1/get_access_token"
@@ -82,6 +82,11 @@ class QuickBooks():
         if 'callback_url' in args:
             self.callback_url = args['callback_url']
 
+        if 'sandbox' in args:
+            self.sandbox = args['sandbox']
+        else:
+            self.sandbox = False
+
         if 'verbose' in args:
             self.verbose = True
         else:
@@ -98,6 +103,13 @@ class QuickBooks():
             "TimeActivity","Vendor","VendorCredit"
 
         ]
+
+    @property
+    def api_url(self):
+        if self.sandbox:
+            return self.sandbox_api_url_v3
+        else:
+            return self.api_url_v3
 
     def set_up_service(self):
         self.qbService = OAuth1Service(
@@ -168,7 +180,7 @@ class QuickBooks():
         start_position = 0
         more = True
         data_set = []
-        url = self.base_url_v3 + "/company/{}/query".format(self.company_id)
+        url = self.api_url + "/company/{}/query".format(self.company_id)
 
         # Edit the payload to return more results.
         
@@ -239,8 +251,9 @@ class QuickBooks():
             raise Exception("{} is not a valid QBO Business Object." % qbbo,
                             " (Note that this validation is case sensitive.)")
 
-        url = "https://qb.sbfinance.intuit.com/v3/company/{0}/{1}".format(
-              self.company_id, qbbo.lower())
+        # url = "https://qb.sbfinance.intuit.com/v3/company/{0}/{1}".format(
+        #       self.company_id, qbbo.lower())
+        url = self.api_url + "/company/{0}/{1}".format(self.company_id, qbbo.lower())
 
         if self.verbose:
 
@@ -380,7 +393,7 @@ class QuickBooks():
                                 Please use one of the following:{1}".format(
                                     qbo, self._BUSINESS_OBJECTS))
 
-            url = self.base_url_v3 + "/company/{0}/{1}/{2}/".format(
+            url = self.api_url + "/company/{0}/{1}/{2}/".format(
                                                             self.company_id, 
                                                             qbbo.lower(),
                                                             pk)
@@ -449,7 +462,7 @@ class QuickBooks():
 
         #CAN ONE SESSION USE MULTIPLE COMPANIES?
         #IF NOT, REMOVE THE COMPANY OPTIONALITY
-        url = self.base_url_v3 + "/company/{}/query".format(self.company_id)
+        url = self.api_url + "/company/{}/query".format(self.company_id)
 
         #print query_string
 
