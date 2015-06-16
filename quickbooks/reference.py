@@ -9,17 +9,17 @@ https://developer.intuit.com/docs/0025_quickbooksapi/
 
 """
 
-BUSINESS_OBJECTS = ["Account","Attachable","Bill","BillPayment",
-                    "Class","CompanyInfo","CreditMemo","Customer",
-                    "Department","Employee","Estimate","Invoice",
-                    "Item","JournalEntry","Payment","PaymentMethod",
-                    "Preferences","Purchase","PurchaseOrder",
-                    "SalesReceipt","TaxCode","TaxRate","Term",
-                    "TimeActivity","Vendor","VendorCredit"]
+BUSINESS_OBJECTS = ["Account", "Attachable", "Bill", "BillPayment",
+                    "Class", "CompanyInfo", "CreditMemo", "Customer",
+                    "Department", "Employee", "Estimate", "Invoice",
+                    "Item", "JournalEntry", "Payment", "PaymentMethod",
+                    "Preferences", "Purchase", "PurchaseOrder",
+                    "SalesReceipt", "TaxCode", "TaxRate", "Term",
+                    "TimeActivity", "Vendor", "VendorCredit"]
 
 OBJECT_ATTRIBUTES = {
 
-    "Account" : [
+    "Account": [
 
         "Id", "SyncToken", "MetaData", "Name", "SubAccount",
         "ParentRef", "Description", "FullyQualifiedName", "Active",
@@ -27,12 +27,12 @@ OBJECT_ATTRIBUTES = {
         "OpeningBalance", "OpeningBalanceDate", "CurrentBalance",
         "CurentBalanceWithSubAccounts", "CurrencyRef"],
 
-    "Class" :[
+    "Class": [
 
         "Id", "SyncToken", "MetaData", "Name", "SubClass", "ParentRef",
         "FullyQualifiedName", "Active"],
 
-    "Customer" :[
+    "Customer": [
 
         "Id", "SyncToken", "MetaData", "Title", "GivenName", "MiddleName",
         "FamilyName", "Suffix", "FullyQualifiedName", "CompanyName",
@@ -43,12 +43,12 @@ OBJECT_ATTRIBUTES = {
         "PaymentMethodRef", "Balance", "OpenBalanceDate", "BalanceWithJobs",
         "CurrencyRef", "PreferredDeliveryMethod", "ResaleNum"],
 
-    "Department" :[
+    "Department": [
 
         "Id", "SyncToken", "MetaData", "Name", "SubDepartment",
         "ParentRef", "FullyQualifiedName", "Active"],
 
-    "Employee" :[
+    "Employee": [
 
         "Id", "SyncToken", "MetaData", "Organization", "Title",
         "GivenName", "MiddleName", "FamilyName", "Suffix", "DisplayName",
@@ -57,56 +57,56 @@ OBJECT_ATTRIBUTES = {
         "BillableTime", "BillRate", "BirthDate", "Gender", "HiredDate",
         "ReleasedDate"],
 
-    "Item" :[
+    "Item": [
 
         "Id", "SyncToken", "MetaData", "Name", "Description", "Active",
         "SubItem", "ParentRef", "Level", "FullyQualifiedName", "Taxable",
-        "SalesTaxIncluded", "UnitPrice", "RatePercent", "Type", 
+        "SalesTaxIncluded", "UnitPrice", "RatePercent", "Type",
         "IncomeAccountRef", "PurchaseDesc", "PurchaseTaxIncluded",
         "PurchaseCost", "ExpenseAccountRef", "AssetAccountRef",
         "TrackQtyOnHand", "QtyOnHand", "SalesTaxCodeRef",
         "PurchaseTaxCodeRef", "InvStartDate"],
 
-    "PaymentMethod" :[
+    "PaymentMethod": [
 
-        #note that the CustomField attribute can (and maybe MUST) be
-        #subscripted...
+        # note that the CustomField attribute can (and maybe MUST) be
+        # subscripted...
 
         "Id", "SyncToken", "MetaData", "CustomField", "AttachableRef",
         "Name", "Active", "Type"],
 
-    "TaxCode" :[
+    "TaxCode": [
 
-        #note that SalesTaxRateList has sub-attribute TaxRateDetail,
-        #which itself must be subscripted and those sub-attributes have
-        #their own sub-attributes TaxRateRef, TaxRateApplicable,
-        #and TaxOrder
-        #The same is true of PurchaseTaxRateList (apparently only for
-        #VAT-charging countries, which excludes the U.S.)
+        # note that SalesTaxRateList has sub-attribute TaxRateDetail,
+        # which itself must be subscripted and those sub-attributes have
+        # their own sub-attributes TaxRateRef, TaxRateApplicable,
+        # and TaxOrder
+        # The same is true of PurchaseTaxRateList (apparently only for
+        # VAT-charging countries, which excludes the U.S.)
 
         "Id", "SyncToken", "MetaData", "Name", "Description", "Active",
         "Taxable", "TaxGroup", "SalesTaxRateList", "PurchaseTaxRateList"],
 
-    "TaxRate":[
+    "TaxRate": [
 
-        "Id", "SyncToken", "MetaData", "Name", "Description", "Active", 
+        "Id", "SyncToken", "MetaData", "Name", "Description", "Active",
         "RateValue", "AgencyRef", "TaxReturnLineRef", "SpecialTaxType",
         "DisplayType", "EffectiveTaxRate"],
 
-    "Term" :[
+    "Term": [
 
-        #note that the CustomField attribute can (and maybe MUST) be
-        #subscripted...
+        # note that the CustomField attribute can (and maybe MUST) be
+        # subscripted...
 
         "Id", "SyncToken", "MetaData", "CustomField", "AttachableRef",
         "Name", "Active", "Type", "DiscountPercent", "DueDays",
         "DiscountDays", "DayOfMonthDue", "DueNextMonthDays",
         "DiscountDayOfMonth"],
 
-    "Vendor" :[
+    "Vendor": [
 
-        #note that the OtherContactInfo attribute can (and maybe MUST) be
-        #subscripted...
+        # note that the OtherContactInfo attribute can (and maybe MUST) be
+        # subscripted...
 
         "Id", "SyncToken", "MetaData", "Title", "GiveName", "MiddleName",
         "FamilyName", "Suffix", "CompanyName", "DisplayName",
@@ -119,23 +119,22 @@ OBJECT_ATTRIBUTES = {
 
 
 
-#we may find it useful to sort AccountTypes in trial balance order
+# we may find it useful to sort AccountTypes in trial balance order
 
 transaction_objects = [
 
-     "Bill", "BillPayment", "CreditMemo", "Estimate", "Invoice",
-     "JournalEntry", "Payment", "Purchase", "PurchaseOrder", 
-     "SalesReceipt", "TimeActivity", "VendorCredit"
+    "Bill", "BillPayment", "CreditMemo", "Estimate", "Invoice",
+    "JournalEntry", "Payment", "Purchase", "PurchaseOrder",
+    "SalesReceipt", "TimeActivity", "VendorCredit"
 
- ]
+]
 
 name_list_objects = [
 
-     "Account", "Class", "Customer", "Department", "Employee", "Item",
-     "PaymentMethod", "TaxCode", "TaxRate", "Term", "Vendor"
+    "Account", "Class", "Customer", "Department", "Employee", "Item",
+    "PaymentMethod", "TaxCode", "TaxRate", "Term", "Vendor"
 
- ]
-
+]
 
 tb_type_order = [
     "Bank", "Accounts Receivable", "Other Current Asset",
@@ -145,15 +144,15 @@ tb_type_order = [
     "Equity",
     "Income", "Other Income",
     "Cost of Goods Sold", "Expense", "Other Expense"
-]        
+]
 
-#Linked_Txn's have TxnType's that map to specific qbbo types
+# Linked_Txn's have TxnType's that map to specific qbbo types
 linked_txn_correction = {
-    "Bill"               : "Bill",
-    "Check"              : "Purchase",
-    "Credit Card Credit" : "Purchase",
-    "Invoice"            : "Invoice",
-    "Journal Entry"      : "JournalEntry"
+    "Bill": "Bill",
+    "Check": "Purchase",
+    "Credit Card Credit": "Purchase",
+    "Invoice": "Invoice",
+    "Journal Entry": "JournalEntry"
 }
 
 """
@@ -163,7 +162,7 @@ QBO will NOT let the user enter a bill with a negative total amount.
 
 """
 
-#prototypical entries for new entry creation:
+# prototypical entries for new entry creation:
 
 """
 Here's a JournalEntry:
