@@ -1,0 +1,4 @@
+
+
+class QuickbooksException(Exception):
+    pass

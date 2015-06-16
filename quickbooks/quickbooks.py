@@ -3,6 +3,8 @@ Main class
 """
 import json
 
+from exceptions import QuickbooksException
+
 try:
     from rauth import OAuth1Session, OAuth1Service
 except ImportError:
@@ -163,7 +165,7 @@ class QuickBooks:
             )
             self.session = session
         else:
-            raise Exception("Need four creds for Quickbooks.create_session.")
+            raise QuickbooksException("Need four creds for Quickbooks.create_session.")
         return self.session
 
     def query_fetch_more(self, r_type, header_auth, realm, qb_object, original_payload=''):
@@ -185,7 +187,8 @@ class QuickBooks:
 
         while more:
 
-            r_dict = self.hammer_it(r_type, url, payload, "text")
+            #r_dict = self.hammer_it(r_type, url, payload, "text")
+            r_dict = self.make_request(r_type, url, payload)
 
             try:
                 access = r_dict['QueryResponse'][qb_object]
@@ -194,7 +197,8 @@ class QuickBooks:
                     return []
                 else:
                     print("FAILED", r_dict)
-                    r_dict = self.hammer_it(r_type, url, payload, "text")
+                    #r_dict = self.hammer_it(r_type, url, payload, "text")
+                    r_dict = self.make_request(r_type, url, payload)
 
             # For some reason the totalCount isn't returned for some queries,
             # in that case, check the length, even though that actually requires
@@ -244,7 +248,8 @@ class QuickBooks:
             print("About to create a %s object with this request_body:".format(qbbo))
             print(request_body)
 
-        new_object = self.hammer_it("POST", url, request_body, content_type)[qbbo]
+        #new_object = self.hammer_it("POST", url, request_body, content_type)[qbbo]
+        new_object = self.make_request("POST", url, request_body)[qbbo]
 
         new_id = new_object["Id"]
 
@@ -289,6 +294,30 @@ class QuickBooks:
 
         pass
 
+    def make_request(self, request_type, url, request_body=None):
+        if not request_body:
+            request_body = {}
+
+        if self.session is None:
+            self.create_session()
+
+        headers = {
+            'Content-Type': 'application/text',
+            'Accept': 'application/json'
+        }
+
+        r = self.session.request(request_type, url, True, self.company_id, headers=headers, data=request_body)
+
+        if r.status_code == 401:
+            raise QuickbooksException('Query object is not authorized to make that request.')
+
+        result = r.json()
+
+        if "Fault" in result and result["Fault"]["type"] == "ValidationFault":
+            raise QuickbooksException(result["Fault"]["Error"])
+
+        return result
+
     def hammer_it(self, request_type, url, request_body=None, content_type="text", accept='json'):
         """
         A slim version of simonv3's excellent keep_trying method. Among other
@@ -302,10 +331,7 @@ class QuickBooks:
         result = ""
 
         if self.session is None:
-            session = self.session
-        else:
-            session = self.create_session()
-            self.session = session
+            self.create_session()
 
         # haven't found an example of when this wouldn't be True, but leaving
         # it for the meantime...
@@ -324,16 +350,15 @@ class QuickBooks:
                 'Accept': 'application/%s' % accept
             }
 
-            r = session.request(request_type, url, header_auth, self.company_id, headers=headers, data=request_body)
+            r = self.session.request(request_type, url, header_auth, self.company_id, headers=headers, data=request_body)
 
             if accept == "json":
-
                 if r.status_code == 401:
-                    raise Exception('Query object is not authorized to make that request.')
+                    raise QuickbooksException('Query object is not authorized to make that request.')
 
                 result = r.json()
 
-                if "Fault" in result and result["Fault"]["type"] == "VALIDATION":
+                if "Fault" in result and result["Fault"]["type"] == "ValidationFault":
 
                     if self.verbose:
                         print "Fault alert!"
@@ -369,7 +394,8 @@ class QuickBooks:
 
             url = self.api_url + "/company/{0}/{1}/{2}/".format(self.company_id, qbbo.lower(), pk)
 
-            result = self.hammer_it("GET", url, {}, "text")
+            #result = self.hammer_it("GET", url, {}, "text")
+            result = self.make_request("GET", url, {})
 
             return result
         else:
