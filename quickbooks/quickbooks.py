@@ -2,6 +2,7 @@
 Main class
 """
 import json
+import httplib
 
 from exceptions import QuickbooksException
 
@@ -36,7 +37,7 @@ except ImportError:
     pass
 
 
-class QuickBooks:
+class QuickBooks(object):
     """A wrapper class around Python's Rauth module for Quickbooks the API"""
 
     access_token = ''
@@ -46,6 +47,10 @@ class QuickBooks:
     company_id = 0
     callback_url = ''
     session = None
+    sandbox = False
+    verbose = False
+
+    ready = False
 
     sandbox_api_url_v3 = "https://sandbox-quickbooks.api.intuit.com/v3"
     api_url_v3 = "https://quickbooks.api.intuit.com/v3"
@@ -61,49 +66,76 @@ class QuickBooks:
     request_token = ''
     request_token_secret = ''
 
-    def __init__(self, **args):
+    _BUSINESS_OBJECTS = [
+        "Account", "Attachable", "Bill", "BillPayment",
+        "Class", "CompanyInfo", "CreditMemo", "Customer",
+        "Department", "Employee", "Estimate", "Invoice",
+        "Item", "JournalEntry", "Payment", "PaymentMethod",
+        "Preferences", "Purchase", "PurchaseOrder",
+        "SalesReceipt", "TaxCode", "TaxRate", "Term",
+        "TimeActivity", "Vendor", "VendorCredit"
+    ]
 
-        if 'cred_path' in args:
-            self.read_creds_from_file(args['cred_path'])
+    __instance = None
 
-        if 'consumer_key' in args:
-            self.consumer_key = args['consumer_key']
+    def __new__(cls, **args):
+        if QuickBooks.__instance is None:
+            QuickBooks.__instance = object.__new__(cls)
 
-        if 'consumer_secret' in args:
-            self.consumer_secret = args['consumer_secret']
+            if 'consumer_key' in args:
+                cls.consumer_key = args['consumer_key']
 
-        if 'access_token' in args:
-            self.access_token = args['access_token']
+            if 'consumer_secret' in args:
+                cls.consumer_secret = args['consumer_secret']
 
-        if 'access_token_secret' in args:
-            self.access_token_secret = args['access_token_secret']
+            if 'access_token' in args:
+                cls.access_token = args['access_token']
 
-        if 'company_id' in args:
-            self.company_id = args['company_id']
+            if 'access_token_secret' in args:
+                cls.access_token_secret = args['access_token_secret']
 
-        if 'callback_url' in args:
-            self.callback_url = args['callback_url']
+            if 'company_id' in args:
+                cls.company_id = args['company_id']
 
-        if 'sandbox' in args:
-            self.sandbox = args['sandbox']
-        else:
-            self.sandbox = False
+            if 'callback_url' in args:
+                cls.callback_url = args['callback_url']
 
-        if 'verbose' in args:
-            self.verbose = True
-        else:
-            self.verbose = False
+            if 'sandbox' in args:
+                cls.sandbox = args['sandbox']
 
-        self._BUSINESS_OBJECTS = [
-            "Account", "Attachable", "Bill", "BillPayment",
-            "Class", "CompanyInfo", "CreditMemo", "Customer",
-            "Department", "Employee", "Estimate", "Invoice",
-            "Item", "JournalEntry", "Payment", "PaymentMethod",
-            "Preferences", "Purchase", "PurchaseOrder",
-            "SalesReceipt", "TaxCode", "TaxRate", "Term",
-            "TimeActivity", "Vendor", "VendorCredit"
+            if 'verbose' in args:
+                cls.verbose = True
 
-        ]
+        return QuickBooks.__instance
+
+    def not__init__(self, **args):
+        import pdb; pdb.set_trace()
+        if not self.ready:
+            if 'consumer_key' in args:
+                self.consumer_key = args['consumer_key']
+
+            if 'consumer_secret' in args:
+                self.consumer_secret = args['consumer_secret']
+
+            if 'access_token' in args:
+                self.access_token = args['access_token']
+
+            if 'access_token_secret' in args:
+                self.access_token_secret = args['access_token_secret']
+
+            if 'company_id' in args:
+                self.company_id = args['company_id']
+
+            if 'callback_url' in args:
+                self.callback_url = args['callback_url']
+
+            if 'sandbox' in args:
+                self.sandbox = args['sandbox']
+
+            if 'verbose' in args:
+                self.verbose = True
+
+            self.ready = True
 
     @property
     def api_url(self):
@@ -302,21 +334,17 @@ class QuickBooks:
             self.create_session()
 
         headers = {
-            'Content-Type': 'application/text',
+            'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
 
-        r = self.session.request(request_type, url, True, self.company_id, headers=headers, data=request_body)
+        req = self.session.request(request_type, url, True, self.company_id, headers=headers, data=request_body)
+        result = req.json()
 
-        if r.status_code == 401:
-            raise QuickbooksException('Query object is not authorized to make that request.')
-
-        result = r.json()
-
-        if "Fault" in result and result["Fault"]["type"] == "ValidationFault":
-            raise QuickbooksException(result["Fault"]["Error"])
-
-        return result
+        if req.status_code == httplib.OK:
+            return result
+        else:
+            raise QuickbooksException(result["Fault"]["Error"], result["Fault"]["Error"]["code"])
 
     def hammer_it(self, request_type, url, request_body=None, content_type="text", accept='json'):
         """

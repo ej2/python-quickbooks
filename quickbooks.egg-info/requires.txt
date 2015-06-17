@@ -1,0 +1,4 @@
+setuptools
+rauth
+simplejson
+python-dateutil

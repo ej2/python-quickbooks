@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: quickbooks
+Version: 0.2
+Summary: A really simple, brute-force, Python class for accessing the Quickbooks API.
+Home-page: https://github.com/simonv3/quickbooks-python
+Author: Simon Vansintjan
+Author-email: svansintjan@gmail.com
+License: MIT
+Description: UNKNOWN
+Platform: UNKNOWN
