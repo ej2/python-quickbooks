@@ -4,7 +4,7 @@ Main class
 import json
 import httplib
 
-from exceptions import QuickbooksException
+from exceptions import QuickbooksException, SevereException
 
 try:
     from rauth import OAuth1Session, OAuth1Service
@@ -49,8 +49,6 @@ class QuickBooks(object):
     session = None
     sandbox = False
     verbose = False
-
-    ready = False
 
     sandbox_api_url_v3 = "https://sandbox-quickbooks.api.intuit.com/v3"
     api_url_v3 = "https://quickbooks.api.intuit.com/v3"
@@ -107,35 +105,6 @@ class QuickBooks(object):
                 cls.verbose = True
 
         return QuickBooks.__instance
-
-    def not__init__(self, **args):
-        import pdb; pdb.set_trace()
-        if not self.ready:
-            if 'consumer_key' in args:
-                self.consumer_key = args['consumer_key']
-
-            if 'consumer_secret' in args:
-                self.consumer_secret = args['consumer_secret']
-
-            if 'access_token' in args:
-                self.access_token = args['access_token']
-
-            if 'access_token_secret' in args:
-                self.access_token_secret = args['access_token_secret']
-
-            if 'company_id' in args:
-                self.company_id = args['company_id']
-
-            if 'callback_url' in args:
-                self.callback_url = args['callback_url']
-
-            if 'sandbox' in args:
-                self.sandbox = args['sandbox']
-
-            if 'verbose' in args:
-                self.verbose = True
-
-            self.ready = True
 
     @property
     def api_url(self):
@@ -201,6 +170,7 @@ class QuickBooks(object):
         return self.session
 
     def query_fetch_more(self, r_type, header_auth, realm, qb_object, original_payload=''):
+        import pdb; pdb.set_trace()
         """
         Wrapper script around keep_trying to fetch more results if
         there are more.
@@ -218,8 +188,6 @@ class QuickBooks(object):
         payload = original_payload + " MAXRESULTS " + str(max_results)
 
         while more:
-
-            #r_dict = self.hammer_it(r_type, url, payload, "text")
             r_dict = self.make_request(r_type, url, payload)
 
             try:
@@ -229,7 +197,6 @@ class QuickBooks(object):
                     return []
                 else:
                     print("FAILED", r_dict)
-                    #r_dict = self.hammer_it(r_type, url, payload, "text")
                     r_dict = self.make_request(r_type, url, payload)
 
             # For some reason the totalCount isn't returned for some queries,
@@ -280,7 +247,6 @@ class QuickBooks(object):
             print("About to create a %s object with this request_body:".format(qbbo))
             print(request_body)
 
-        #new_object = self.hammer_it("POST", url, request_body, content_type)[qbbo]
         new_object = self.make_request("POST", url, request_body)[qbbo]
 
         new_id = new_object["Id"]
@@ -306,26 +272,6 @@ class QuickBooks(object):
 
         return new_object
 
-    def read_object(self, qbbo, object_id):
-        """Makes things easier for an update because you just do a read,
-        tweak the things you want to change, and send that as the update
-        request body (instead of having to create one from scratch)."""
-
-        pass
-
-    def update_object(self, qbbo, object_id, request_body, content_type="json"):
-        """Generally before calling this, you want to call the read_object
-        command on what you want to update. The alternative is forming a valid
-        update request_body from scratch, which doesn't look like fun to me."""
-
-        pass
-
-    def delete_object(self, qbbo, request_body, content_type="json"):
-        """Don't need to give it an Id, just the whole object as returned by
-        a read operation."""
-
-        pass
-
     def make_request(self, request_type, url, request_body=None):
         if not request_body:
             request_body = {}
@@ -341,93 +287,45 @@ class QuickBooks(object):
         req = self.session.request(request_type, url, True, self.company_id, headers=headers, data=request_body)
         result = req.json()
 
-        if req.status_code == httplib.OK:
-            return result
+        if req.status_code is not httplib.OK or "Fault" in result:
+            self.handle_exceptions(result["Fault"])
         else:
-            raise QuickbooksException(result["Fault"]["Error"], result["Fault"]["Error"]["code"])
+            return result
 
-    def hammer_it(self, request_type, url, request_body=None, content_type="text", accept='json'):
-        """
-        A slim version of simonv3's excellent keep_trying method. Among other
-        trimmings, it assumes we can only use v3 of the
-        QBO API. It also allows for requests and responses
-        in xml OR json. (No xml parsing added yet but the way is paved...)
-        """
-        if not request_body:
-            request_body = {}
-
-        result = ""
-
-        if self.session is None:
-            self.create_session()
-
-        # haven't found an example of when this wouldn't be True, but leaving
-        # it for the meantime...
-        header_auth = True
-
-        trying = True
-        print_error = False
-
-        tries = 0
-
-        while trying:
-            tries += 1
-
-            headers = {
-                'Content-Type': 'application/%s' % content_type,
-                'Accept': 'application/%s' % accept
-            }
-
-            r = self.session.request(request_type, url, header_auth, self.company_id, headers=headers, data=request_body)
-
-            if accept == "json":
-                if r.status_code == 401:
-                    raise QuickbooksException('Query object is not authorized to make that request.')
-
-                result = r.json()
-
-                if "Fault" in result and result["Fault"]["type"] == "ValidationFault":
-
-                    if self.verbose:
-                        print "Fault alert!"
-
-                    trying = False
-                    print_error = True
-
-                elif tries >= 6:
-
-                    trying = False
-
-                    if "Fault" in result:
-                        print_error = True
-
-                elif "Fault" not in result:
-
-                    # sounds like a success
-                    trying = False
-
-                if not trying and print_error:
-                    print json.dumps(result, indent=1)
-
-            else:
-                raise NotImplementedError("How do I parse a %s response?") % accept
+    def get_single_object(self, qbbo, pk):
+        url = self.api_url + "/company/{0}/{1}/{2}/".format(self.company_id, qbbo.lower(), pk)
+        result = self.make_request("GET", url, {})
 
         return result
 
-    def get_single_object(self, qbbo, pk=None):
-        if pk:
-            if qbbo not in self._BUSINESS_OBJECTS:
-                raise Exception("{0} not in list of QBO Business Objects.\n\
-                                Please use one of the following:{1}".format(qbbo, self._BUSINESS_OBJECTS))
+    def get_all(self, qbbo):
+        select = "SELECT * FROM {0}".format(qbbo)
 
-            url = self.api_url + "/company/{0}/{1}/{2}/".format(self.company_id, qbbo.lower(), pk)
+        url = "{0}/company/{1}/query?query={2}".format(self.api_url, self.company_id, select)
+        result = self.make_request("GET", url, {})
 
-            #result = self.hammer_it("GET", url, {}, "text")
-            result = self.make_request("GET", url, {})
+        return result
 
-            return result
-        else:
-            return {}
+    def get_list(self, qbbo, query):
+
+        select = "select * from {0} Where DisplayName like '{1}'".format(qbbo, query)
+        url = self.api_url + "/company/{0}/query".format(self.company_id)
+        result = self.make_request("GET", url, select)
+
+        return result
+
+    def handle_exceptions(self, results):
+        # Needs to handle multiple errors
+        for error in results["Error"]:
+            message = error["Message"]
+            code = error["code"]
+            detail = error["Detail"]
+
+            if code >= 10000:
+                raise SevereException(message, code, detail)
+            else:
+                raise QuickbooksException(message, code, detail)
+
 
     def query_objects(self, business_object, fields='*', params=None, query_tail=""):
         """
@@ -439,10 +337,6 @@ class QuickBooks(object):
         """
         if not params:
             params = {}
-
-        if business_object not in self._BUSINESS_OBJECTS:
-            raise Exception("{0} not in list of QBO Business Objects.\n\
-                            Please use one of the following: {1}".format(business_object, self._BUSINESS_OBJECTS))
 
         if isinstance(fields, list):
             fields = ','.join(fields)

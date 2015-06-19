@@ -19,28 +19,12 @@ class FromJsonMixin(object):
                 setattr(self, key, json_data[key])
 
 
-
-class QuickBooksManagerMixin:
-    qbo_object_name = ""
-    qbo_object_class = None
-
-    def __init__(self, client):
-        self.client = client
-
-    def get(self, id):
-        json_data = self.client.get_single_object(self.qbo_object_name, pk=id)
-        obj = self.qbo_object_class()
-        obj.from_json(json_data[self.qbo_object_name])
-
-        return obj
-
-
 class ReadMixin:
     qbo_object_name = ""
 
     @classmethod
     def get(cls, id):
-        from quickbooks import QuickBooks
+        from client import QuickBooks
         qb = QuickBooks()
 
         json_data = qb.get_single_object(cls.qbo_object_name, pk=id)
@@ -49,11 +33,51 @@ class ReadMixin:
 
         return obj
 
+
 class CreateMixin:
     qbo_object_name = ""
 
-    def create(self):
-        from quickbooks import QuickBooks
+    @classmethod
+    def create(cls):
+        from client import QuickBooks
         qb = QuickBooks()
 
-        return qb.create_object(self.qbo_object_name, self.to_json())
+        json_data = qb.create_object(cls.qbo_object_name, cls.to_json())
+
+        obj = cls()
+        obj.from_json(json_data[cls.qbo_object_name])
+
+        return obj
+
+
+class ListMixin:
+    qbo_object_name = ""
+
+    @classmethod
+    def all(cls):
+        from client import QuickBooks
+
+        qb = QuickBooks()
+
+        json_data = qb.get_all(cls.qbo_object_name)
+
+        obj_list = []
+        for item_json in json_data[cls.qbo_object_name]:
+            obj = cls()
+            obj_list.append(obj.from_json(item_json))
+
+        return obj_list
+
+    @classmethod
+    def filter(cls, query):
+        from client import QuickBooks
+        qb = QuickBooks()
+
+        json_data = qb.get_list(cls.qbo_object_name, query)
+
+        list = []
+        for item_json in json_data[cls.qbo_object_name]:
+            obj = cls()
+            list.append(obj.from_json(item_json))
+
+        return list

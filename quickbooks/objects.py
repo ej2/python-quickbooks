@@ -1,4 +1,4 @@
-from mixins import ToJsonMixin, FromJsonMixin, ReadMixin, CreateMixin
+from mixins import ToJsonMixin, FromJsonMixin, ReadMixin, CreateMixin, ListMixin
 
 
 class Address(ToJsonMixin, FromJsonMixin):
@@ -45,7 +45,7 @@ class TaxCodeRef(ToJsonMixin, FromJsonMixin):
     def __unicode__(self):
         return self.value
 
-class Customer(ToJsonMixin, FromJsonMixin, ReadMixin, CreateMixin):
+class Customer(ToJsonMixin, FromJsonMixin, ReadMixin, CreateMixin, ListMixin):
     class_dict = {
         "BillAddr": Address,
         "ShipAddr": Address,
@@ -58,6 +58,7 @@ class Customer(ToJsonMixin, FromJsonMixin, ReadMixin, CreateMixin):
     }
 
     qbo_object_name = "Customer"
+
     Title = ""
     GivenName = ""
     MiddleName = ""

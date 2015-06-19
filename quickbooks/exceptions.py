@@ -1,10 +1,11 @@
 
 
 class QuickbooksException(Exception):
-    def __init__(self, message, error_code):
+    def __init__(self, message, error_code=0, detail=""):
         super(QuickbooksException, self).__init__(message)
 
         self.error_code = error_code
+        self.detail = detail
 
 
 class AuthorizationException(QuickbooksException):
