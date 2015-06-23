@@ -200,7 +200,7 @@ class QuickBooks(object):
     def get_list(self, qbbo, **kwargs):
         where_clause = ""
 
-        if kwargs.__len__() > 0:
+        if len(kwargs) > 0:
             where_clause = "WHERE "
             for key, value in kwargs.iteritems():
                 if type(value).__name__ == 'str':
