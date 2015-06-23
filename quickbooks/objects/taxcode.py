@@ -15,14 +15,15 @@ class TaxCode(QuickbooksBaseObject):
 
     qbo_object_name = "TaxCode"
 
-    Name = ""
-    Description = ""
-    Taxable = True
-    TaxGroup = True
-    Active = True
+    def __init__(self):
+        self.Name = ""
+        self.Description = ""
+        self.Taxable = True
+        self.TaxGroup = True
+        self.Active = True
 
-    SalesTaxRateList = None
-    PurchaseTaxRateList = None
+        self.SalesTaxRateList = None
+        self.PurchaseTaxRateList = None
 
     def __unicode__(self):
         return self.Name
@@ -33,7 +34,8 @@ class TaxRateList(QuickbooksBaseObject):
     class_dict = {}
     qbo_object_name = "TaxRateList"
 
-    TaxRateDetail = []
+    def __init__(self):
+        self.TaxRateDetail = []
 
 
 class TaxRateDetail(QuickbooksBaseObject):
@@ -43,6 +45,7 @@ class TaxRateDetail(QuickbooksBaseObject):
 
     qbo_object_name = "TaxRateDetail"
 
-    TaxTypeApplicable = ""
-    TaxOrder = 0
-    TaxRateRef = None
+    def __init__(self):
+        self.TaxTypeApplicable = ""
+        self.TaxOrder = 0
+        self.TaxRateRef = None

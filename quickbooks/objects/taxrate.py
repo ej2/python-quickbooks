@@ -10,14 +10,15 @@ class TaxRate(QuickbooksBaseObject):
 
     qbo_object_name = "TaxRate"
 
-    Name = ""
-    Description = ""
-    RateValue = 0
-    SpecialTaxType = ""
-    Active = True
+    def __init__(self):
+        self.Name = ""
+        self.Description = ""
+        self.RateValue = 0
+        self.SpecialTaxType = ""
+        self.Active = True
 
-    AgencyRef = None
-    TaxReturnLineRef = None
+        self.AgencyRef = None
+        self.TaxReturnLineRef = None
 
     def __unicode__(self):
         return self.Name

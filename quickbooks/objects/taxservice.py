@@ -18,9 +18,10 @@ class TaxService(QuickbooksBaseObject):
 
     qbo_object_name = "TaxService"
 
-    TaxCode = ""
-    TaxCodeId = ""
-    Active = True
+    def __init__(self):
+        self.TaxCode = ""
+        self.TaxCodeId = ""
+        self.Active = True
 
     def __unicode__(self):
         return self.TaxCode
@@ -29,11 +30,12 @@ class TaxService(QuickbooksBaseObject):
 class TaxRateDetails(QuickbooksBaseObject):
     qbo_object_name = "TaxRateDetails"
 
-    TaxRateName = ""
-    TaxRateId = 0
-    RateValue = 0
-    TaxAgencyId = 0
-    TaxApplicableOn = ""
+    def __init__(self):
+        self.TaxRateName = ""
+        self.TaxRateId = 0
+        self.RateValue = 0
+        self.TaxAgencyId = 0
+        self.TaxApplicableOn = ""
 
     def __unicode__(self):
         return self.TaxRateName

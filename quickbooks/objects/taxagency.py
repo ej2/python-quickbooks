@@ -10,9 +10,10 @@ class TaxAgency(QuickbooksBaseObject):
 
     qbo_object_name = "TaxAgency"
 
-    DisplayName = ""
-    TaxTrackedOnSales = True
-    TaxTrackedOnPurchases = False
+    def __init__(self):
+        self.DisplayName = ""
+        self.TaxTrackedOnSales = True
+        self.TaxTrackedOnPurchases = False
 
     def __unicode__(self):
         return self.DisplayName

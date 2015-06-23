@@ -28,35 +28,36 @@ class Customer(QuickbooksBaseObject):
 
     qbo_object_name = "Customer"
 
-    Title = ""
-    GivenName = ""
-    MiddleName = ""
-    FamilyName = ""
-    Suffix = ""
-    FullyQualifiedName = ""
-    CompanyName = ""
-    DisplayName = ""
-    PrintOnCheckName = ""
-    Notes = ""
-    Active = True
-    Job = False
-    BillWithParent = False
-    Taxable = True
-    Balance = 0
-    BalanceWithJobs = 0
-    PreferredDeliveryMethod = ""
-    ResaleNum = ""
+    def __init__(self):
+        self.Title = ""
+        self.GivenName = ""
+        self.MiddleName = ""
+        self.FamilyName = ""
+        self.Suffix = ""
+        self.FullyQualifiedName = ""
+        self.CompanyName = ""
+        self.DisplayName = ""
+        self.PrintOnCheckName = ""
+        self.Notes = ""
+        self.Active = True
+        self.Job = False
+        self.BillWithParent = False
+        self.Taxable = True
+        self.Balance = 0
+        self.BalanceWithJobs = 0
+        self.PreferredDeliveryMethod = ""
+        self.ResaleNum = ""
 
-    BillAddr = None
-    ShipAddr = None
-    PrimaryPhone = None
-    Mobile = None
-    Fax = None
-    PrimaryEmailAddr = None
-    WebAddr = None
-    DefaultTaxCodeRef = None
-    SalesTermRef = None
-    PaymentMethodRef = None
+        self.BillAddr = None
+        self.ShipAddr = None
+        self.PrimaryPhone = None
+        self.Mobile = None
+        self.Fax = None
+        self.PrimaryEmailAddr = None
+        self.WebAddr = None
+        self.DefaultTaxCodeRef = None
+        self.SalesTermRef = None
+        self.PaymentMethodRef = None
 
     def __unicode__(self):
         return self.DisplayName

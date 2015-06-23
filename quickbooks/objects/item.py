@@ -22,22 +22,23 @@ class Item(QuickbooksBaseObject):
 
     qbo_object_name = "Item"
 
-    Name = ""
-    Description = ""
-    Active = True
-    FullyQualifiedName = ""
-    Taxable = ""
-    UnitPrice = ""
-    Type = ""
-    PurchaseDesc = ""
-    PurchaseCost = 0
-    TrackQtyOnHand = True
-    QtyOnHand = 0
-    InvStartDate = ""
+    def __init__(self):
+        self.Name = ""
+        self.Description = ""
+        self.Active = True
+        self.FullyQualifiedName = ""
+        self.Taxable = ""
+        self.UnitPrice = ""
+        self.Type = ""
+        self.PurchaseDesc = ""
+        self.PurchaseCost = 0
+        self.TrackQtyOnHand = True
+        self.QtyOnHand = 0
+        self.InvStartDate = ""
 
-    AssetAccountRef = None
-    ExpenseAccountRef = None
-    IncomeAccountRef = None
+        self.AssetAccountRef = None
+        self.ExpenseAccountRef = None
+        self.IncomeAccountRef = None
 
     def __unicode__(self):
         return self.Name

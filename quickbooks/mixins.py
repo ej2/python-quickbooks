@@ -9,17 +9,21 @@ class ToJsonMixin(object):
 class FromJsonMixin(object):
     class_dict = {}
 
-    def from_json(self, json_data):
+    @classmethod
+    def from_json(cls, json_data):
+        obj = cls()
         for key in json_data:
-            if key in self.class_dict:
-                obj = self.class_dict[key]()
-                obj.from_json(json_data[key])
-                setattr(self, key, obj)
+            if key in obj.class_dict:
+                sub_obj = obj.class_dict[key]()
+                sub_obj.from_json(json_data[key])
+                setattr(obj, key, sub_obj)
             else:
-                setattr(self, key, json_data[key])
+                setattr(obj, key, json_data[key])
+
+        return obj
 
 
-class ReadMixin:
+class ReadMixin(object):
     qbo_object_name = ""
 
     @classmethod
@@ -28,13 +32,10 @@ class ReadMixin:
         qb = QuickBooks()
 
         json_data = qb.get_single_object(cls.qbo_object_name, pk=id)
-        obj = cls()
-        obj.from_json(json_data[cls.qbo_object_name])
-
-        return obj
+        return cls.from_json(json_data[cls.qbo_object_name])
 
 
-class CreateMixin:
+class CreateMixin(object):
     qbo_object_name = ""
 
     @classmethod
@@ -43,14 +44,10 @@ class CreateMixin:
         qb = QuickBooks()
 
         json_data = qb.create_object(cls.qbo_object_name, cls.to_json())
-
-        obj = cls()
-        obj.from_json(json_data[cls.qbo_object_name])
-
-        return obj
+        return cls.from_json(json_data[cls.qbo_object_name])
 
 
-class UpdateMixin:
+class UpdateMixin(object):
     qbo_object_name = ""
 
     def update(self):
@@ -61,7 +58,7 @@ class UpdateMixin:
         return self
 
 
-class ListMixin:
+class ListMixin(object):
     qbo_object_name = ""
 
     @classmethod
@@ -73,11 +70,8 @@ class ListMixin:
         json_data = qb.get_all(cls.qbo_object_name)
 
         obj_list = []
-
         for item_json in json_data["QueryResponse"][cls.qbo_object_name]:
-            obj = cls()
-            obj.from_json(item_json)
-            obj_list.append(obj)
+            obj_list.append(cls.from_json(item_json))
 
         return obj_list
 
@@ -90,8 +84,6 @@ class ListMixin:
 
         obj_list = []
         for item_json in json_data["QueryResponse"][cls.qbo_object_name]:
-            obj = cls()
-            obj.from_json(item_json)
-            obj_list.append(obj)
+            obj_list.append(cls.from_json(item_json))
 
         return obj_list

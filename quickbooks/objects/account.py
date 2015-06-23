@@ -14,16 +14,17 @@ class Account(QuickbooksBaseObject):
 
     qbo_object_name = "Account"
 
-    Name = ""
-    SubAccount = False
-    FullyQualifiedName = ""
-    Active = True
-    Classification = ""
-    AccountType = ""
-    AccountSubType = ""
-    CurrentBalance = 0
-    CurrentBalanceWithSubAccounts = 0
-    CurrencyRef = None
+    def __init__(self):
+        self.Name = ""
+        self.SubAccount = False
+        self.FullyQualifiedName = ""
+        self.Active = True
+        self.Classification = ""
+        self.AccountType = ""
+        self.AccountSubType = ""
+        self.CurrentBalance = 0
+        self.CurrentBalanceWithSubAccounts = 0
+        self.CurrencyRef = None
 
     def __unicode__(self):
         return self.FullyQualifiedName

@@ -14,14 +14,15 @@ class Budget(QuickbooksBaseObject):
 
     qbo_object_name = "Budget"
 
-    Name = ""
-    StartDate = ""
-    EndDate = ""
-    BudgetType = ""
-    BudgetEntryType = ""
-    Active = True
+    def __init__(self):
+        self.Name = ""
+        self.StartDate = ""
+        self.EndDate = ""
+        self.BudgetType = ""
+        self.BudgetEntryType = ""
+        self.Active = True
 
-    BudgetDetail = None
+        self.BudgetDetail = None
 
     def __unicode__(self):
         return self.Name
@@ -33,11 +34,12 @@ class BudgetDetail(QuickbooksBaseObject, ToJsonMixin, FromJsonMixin):
         "CustomerRef": Ref
     }
 
-    BudgetDate = ""
-    Amount = 0
+    def __init__(self):
+        self.BudgetDate = ""
+        self.Amount = 0
 
-    AccountRef = None
-    CustomerRef = None
+        self.AccountRef = None
+        self.CustomerRef = None
 
     def __unicode__(self):
         return self.Amount

@@ -12,15 +12,16 @@ class Employee(QuickbooksBaseObject):
 
     qbo_object_name = "Employee"
 
-    SSN = ""
-    BillableTime = ""
-    GivenName = ""
-    FamilyName = ""
-    DisplayName = ""
-    PrintOnCheckName = ""
-    Active = True
+    def __init__(self):
+        self.SSN = ""
+        self.BillableTime = ""
+        self.GivenName = ""
+        self.FamilyName = ""
+        self.DisplayName = ""
+        self.PrintOnCheckName = ""
+        self.Active = True
 
-    PrimaryAddr = None
+        self.PrimaryAddr = None
 
     def __unicode__(self):
         return self.DisplayName

@@ -14,13 +14,14 @@ class Term(QuickbooksBaseObject):
 
     qbo_object_name = "Term"
 
-    Name = ""
-    Type = ""
-    DiscountPercent = 0
-    DayOfMonthDue = 0
-    DueNextMonthDays = 0
-    DiscountDayOfMonth = 0
-    Active = True
+    def __init__(self):
+        self.Name = ""
+        self.Type = ""
+        self.DiscountPercent = 0
+        self.DayOfMonthDue = 0
+        self.DueNextMonthDays = 0
+        self.DiscountDayOfMonth = 0
+        self.Active = True
 
     def __unicode__(self):
         return self.Name

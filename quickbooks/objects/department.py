@@ -13,10 +13,11 @@ class Department(QuickbooksBaseObject):
 
     qbo_object_name = "Department"
 
-    Name = ""
-    SubDepartment = False
-    FullyQualifiedName = ""
-    Active = True
+    def __init__(self):
+        self.Name = ""
+        self.SubDepartment = False
+        self.FullyQualifiedName = ""
+        self.Active = True
 
     def __unicode__(self):
         return self.FullyQualifiedName

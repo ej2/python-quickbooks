@@ -12,9 +12,10 @@ class PaymentMethod(QuickbooksBaseObject):
 
     qbo_object_name = "PaymentMethod"
 
-    Name = ""
-    Type = ""
-    Active = True
+    def __init__(self):
+        self.Name = ""
+        self.Type = ""
+        self.Active = True
 
     def __unicode__(self):
         return self.Name

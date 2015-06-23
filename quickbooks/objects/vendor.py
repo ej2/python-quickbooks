@@ -17,26 +17,27 @@ class Vendor(QuickbooksBaseObject):
 
     qbo_object_name = "Vendor"
 
-    Title = ""
-    GivenName = ""
-    FamilyName = ""
-    Suffix = ""
-    CompanyName = ""
-    DisplayName = ""
-    PrintOnCheckName = ""
-    Active = True
-    TaxIdentifier = 0
-    Balance = 0
-    AcctNum = ""
-    Vendor1099 = True
+    def __init__(self):
+        self.Title = ""
+        self.GivenName = ""
+        self.FamilyName = ""
+        self.Suffix = ""
+        self.CompanyName = ""
+        self.DisplayName = ""
+        self.PrintOnCheckName = ""
+        self.Active = True
+        self.TaxIdentifier = 0
+        self.Balance = 0
+        self.AcctNum = ""
+        self.Vendor1099 = True
 
-    BillAddr = None
-    PrimaryPhone = None
-    Mobile = None
-    Fax = None
-    PrimaryEmailAddr = None
-    WebAddr = None
-    TermRef = None
+        self.BillAddr = None
+        self.PrimaryPhone = None
+        self.Mobile = None
+        self.Fax = None
+        self.PrimaryEmailAddr = None
+        self.WebAddr = None
+        self.TermRef = None
 
     def __unicode__(self):
         return self.DisplayName
