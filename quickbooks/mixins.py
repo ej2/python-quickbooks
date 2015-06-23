@@ -50,6 +50,17 @@ class CreateMixin:
         return obj
 
 
+class UpdateMixin:
+    qbo_object_name = ""
+
+    def update(self):
+        from client import QuickBooks
+        qb = QuickBooks()
+        qb.update_object(self.qbo_object_name, self.to_json())
+
+        return self
+
+
 class ListMixin:
     qbo_object_name = ""
 
@@ -62,22 +73,25 @@ class ListMixin:
         json_data = qb.get_all(cls.qbo_object_name)
 
         obj_list = []
-        for item_json in json_data[cls.qbo_object_name]:
+
+        for item_json in json_data["QueryResponse"][cls.qbo_object_name]:
             obj = cls()
-            obj_list.append(obj.from_json(item_json))
+            obj.from_json(item_json)
+            obj_list.append(obj)
 
         return obj_list
 
     @classmethod
-    def filter(cls, query):
+    def filter(cls, **kwargs):
         from client import QuickBooks
         qb = QuickBooks()
 
-        json_data = qb.get_list(cls.qbo_object_name, query)
+        json_data = qb.get_list(cls.qbo_object_name, **kwargs)
 
-        list = []
-        for item_json in json_data[cls.qbo_object_name]:
+        obj_list = []
+        for item_json in json_data["QueryResponse"][cls.qbo_object_name]:
             obj = cls()
-            list.append(obj.from_json(item_json))
+            obj.from_json(item_json)
+            obj_list.append(obj)
 
-        return list
+        return obj_list

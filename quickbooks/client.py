@@ -142,7 +142,7 @@ class QuickBooks(object):
 
         return session
 
-    def make_request(self, request_type, url, request_body=None):
+    def make_request(self, request_type, url, request_body=None, content_type='application/json'):
 
         if not request_body:
             request_body = {}
@@ -151,11 +151,10 @@ class QuickBooks(object):
             self.create_session()
 
         headers = {
-            'Content-Type': 'application/json',
+            'Content-Type': content_type,
             'Accept': 'application/json'
         }
 
-        import pdb; pdb.set_trace()
         req = self.session.request(request_type, url, True, self.company_id, headers=headers, data=request_body)
         result = req.json()
 
@@ -191,18 +190,28 @@ class QuickBooks(object):
         return results
 
     def get_all(self, qbbo):
-        select = "SELECT * FROM {0}".format(qbbo)
+        select = "select * from {0}".format(qbbo.lower())
 
-        #url = "{0}/company/{1}/query={2}".format(self.api_url, self.company_id, select)
-        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1315182210/query?query=select%20%2A%20from%20Customer%20where%20DisplayName%20like%20%27new%25%27"
-        result = self.make_request("GET", url, None)
+        url = "{0}/company/{1}/query".format(self.api_url, self.company_id)
+        result = self.make_request("POST", url, select, content_type='application/text')
 
         return result
 
-    def get_list(self, qbbo, query):
-        select = "select * from {0} Where DisplayName like '{1}'".format(qbbo, query)
+    def get_list(self, qbbo, **kwargs):
+        where_clause = ""
+
+        if kwargs.__len__() > 0:
+            where_clause = "WHERE "
+            for key, value in kwargs.iteritems():
+                if type(value).__name__ == 'str':
+                    value = "'{0}'".format(value)
+
+                where_clause = where_clause + "{0} = {1}".format(key, value)
+
+        select = "select * from {0} {1}".format(qbbo, where_clause)
+
         url = self.api_url + "/company/{0}/query".format(self.company_id)
-        result = self.make_request("GET", url, select)
+        result = self.make_request("POST", url, select, content_type='application/text')
 
         return result
 
@@ -211,3 +220,14 @@ class QuickBooks(object):
             raise Exception("{0} is not a valid QBO Business Object.".format(object_name))
 
         return True
+
+    def update_object(self, qbbo, request_body):
+        # see this link for url troubleshooting info:
+        # http://stackoverflow.com/questions/23333300/whats-the-correct-uri-
+        # for-qbo-v3-api-update-operation/23340464#23340464
+
+        url = self.api_url + "/company/{0}/{1}".format(self.company_id, qbbo.lower())
+        result = self.make_request("POST", url, request_body)
+
+        return result
+
