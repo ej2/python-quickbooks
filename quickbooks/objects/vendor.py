@@ -1,10 +1,11 @@
 from base import QuickbooksBaseObject, Address, PhoneNumber, EmailAddress, WebAddress, Ref
 
 
-'''
-QBO definition: The Vendor represents the seller from whom your company purchases any service or product.
-'''
 class Vendor(QuickbooksBaseObject):
+    """
+    QBO definition: The Vendor represents the seller from whom your company purchases any service or product.
+    """
+
     class_dict = {
         "BillAddr": Address,
         "TermRef": Ref,

@@ -1,10 +1,11 @@
-from base import QuickbooksBaseObject, Address, PhoneNumber, Ref
+from base import QuickbooksBaseObject, Address, PhoneNumber
 
 
-'''
-QBO definition: Employee represents the people who are working for the company.
-'''
 class Employee(QuickbooksBaseObject):
+    """
+    QBO definition: Employee represents the people who are working for the company.
+    """
+
     class_dict = {
         "PrimaryAddr": Address,
         "PrimaryPhone": PhoneNumber

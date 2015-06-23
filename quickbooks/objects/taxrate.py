@@ -1,11 +1,11 @@
 from base import QuickbooksBaseObject
 
 
-'''
-QBO definition: A TaxRate object represents rate applied to calculate tax liability. Use the TaxService
-entity to create a taxrate.
-'''
 class TaxRate(QuickbooksBaseObject):
+    """
+    QBO definition: A TaxRate object represents rate applied to calculate tax liability. Use the TaxService
+    entity to create a taxrate.
+    """
     class_dict = {}
 
     qbo_object_name = "TaxRate"
