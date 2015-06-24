@@ -171,7 +171,7 @@ class QuickBooks(object):
     def handle_exceptions(self, results):
         # Needs to handle multiple errors
         for error in results["Error"]:
-            import pdb; pdb.set_trace()
+
             message = error["Message"]
             code = error["code"]
             detail = error["Detail"]

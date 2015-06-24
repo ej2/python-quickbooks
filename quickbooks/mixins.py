@@ -51,7 +51,6 @@ class UpdateMixin(object):
         return self
 
 
-
 class ListMixin(object):
     qbo_object_name = ""
 

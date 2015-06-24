@@ -24,7 +24,7 @@ class Address(ToJsonMixin, FromJsonMixin):
         self.PostalCode = ""
 
     def __unicode__(self):
-        return "{} {}, {} {}".format(self.Line1, self.City, self.CountrySubDivisionCode, self.PostalCode)
+        return "{0} {1}, {2} {3}".format(self.Line1, self.City, self.CountrySubDivisionCode, self.PostalCode)
 
 
 class PhoneNumber(ToJsonMixin, FromJsonMixin):
