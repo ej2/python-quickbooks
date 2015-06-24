@@ -48,7 +48,6 @@ class Customer(QuickbooksBaseObject):
         self.BalanceWithJobs = 0
         self.PreferredDeliveryMethod = ""
         self.ResaleNum = ""
-        self.Other = ""
 
         self.BillAddr = None
         self.ShipAddr = None

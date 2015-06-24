@@ -35,27 +35,21 @@ class ReadMixin(object):
         return cls.from_json(json_data[cls.qbo_object_name])
 
 
-class CreateMixin(object):
-    qbo_object_name = ""
-
-    @classmethod
-    def create(cls):
-        from client import QuickBooks
-        qb = QuickBooks()
-
-        json_data = qb.create_object(cls.qbo_object_name, cls.to_json())
-        return cls.from_json(json_data[cls.qbo_object_name])
-
-
 class UpdateMixin(object):
     qbo_object_name = ""
 
-    def update(self):
+    def save(self):
         from client import QuickBooks
         qb = QuickBooks()
-        qb.update_object(self.qbo_object_name, self.to_json())
 
+        if self.Id > 0:
+            json_data = qb.update_object(self.qbo_object_name, self.to_json())
+        else:
+            json_data = qb.create_object(self.qbo_object_name, self.to_json())
+
+        self = type(self).from_json(json_data[self.qbo_object_name])
         return self
+
 
 
 class ListMixin(object):

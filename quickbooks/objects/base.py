@@ -1,7 +1,7 @@
-from ..mixins import ToJsonMixin, FromJsonMixin, ReadMixin, CreateMixin, ListMixin, UpdateMixin
+from ..mixins import ToJsonMixin, FromJsonMixin, ReadMixin, ListMixin, UpdateMixin
 
 
-class QuickbooksBaseObject(ToJsonMixin, FromJsonMixin, ReadMixin, CreateMixin, ListMixin, UpdateMixin):
+class QuickbooksBaseObject(ToJsonMixin, FromJsonMixin, ReadMixin, ListMixin, UpdateMixin):
     Id = 0
     SyncToken = 0
     sparse = "false"
