@@ -1,17 +1,19 @@
 # python-quickbooks
 -------------------
 
-A simple Python class for accessing the Quickbooks API.
+A Python library for accessing the Quickbooks API.
 Complete rework of [quickbooks-python](https://github.com/troolee/quickbooks-python).
 
 These instructions were written for a Django application. Make sure to change it to whatever framework/method you're using. 
 
 ## Connecting your application to Quickbooks Online
 
-1. Create the Authorization URL your application:
+1. Create the Authorization URL for your application:
 
+        from quickbooks.client import QuickBooks
+        
         quickbooks = QuickBooks(
-            sandbox=DEBUG,
+            sandbox=True,
             consumer_key=QUICKBOOKS_CLIENT_KEY,
             consumer_secret=QUICKBOOKS_CLIENT_SECRET,
             callback_url=CALLBACK_URL
@@ -24,7 +26,7 @@ These instructions were written for a Django application. Make sure to change it
 2. Handle the callback:
 
         quickbooks = QuickBooks(
-            sandbox=DEBUG,
+            sandbox=True,
             consumer_key=QUICKBOOKS_CLIENT_KEY,
             consumer_secret=QUICKBOOKS_CLIENT_SECRET,
             callback_url=CALLBACK_URL
@@ -46,10 +48,12 @@ These instructions were written for a Django application. Make sure to change it
 
 ## Accessing the API
 
+QuickBooks client uses a singleton pattern. Just be sure to create the QuickBooks object before you make any calls to QBO.
 Setup the client connection using the stored `access_token` and the `access_token_secret` and `realm_id`:
 
+    from quickbooks.client import QuickBooks
 
-    client = QuickBooks(
+    QuickBooks(
         sandbox=True,
         consumer_key=QUICKBOOKS_CLIENT_KEY,
         consumer_secret=QUICKBOOKS_CLIENT_SECRET,
@@ -61,7 +65,7 @@ Setup the client connection using the stored `access_token` and the `access_toke
 
 List of objects:
 
-
+    from quickbooks.object.customer import Customer
     customers = Customer.all()
 
 
@@ -79,7 +83,6 @@ Get single object by Id and update:
     customer.save()
 
 
-
 Create new object:
 
 
@@ -89,6 +92,7 @@ Create new object:
 
 
 
-__Note:__ This is a work-in-progress. It was made public to help other developers access the QuickBooks API, it's not a guarantee that it will ever be finished.
+__Note:__ This is a work-in-progress. It was made public to help other developers access the QuickBooks API, 
+it's not a guarantee that it will ever be finished.
 
 
