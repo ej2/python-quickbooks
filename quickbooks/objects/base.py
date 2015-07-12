@@ -2,6 +2,9 @@ from ..mixins import ToJsonMixin, FromJsonMixin, ReadMixin, ListMixin, UpdateMix
 
 
 class QuickbooksBaseObject(ToJsonMixin, FromJsonMixin, ReadMixin, ListMixin, UpdateMixin):
+    class_dict = {}
+    list_dict = {}
+
     Id = 0
     SyncToken = 0
     sparse = "false"
@@ -15,6 +18,9 @@ class MetaData:
 
 
 class Address(ToJsonMixin, FromJsonMixin):
+    class_dict = {}
+    list_dict = {}
+
     def __init__(self):
         self.Id = 0
         self.Line1 = ""
@@ -28,6 +34,9 @@ class Address(ToJsonMixin, FromJsonMixin):
 
 
 class PhoneNumber(ToJsonMixin, FromJsonMixin):
+    class_dict = {}
+    list_dict = {}
+
     def __init__(self):
         self.FreeFormNumber = ""
 
@@ -36,6 +45,9 @@ class PhoneNumber(ToJsonMixin, FromJsonMixin):
 
 
 class EmailAddress(ToJsonMixin, FromJsonMixin):
+    class_dict = {}
+    list_dict = {}
+
     def __init__(self):
         self.Address = ""
 
@@ -44,6 +56,9 @@ class EmailAddress(ToJsonMixin, FromJsonMixin):
 
 
 class WebAddress(ToJsonMixin, FromJsonMixin):
+    class_dict = {}
+    list_dict = {}
+
     def __init__(self):
         self.URI = ""
 
@@ -52,6 +67,9 @@ class WebAddress(ToJsonMixin, FromJsonMixin):
 
 
 class Ref(ToJsonMixin, FromJsonMixin):
+    class_dict = {}
+    list_dict = {}
+
     def __init__(self):
         self.value = ""
         self.name = ""
@@ -59,3 +77,35 @@ class Ref(ToJsonMixin, FromJsonMixin):
     def __unicode__(self):
         return self.name
 
+
+class CustomField(ToJsonMixin, FromJsonMixin):
+    class_dict = {}
+    list_dict = {}
+
+    def __init__(self):
+        self.Type = ""
+        self.Name = ""
+        self.StringValue = ""
+
+    def __unicode__(self):
+        return self.Name
+
+
+class LinkedTxn(QuickbooksBaseObject):
+    class_dict = {}
+    list_dict = {}
+
+    qbo_object_name = "LinkedTxn"
+
+    def __init__(self):
+        self.TxnId = 0
+        self.TxnType = 0
+        self.TxnLineId = 0
+
+
+class CustomerMemo(QuickbooksBaseObject):
+    def __init__(self):
+        self.Value = ""
+
+    def __unicode__(self):
+        return self.Value

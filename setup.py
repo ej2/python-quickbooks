@@ -1,16 +1,16 @@
 from setuptools import setup, find_packages
 
 
-VERSION = (0, 2)
+VERSION = (0, 1, 0)
 version = '.'.join(map(str, VERSION))
 
 setup(
-    name='quickbooks',
+    name='python-quickbooks',
     version=version,
-    author='Simon Vansintjan',
-    author_email='svansintjan@gmail.com',
-    description='A really simple, brute-force, Python class for accessing the Quickbooks API.',
-    url='https://github.com/simonv3/quickbooks-python',
+    author='Edward Emanuel Jr.',
+    author_email='edward@sidecarsinc.com',
+    description='A simple Python class for accessing the Quickbooks API.',
+    url='https://github.com/sidecars/python-quickbooks',
     license='MIT',
 
     install_requires=[

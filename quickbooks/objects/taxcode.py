@@ -1,6 +1,31 @@
 from base import QuickbooksBaseObject, Ref
 
 
+
+class TaxRateDetail(QuickbooksBaseObject):
+    class_dict = {
+        "TaxRateRef": Ref
+    }
+
+    qbo_object_name = "TaxRateDetail"
+
+    def __init__(self):
+        self.TaxTypeApplicable = ""
+        self.TaxOrder = 0
+        self.TaxRateRef = None
+
+
+class TaxRateList(QuickbooksBaseObject):
+    list_dict = {
+        "TaxRateDetail": TaxRateDetail
+    }
+
+    qbo_object_name = "TaxRateList"
+
+    def __init__(self):
+        self.TaxRateDetail = []
+
+
 class TaxCode(QuickbooksBaseObject):
     """
     QBO definition: The PaymentMethod entity provides the method of payment for received goods. Delete is achieved by setting the
@@ -28,25 +53,3 @@ class TaxCode(QuickbooksBaseObject):
 
     def __unicode__(self):
         return self.Name
-
-
-#TODO: make to_json and from_json work with lists
-class TaxRateList(QuickbooksBaseObject):
-    class_dict = {}
-    qbo_object_name = "TaxRateList"
-
-    def __init__(self):
-        self.TaxRateDetail = []
-
-
-class TaxRateDetail(QuickbooksBaseObject):
-    class_dict = {
-        "TaxRateRef": Ref
-    }
-
-    qbo_object_name = "TaxRateDetail"
-
-    def __init__(self):
-        self.TaxTypeApplicable = ""
-        self.TaxOrder = 0
-        self.TaxRateRef = None

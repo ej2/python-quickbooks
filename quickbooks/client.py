@@ -1,6 +1,4 @@
-import json
 import httplib
-import urllib
 
 from exceptions import QuickbooksException, SevereException
 
@@ -10,14 +8,6 @@ except ImportError:
     print("Please import Rauth:\n\n")
     print("http://rauth.readthedocs.org/en/latest/\n")
 
-
-sandbox_api_url_v3 = "https://sandbox-quickbooks.api.intuit.com/v3"
-api_url_v3 = "https://quickbooks.api.intuit.com/v3"
-
-request_token_url = "https://oauth.intuit.com/oauth/v1/get_request_token"
-access_token_url = "https://oauth.intuit.com/oauth/v1/get_access_token"
-
-authorize_url = "https://appcenter.intuit.com/Connect/Begin"
 
 
 class QuickBooks(object):
@@ -34,6 +24,14 @@ class QuickBooks(object):
     verbose = False
 
     qbService = None
+
+    sandbox_api_url_v3 = "https://sandbox-quickbooks.api.intuit.com/v3"
+    api_url_v3 = "https://quickbooks.api.intuit.com/v3"
+
+    request_token_url = "https://oauth.intuit.com/oauth/v1/get_request_token"
+    access_token_url = "https://oauth.intuit.com/oauth/v1/get_access_token"
+
+    authorize_url = "https://appcenter.intuit.com/Connect/Begin"
 
     request_token = ''
     request_token_secret = ''
@@ -83,9 +81,9 @@ class QuickBooks(object):
     @property
     def api_url(self):
         if self.sandbox:
-            return sandbox_api_url_v3
+            return self.sandbox_api_url_v3
         else:
-            return api_url_v3
+            return self.api_url_v3
 
     def create_session(self):
         if self.consumer_secret and self.consumer_key and self.access_token_secret and self.access_token:
@@ -97,7 +95,8 @@ class QuickBooks(object):
             )
             self.session = session
         else:
-            raise QuickbooksException("Need four creds for Quickbooks.create_session.")
+            raise QuickbooksException("Quickbooks authenication fields not set. Cannot create session.")
+
         return self.session
 
     def get_authorize_url(self):
@@ -111,8 +110,6 @@ class QuickBooks(object):
         self.request_token, self.request_token_secret = self.qbService.get_request_token(
             params={'oauth_callback': self.callback_url})
 
-        print self.request_token, self.request_token_secret
-
         return self.qbService.get_authorize_url(self.request_token)
 
     def set_up_service(self):
@@ -120,16 +117,16 @@ class QuickBooks(object):
             name=None,
             consumer_key=self.consumer_key,
             consumer_secret=self.consumer_secret,
-            request_token_url=request_token_url,
-            access_token_url=access_token_url,
-            authorize_url=authorize_url,
+            request_token_url=self.request_token_url,
+            access_token_url=self.access_token_url,
+            authorize_url=self.authorize_url,
             base_url=None
         )
 
     def get_access_tokens(self, oauth_verifier):
         """
-        Wrapper around get_auth_session, returns session, and sets
-        access_token and access_token_secret on the QB Object.
+        Wrapper around get_auth_session, returns session, and sets access_token and
+        access_token_secret on the QB Object.
         :param oauth_verifier: the oauth_verifier as specified by OAuth 1.0a
         """
         session = self.qbService.get_auth_session(
@@ -157,6 +154,10 @@ class QuickBooks(object):
         req = self.session.request(request_type, url, True, self.company_id, headers=headers, data=request_body)
         result = req.json()
 
+        print "----------------"
+        print result
+        print "----------------"
+
         if req.status_code is not httplib.OK or "Fault" in result:
             self.handle_exceptions(result["Fault"])
         else:
@@ -173,8 +174,14 @@ class QuickBooks(object):
         for error in results["Error"]:
 
             message = error["Message"]
-            code = error["code"]
-            detail = error["Detail"]
+
+            detail = ""
+            if "Detail" in error:
+                detail = error["Detail"]
+
+            code = ""
+            if "code" in error:
+                code = error["code"]
 
             if code >= 10000:
                 raise SevereException(message, code, detail)
@@ -193,6 +200,7 @@ class QuickBooks(object):
         select = "select * from {0}".format(qbbo.lower())
 
         url = "{0}/company/{1}/query".format(self.api_url, self.company_id)
+        #result = self.make_request("GET", url, select, content_type='text/plain')
         result = self.make_request("POST", url, select, content_type='application/text')
 
         return result
@@ -222,12 +230,14 @@ class QuickBooks(object):
         return True
 
     def update_object(self, qbbo, request_body):
-        # see this link for url troubleshooting info:
-        # http://stackoverflow.com/questions/23333300/whats-the-correct-uri-
-        # for-qbo-v3-api-update-operation/23340464#23340464
-
         url = self.api_url + "/company/{0}/{1}".format(self.company_id, qbbo.lower())
         result = self.make_request("POST", url, request_body)
 
         return result
 
+
+    # def test(self):
+    #     table = Table("Customer")
+    #
+    #     select = table.select()
+    #     select.where

@@ -3,10 +3,10 @@ from base import QuickbooksBaseObject, Address, PhoneNumber, EmailAddress, WebAd
 
 class Customer(QuickbooksBaseObject):
     """
-    QBO definition: A customer is a consumer of the service or product that your business offers. The Customer object allows you
-    to categorize customers according to your business requirements. You must first create a customer and then
-    create a job referencing that customer as a parent with the ParentRef attribute. Some areas a sub-customer/job
-    can be used include:
+    QBO definition: A customer is a consumer of the service or product that your business offers. The Customer object
+    allows you to categorize customers according to your business requirements. You must first create a customer
+    and then create a job referencing that customer as a parent with the ParentRef attribute. Some areas a
+    sub-customer/job can be used include:
 
       -To track a job for the top-level customer, such as a kitchen remodel or bathroom remodel.
       -Members of a team or league.

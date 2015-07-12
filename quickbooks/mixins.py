@@ -15,8 +15,17 @@ class FromJsonMixin(object):
         for key in json_data:
             if key in obj.class_dict:
                 sub_obj = obj.class_dict[key]()
-                sub_obj.from_json(json_data[key])
+                sub_obj = sub_obj.from_json(json_data[key])
                 setattr(obj, key, sub_obj)
+            elif key in obj.list_dict:
+                sub_list = []
+
+                for data in json_data[key]:
+                    sub_obj = obj.list_dict[key]()
+                    sub_obj = sub_obj.from_json(data)
+                    sub_list.append(sub_obj)
+
+                setattr(obj, key, sub_list)
             else:
                 setattr(obj, key, json_data[key])
 
@@ -47,8 +56,10 @@ class UpdateMixin(object):
         else:
             json_data = qb.create_object(self.qbo_object_name, self.to_json())
 
-        self = type(self).from_json(json_data[self.qbo_object_name])
-        return self
+        obj = type(self).from_json(json_data[self.qbo_object_name])
+        self.Id = obj.Id
+
+        return obj
 
 
 class ListMixin(object):
