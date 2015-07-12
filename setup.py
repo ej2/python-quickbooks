@@ -6,12 +6,14 @@ version = '.'.join(map(str, VERSION))
 
 setup(
     name='python-quickbooks',
+    packages=['python-quickbooks'],
     version=version,
     author='Edward Emanuel Jr.',
     author_email='edward@sidecarsinc.com',
-    description='A simple Python class for accessing the Quickbooks API.',
+    description='A Python library for accessing the Quickbooks API.',
     url='https://github.com/sidecars/python-quickbooks',
     license='MIT',
+    keywords=['quickbooks', 'qbo', 'accounting'],
 
     install_requires=[
         'setuptools',
