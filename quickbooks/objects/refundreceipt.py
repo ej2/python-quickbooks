@@ -42,6 +42,8 @@ class RefundReceipt(QuickbooksBaseObject):
         "Line": RefundReceiptLine,
     }
 
+    qbo_object_name = "RefundReceipt"
+
     def __init__(self):
         self.DocNumber = ""
         self.TotalAmt = 0

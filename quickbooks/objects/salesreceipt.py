@@ -50,6 +50,8 @@ class SalesReceipt(QuickbooksBaseObject):
         "Line": SalesReceiptLine,
     }
 
+    qbo_object_name = "SalesReceipt"
+
     def __init__(self):
         self.DocNumber = ""
         self.PrivateNote = ""

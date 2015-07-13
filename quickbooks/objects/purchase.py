@@ -57,6 +57,8 @@ class Purchase(QuickbooksBaseObject):
         "Line": PurchaseLine
     }
 
+    qbo_object_name = "Purchase"
+
     def __init__(self):
         self.PaymentType = ""
         self.Credit = False

@@ -59,6 +59,8 @@ class PurchaseOrder(QuickbooksBaseObject):
         "Line": PurchaseOrderLine,
     }
 
+    qbo_object_name = "PurchaseOrder"
+
     def __init__(self):
         self.POStatus = ""
         self.DocNumber = ""

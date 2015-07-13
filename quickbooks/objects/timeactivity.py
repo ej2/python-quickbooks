@@ -1,0 +1,35 @@
+from base import QuickbooksBaseObject, Ref
+
+
+class TimeActivity(QuickbooksBaseObject):
+    """
+    QBO definition: The TimeActivity entity represents a record of time worked by a vendor or employee.
+    """
+    class_dict = {
+        "VendorRef": Ref,
+        "CustomerRef": Ref,
+        "DepartmentRef": Ref,
+        "ItemRef": Ref,
+        "ClassRef": Ref,
+    }
+
+    qbo_object_name = "TimeActivity"
+
+    def __init__(self):
+        self.NameOf = ""
+        self.BillableStatus = ""
+        self.Taxable = ""
+        self.HourlyRate = ""
+        self.BreakHours = ""
+        self.BreakMinutes = ""
+        self.StartTime = ""
+        self.EndTime = ""
+        self.Description = ""
+
+        self.VendorRef = None
+        self.CustomerRef = None
+        self.DepartmentRef = None
+        self.ItemRef = None
+        self.ClassRef = None
+
+
