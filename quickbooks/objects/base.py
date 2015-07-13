@@ -9,6 +9,7 @@ class QuickbooksBaseObject(ToJsonMixin, FromJsonMixin, ReadMixin, ListMixin, Upd
     SyncToken = 0
     sparse = "false"
     domain = "QBO"
+    TxnDate = ""
 
 
 class MetaData:
