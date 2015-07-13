@@ -6,7 +6,6 @@ version = '.'.join(map(str, VERSION))
 
 setup(
     name='python-quickbooks',
-    packages=['python-quickbooks'],
     version=version,
     author='Edward Emanuel Jr.',
     author_email='edward@sidecarsinc.com',

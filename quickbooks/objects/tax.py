@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Address, EmailAddress, Ref, CustomField, CustomerMemo
+from base import QuickbooksBaseObject, Ref
 
 
 class TaxLineDetail(QuickbooksBaseObject):
