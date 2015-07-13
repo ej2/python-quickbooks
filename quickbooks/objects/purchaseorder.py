@@ -44,6 +44,10 @@ class PurchaseOrderLine(QuickbooksBaseObject):
 
 
 class PurchaseOrder(QuickbooksBaseObject):
+    """
+    QBO definition: The PurchaseOrder entity is a non-posting transaction representing a request to purchase
+    goods or services from a third party.
+    """
     class_dict = {
         "VendorAddr": Address,
         "ShipAddr": Address,
