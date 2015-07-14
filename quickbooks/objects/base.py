@@ -1,15 +1,18 @@
 from ..mixins import ToJsonMixin, FromJsonMixin, ReadMixin, ListMixin, UpdateMixin
 
 
-class QuickbooksBaseObject(ToJsonMixin, FromJsonMixin, ReadMixin, ListMixin, UpdateMixin):
-    class_dict = {}
-    list_dict = {}
 
-    Id = 0
-    SyncToken = 0
-    sparse = "false"
-    domain = "QBO"
-    TxnDate = ""
+class QuickbooksBaseObject(ToJsonMixin, FromJsonMixin):
+    def __init__(self):
+        self.Id = 0
+        self.SyncToken = 0
+        self.sparse = "false"
+        self.domain = "QBO"
+        self.TxnDate = ""
+
+
+class QuickbooksManagedObject(QuickbooksBaseObject, ReadMixin, ListMixin, UpdateMixin):
+    pass
 
 
 class MetaData:
@@ -19,9 +22,6 @@ class MetaData:
 
 
 class Address(ToJsonMixin, FromJsonMixin):
-    class_dict = {}
-    list_dict = {}
-
     def __init__(self):
         self.Id = 0
         self.Line1 = ""
@@ -29,15 +29,14 @@ class Address(ToJsonMixin, FromJsonMixin):
         self.City = ""
         self.CountrySubDivisionCode = ""
         self.PostalCode = ""
+        self.Lat = ""
+        self.Long = ""
 
     def __unicode__(self):
         return "{0} {1}, {2} {3}".format(self.Line1, self.City, self.CountrySubDivisionCode, self.PostalCode)
 
 
 class PhoneNumber(ToJsonMixin, FromJsonMixin):
-    class_dict = {}
-    list_dict = {}
-
     def __init__(self):
         self.FreeFormNumber = ""
 
@@ -46,9 +45,6 @@ class PhoneNumber(ToJsonMixin, FromJsonMixin):
 
 
 class EmailAddress(ToJsonMixin, FromJsonMixin):
-    class_dict = {}
-    list_dict = {}
-
     def __init__(self):
         self.Address = ""
 
@@ -57,9 +53,6 @@ class EmailAddress(ToJsonMixin, FromJsonMixin):
 
 
 class WebAddress(ToJsonMixin, FromJsonMixin):
-    class_dict = {}
-    list_dict = {}
-
     def __init__(self):
         self.URI = ""
 
@@ -68,9 +61,6 @@ class WebAddress(ToJsonMixin, FromJsonMixin):
 
 
 class Ref(ToJsonMixin, FromJsonMixin):
-    class_dict = {}
-    list_dict = {}
-
     def __init__(self):
         self.value = ""
         self.name = ""
@@ -80,9 +70,6 @@ class Ref(ToJsonMixin, FromJsonMixin):
 
 
 class CustomField(ToJsonMixin, FromJsonMixin):
-    class_dict = {}
-    list_dict = {}
-
     def __init__(self):
         self.Type = ""
         self.Name = ""
@@ -93,9 +80,6 @@ class CustomField(ToJsonMixin, FromJsonMixin):
 
 
 class LinkedTxn(QuickbooksBaseObject):
-    class_dict = {}
-    list_dict = {}
-
     qbo_object_name = "LinkedTxn"
 
     def __init__(self):

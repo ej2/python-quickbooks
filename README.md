@@ -10,7 +10,7 @@ These instructions were written for a Django application. Make sure to change it
 
 1. Create the Authorization URL for your application:
 
-        from quickbooks.client import QuickBooks
+        from quickbooks import QuickBooks
         
         quickbooks = QuickBooks(
             sandbox=True,
@@ -51,7 +51,7 @@ These instructions were written for a Django application. Make sure to change it
 QuickBooks client uses a singleton pattern. Just be sure to create the QuickBooks object before you make any calls to QBO.
 Setup the client connection using the stored `access_token` and the `access_token_secret` and `realm_id`:
 
-    from quickbooks.client import QuickBooks
+    from quickbooks import QuickBooks
 
     QuickBooks(
         sandbox=True,

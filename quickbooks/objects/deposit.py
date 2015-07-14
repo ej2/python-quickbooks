@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref, LinkedTxn
+from base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject
 
 
 class DepositLine(QuickbooksBaseObject):
@@ -13,11 +13,12 @@ class DepositLine(QuickbooksBaseObject):
     qbo_object_name = "Deposit"
 
     def __init__(self):
+        super(DepositLine, self).__init__()
         self.Amount = 0
         self.LinkedTxn = []
 
 
-class Deposit(QuickbooksBaseObject):
+class Deposit(QuickbooksManagedObject):
     """
     QBO definition: A deposit object is a transaction that records one or more deposits of the following types:
 
@@ -39,6 +40,7 @@ class Deposit(QuickbooksBaseObject):
     qbo_object_name = "Deposit"
 
     def __init__(self):
+        super(Deposit, self).__init__()
         self.TotalAmt = 0
         self.TxnDate = ""
         self.DepositToAccountRef = None

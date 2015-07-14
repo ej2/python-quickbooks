@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref, CustomField
+from base import QuickbooksBaseObject, Ref, CustomField, QuickbooksManagedObject
 from tax import TxnTaxDetail
 
 
@@ -10,6 +10,7 @@ class SalesItemLineDetail(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(SalesItemLineDetail, self).__init__()
         self.ItemRef = None
         self.TaxCodeRef = None
 
@@ -20,6 +21,7 @@ class RefundReceiptLine(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(RefundReceiptLine, self).__init__()
         self.LineNum = ""
         self.Amount = 0
         self.DetailType = ""
@@ -27,7 +29,7 @@ class RefundReceiptLine(QuickbooksBaseObject):
         self.SalesItemLineDetail = None
 
 
-class RefundReceipt(QuickbooksBaseObject):
+class RefundReceipt(QuickbooksManagedObject):
     """
     QBO definition: RefundReceipt represents a refund to the customer for a product or service that was given.
     """
@@ -45,6 +47,7 @@ class RefundReceipt(QuickbooksBaseObject):
     qbo_object_name = "RefundReceipt"
 
     def __init__(self):
+        super(RefundReceipt, self).__init__()
         self.DocNumber = ""
         self.TotalAmt = 0
         self.ApplyTaxAfterDiscount = False

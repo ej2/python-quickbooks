@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref, Address
+from base import QuickbooksBaseObject, Ref, Address, QuickbooksManagedObject
 
 
 class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
@@ -7,6 +7,7 @@ class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(AccountBasedExpenseLineDetail, self).__init__()
         self.AccountRef = None
 
 
@@ -16,6 +17,7 @@ class ItemBasedExpenseLineDetail(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(ItemBasedExpenseLineDetail, self).__init__()
         self.CustomerRef = None
 
 
@@ -29,6 +31,7 @@ class PurchaseOrderLine(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(PurchaseOrderLine, self).__init__()
         self.Description = ""
         self.Amount = 0
         self.DetailType = ""
@@ -43,7 +46,7 @@ class PurchaseOrderLine(QuickbooksBaseObject):
         self.TaxCodeRef = None
 
 
-class PurchaseOrder(QuickbooksBaseObject):
+class PurchaseOrder(QuickbooksManagedObject):
     """
     QBO definition: The PurchaseOrder entity is a non-posting transaction representing a request to purchase
     goods or services from a third party.
@@ -62,6 +65,7 @@ class PurchaseOrder(QuickbooksBaseObject):
     qbo_object_name = "PurchaseOrder"
 
     def __init__(self):
+        super(PurchaseOrder, self).__init__()
         self.POStatus = ""
         self.DocNumber = ""
         self.TxnDate = ""

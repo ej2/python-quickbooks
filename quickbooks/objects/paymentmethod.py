@@ -1,7 +1,7 @@
-from base import QuickbooksBaseObject
+from base import QuickbooksManagedObject
 
 
-class PaymentMethod(QuickbooksBaseObject):
+class PaymentMethod(QuickbooksManagedObject):
     """
     QBO definition: The PaymentMethod entity provides the method of payment for received goods. Delete is achieved by setting the
     Active attribute to false in an entity update request; thus, making it inactive. In this type of delete,
@@ -14,6 +14,7 @@ class PaymentMethod(QuickbooksBaseObject):
     qbo_object_name = "PaymentMethod"
 
     def __init__(self):
+        super(PaymentMethod, self).__init__()
         self.Name = ""
         self.Type = ""
         self.Active = True

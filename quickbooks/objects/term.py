@@ -1,7 +1,7 @@
-from base import QuickbooksBaseObject
+from base import QuickbooksManagedObject
 
 
-class Term(QuickbooksBaseObject):
+class Term(QuickbooksManagedObject):
     """
     QBO definition: The Term entity represents the terms under which a sale is made, typically expressed in the
     form of days due after the goods are received. Optionally, a discount of the total amount may be applied if
@@ -15,6 +15,7 @@ class Term(QuickbooksBaseObject):
     qbo_object_name = "Term"
 
     def __init__(self):
+        super(Term, self).__init__()
         self.Name = ""
         self.Type = ""
         self.DiscountPercent = 0

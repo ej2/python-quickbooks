@@ -8,6 +8,7 @@ class ToJsonMixin(object):
 
 class FromJsonMixin(object):
     class_dict = {}
+    list_dict = {}
 
     @classmethod
     def from_json(cls, json_data):
@@ -48,7 +49,7 @@ class UpdateMixin(object):
     qbo_object_name = ""
 
     def save(self):
-        from client import QuickBooks
+        from .client import QuickBooks
         qb = QuickBooks()
 
         if self.Id > 0:

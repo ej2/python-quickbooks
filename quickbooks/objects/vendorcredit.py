@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref
+from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject
 
 
 class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
@@ -9,6 +9,7 @@ class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(AccountBasedExpenseLineDetail, self).__init__()
         self.BillableStatus = ""
 
 
@@ -20,12 +21,13 @@ class VendorCreditLine(QuickbooksBaseObject):
     list_dict = {}
 
     def __init__(self):
+        super(VendorCreditLine, self).__init__()
         self.Amount = 0
         self.DetailType = ""
         self.AccountBasedExpenseLineDetail = None
 
 
-class VendorCredit(QuickbooksBaseObject):
+class VendorCredit(QuickbooksManagedObject):
     """
     QBO definition: The Vendor Credit entity is an accounts payable transaction that represents a refund or credit
     of payment for goods or services. It is a credit that a vendor owes you for various reasons such as overpaid
@@ -43,6 +45,7 @@ class VendorCredit(QuickbooksBaseObject):
     qbo_object_name = "VendorCredit"
 
     def __init__(self):
+        super(VendorCredit, self).__init__()
         self.TotalAmt = 0
         self.FromAccountRef = None
         self.ToAccountRef = None

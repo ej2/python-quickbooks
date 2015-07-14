@@ -1,6 +1,4 @@
-from base import QuickbooksBaseObject, Ref, LinkedTxn
-
-
+from base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject
 
 
 class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
@@ -9,8 +7,6 @@ class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
         "AccountRef": Ref,
         "TaxCodeRef": Ref
     }
-
-    qbo_object_name = "AccountBasedExpenseLineDetail"
 
     def __init__(self):
         self.BillableStatus = ""
@@ -25,9 +21,9 @@ class BillLine(QuickbooksBaseObject):
         "AccountBasedExpenseLineDetail": AccountBasedExpenseLineDetail
     }
 
-    qbo_object_name = "Line"
-
     def __init__(self):
+        super(BillLine, self).__init__()
+
         self.Description = ""
         self.Amount = ""
         self.DetailType = ""
@@ -35,7 +31,7 @@ class BillLine(QuickbooksBaseObject):
         self.AccountBasedExpenseLineDetail = None
 
 
-class Bill(QuickbooksBaseObject):
+class Bill(QuickbooksManagedObject):
     """
     QBO definition: A Bill entity is an AP transaction representing a request-for-payment from a third party for
     goods/services rendered and/or received.
@@ -56,6 +52,8 @@ class Bill(QuickbooksBaseObject):
     qbo_object_name = "Bill"
 
     def __init__(self):
+        super(Bill, self).__init__()
+
         self.DueDate = ""
         self.Balance = 0
         self.TotalAmt = ""

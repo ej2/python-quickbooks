@@ -1,7 +1,7 @@
-from base import QuickbooksBaseObject, Address, PhoneNumber
+from base import Address, PhoneNumber, QuickbooksManagedObject
 
 
-class Employee(QuickbooksBaseObject):
+class Employee(QuickbooksManagedObject):
     """
     QBO definition: Employee represents the people who are working for the company.
     """
@@ -14,6 +14,7 @@ class Employee(QuickbooksBaseObject):
     qbo_object_name = "Employee"
 
     def __init__(self):
+        super(Employee, self).__init__()
         self.SSN = ""
         self.BillableTime = ""
         self.GivenName = ""

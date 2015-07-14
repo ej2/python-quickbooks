@@ -1,7 +1,7 @@
-from base import QuickbooksBaseObject, Address, PhoneNumber, EmailAddress, WebAddress, Ref
+from base import Address, PhoneNumber, EmailAddress, WebAddress, Ref, QuickbooksManagedObject
 
 
-class Customer(QuickbooksBaseObject):
+class Customer(QuickbooksManagedObject):
     """
     QBO definition: A customer is a consumer of the service or product that your business offers. The Customer object
     allows you to categorize customers according to your business requirements. You must first create a customer
@@ -30,6 +30,7 @@ class Customer(QuickbooksBaseObject):
     qbo_object_name = "Customer"
 
     def __init__(self):
+        super(Customer, self).__init__()
         self.Title = ""
         self.GivenName = ""
         self.MiddleName = ""

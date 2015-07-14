@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref, CustomField
+from base import QuickbooksBaseObject, Ref, CustomField, QuickbooksManagedObject
 from tax import TxnTaxDetail
 
 
@@ -10,6 +10,7 @@ class SalesItemLineDetail(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(SalesItemLineDetail, self).__init__()
         self.UnitPrice = 0
         self.Qty = 0
         self.ItemRef = None
@@ -22,6 +23,7 @@ class SalesReceiptLine(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(SalesReceiptLine, self).__init__()
         self.LineNum = ""
         self.Description = ""
         self.Amount = 0
@@ -30,7 +32,7 @@ class SalesReceiptLine(QuickbooksBaseObject):
         self.SalesItemLineDetail = None
 
 
-class SalesReceipt(QuickbooksBaseObject):
+class SalesReceipt(QuickbooksManagedObject):
     """
     QBO definition: SalesReceipt represents the sales receipt that is given to a customer. A sales receipt is
     similar to an invoice. However, for a sales receipt, payment is received as part of the sale of goods and
@@ -53,6 +55,7 @@ class SalesReceipt(QuickbooksBaseObject):
     qbo_object_name = "SalesReceipt"
 
     def __init__(self):
+        super(SalesReceipt, self).__init__()
         self.DocNumber = ""
         self.PrivateNote = ""
         self.TotalAmt = 0

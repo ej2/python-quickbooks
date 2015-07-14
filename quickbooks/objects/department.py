@@ -1,7 +1,7 @@
-from base import QuickbooksBaseObject
+from base import QuickbooksManagedObject
 
 
-class Department(QuickbooksBaseObject):
+class Department(QuickbooksManagedObject):
     """
     QBO definition: The Department entity provides a way to track different segments of the business, divisions, or physical locations
     such as stores, and allows another way of categorizing the entire transaction. This is in contrast to Class objects,
@@ -14,6 +14,7 @@ class Department(QuickbooksBaseObject):
     qbo_object_name = "Department"
 
     def __init__(self):
+        super(Department, self).__init__()
         self.Name = ""
         self.SubDepartment = False
         self.FullyQualifiedName = ""

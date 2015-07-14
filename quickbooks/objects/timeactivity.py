@@ -1,7 +1,7 @@
-from base import QuickbooksBaseObject, Ref
+from base import Ref, QuickbooksManagedObject
 
 
-class TimeActivity(QuickbooksBaseObject):
+class TimeActivity(QuickbooksManagedObject):
     """
     QBO definition: The TimeActivity entity represents a record of time worked by a vendor or employee.
     """
@@ -16,6 +16,7 @@ class TimeActivity(QuickbooksBaseObject):
     qbo_object_name = "TimeActivity"
 
     def __init__(self):
+        super(TimeActivity, self).__init__()
         self.NameOf = ""
         self.BillableStatus = ""
         self.Taxable = ""

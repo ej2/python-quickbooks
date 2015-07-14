@@ -154,10 +154,6 @@ class QuickBooks(object):
         req = self.session.request(request_type, url, True, self.company_id, headers=headers, data=request_body)
         result = req.json()
 
-        print "----------------"
-        print result
-        print "----------------"
-
         if req.status_code is not httplib.OK or "Fault" in result:
             self.handle_exceptions(result["Fault"])
         else:

@@ -1,5 +1,5 @@
-from base import QuickbooksBaseObject, CustomField, Ref, CustomerMemo, Address, EmailAddress
-
+from base import QuickbooksBaseObject, CustomField, Ref, CustomerMemo, Address, EmailAddress, QuickbooksManagedObject
+from tax import TxnTaxDetail
 
 class SalesItemLineDetail(QuickbooksBaseObject):
     class_dict = {
@@ -8,6 +8,7 @@ class SalesItemLineDetail(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(SalesItemLineDetail, self).__init__()
         self.UnitPrice = 0
         self.Qty = 0
 
@@ -18,6 +19,7 @@ class EstimateLine(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(EstimateLine, self).__init__()
         self.LineNum = 0
         self.Amount = 0
         self.Description = ""
@@ -25,12 +27,8 @@ class EstimateLine(QuickbooksBaseObject):
         self.SalesItemLineDetail = None
 
 
-class TxnTaxDetail(QuickbooksBaseObject):
-    def __init__(self):
-        self.TotalTax = 0
 
-
-class Estimate(QuickbooksBaseObject):
+class Estimate(QuickbooksManagedObject):
     """
     QBO definition: The Estimate represents a proposal for a financial transaction from a business to a customer
     for goods or services proposed to be sold, including proposed pricing.
@@ -52,6 +50,7 @@ class Estimate(QuickbooksBaseObject):
     qbo_object_name = "Estimate"
 
     def __init__(self):
+        super(Estimate, self).__init__()
         self.DocNumber = ""
         self.TxnDate = ""
         self.TxnStatus = ""

@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref, CustomField, Address, EmailAddress, CustomerMemo
+from base import QuickbooksBaseObject, Ref, CustomField, Address, EmailAddress, CustomerMemo, QuickbooksManagedObject
 from tax import TxnTaxDetail
 
 
@@ -7,9 +7,8 @@ class DiscountLineDetail(QuickbooksBaseObject):
         "DiscountAccountRef": Ref
     }
 
-    list_dict = {}
-
     def __init__(self):
+        super(DiscountLineDetail, self).__init__()
         self.PercentBased = True
         self.DiscountPercent = 0
         self.DiscountAccountRef = None
@@ -21,9 +20,8 @@ class SalesItemLineDetail(QuickbooksBaseObject):
         "TaxCodeRef": Ref
     }
 
-    list_dict = {}
-
     def __init__(self):
+        super(SalesItemLineDetail, self).__init__()
         self.UnitPrice = 0
         self.Qty = 0
 
@@ -34,16 +32,15 @@ class InvoiceDetail(QuickbooksBaseObject):
         "SalesItemLineDetail": SalesItemLineDetail,
     }
 
-    list_dict = {}
-
     def __init__(self):
+        super(InvoiceDetail, self).__init__()
         self.LineNum = ""
         self.Description = ""
         self.Amount = ""
         self.DetailType = ""
 
 
-class Invoice(QuickbooksBaseObject):
+class Invoice(QuickbooksManagedObject):
     """
     QBO definition: An Invoice represents a sales form where the customer pays for a product or service later.
 
@@ -71,6 +68,7 @@ class Invoice(QuickbooksBaseObject):
     qbo_object_name = "Invoice"
 
     def __init__(self):
+        super(Invoice, self).__init__()
         self.Deposit = 0
         self.Balance = 0
         self.AllowIPNPayment = True
@@ -90,8 +88,3 @@ class Invoice(QuickbooksBaseObject):
         self.BillEmail = None
         self.CustomerMemo = None
         self.CustomField = []
-
-    def __unicode__(self):
-        return self.Name
-
-

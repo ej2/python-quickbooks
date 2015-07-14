@@ -1,7 +1,7 @@
-from base import QuickbooksBaseObject, Ref
+from base import Ref, QuickbooksManagedObject
 
 
-class Item(QuickbooksBaseObject):
+class Item(QuickbooksManagedObject):
     """
     QBO definition: An item is a thing that your company buys, sells, or re-sells, such as products and services.
     An item is shown as a line on an invoice or other sales form. The Item.Type attribute, which specifies how
@@ -24,6 +24,7 @@ class Item(QuickbooksBaseObject):
     qbo_object_name = "Item"
 
     def __init__(self):
+        super(Item, self).__init__()
         self.Name = ""
         self.Description = ""
         self.Active = True

@@ -1,5 +1,4 @@
-from base import QuickbooksBaseObject, Ref
-
+from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject
 
 
 class TaxRateDetail(QuickbooksBaseObject):
@@ -10,6 +9,7 @@ class TaxRateDetail(QuickbooksBaseObject):
     qbo_object_name = "TaxRateDetail"
 
     def __init__(self):
+        super(TaxRateDetail, self).__init__()
         self.TaxTypeApplicable = ""
         self.TaxOrder = 0
         self.TaxRateRef = None
@@ -23,10 +23,11 @@ class TaxRateList(QuickbooksBaseObject):
     qbo_object_name = "TaxRateList"
 
     def __init__(self):
+        super(TaxRateList, self).__init__()
         self.TaxRateDetail = []
 
 
-class TaxCode(QuickbooksBaseObject):
+class TaxCode(QuickbooksManagedObject):
     """
     QBO definition: The PaymentMethod entity provides the method of payment for received goods. Delete is achieved by setting the
     Active attribute to false in an entity update request; thus, making it inactive. In this type of delete,
@@ -42,6 +43,7 @@ class TaxCode(QuickbooksBaseObject):
     qbo_object_name = "TaxCode"
 
     def __init__(self):
+        super(TaxCode, self).__init__()
         self.Name = ""
         self.Description = ""
         self.Taxable = True

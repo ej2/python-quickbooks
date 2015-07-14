@@ -1,7 +1,7 @@
-from base import QuickbooksBaseObject, Address, PhoneNumber, EmailAddress, WebAddress, Ref
+from base import Address, PhoneNumber, EmailAddress, WebAddress, Ref, QuickbooksManagedObject
 
 
-class Vendor(QuickbooksBaseObject):
+class Vendor(QuickbooksManagedObject):
     """
     QBO definition: The Vendor represents the seller from whom your company purchases any service or product.
     """
@@ -19,6 +19,7 @@ class Vendor(QuickbooksBaseObject):
     qbo_object_name = "Vendor"
 
     def __init__(self):
+        super(Vendor, self).__init__()
         self.Title = ""
         self.GivenName = ""
         self.FamilyName = ""

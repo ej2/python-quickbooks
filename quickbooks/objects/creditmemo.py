@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Address, EmailAddress, Ref, CustomField, CustomerMemo
+from base import QuickbooksBaseObject, Address, EmailAddress, Ref, CustomField, CustomerMemo, QuickbooksManagedObject
 from tax import TxnTaxDetail
 
 
@@ -9,6 +9,7 @@ class SalesItemLineDetail(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(SalesItemLineDetail, self).__init__()
         self.Qty = 0
         self.UnitPrice = 0
 
@@ -22,7 +23,7 @@ class CreditMemoLine(QuickbooksBaseObject):
     }
 
     def __init__(self):
-
+        super(CreditMemoLine, self).__init__()
         self.LineNum = ""
         self.Description = ""
         self.Amount = ""
@@ -31,7 +32,7 @@ class CreditMemoLine(QuickbooksBaseObject):
         self.SalesItemLineDetail = None
 
 
-class CreditMemo(QuickbooksBaseObject):
+class CreditMemo(QuickbooksManagedObject):
     """
     QBO definition: The CreditMemo is a financial transaction representing a refund or credit of payment or part
     of a payment for goods or services that have been sold.
@@ -55,6 +56,7 @@ class CreditMemo(QuickbooksBaseObject):
     qbo_object_name = "CreditMemo"
 
     def __init__(self):
+        super(CreditMemo, self).__init__()
         self.RemainingCredit = ""
         self.DocNumber = ""
         self.TxnDate = ""

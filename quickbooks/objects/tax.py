@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref
+from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject
 
 
 class TaxLineDetail(QuickbooksBaseObject):
@@ -7,6 +7,7 @@ class TaxLineDetail(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(TaxLineDetail, self).__init__()
         self.PercentBased = True
         self.TaxPercent = 0
         self.NetAmountTaxable = 0
@@ -18,11 +19,12 @@ class TaxLine(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(TaxLine, self).__init__()
         self.Amount = 0
         self.DetailType = ""
 
 
-class TxnTaxDetail(QuickbooksBaseObject):
+class TxnTaxDetail(QuickbooksManagedObject):
     class_dict = {
         "TxnTaxCodeRef": Ref,
     }
@@ -32,6 +34,7 @@ class TxnTaxDetail(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(TxnTaxDetail, self).__init__()
         self.TotalTax = 0
         self.TxnTaxCodeRef = None
         self.TaxLine = []

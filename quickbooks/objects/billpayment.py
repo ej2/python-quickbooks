@@ -1,5 +1,4 @@
-from base import QuickbooksBaseObject, Ref, LinkedTxn
-
+from base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject
 
 
 class CheckPayment(QuickbooksBaseObject):
@@ -10,6 +9,7 @@ class CheckPayment(QuickbooksBaseObject):
     qbo_object_name = "CheckPayment"
 
     def __init__(self):
+        super(CheckPayment, self).__init__()
         self.PrintStatus = ""
         self.BankAccountRef = None
 
@@ -22,6 +22,7 @@ class BillPaymentLine(QuickbooksBaseObject):
     qbo_object_name = "Line"
 
     def __init__(self):
+        super(BillPaymentLine, self).__init__()
         self.Amount = 0
         self.LinkedTxn = []
 
@@ -29,7 +30,7 @@ class BillPaymentLine(QuickbooksBaseObject):
         return self.Amount
 
 
-class BillPayment(QuickbooksBaseObject):
+class BillPayment(QuickbooksManagedObject):
     """
     QBO definition: A BillPayment entity represents the financial transaction of payment of bills that the
     business owner receives from a vendor for goods or services purchased from the vendor. QuickBooks Online
@@ -53,6 +54,7 @@ class BillPayment(QuickbooksBaseObject):
     qbo_object_name = "BillPayment"
 
     def __init__(self):
+        super(BillPayment, self).__init__()
         self.PayType = ""
         self.TotalAmt = 0
         self.TxnDate = ""

@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref
+from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject
 
 
 class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
@@ -11,6 +11,7 @@ class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
     list_dict = {}
 
     def __init__(self):
+        super(AccountBasedExpenseLineDetail, self).__init__()
         self.BillableStatus = ""
         self.ClassRef = None
         self.AccountRef = None
@@ -25,6 +26,7 @@ class PurchaseLine(QuickbooksBaseObject):
     list_dict = {}
 
     def __init__(self):
+        super(PurchaseLine, self).__init__()
         self.Amount = 0
         self.DetailType = ""
 
@@ -33,7 +35,7 @@ class PurchaseLine(QuickbooksBaseObject):
         self.AccountBasedExpenseLineDetail = []
 
 
-class Purchase(QuickbooksBaseObject):
+class Purchase(QuickbooksManagedObject):
     """
     QBO definition: This entity represents expenses, such as a purchase made from a vendor.
     There are three types of Purchases: Cash, Check, and Credit Card.
@@ -60,6 +62,7 @@ class Purchase(QuickbooksBaseObject):
     qbo_object_name = "Purchase"
 
     def __init__(self):
+        super(Purchase, self).__init__()
         self.PaymentType = ""
         self.Credit = False
         self.TotalAmt = 0
