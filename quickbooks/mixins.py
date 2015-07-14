@@ -75,8 +75,10 @@ class ListMixin(object):
         json_data = qb.get_all(cls.qbo_object_name)
 
         obj_list = []
-        for item_json in json_data["QueryResponse"][cls.qbo_object_name]:
-            obj_list.append(cls.from_json(item_json))
+
+        if cls.qbo_object_name in json_data["QueryResponse"].keys():
+            for item_json in json_data["QueryResponse"][cls.qbo_object_name]:
+                obj_list.append(cls.from_json(item_json))
 
         return obj_list
 

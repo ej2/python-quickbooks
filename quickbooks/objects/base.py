@@ -3,6 +3,9 @@ from ..mixins import ToJsonMixin, FromJsonMixin, ReadMixin, ListMixin, UpdateMix
 
 
 class QuickbooksBaseObject(ToJsonMixin, FromJsonMixin):
+    class_dict = {}
+    list_dict = {}
+
     def __init__(self):
         self.Id = 0
         self.SyncToken = 0
@@ -61,9 +64,13 @@ class WebAddress(ToJsonMixin, FromJsonMixin):
 
 
 class Ref(ToJsonMixin, FromJsonMixin):
+    class_dict = {}
+    list_dict = {}
+
     def __init__(self):
         self.value = ""
         self.name = ""
+        self.type = ""
 
     def __unicode__(self):
         return self.name
@@ -83,6 +90,7 @@ class LinkedTxn(QuickbooksBaseObject):
     qbo_object_name = "LinkedTxn"
 
     def __init__(self):
+        super(LinkedTxn, self).__init__()
         self.TxnId = 0
         self.TxnType = 0
         self.TxnLineId = 0
@@ -90,6 +98,7 @@ class LinkedTxn(QuickbooksBaseObject):
 
 class CustomerMemo(QuickbooksBaseObject):
     def __init__(self):
+        super(CustomerMemo, self).__init__()
         self.Value = ""
 
     def __unicode__(self):

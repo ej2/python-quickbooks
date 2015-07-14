@@ -2,11 +2,9 @@ from base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject
 
 
 class PaymentLine(QuickbooksBaseObject):
-    class_dict = {
+    list_dict = {
         "LinkedTxn": LinkedTxn,
     }
-
-    list_dict = {}
 
     def __init__(self):
         super(PaymentLine, self).__init__()
