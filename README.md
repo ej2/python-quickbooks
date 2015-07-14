@@ -1,7 +1,7 @@
 # python-quickbooks
 -------------------
 
-A Python library for accessing the Quickbooks API.
+A Python library for accessing the Quickbooks API. 
 Complete rework of [quickbooks-python](https://github.com/troolee/quickbooks-python).
 
 These instructions were written for a Django application. Make sure to change it to whatever framework/method you're using. 
@@ -69,10 +69,10 @@ List of objects:
     customers = Customer.all()
 
 
-Filtered list of objects:
+Filtered list of objects (filtering currently only supports simple queries):
 
 
-    customer = Customer.filter(Active=True)
+    customers = Customer.filter(Active=True)
 
 
 Get single object by Id and update:
@@ -92,7 +92,7 @@ Create new object:
 
 
 
-__Note:__ This is a work-in-progress. It was made public to help other developers access the QuickBooks API, 
-it's not a guarantee that it will ever be finished.
+__Note:__ This is a work-in-progress made public to help other developers access the QuickBooks API. 
+Built for a Django project running on Python 2. It has not been tested with Python 3.
 
 
