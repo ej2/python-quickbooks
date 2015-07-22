@@ -63,3 +63,12 @@ class Customer(QuickbooksManagedObject):
 
     def __unicode__(self):
         return self.DisplayName
+
+    def to_ref(self):
+        ref = Ref()
+
+        ref.name = self.DisplayName
+        ref.type = self.qbo_object_name
+        ref.value = self.Id
+
+        return ref

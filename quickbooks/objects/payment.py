@@ -9,6 +9,8 @@ class PaymentLine(QuickbooksBaseObject):
     def __init__(self):
         super(PaymentLine, self).__init__()
         self.Amount = 0
+        self.LineNum = 0
+        self.Description = ""
 
 
 class Payment(QuickbooksManagedObject):

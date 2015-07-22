@@ -24,6 +24,7 @@ class BillLine(QuickbooksBaseObject):
     def __init__(self):
         super(BillLine, self).__init__()
 
+        self.LineNum = 0
         self.Description = ""
         self.Amount = ""
         self.DetailType = ""

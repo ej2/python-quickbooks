@@ -49,6 +49,7 @@ class Invoice(QuickbooksManagedObject):
     class_dict = {
         "DepartmentRef": Ref,
         "CurrencyRef": Ref,
+        "CustomerRef": Ref,
         "ClassRef": Ref,
         "SalesTermRef": Ref,
         "ShipMethodRef": Ref,
@@ -86,5 +87,7 @@ class Invoice(QuickbooksManagedObject):
         self.BillAddr = None
         self.ShipAddr = None
         self.BillEmail = None
+        self.CustomerRef = None
         self.CustomerMemo = None
+
         self.CustomField = []
