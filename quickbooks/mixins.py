@@ -1,10 +1,11 @@
 import json
+from utils import build_where_clause
 
 
 class ToJsonMixin(object):
     def to_json(self):
-        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
-
+        return json.dumps(self, default=lambda obj: {k: v for k, v in obj.__dict__.items() if not k.startswith('_')},
+                          sort_keys=True, indent=4)
 
 class FromJsonMixin(object):
     class_dict = {}
@@ -68,29 +69,45 @@ class ListMixin(object):
 
     @classmethod
     def all(cls):
-        from client import QuickBooks
-
-        qb = QuickBooks()
-
-        json_data = qb.get_all(cls.qbo_object_name)
-
-        obj_list = []
-
-        if cls.qbo_object_name in json_data["QueryResponse"].keys():
-            for item_json in json_data["QueryResponse"][cls.qbo_object_name]:
-                obj_list.append(cls.from_json(item_json))
-
-        return obj_list
+        return cls.where("")
 
     @classmethod
     def filter(cls, **kwargs):
+        """
+        :param kwargs: field names and values to filter the query
+        :return: Filtered list
+        """
+        return cls.where(build_where_clause(**kwargs))
+
+    @classmethod
+    def where(cls, where_clause):
+        """
+        :param where_clause: QBO SQL where clause (DO NOT include 'WHERE')
+        :return: Returns list filtered by input where_clause
+        """
+        if where_clause:
+            where_clause = "WHERE " + where_clause
+
+        select = "select * from {0} {1}".format(cls.qbo_object_name, where_clause)
+
+        return cls.query(select)
+
+    @classmethod
+    def query(cls, select):
+        """
+        :param select: QBO SQL query select statement
+        :return: List
+        """
         from client import QuickBooks
+
         qb = QuickBooks()
 
-        json_data = qb.get_list(cls.qbo_object_name, **kwargs)
+        json_data = qb.query(select)
 
         obj_list = []
-        for item_json in json_data["QueryResponse"][cls.qbo_object_name]:
-            obj_list.append(cls.from_json(item_json))
+
+        if cls.qbo_object_name in json_data["QueryResponse"]:
+            for item_json in json_data["QueryResponse"][cls.qbo_object_name]:
+                obj_list.append(cls.from_json(item_json))
 
         return obj_list

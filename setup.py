@@ -17,6 +17,7 @@ setup(
     install_requires=[
         'setuptools',
         'rauth',
+        'six>=1.4.0',
         'python-dateutil',
     ],
 

@@ -1,4 +1,5 @@
 import httplib
+import six
 
 from exceptions import QuickbooksException, SevereException
 
@@ -192,28 +193,7 @@ class QuickBooks(object):
 
         return results
 
-    def get_all(self, qbbo):
-        select = "select * from {0}".format(qbbo.lower())
-
-        url = "{0}/company/{1}/query".format(self.api_url, self.company_id)
-        #result = self.make_request("GET", url, select, content_type='text/plain')
-        result = self.make_request("POST", url, select, content_type='application/text')
-
-        return result
-
-    def get_list(self, qbbo, **kwargs):
-        where_clause = ""
-
-        if len(kwargs) > 0:
-            where_clause = "WHERE "
-            for key, value in kwargs.iteritems():
-                if type(value).__name__ == 'str':
-                    value = "'{0}'".format(value)
-
-                where_clause = where_clause + "{0} = {1}".format(key, value)
-
-        select = "select * from {0} {1}".format(qbbo, where_clause)
-
+    def query(self, select):
         url = self.api_url + "/company/{0}/query".format(self.company_id)
         result = self.make_request("POST", url, select, content_type='application/text')
 
@@ -231,9 +211,8 @@ class QuickBooks(object):
 
         return result
 
+    def batch_operation(self, request_body):
+        url = self.api_url + "/company/{0}/batch".format(self.company_id)
+        results = self.make_request("POST", url, request_body)
 
-    # def test(self):
-    #     table = Table("Customer")
-    #
-    #     select = table.select()
-    #     select.where
+        return results

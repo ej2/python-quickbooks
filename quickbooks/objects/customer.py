@@ -24,7 +24,8 @@ class Customer(QuickbooksManagedObject):
         "WebAddr": WebAddress,
         "DefaultTaxCodeRef": Ref,
         "SalesTermRef": Ref,
-        "PaymentMethodRef": Ref
+        "PaymentMethodRef": Ref,
+        "CurrencyRef": Ref
     }
 
     qbo_object_name = "Customer"

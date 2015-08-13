@@ -7,11 +7,11 @@ class QuickbooksBaseObject(ToJsonMixin, FromJsonMixin):
     list_dict = {}
 
     def __init__(self):
-        self.Id = 0
+        self.Id = None
         self.SyncToken = 0
         self.sparse = "false"
         self.domain = "QBO"
-        self.TxnDate = ""
+        #self.TxnDate = ""
 
 
 class QuickbooksManagedObject(QuickbooksBaseObject, ReadMixin, ListMixin, UpdateMixin):
