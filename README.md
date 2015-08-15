@@ -76,7 +76,7 @@ Filtered list of objects:
 
 List with custom Where Clause (do not include the "WHERE"):
         
-    customers = Customer.where("Active = True AND CompanyName LIKE 'S%'
+    customers = Customer.where("Active = True AND CompanyName LIKE 'S%')
  
  
 Filtering a list with a custom query (See [Intuit developer guide](https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/querying_data) for supported SQL statements):
@@ -97,6 +97,64 @@ Create new object:
     customer.CompanyName = "Test Company"
     customer.save()
 
+
+## Batch Operations
+
+The batch operation enables an application to perform multiple operations in a single request. 
+(See [Intuit Batch Operations Guide](https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/batch_operations) for full details.
+
+
+Batch create a list of objects: 
+
+    from quickbooks.batch import batch_create
+    
+    customer1 = Customer()
+    customer1.CompanyName = "Test Company 1"
+    customer1.save()
+    
+    customer2 = Customer()
+    customer2.CompanyName = "Test Company 2"
+    customer2.save()
+    
+    customers = []
+    customers.append(customer1)
+    customers.append(customer2)
+    
+    results = batch_create(customers)
+    
+    
+Batch update a list of objects:
+    
+    from quickbooks.batch import batch_update
+    
+    customers = Customer.filter(Active=True)
+    
+    # Update customers 
+    
+    results = batch_update(customers)
+    
+    
+Batch delete a list of objects:
+    
+    from quickbooks.batch import batch_delete
+    
+    customers = Customer.filter(Active=False)
+    results = batch_delete(customers)
+    
+    
+Review results for batch operation:
+    
+    #successes is a list of objects that were successfully updated 
+    for obj in results.successes:
+        print "Updated " + obj.DisplayName
+    
+    #faults contains list
+    for fault in results.faults:
+        print "Operation failed on " + fault.original_object.DisplayName 
+        
+        for error in fault.Error:
+            print "Error " + error.Message 
+    
 
 __Note:__ Objects and object property names match their Quickbooks counterparts and do not follow PEP8. 
 
