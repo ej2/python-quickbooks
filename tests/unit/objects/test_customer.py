@@ -3,7 +3,7 @@ import unittest
 from quickbooks.objects.customer import Customer
 
 
-class BatchTests(unittest.TestCase):
+class CustomerTests(unittest.TestCase):
     def setUp(self):
         pass
 

@@ -17,6 +17,9 @@ class DepositLine(QuickbooksBaseObject):
         self.Amount = 0
         self.LinkedTxn = []
 
+    def __unicode__(self):
+        return self.Amount
+
 
 class Deposit(QuickbooksManagedObject):
     """
@@ -45,3 +48,6 @@ class Deposit(QuickbooksManagedObject):
         self.TxnDate = ""
         self.DepositToAccountRef = None
         self.Line = []
+
+    def __unicode__(self):
+        return self.TotalAmt
