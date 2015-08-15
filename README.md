@@ -69,14 +69,22 @@ List of objects:
     customers = Customer.all()
 
 
-Filtered list of objects (filtering currently only supports simple queries):
-
+Filtered list of objects:
 
     customers = Customer.filter(Active=True)
 
 
-Get single object by Id and update:
+List with custom Where Clause (do not include the "WHERE"):
+        
+    customers = Customer.where("Active = True AND CompanyName LIKE 'S%'
+ 
+ 
+Filtering a list with a custom query (See [Intuit developer guide](https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/querying_data) for supported SQL statements):
 
+    customer = Customer.query("SELECT * FROM Customer WHERE Active = True")
+
+
+Get single object by Id and update:
 
     customer = Customer.get(1)
     customer.CompanyName = "New Test Company Name"
@@ -85,12 +93,12 @@ Get single object by Id and update:
 
 Create new object:
 
-
     customer = Customer()
     customer.CompanyName = "Test Company"
     customer.save()
 
 
+__Note:__ Objects and object property names match their Quickbooks counterparts and do not follow PEP8. 
 
 __Note:__ This is a work-in-progress made public to help other developers access the QuickBooks API. 
 Built for a Django project running on Python 2. It has not been tested with Python 3.
