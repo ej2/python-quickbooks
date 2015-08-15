@@ -13,6 +13,9 @@ class CheckPayment(QuickbooksBaseObject):
         self.PrintStatus = ""
         self.BankAccountRef = None
 
+    def __unicode__(self):
+        return self.PrintStatus
+
 
 class BillPaymentLine(QuickbooksBaseObject):
     list_dict = {
@@ -66,3 +69,5 @@ class BillPayment(QuickbooksManagedObject):
 
         self.Line = []
 
+    def __unicode__(self):
+        return self.TotalAmt

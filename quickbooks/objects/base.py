@@ -23,6 +23,9 @@ class MetaData:
         self.CreateTime = ""
         self.LastUpdatedTime = ""
 
+    def __unicode__(self):
+        return "Created {0}".format(self.CreateTime)
+
 
 class Address(ToJsonMixin, FromJsonMixin):
     def __init__(self):
@@ -94,6 +97,9 @@ class LinkedTxn(QuickbooksBaseObject):
         self.TxnId = 0
         self.TxnType = 0
         self.TxnLineId = 0
+
+    def __unicode__(self):
+        return self.TxnId
 
 
 class CustomerMemo(QuickbooksBaseObject):

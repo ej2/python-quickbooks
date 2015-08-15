@@ -1,6 +1,7 @@
 import unittest
 
-from quickbooks.objects.base import CustomerMemo, CustomField, Ref, WebAddress, EmailAddress, PhoneNumber, Address
+from quickbooks.objects.base import CustomerMemo, CustomField, Ref, WebAddress, EmailAddress, PhoneNumber, Address, LinkedTxn, MetaData
+
 
 
 class AddressTests(unittest.TestCase):
@@ -30,14 +31,12 @@ class EmailAddressTests(unittest.TestCase):
         self.assertEquals(email.__unicode__(), "email@gmail.com")
 
 
-
 class WebAddressTests(unittest.TestCase):
     def test_unicode(self):
         url = WebAddress()
         url.URI = "www.website.com"
 
         self.assertEquals(url.__unicode__(), "www.website.com")
-
 
 
 class RefTests(unittest.TestCase):
@@ -64,4 +63,20 @@ class CustomerMemoTests(unittest.TestCase):
         memo.Value = "value"
 
         self.assertEquals(memo.__unicode__(), "value")
+
+
+class LinkedTxnTests(unittest.TestCase):
+    def test_unicode(self):
+        linked = LinkedTxn()
+        linked.TxnId = 1
+
+        self.assertEquals(linked.__unicode__(), 1)
+
+
+class MetaDataTests(unittest.TestCase):
+    def test_unicode(self):
+        meta = MetaData()
+        meta.CreateTime = "1/1/2000"
+
+        self.assertEquals(meta.__unicode__(), "Created 1/1/2000")
 
