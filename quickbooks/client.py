@@ -10,7 +10,6 @@ except ImportError:
     print("http://rauth.readthedocs.org/en/latest/\n")
 
 
-
 class QuickBooks(object):
     """A wrapper class around Python's Rauth module for Quickbooks the API"""
 
@@ -78,6 +77,9 @@ class QuickBooks(object):
                 cls.verbose = True
 
         return QuickBooks.__instance
+
+    def _drop(self):
+        QuickBooks.__instance = None
 
     @property
     def api_url(self):

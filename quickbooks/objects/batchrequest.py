@@ -18,6 +18,9 @@ class FaultError(FromJsonMixin):
         self.Detail = ""
         self.element = ""
 
+    def __unicode__(self):
+        return "{0} ({1})".format(self.Message, self.code)
+
 
 class Fault(FromJsonMixin):
     list_dict = {
