@@ -12,6 +12,9 @@ class TaxLineDetail(QuickbooksBaseObject):
         self.TaxPercent = 0
         self.NetAmountTaxable = 0
 
+    def __unicode__(self):
+        return self.TaxPercent
+
 
 class TaxLine(QuickbooksBaseObject):
     class_dict = {
@@ -22,6 +25,9 @@ class TaxLine(QuickbooksBaseObject):
         super(TaxLine, self).__init__()
         self.Amount = 0
         self.DetailType = ""
+
+    def __unicode__(self):
+        return self.Amount
 
 
 class TxnTaxDetail(QuickbooksManagedObject):
@@ -38,3 +44,6 @@ class TxnTaxDetail(QuickbooksManagedObject):
         self.TotalTax = 0
         self.TxnTaxCodeRef = None
         self.TaxLine = []
+
+    def __unicode__(self):
+        return self.TotalTax

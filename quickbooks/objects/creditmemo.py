@@ -16,6 +16,9 @@ class SalesItemLineDetail(QuickbooksBaseObject):
         self.ItemRef = None
         self.TaxCodeRef = None
 
+    def __unicode__(self):
+        return self.UnitPrice
+
 
 class CreditMemoLine(QuickbooksBaseObject):
     class_dict = {
@@ -30,6 +33,9 @@ class CreditMemoLine(QuickbooksBaseObject):
         self.DetailType = ""
 
         self.SalesItemLineDetail = None
+
+    def __unicode__(self):
+        return "[{0}] {1} {2}".format(self.LineNum, self.Description, self.Amount)
 
 
 class CreditMemo(QuickbooksManagedObject):
@@ -77,3 +83,5 @@ class CreditMemo(QuickbooksManagedObject):
         self.CustomField = []
         self.Line = []
 
+    def __unicode__(self):
+        return self.TotalAmt
