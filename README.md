@@ -70,12 +70,12 @@ List of objects:
 
 Filtered list of objects:
 
-    customers = Customer.filter(Active=True)
+    customers = Customer.filter(Active=True, FamilyName="Smith")
 
 
 List with custom Where Clause (do not include the "WHERE"):
         
-    customers = Customer.where("Active = True AND CompanyName LIKE 'S%')
+    customers = Customer.where("Active = True AND CompanyName LIKE 'S%'")
  
  
 Filtering a list with a custom query (See [Intuit developer guide](https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/querying_data) for supported SQL statements):
