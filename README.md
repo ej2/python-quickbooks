@@ -1,5 +1,4 @@
 # python-quickbooks
--------------------
 
 A Python library for accessing the Quickbooks API. 
 Complete rework of [quickbooks-python](https://github.com/troolee/quickbooks-python).
@@ -100,8 +99,8 @@ Create new object:
 
 ## Batch Operations
 
-The batch operation enables an application to perform multiple operations in a single request. 
-(See [Intuit Batch Operations Guide](https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/batch_operations) for full details.
+The batch operation enables an application to perform multiple operations in a single request
+(See [Intuit Batch Operations Guide](https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/batch_operations) for full details).
 
 
 Batch create a list of objects: 
@@ -129,7 +128,7 @@ Batch update a list of objects:
     
     customers = Customer.filter(Active=True)
     
-    # Update customers 
+    # Update customer records
     
     results = batch_update(customers)
     
@@ -144,11 +143,11 @@ Batch delete a list of objects:
     
 Review results for batch operation:
     
-    #successes is a list of objects that were successfully updated 
+    # successes is a list of objects that were successfully updated 
     for obj in results.successes:
         print "Updated " + obj.DisplayName
     
-    #faults contains list
+    # faults contains list of failed operations and associated errors
     for fault in results.faults:
         print "Operation failed on " + fault.original_object.DisplayName 
         
