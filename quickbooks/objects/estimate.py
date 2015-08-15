@@ -12,6 +12,9 @@ class SalesItemLineDetail(QuickbooksBaseObject):
         self.UnitPrice = 0
         self.Qty = 0
 
+    def __unicode__(self):
+        return self.UnitPrice
+
 
 class EstimateLine(QuickbooksBaseObject):
     class_dict = {
@@ -26,6 +29,8 @@ class EstimateLine(QuickbooksBaseObject):
         self.DetailType = ""
         self.SalesItemLineDetail = None
 
+    def __unicode__(self):
+        return self.Amount
 
 
 class Estimate(QuickbooksManagedObject):
@@ -64,3 +69,6 @@ class Estimate(QuickbooksManagedObject):
         self.TxnTaxDetail = None
         self.CustomerMemo = None
         self.CustomField = []
+
+    def __unicode__(self):
+        return self.TotalAmt

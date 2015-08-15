@@ -9,6 +9,6 @@ class EmployeeTests(unittest.TestCase):
 
     def test_unicode(self):
         employee = Employee()
-        employee.FullyQualifiedName = "test"
+        employee.DisplayName = "test"
 
         self.assertEquals(employee.__unicode__(), "test")

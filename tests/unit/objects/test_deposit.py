@@ -20,6 +20,6 @@ class DepositLineTests(unittest.TestCase):
 
     def test_unicode(self):
         deposit = DepositLine()
-        deposit.TotalAmt = 100
+        deposit.Amount = 100
 
         self.assertEquals(deposit.__unicode__(), 100)
