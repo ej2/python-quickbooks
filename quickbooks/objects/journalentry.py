@@ -12,6 +12,9 @@ class JournalEntryLineDetail(QuickbooksBaseObject):
         self.PostingType = ""
         self.AccountRef = None
 
+    def __unicode__(self):
+        return self.PostingType
+
 
 class JournalEntryLine(QuickbooksBaseObject):
     class_dict = {
@@ -23,6 +26,9 @@ class JournalEntryLine(QuickbooksBaseObject):
         self.Description = ""
         self.Amount = 0
         self.DetailType = ""
+
+    def __unicode__(self):
+        return self.Amount
 
 
 class JournalEntry(QuickbooksManagedObject):
@@ -50,3 +56,6 @@ class JournalEntry(QuickbooksManagedObject):
         super(JournalEntry, self).__init__()
         self.Adjustment = False
         self.TxnDate = ""
+
+    def __unicode__(self):
+        return self.Adjustment
