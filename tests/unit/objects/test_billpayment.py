@@ -20,9 +20,6 @@ class BillPaymentLineTests(unittest.TestCase):
 
 
 class BillPaymentTests(unittest.TestCase):
-    def setUp(self):
-        pass
-
     def test_unicode(self):
         bill_payment = BillPayment()
         bill_payment.TotalAmt = 1000

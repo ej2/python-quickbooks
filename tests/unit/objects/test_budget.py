@@ -4,9 +4,6 @@ from quickbooks.objects.budget import BudgetDetail, Budget
 
 
 class BudgetDetailTests(unittest.TestCase):
-    def setUp(self):
-        pass
-
     def test_unicode(self):
         budget_detail = BudgetDetail()
         budget_detail.Amount = 10
@@ -15,9 +12,6 @@ class BudgetDetailTests(unittest.TestCase):
 
 
 class BudgetTests(unittest.TestCase):
-    def setUp(self):
-        pass
-
     def test_unicode(self):
         budget = Budget()
         budget.Name = "test"

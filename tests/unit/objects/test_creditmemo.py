@@ -4,9 +4,6 @@ from quickbooks.objects.creditmemo import SalesItemLineDetail, CreditMemoLine, C
 
 
 class SalesItemLineDetailTests(unittest.TestCase):
-    def setUp(self):
-        pass
-
     def test_unicode(self):
         detail = SalesItemLineDetail()
         detail.UnitPrice = 10
@@ -15,9 +12,6 @@ class SalesItemLineDetailTests(unittest.TestCase):
 
 
 class CreditMemoLineTests(unittest.TestCase):
-    def setUp(self):
-        pass
-
     def test_unicode(self):
         memo_line = CreditMemoLine()
         memo_line.LineNum = 1
@@ -28,9 +22,6 @@ class CreditMemoLineTests(unittest.TestCase):
 
 
 class CreditMemoTests(unittest.TestCase):
-    def setUp(self):
-        pass
-
     def test_unicode(self):
         credit_memo = CreditMemo()
         credit_memo.TotalAmt = 1000

@@ -4,9 +4,6 @@ from quickbooks.objects.bill import Bill, BillLine, AccountBasedExpenseLineDetai
 
 
 class AccountBasedExpenseLineDetailTests(unittest.TestCase):
-    def setUp(self):
-        pass
-
     def test_unicode(self):
         acct_detail = AccountBasedExpenseLineDetail()
         acct_detail.BillableStatus = "test"
@@ -15,9 +12,6 @@ class AccountBasedExpenseLineDetailTests(unittest.TestCase):
 
 
 class BillTests(unittest.TestCase):
-    def setUp(self):
-        pass
-
     def test_unicode(self):
         bill = Bill()
         bill.Balance = 1000
@@ -26,9 +20,6 @@ class BillTests(unittest.TestCase):
 
 
 class BillLineTests(unittest.TestCase):
-    def setUp(self):
-        pass
-
     def test_unicode(self):
         bill_line = BillLine()
         bill_line.Amount = 1000

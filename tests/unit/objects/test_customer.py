@@ -4,9 +4,6 @@ from quickbooks.objects.customer import Customer
 
 
 class CustomerTests(unittest.TestCase):
-    def setUp(self):
-        pass
-
     def test_unicode(self):
         customer = Customer()
         customer.DisplayName = "test"

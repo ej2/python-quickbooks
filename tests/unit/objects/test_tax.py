@@ -4,9 +4,6 @@ from quickbooks.objects.tax import TaxLineDetail, TaxLine, TxnTaxDetail
 
 
 class TaxLineDetailTests(unittest.TestCase):
-    def setUp(self):
-        pass
-
     def test_unicode(self):
         detail = TaxLineDetail()
         detail.TaxPercent = 10
@@ -15,9 +12,6 @@ class TaxLineDetailTests(unittest.TestCase):
 
 
 class TaxLineTests(unittest.TestCase):
-    def setUp(self):
-        pass
-
     def test_unicode(self):
         line = TaxLine()
         line.Amount = 100
@@ -26,9 +20,6 @@ class TaxLineTests(unittest.TestCase):
 
 
 class TxnTaxDetailTests(unittest.TestCase):
-    def setUp(self):
-        pass
-
     def test_unicode(self):
         detail = TxnTaxDetail()
         detail.TotalTax = 100
