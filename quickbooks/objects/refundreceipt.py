@@ -2,7 +2,6 @@ from base import QuickbooksBaseObject, Ref, CustomField, QuickbooksManagedObject
 from tax import TxnTaxDetail
 
 
-
 class SalesItemLineDetail(QuickbooksBaseObject):
     class_dict = {
         "ItemRef": Ref,
@@ -27,6 +26,9 @@ class RefundReceiptLine(QuickbooksBaseObject):
         self.DetailType = ""
 
         self.SalesItemLineDetail = None
+
+    def __unicode__(self):
+        return self.Amount
 
 
 class RefundReceipt(QuickbooksManagedObject):
@@ -60,3 +62,6 @@ class RefundReceipt(QuickbooksManagedObject):
         self.DepositToAccountRef = None
         self.CustomField = []
         self.Line = []
+
+    def __unicode__(self):
+        return self.TotalAmt

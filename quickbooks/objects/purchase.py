@@ -17,6 +17,9 @@ class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
         self.AccountRef = None
         self.TaxCodeRef = None
 
+    def __unicode__(self):
+        return self.BillableStatus
+
 
 class PurchaseLine(QuickbooksBaseObject):
     class_dict = {
@@ -33,6 +36,9 @@ class PurchaseLine(QuickbooksBaseObject):
         self.TaxCodeRef = None
         self.AccountRef = None
         self.AccountBasedExpenseLineDetail = []
+
+    def __unicode__(self):
+        return self.Amount
 
 
 class Purchase(QuickbooksManagedObject):
@@ -67,3 +73,6 @@ class Purchase(QuickbooksManagedObject):
         self.Credit = False
         self.TotalAmt = 0
         self.TxnDate = ""
+
+    def __unicode__(self):
+        return self.TotalAmt

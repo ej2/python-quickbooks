@@ -1,14 +1,5 @@
 from base import QuickbooksBaseObject, Ref, Address, QuickbooksManagedObject
-
-
-class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
-    class_dict = {
-        "AccountRef": Ref
-    }
-
-    def __init__(self):
-        super(AccountBasedExpenseLineDetail, self).__init__()
-        self.AccountRef = None
+from purchase import AccountBasedExpenseLineDetail
 
 
 class ItemBasedExpenseLineDetail(QuickbooksBaseObject):
@@ -45,6 +36,9 @@ class PurchaseOrderLine(QuickbooksBaseObject):
         self.ClassRef = None
         self.TaxCodeRef = None
 
+    def __unicode__(self):
+        return self.Amount
+
 
 class PurchaseOrder(QuickbooksManagedObject):
     """
@@ -75,3 +69,6 @@ class PurchaseOrder(QuickbooksManagedObject):
         self.VendorRef = None
         self.APAccountRef = None
         self.Line = []
+
+    def __unicode__(self):
+        return self.TotalAmt
