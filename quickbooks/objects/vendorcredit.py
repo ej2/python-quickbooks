@@ -12,6 +12,9 @@ class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
         super(AccountBasedExpenseLineDetail, self).__init__()
         self.BillableStatus = ""
 
+    def __unicode__(self):
+        return self.BillableStatus
+
 
 class VendorCreditLine(QuickbooksBaseObject):
     class_dict = {
@@ -25,6 +28,9 @@ class VendorCreditLine(QuickbooksBaseObject):
         self.Amount = 0
         self.DetailType = ""
         self.AccountBasedExpenseLineDetail = None
+
+    def __unicode__(self):
+        return self.Amount
 
 
 class VendorCredit(QuickbooksManagedObject):
@@ -49,3 +55,6 @@ class VendorCredit(QuickbooksManagedObject):
         self.TotalAmt = 0
         self.FromAccountRef = None
         self.ToAccountRef = None
+
+    def __unicode__(self):
+        return self.TotalAmt

@@ -32,5 +32,3 @@ class TimeActivity(QuickbooksManagedObject):
         self.DepartmentRef = None
         self.ItemRef = None
         self.ClassRef = None
-
-
