@@ -13,6 +13,9 @@ class DiscountLineDetail(QuickbooksBaseObject):
         self.DiscountPercent = 0
         self.DiscountAccountRef = None
 
+    def __unicode__(self):
+        return self.DiscountPercent
+
 
 class SalesItemLineDetail(QuickbooksBaseObject):
     class_dict = {
@@ -24,6 +27,9 @@ class SalesItemLineDetail(QuickbooksBaseObject):
         super(SalesItemLineDetail, self).__init__()
         self.UnitPrice = 0
         self.Qty = 0
+
+    def __unicode__(self):
+        return self.UnitPrice
 
 
 class InvoiceDetail(QuickbooksBaseObject):
@@ -39,6 +45,8 @@ class InvoiceDetail(QuickbooksBaseObject):
         self.Amount = ""
         self.DetailType = ""
 
+    def __unicode__(self):
+        return "[{0}] {1} {2}".format(self.LineNum, self.Description, self.Amount)
 
 class Invoice(QuickbooksManagedObject):
     """
@@ -91,3 +99,6 @@ class Invoice(QuickbooksManagedObject):
         self.CustomerMemo = None
 
         self.CustomField = []
+
+    def __unicode__(self):
+        return self.TotalAmt

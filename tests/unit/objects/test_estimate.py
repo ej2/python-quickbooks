@@ -4,9 +4,6 @@ from quickbooks.objects.estimate import Estimate, EstimateLine, SalesItemLineDet
 
 
 class EstimateTests(unittest.TestCase):
-    def setUp(self):
-        pass
-
     def test_unicode(self):
         estimate = Estimate()
         estimate.TotalAmt = 10
@@ -15,9 +12,6 @@ class EstimateTests(unittest.TestCase):
 
 
 class EstimatelineTests(unittest.TestCase):
-    def setUp(self):
-        pass
-
     def test_unicode(self):
         estimateline = EstimateLine()
         estimateline.Amount = 100
@@ -26,9 +20,6 @@ class EstimatelineTests(unittest.TestCase):
 
 
 class SalesItemLineDetailTests(unittest.TestCase):
-    def setUp(self):
-        pass
-
     def test_unicode(self):
         sales_detail = SalesItemLineDetail()
         sales_detail.UnitPrice = 10
