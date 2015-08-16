@@ -12,6 +12,9 @@ class PaymentLine(QuickbooksBaseObject):
         self.LineNum = 0
         self.Description = ""
 
+    def __unicode__(self):
+        return "[{0}] {1} {2}".format(self.LineNum, self.Description, self.Amount)
+
 
 class Payment(QuickbooksManagedObject):
     """
@@ -52,3 +55,5 @@ class Payment(QuickbooksManagedObject):
         self.PaymentMethodRef = None
         self.Line = []
 
+    def __unicode__(self):
+        return self.TotalAmt
