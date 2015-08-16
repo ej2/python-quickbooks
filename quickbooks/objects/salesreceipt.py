@@ -2,7 +2,6 @@ from base import QuickbooksBaseObject, Ref, CustomField, QuickbooksManagedObject
 from tax import TxnTaxDetail
 
 
-
 class SalesItemLineDetail(QuickbooksBaseObject):
     class_dict = {
         "ItemRef": Ref,
@@ -15,6 +14,9 @@ class SalesItemLineDetail(QuickbooksBaseObject):
         self.Qty = 0
         self.ItemRef = None
         self.TaxCodeRef = None
+
+    def __unicode__(self):
+        return self.UnitPrice
 
 
 class SalesReceiptLine(QuickbooksBaseObject):
@@ -30,6 +32,9 @@ class SalesReceiptLine(QuickbooksBaseObject):
         self.DetailType = ""
 
         self.SalesItemLineDetail = None
+
+    def __unicode__(self):
+        return self.Amount
 
 
 class SalesReceipt(QuickbooksManagedObject):
@@ -72,3 +77,6 @@ class SalesReceipt(QuickbooksManagedObject):
         self.TxnTaxDetail = None
         self.CustomField = []
         self.Line = []
+
+    def __unicode__(self):
+        return self.TotalAmt
