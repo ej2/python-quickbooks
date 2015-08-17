@@ -75,3 +75,14 @@ class ClientTest(unittest.TestCase):
         #
         # qb_client.get_authorize_url
 
+    def test_isvalid_object_name_valid(self):
+        qb_client = client.QuickBooks()
+        result = qb_client.isvalid_object_name("Customer")
+
+        self.assertEquals(result, True)
+
+    def test_isvalid_object_name_invalid(self):
+        qb_client = client.QuickBooks()
+
+        with self.assertRaises(Exception):
+            qb_client.isvalid_object_name("invalid")
