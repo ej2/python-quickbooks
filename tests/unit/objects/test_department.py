@@ -8,4 +8,4 @@ class DepartmentTests(unittest.TestCase):
         department = Department()
         department.FullyQualifiedName = "test"
 
-        self.assertEquals(department.__unicode__(), "test")
+        self.assertEquals(unicode(department), "test")

@@ -35,9 +35,6 @@ class BatchTests(unittest.TestCase):
         results = batch.batch_delete(self.obj_list)
         self.assertTrue(process_batch.called)
 
-    def test_process_batch(self):
-        pass
-
     def test_list_to_batch_request(self):
         obj_list = [self.object1, self.object2]
         batch_request = batch.list_to_batch_request(obj_list, "create")
@@ -49,14 +46,19 @@ class BatchTests(unittest.TestCase):
         self.assertEquals(batch_item.operation, "create")
         self.assertEquals(batch_item.get_object(), self.object1)
 
-    # def test_batch_results_to_list(self):
-    #     json_data = '{ "BatchItemResponse": [ {"Customer":{"Id": 164}, "bId":"2"}, ' \
-    #                 '{"Fault": {"type": "ValidationFault","Error": [{"Message": "Duplicate Name Exists Error",' \
-    #                 '"code": "6240","Detail": "detail message", "element": ""}]},"bId": "1" } ],' \
-    #                 '"time": "2015-08-10T11:44:02.957-07:00"}'
-    #
-    #     batch_request = batch.list_to_batch_request(self.obj_list, "create")
-    #     results = batch.batch_results_to_list(json_data, batch_request, self.obj_list)
-    #
-    #     self.assertEquals(len(results.faults), 1)
-    #     self.assertEquals(len(results.successes), 1)
+    def test_batch_results_to_list(self):
+        json_data = {"BatchItemResponse": [{"Customer": {"Id": 164}, "bId": "2"},
+                                           {"Fault": {"type": "ValidationFault",
+                                                      "Error": [{"Message": "Duplicate Name Exists Error",
+                                                                 "code": "6240", "Detail": "detail message",
+                                                                 "element": ""}]}, "bId": "1"}],
+                     "time": "2015-08-10T11:44:02.957-07:00"}
+
+        batch_request = batch.list_to_batch_request(self.obj_list, "create")
+        batch_request.BatchItemRequest[0].bId = "1"
+        batch_request.BatchItemRequest[1].bId = "2"
+
+        results = batch.batch_results_to_list(json_data, batch_request, self.obj_list)
+
+        self.assertEquals(len(results.faults), 1)
+        self.assertEquals(len(results.successes), 1)

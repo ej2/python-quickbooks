@@ -20,4 +20,4 @@ class Transfer(QuickbooksManagedObject):
         self.ToAccountRef = None
 
     def __unicode__(self):
-        return self.Amount
+        return str(self.Amount)

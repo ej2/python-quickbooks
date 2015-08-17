@@ -16,7 +16,7 @@ class SalesItemLineDetail(QuickbooksBaseObject):
         self.TaxCodeRef = None
 
     def __unicode__(self):
-        return self.UnitPrice
+        return str(self.UnitPrice)
 
 
 class SalesReceiptLine(QuickbooksBaseObject):
@@ -34,7 +34,7 @@ class SalesReceiptLine(QuickbooksBaseObject):
         self.SalesItemLineDetail = None
 
     def __unicode__(self):
-        return self.Amount
+        return str(self.Amount)
 
 
 class SalesReceipt(QuickbooksManagedObject):
@@ -79,4 +79,4 @@ class SalesReceipt(QuickbooksManagedObject):
         self.Line = []
 
     def __unicode__(self):
-        return self.TotalAmt
+        return str(self.TotalAmt)

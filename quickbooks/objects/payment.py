@@ -56,4 +56,4 @@ class Payment(QuickbooksManagedObject):
         self.Line = []
 
     def __unicode__(self):
-        return self.TotalAmt
+        return str(self.TotalAmt)

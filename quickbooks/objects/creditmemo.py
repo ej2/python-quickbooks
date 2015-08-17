@@ -17,7 +17,7 @@ class SalesItemLineDetail(QuickbooksBaseObject):
         self.TaxCodeRef = None
 
     def __unicode__(self):
-        return self.UnitPrice
+        return str(self.UnitPrice)
 
 
 class CreditMemoLine(QuickbooksBaseObject):
@@ -84,4 +84,4 @@ class CreditMemo(QuickbooksManagedObject):
         self.Line = []
 
     def __unicode__(self):
-        return self.TotalAmt
+        return str(self.TotalAmt)

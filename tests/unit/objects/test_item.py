@@ -8,4 +8,4 @@ class ItemTests(unittest.TestCase):
         item = Item()
         item.Name = "test"
 
-        self.assertEquals(item.__unicode__(), "test")
+        self.assertEquals(unicode(item), "test")

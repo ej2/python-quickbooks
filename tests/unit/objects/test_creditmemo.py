@@ -8,7 +8,7 @@ class SalesItemLineDetailTests(unittest.TestCase):
         detail = SalesItemLineDetail()
         detail.UnitPrice = 10
 
-        self.assertEquals(detail.__unicode__(), 10)
+        self.assertEquals(unicode(detail), "10")
 
 
 class CreditMemoLineTests(unittest.TestCase):
@@ -18,7 +18,7 @@ class CreditMemoLineTests(unittest.TestCase):
         memo_line.Description = "Product Description"
         memo_line.Amount = 100
 
-        self.assertEquals(memo_line.__unicode__(), "[1] Product Description 100")
+        self.assertEquals(unicode(memo_line), "[1] Product Description 100")
 
 
 class CreditMemoTests(unittest.TestCase):
@@ -26,4 +26,4 @@ class CreditMemoTests(unittest.TestCase):
         credit_memo = CreditMemo()
         credit_memo.TotalAmt = 1000
 
-        self.assertEquals(credit_memo.__unicode__(), 1000)
+        self.assertEquals(unicode(credit_memo), "1000")

@@ -30,7 +30,7 @@ class VendorCreditLine(QuickbooksBaseObject):
         self.AccountBasedExpenseLineDetail = None
 
     def __unicode__(self):
-        return self.Amount
+        return str(self.Amount)
 
 
 class VendorCredit(QuickbooksManagedObject):
@@ -57,4 +57,4 @@ class VendorCredit(QuickbooksManagedObject):
         self.ToAccountRef = None
 
     def __unicode__(self):
-        return self.TotalAmt
+        return str(self.TotalAmt)

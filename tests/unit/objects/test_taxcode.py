@@ -8,4 +8,4 @@ class TaxCodeTests(unittest.TestCase):
         taxcode = TaxCode()
         taxcode.Name = "test"
 
-        self.assertEquals(taxcode.__unicode__(), "test")
+        self.assertEquals(unicode(taxcode), "test")

@@ -8,7 +8,7 @@ class RefundReceiptTests(unittest.TestCase):
         deposit = RefundReceipt()
         deposit.TotalAmt = 100
 
-        self.assertEquals(deposit.__unicode__(), 100)
+        self.assertEquals(unicode(deposit), "100")
 
 
 class RefundReceiptLineTests(unittest.TestCase):
@@ -16,4 +16,4 @@ class RefundReceiptLineTests(unittest.TestCase):
         deposit = RefundReceiptLine()
         deposit.Amount = 100
 
-        self.assertEquals(deposit.__unicode__(), 100)
+        self.assertEquals(unicode(deposit), "100")

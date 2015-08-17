@@ -38,7 +38,7 @@ class PurchaseLine(QuickbooksBaseObject):
         self.AccountBasedExpenseLineDetail = []
 
     def __unicode__(self):
-        return self.Amount
+        return str(self.Amount)
 
 
 class Purchase(QuickbooksManagedObject):
@@ -75,4 +75,4 @@ class Purchase(QuickbooksManagedObject):
         self.TxnDate = ""
 
     def __unicode__(self):
-        return self.TotalAmt
+        return str(self.TotalAmt)

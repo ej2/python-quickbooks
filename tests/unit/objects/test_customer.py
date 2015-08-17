@@ -8,7 +8,7 @@ class CustomerTests(unittest.TestCase):
         customer = Customer()
         customer.DisplayName = "test"
 
-        self.assertEquals(customer.__unicode__(), "test")
+        self.assertEquals(unicode(customer), "test")
 
     def test_to_ref(self):
         customer = Customer()

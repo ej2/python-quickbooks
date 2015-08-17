@@ -8,7 +8,7 @@ class TaxServiceTests(unittest.TestCase):
         tax = TaxService()
         tax.TaxCode = "test"
 
-        self.assertEquals(tax.__unicode__(), "test")
+        self.assertEquals(unicode(tax), "test")
 
 
 class TaxRateDetailsTests(unittest.TestCase):
@@ -16,4 +16,4 @@ class TaxRateDetailsTests(unittest.TestCase):
         tax = TaxRateDetails()
         tax.TaxRateName = "test"
 
-        self.assertEquals(tax.__unicode__(), "test")
+        self.assertEquals(unicode(tax), "test")

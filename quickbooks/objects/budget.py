@@ -16,7 +16,7 @@ class BudgetDetail(QuickbooksBaseObject):
         self.CustomerRef = None
 
     def __unicode__(self):
-        return self.Amount
+        return str(self.Amount)
 
 
 class Budget(QuickbooksManagedObject):

@@ -8,4 +8,4 @@ class TaxAgencyTests(unittest.TestCase):
         deposit = TaxAgency()
         deposit.DisplayName = "test"
 
-        self.assertEquals(deposit.__unicode__(), "test")
+        self.assertEquals(unicode(deposit), "test")

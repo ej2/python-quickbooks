@@ -8,7 +8,7 @@ class EstimateTests(unittest.TestCase):
         estimate = Estimate()
         estimate.TotalAmt = 10
 
-        self.assertEquals(estimate.__unicode__(), 10)
+        self.assertEquals(unicode(estimate), "10")
 
 
 class EstimatelineTests(unittest.TestCase):
@@ -16,7 +16,7 @@ class EstimatelineTests(unittest.TestCase):
         estimateline = EstimateLine()
         estimateline.Amount = 100
 
-        self.assertEquals(estimateline.__unicode__(), 100)
+        self.assertEquals(unicode(estimateline), "100")
 
 
 class SalesItemLineDetailTests(unittest.TestCase):
@@ -24,4 +24,4 @@ class SalesItemLineDetailTests(unittest.TestCase):
         sales_detail = SalesItemLineDetail()
         sales_detail.UnitPrice = 10
 
-        self.assertEquals(sales_detail.__unicode__(), 10)
+        self.assertEquals(unicode(sales_detail), "10")

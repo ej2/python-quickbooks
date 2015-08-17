@@ -8,4 +8,4 @@ class AccountTests(unittest.TestCase):
         account = Account()
         account.FullyQualifiedName = "test"
 
-        self.assertEquals(account.__unicode__(), "test")
+        self.assertEquals(unicode(account), "test")

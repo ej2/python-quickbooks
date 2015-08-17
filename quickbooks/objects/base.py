@@ -99,7 +99,7 @@ class LinkedTxn(QuickbooksBaseObject):
         self.TxnLineId = 0
 
     def __unicode__(self):
-        return self.TxnId
+        return str(self.TxnId)
 
 
 class CustomerMemo(QuickbooksBaseObject):

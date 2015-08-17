@@ -8,7 +8,7 @@ class InvoiceTests(unittest.TestCase):
         invoice = Invoice()
         invoice.TotalAmt = 10
 
-        self.assertEquals(invoice.__unicode__(), 10)
+        self.assertEquals(unicode(invoice), "10")
 
 
 class InvoiceDetailTests(unittest.TestCase):
@@ -18,7 +18,7 @@ class InvoiceDetailTests(unittest.TestCase):
         detail.Description = "Product Description"
         detail.Amount = 100
 
-        self.assertEquals(detail.__unicode__(), "[1] Product Description 100")
+        self.assertEquals(unicode(detail), "[1] Product Description 100")
 
 
 class SalesItemLineDetailTests(unittest.TestCase):
@@ -26,7 +26,7 @@ class SalesItemLineDetailTests(unittest.TestCase):
         detail = SalesItemLineDetail()
         detail.UnitPrice = 100
 
-        self.assertEquals(detail.__unicode__(), 100)
+        self.assertEquals(unicode(detail), "100")
 
 
 class DiscountLineDetailTests(unittest.TestCase):
@@ -34,4 +34,4 @@ class DiscountLineDetailTests(unittest.TestCase):
         detail = DiscountLineDetail()
         detail.DiscountPercent = 5
 
-        self.assertEquals(detail.__unicode__(), 5)
+        self.assertEquals(unicode(detail), "5")

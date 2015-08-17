@@ -8,4 +8,4 @@ class TermTests(unittest.TestCase):
         deposit = Term()
         deposit.Name = "test"
 
-        self.assertEquals(deposit.__unicode__(), "test")
+        self.assertEquals(unicode(deposit), "test")

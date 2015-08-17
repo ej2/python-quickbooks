@@ -8,4 +8,4 @@ class EmployeeTests(unittest.TestCase):
         employee = Employee()
         employee.DisplayName = "test"
 
-        self.assertEquals(employee.__unicode__(), "test")
+        self.assertEquals(unicode(employee), "test")

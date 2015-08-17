@@ -8,7 +8,7 @@ class JournalentryTests(unittest.TestCase):
         journalentry = JournalEntry()
         journalentry.Adjustment = True
 
-        self.assertEquals(journalentry.__unicode__(), True)
+        self.assertEquals(unicode(journalentry), 'True')
 
 
 class JournalEntryLineTests(unittest.TestCase):
@@ -16,7 +16,7 @@ class JournalEntryLineTests(unittest.TestCase):
         journalentry = JournalEntryLine()
         journalentry.Amount = 100
 
-        self.assertEquals(journalentry.__unicode__(), 100)
+        self.assertEquals(unicode(journalentry), "100")
 
 
 class JournalEntryLineDetailTests(unittest.TestCase):
@@ -24,4 +24,4 @@ class JournalEntryLineDetailTests(unittest.TestCase):
         journalentry = JournalEntryLineDetail()
         journalentry.PostingType = "test"
 
-        self.assertEquals(journalentry.__unicode__(), "test")
+        self.assertEquals(unicode(journalentry), "test")

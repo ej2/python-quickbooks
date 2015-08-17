@@ -14,7 +14,7 @@ class DiscountLineDetail(QuickbooksBaseObject):
         self.DiscountAccountRef = None
 
     def __unicode__(self):
-        return self.DiscountPercent
+        return str(self.DiscountPercent)
 
 
 class SalesItemLineDetail(QuickbooksBaseObject):
@@ -29,7 +29,7 @@ class SalesItemLineDetail(QuickbooksBaseObject):
         self.Qty = 0
 
     def __unicode__(self):
-        return self.UnitPrice
+        return str(self.UnitPrice)
 
 
 class InvoiceDetail(QuickbooksBaseObject):
@@ -101,4 +101,4 @@ class Invoice(QuickbooksManagedObject):
         self.CustomField = []
 
     def __unicode__(self):
-        return self.TotalAmt
+        return str(self.TotalAmt)

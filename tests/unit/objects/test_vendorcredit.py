@@ -8,7 +8,7 @@ class SalesItemLineDetailTests(unittest.TestCase):
         detail = AccountBasedExpenseLineDetail()
         detail.BillableStatus = "test"
 
-        self.assertEquals(detail.__unicode__(), "test")
+        self.assertEquals(unicode(detail), "test")
 
 
 class CreditMemoLineTests(unittest.TestCase):
@@ -16,7 +16,7 @@ class CreditMemoLineTests(unittest.TestCase):
         vendor_credit = VendorCreditLine()
         vendor_credit.Amount = 100
 
-        self.assertEquals(vendor_credit.__unicode__(), 100)
+        self.assertEquals(unicode(vendor_credit), "100")
 
 
 class CreditMemoTests(unittest.TestCase):
@@ -24,4 +24,4 @@ class CreditMemoTests(unittest.TestCase):
         vendor_credit = VendorCredit()
         vendor_credit.TotalAmt = 1000
 
-        self.assertEquals(vendor_credit.__unicode__(), 1000)
+        self.assertEquals(unicode(vendor_credit), "1000")

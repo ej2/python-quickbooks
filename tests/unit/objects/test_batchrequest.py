@@ -9,7 +9,7 @@ class FaultErrorTests(unittest.TestCase):
         fault_error.Message = "test"
         fault_error.code = 100
 
-        self.assertEquals(fault_error.__unicode__(), "test (100)")
+        self.assertEquals(unicode(fault_error), "test (100)")
 
 
 class BatchItemResponseTests(unittest.TestCase):

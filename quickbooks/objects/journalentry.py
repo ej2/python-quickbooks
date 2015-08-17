@@ -28,7 +28,7 @@ class JournalEntryLine(QuickbooksBaseObject):
         self.DetailType = ""
 
     def __unicode__(self):
-        return self.Amount
+        return str(self.Amount)
 
 
 class JournalEntry(QuickbooksManagedObject):
@@ -58,4 +58,4 @@ class JournalEntry(QuickbooksManagedObject):
         self.TxnDate = ""
 
     def __unicode__(self):
-        return self.Adjustment
+        return str(self.Adjustment)

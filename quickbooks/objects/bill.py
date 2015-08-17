@@ -35,7 +35,7 @@ class BillLine(QuickbooksBaseObject):
         self.AccountBasedExpenseLineDetail = None
 
     def __unicode__(self):
-        return self.Amount
+        return str(self.Amount)
 
 
 class Bill(QuickbooksManagedObject):
@@ -76,6 +76,6 @@ class Bill(QuickbooksManagedObject):
         self.Line = []
 
     def __unicode__(self):
-        return self.Balance
+        return str(self.Balance)
 
 

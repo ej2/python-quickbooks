@@ -8,7 +8,7 @@ class TaxLineDetailTests(unittest.TestCase):
         detail = TaxLineDetail()
         detail.TaxPercent = 10
 
-        self.assertEquals(detail.__unicode__(), 10)
+        self.assertEquals(unicode(detail), "10")
 
 
 class TaxLineTests(unittest.TestCase):
@@ -16,7 +16,7 @@ class TaxLineTests(unittest.TestCase):
         line = TaxLine()
         line.Amount = 100
 
-        self.assertEquals(line.__unicode__(), 100)
+        self.assertEquals(unicode(line), "100")
 
 
 class TxnTaxDetailTests(unittest.TestCase):
@@ -24,4 +24,4 @@ class TxnTaxDetailTests(unittest.TestCase):
         detail = TxnTaxDetail()
         detail.TotalTax = 100
 
-        self.assertEquals(detail.__unicode__(), 100)
+        self.assertEquals(unicode(detail), "100")

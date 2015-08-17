@@ -18,7 +18,7 @@ class DepositLine(QuickbooksBaseObject):
         self.LinkedTxn = []
 
     def __unicode__(self):
-        return self.Amount
+        return str(self.Amount)
 
 
 class Deposit(QuickbooksManagedObject):
@@ -50,4 +50,4 @@ class Deposit(QuickbooksManagedObject):
         self.Line = []
 
     def __unicode__(self):
-        return self.TotalAmt
+        return str(self.TotalAmt)

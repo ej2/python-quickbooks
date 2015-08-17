@@ -12,7 +12,7 @@ class AddressTests(unittest.TestCase):
         address.CountrySubDivisionCode = "MO"
         address.PostalCode = "12345"
 
-        self.assertEquals(address.__unicode__(), "123 Main Joplin, MO 12345")
+        self.assertEquals(unicode(address), "123 Main Joplin, MO 12345")
 
 
 class PhoneNumberTests(unittest.TestCase):
@@ -20,7 +20,7 @@ class PhoneNumberTests(unittest.TestCase):
         number = PhoneNumber()
         number.FreeFormNumber = "555-555-5555"
 
-        self.assertEquals(number.__unicode__(), "555-555-5555")
+        self.assertEquals(unicode(number), "555-555-5555")
 
 
 class EmailAddressTests(unittest.TestCase):
@@ -28,7 +28,7 @@ class EmailAddressTests(unittest.TestCase):
         email = EmailAddress()
         email.Address = "email@gmail.com"
 
-        self.assertEquals(email.__unicode__(), "email@gmail.com")
+        self.assertEquals(unicode(email), "email@gmail.com")
 
 
 class WebAddressTests(unittest.TestCase):
@@ -36,7 +36,7 @@ class WebAddressTests(unittest.TestCase):
         url = WebAddress()
         url.URI = "www.website.com"
 
-        self.assertEquals(url.__unicode__(), "www.website.com")
+        self.assertEquals(unicode(url), "www.website.com")
 
 
 class RefTests(unittest.TestCase):
@@ -46,7 +46,7 @@ class RefTests(unittest.TestCase):
         ref.name = "test"
         ref.value = 1
 
-        self.assertEquals(ref.__unicode__(), "test")
+        self.assertEquals(unicode(ref), "test")
 
 
 class CustomFieldTests(unittest.TestCase):
@@ -54,7 +54,7 @@ class CustomFieldTests(unittest.TestCase):
         custom = CustomField()
         custom.Name = "name"
 
-        self.assertEquals(custom.__unicode__(), "name")
+        self.assertEquals(unicode(custom), "name")
 
 
 class CustomerMemoTests(unittest.TestCase):
@@ -62,7 +62,7 @@ class CustomerMemoTests(unittest.TestCase):
         memo = CustomerMemo()
         memo.Value = "value"
 
-        self.assertEquals(memo.__unicode__(), "value")
+        self.assertEquals(unicode(memo), "value")
 
 
 class LinkedTxnTests(unittest.TestCase):
@@ -70,7 +70,7 @@ class LinkedTxnTests(unittest.TestCase):
         linked = LinkedTxn()
         linked.TxnId = 1
 
-        self.assertEquals(linked.__unicode__(), 1)
+        self.assertEquals(unicode(linked), "1")
 
 
 class MetaDataTests(unittest.TestCase):
@@ -78,5 +78,5 @@ class MetaDataTests(unittest.TestCase):
         meta = MetaData()
         meta.CreateTime = "1/1/2000"
 
-        self.assertEquals(meta.__unicode__(), "Created 1/1/2000")
+        self.assertEquals(unicode(meta), "Created 1/1/2000")
 

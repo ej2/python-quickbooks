@@ -30,7 +30,7 @@ class BillPaymentLine(QuickbooksBaseObject):
         self.LinkedTxn = []
 
     def __unicode__(self):
-        return self.Amount
+        return str(self.Amount)
 
 
 class BillPayment(QuickbooksManagedObject):
@@ -70,4 +70,4 @@ class BillPayment(QuickbooksManagedObject):
         self.Line = []
 
     def __unicode__(self):
-        return self.TotalAmt
+        return str(self.TotalAmt)

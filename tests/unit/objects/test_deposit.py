@@ -8,7 +8,7 @@ class DepositTests(unittest.TestCase):
         deposit = Deposit()
         deposit.TotalAmt = 100
 
-        self.assertEquals(deposit.__unicode__(), 100)
+        self.assertEquals(unicode(deposit), "100")
 
 
 class DepositLineTests(unittest.TestCase):
@@ -16,4 +16,4 @@ class DepositLineTests(unittest.TestCase):
         deposit = DepositLine()
         deposit.Amount = 100
 
-        self.assertEquals(deposit.__unicode__(), 100)
+        self.assertEquals(unicode(deposit), "100")

@@ -13,7 +13,7 @@ class TaxLineDetail(QuickbooksBaseObject):
         self.NetAmountTaxable = 0
 
     def __unicode__(self):
-        return self.TaxPercent
+        return str(self.TaxPercent)
 
 
 class TaxLine(QuickbooksBaseObject):
@@ -27,7 +27,7 @@ class TaxLine(QuickbooksBaseObject):
         self.DetailType = ""
 
     def __unicode__(self):
-        return self.Amount
+        return str(self.Amount)
 
 
 class TxnTaxDetail(QuickbooksManagedObject):
@@ -46,4 +46,4 @@ class TxnTaxDetail(QuickbooksManagedObject):
         self.TaxLine = []
 
     def __unicode__(self):
-        return self.TotalTax
+        return str(self.TotalTax)

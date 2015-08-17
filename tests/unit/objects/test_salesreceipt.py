@@ -8,7 +8,7 @@ class SalesReceiptLineTests(unittest.TestCase):
         receipt_line = SalesReceiptLine()
         receipt_line.Amount = 100
 
-        self.assertEquals(receipt_line.__unicode__(), 100)
+        self.assertEquals(unicode(receipt_line), "100")
 
 
 class SalesItemLineDetailTests(unittest.TestCase):
@@ -16,7 +16,7 @@ class SalesItemLineDetailTests(unittest.TestCase):
         item = SalesItemLineDetail()
         item.UnitPrice = 100
 
-        self.assertEquals(item.__unicode__(), 100)
+        self.assertEquals(unicode(item), "100")
 
 
 class SalesReceiptTests(unittest.TestCase):
@@ -24,4 +24,4 @@ class SalesReceiptTests(unittest.TestCase):
         sales_receipt = SalesReceipt()
         sales_receipt.TotalAmt = 100
 
-        self.assertEquals(sales_receipt.__unicode__(), 100)
+        self.assertEquals(unicode(sales_receipt), "100")
