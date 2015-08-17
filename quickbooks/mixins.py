@@ -1,6 +1,6 @@
 import json
 from utils import build_where_clause
-
+from client import QuickBooks
 
 class ToJsonMixin(object):
     def to_json(self):
@@ -80,7 +80,7 @@ class ListMixin(object):
         return cls.where(build_where_clause(**kwargs))
 
     @classmethod
-    def where(cls, where_clause):
+    def where(cls, where_clause=""):
         """
         :param where_clause: QBO SQL where clause (DO NOT include 'WHERE')
         :return: Returns list filtered by input where_clause
@@ -98,7 +98,6 @@ class ListMixin(object):
         :param select: QBO SQL query select statement
         :return: List
         """
-        from client import QuickBooks
 
         qb = QuickBooks()
 

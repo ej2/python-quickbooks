@@ -13,6 +13,6 @@ def build_where_clause(**kwargs):
             else:
                 where.append("{0} = {1}".format(key, value))
 
-        where_clause = "WHERE {0}".format(" AND ".join(where))
+        where_clause = " AND ".join(where)
 
     return where_clause
