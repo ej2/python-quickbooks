@@ -1,4 +1,4 @@
-import json
+import simplejson as json
 from utils import build_where_clause
 from client import QuickBooks
 

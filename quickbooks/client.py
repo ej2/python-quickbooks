@@ -155,7 +155,11 @@ class QuickBooks(object):
         }
 
         req = self.session.request(request_type, url, True, self.company_id, headers=headers, data=request_body)
-        result = req.json()
+
+        try:
+            result = req.json()
+        except:
+            raise QuickbooksException("Error reading json response", 10000, "")
 
         if req.status_code is not httplib.OK or "Fault" in result:
             self.handle_exceptions(result["Fault"])
