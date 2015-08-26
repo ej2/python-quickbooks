@@ -64,8 +64,8 @@ class SalesReceipt(QuickbooksManagedObject):
         self.DocNumber = ""
         self.PrivateNote = ""
         self.TotalAmt = 0
-        self.PrintStatus = ""
-        self.EmailStatus = ""
+        self.PrintStatus = "NotSet"
+        self.EmailStatus = "NotSet"
         self.Balance = 0
         self.PaymentRefNum = ""
         self.ApplyTaxAfterDiscount = False

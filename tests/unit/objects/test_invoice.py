@@ -10,6 +10,17 @@ class InvoiceTests(unittest.TestCase):
 
         self.assertEquals(unicode(invoice), "10")
 
+    def test_to_LinkedTxn(self):
+        invoice = Invoice()
+        invoice.TotalAmt = 10
+        invoice.Id = 1
+
+        linked_txn = invoice.to_linked_txn()
+
+        self.assertEquals(linked_txn.TxnId, invoice.Id)
+        self.assertEquals(linked_txn.TxnType, "Invoice")
+        self.assertEquals(linked_txn.TxnLineId, 1)
+
 
 class InvoiceDetailTests(unittest.TestCase):
     def test_unicode(self):

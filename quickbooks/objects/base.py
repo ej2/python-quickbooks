@@ -6,12 +6,17 @@ class QuickbooksBaseObject(ToJsonMixin, FromJsonMixin):
     class_dict = {}
     list_dict = {}
 
+
+class QuickbooksTransactionEntity(QuickbooksBaseObject):
+    class_dict = {}
+    list_dict = {}
+
     def __init__(self):
         self.Id = None
         self.SyncToken = 0
         self.sparse = "false"
         self.domain = "QBO"
-        #self.TxnDate = ""
+        self.TxnDate = ""
 
 
 class QuickbooksManagedObject(QuickbooksBaseObject, ReadMixin, ListMixin, UpdateMixin):

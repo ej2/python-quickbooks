@@ -1,7 +1,7 @@
-from base import QuickbooksManagedObject
+from base import QuickbooksManagedObject, QuickbooksTransactionEntity
 
 
-class Department(QuickbooksManagedObject):
+class Department(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: The Department entity provides a way to track different segments of the business, divisions, or physical locations
     such as stores, and allows another way of categorizing the entire transaction. This is in contrast to Class objects,

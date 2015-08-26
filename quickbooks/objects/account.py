@@ -1,7 +1,7 @@
-from base import Ref, QuickbooksManagedObject
+from base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity
 
 
-class Account(QuickbooksManagedObject):
+class Account(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: Account is a component of a Chart Of Accounts, and is part of a Ledger. Used to record a total
     monetary amount allocated against a specific use. Accounts are one of five basic types: asset, liability,
@@ -32,3 +32,10 @@ class Account(QuickbooksManagedObject):
 
     def __unicode__(self):
         return self.FullyQualifiedName
+
+    def to_ref(self):
+        ref = Ref()
+        ref.name = self.FullyQualifiedName
+        ref.type = self.qbo_object_name
+        ref.value = self.Id
+        return ref

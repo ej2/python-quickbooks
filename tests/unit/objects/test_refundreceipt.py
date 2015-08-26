@@ -1,6 +1,6 @@
 import unittest
 
-from quickbooks.objects.refundreceipt import RefundReceipt, RefundReceiptLine
+from quickbooks.objects.refundreceipt import RefundReceipt, RefundReceiptLine, SalesItemLineDetail
 
 
 class RefundReceiptTests(unittest.TestCase):
@@ -17,3 +17,12 @@ class RefundReceiptLineTests(unittest.TestCase):
         deposit.Amount = 100
 
         self.assertEquals(unicode(deposit), "100")
+
+
+class SalesItemLineDetailTests(unittest.TestCase):
+    def test_init(self):
+        sales_item = SalesItemLineDetail()
+
+        self.assertEquals(sales_item.ItemRef, None)
+        self.assertEquals(sales_item.TaxCodeRef, None)
+

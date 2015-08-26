@@ -61,8 +61,8 @@ class Estimate(QuickbooksManagedObject):
         self.TxnStatus = ""
         self.TotalAmt = 0
         self.ApplyTaxAfterDiscount = 0
-        self.PrintStatus = ""
-        self.EmailStatus = ""
+        self.PrintStatus = "NotSet"
+        self.EmailStatus = "NotSet"
         self.BillAddr = None
         self.ShipAddr = None
         self.CustomerRef = None

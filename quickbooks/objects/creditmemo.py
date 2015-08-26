@@ -69,8 +69,8 @@ class CreditMemo(QuickbooksManagedObject):
         self.PrivateNote = ""
         self.TotalAmt = 0
         self.ApplyTaxAfterDiscount = ""
-        self.PrintStatus = ""
-        self.EmailStatus = ""
+        self.PrintStatus = "NotSet"
+        self.EmailStatus = "NotSet"
         self.Balance = 0
 
         self.BillAddr = None

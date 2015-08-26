@@ -1,7 +1,8 @@
-from base import Address, PhoneNumber, EmailAddress, WebAddress, Ref, QuickbooksManagedObject
+from base import Address, PhoneNumber, EmailAddress, WebAddress, Ref, QuickbooksManagedObject, \
+    QuickbooksTransactionEntity
 
 
-class Customer(QuickbooksManagedObject):
+class Customer(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: A customer is a consumer of the service or product that your business offers. The Customer object
     allows you to categorize customers according to your business requirements. You must first create a customer

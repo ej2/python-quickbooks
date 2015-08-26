@@ -45,36 +45,6 @@ class ClientTest(unittest.TestCase):
 
         self.assertTrue("sandbox" in api_url)
 
-    def test_create_session(self):
-        pass
-
-        # qb_client = client.QuickBooks(
-        #     sandbox=True,
-        #     consumer_key="consumer_key",
-        #     consumer_secret="consumer_secret",
-        #     access_token="access_token",
-        #     access_token_secret="access_token_secret",
-        #     company_id="company_id"
-        # )
-        #
-        # session = qb_client.create_session()
-
-    def test_get_authorize_url(self):
-        pass
-
-        # qb_client = client.QuickBooks(
-        #     sandbox=False,
-        #     consumer_key="consumer_key",
-        #     consumer_secret="consumer_secret",
-        #     access_token="access_token",
-        #     access_token_secret="access_token_secret",
-        #     company_id="company_id",
-        #     callback_url="callback_url",
-        #     verbose=True
-        # )
-        #
-        # qb_client.get_authorize_url
-
     def test_isvalid_object_name_valid(self):
         qb_client = client.QuickBooks()
         result = qb_client.isvalid_object_name("Customer")
@@ -86,3 +56,31 @@ class ClientTest(unittest.TestCase):
 
         with self.assertRaises(Exception):
             qb_client.isvalid_object_name("invalid")
+
+    @patch('quickbooks.client.QuickBooks.make_request')
+    def test_batch_operation(self, make_req):
+        qb_client = client.QuickBooks()
+        qb_client.batch_operation("request_body")
+
+        self.assertTrue(make_req.called)
+
+    @patch('quickbooks.client.QuickBooks.make_request')
+    def test_create_object(self, make_req):
+        qb_client = client.QuickBooks()
+        qb_client.create_object("Customer", "request_body")
+
+        self.assertTrue(make_req.called)
+
+    @patch('quickbooks.client.QuickBooks.make_request')
+    def test_query(self, make_req):
+        qb_client = client.QuickBooks()
+        qb_client.query("select")
+
+        self.assertTrue(make_req.called)
+
+    @patch('quickbooks.client.QuickBooks.make_request')
+    def test_update_object(self, make_req):
+        qb_client = client.QuickBooks()
+        qb_client.update_object("Customer", "request_body")
+
+        self.assertTrue(make_req.called)

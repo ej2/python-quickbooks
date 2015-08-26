@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject
+from base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject, QuickbooksTransactionEntity
 
 
 class PaymentLine(QuickbooksBaseObject):
@@ -12,11 +12,13 @@ class PaymentLine(QuickbooksBaseObject):
         self.LineNum = 0
         self.Description = ""
 
+        self.LinkedTxn = []
+
     def __unicode__(self):
         return "[{0}] {1} {2}".format(self.LineNum, self.Description, self.Amount)
 
 
-class Payment(QuickbooksManagedObject):
+class Payment(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: A Payment entity records a payment in QuickBooks. The payment can be applied for a particular
     customer against multiple Invoices and Credit Memos. It can also be created without any Invoice or Credit Memo,
