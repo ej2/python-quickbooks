@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject
+from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity
 from tax import TxnTaxDetail
 
 
@@ -31,7 +31,7 @@ class JournalEntryLine(QuickbooksBaseObject):
         return str(self.Amount)
 
 
-class JournalEntry(QuickbooksManagedObject):
+class JournalEntry(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: Journal Entry is a transaction in which:
         - There are at least two parts - a Debit and a Credit - called distribution lines.
