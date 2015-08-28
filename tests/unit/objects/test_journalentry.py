@@ -6,9 +6,9 @@ from quickbooks.objects.journalentry import JournalEntry, JournalEntryLine, Jour
 class JournalentryTests(unittest.TestCase):
     def test_unicode(self):
         journalentry = JournalEntry()
-        journalentry.Adjustment = True
+        journalentry.TotalAmt = 1000
 
-        self.assertEquals(unicode(journalentry), 'True')
+        self.assertEquals(unicode(journalentry), '1000')
 
 
 class JournalEntryLineTests(unittest.TestCase):

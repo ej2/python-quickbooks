@@ -153,7 +153,6 @@ class QuickBooks(object):
             'Content-Type': content_type,
             'Accept': 'application/json'
         }
-
         req = self.session.request(request_type, url, True, self.company_id, headers=headers, data=request_body)
 
         try:

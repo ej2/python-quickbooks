@@ -2,14 +2,27 @@ from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksT
 from tax import TxnTaxDetail
 
 
+class Entity(QuickbooksBaseObject):
+    class_dict = {
+        "EntityRef": Ref
+    }
+
+    def __init__(self):
+        super(Entity, self).__init__()
+        self.Type = ""
+        self.EntityRef = None
+
+
 class JournalEntryLineDetail(QuickbooksBaseObject):
     class_dict = {
-        "AccountRef": Ref
+        "AccountRef": Ref,
+        "Entity": Ref
     }
 
     def __init__(self):
         super(JournalEntryLineDetail, self).__init__()
         self.PostingType = ""
+        self.Entity = None
         self.AccountRef = None
 
     def __unicode__(self):
@@ -25,7 +38,10 @@ class JournalEntryLine(QuickbooksBaseObject):
         super(JournalEntryLine, self).__init__()
         self.Description = ""
         self.Amount = 0
-        self.DetailType = ""
+        self.Id = 0
+        self.LineNum = 0
+        self.DetailType = "JournalEntryLineDetail"
+        self.JournalEntryLineDetail = None
 
     def __unicode__(self):
         return str(self.Amount)
@@ -56,6 +72,9 @@ class JournalEntry(QuickbooksManagedObject, QuickbooksTransactionEntity):
         super(JournalEntry, self).__init__()
         self.Adjustment = False
         self.TxnDate = ""
+        self.TotalAmt = 0
+        self.Line = []
+        self.TxnTaxDetail = None
 
     def __unicode__(self):
-        return str(self.Adjustment)
+        return str(self.TotalAmt)
