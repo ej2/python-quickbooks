@@ -1,7 +1,7 @@
-from base import Ref, QuickbooksManagedObject
+from base import Ref, QuickbooksManagedObject, LinkedTxnMixin
 
 
-class Transfer(QuickbooksManagedObject):
+class Transfer(QuickbooksManagedObject, LinkedTxnMixin):
     """
     QBO definition: A Transfer represents a transaction where funds are moved between two accounts from the
     company's QuickBooks chart of accounts.

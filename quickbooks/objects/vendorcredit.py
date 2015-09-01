@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject
+from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, LinkedTxnMixin
 
 
 class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
@@ -33,7 +33,7 @@ class VendorCreditLine(QuickbooksBaseObject):
         return str(self.Amount)
 
 
-class VendorCredit(QuickbooksManagedObject):
+class VendorCredit(QuickbooksManagedObject, LinkedTxnMixin):
     """
     QBO definition: The Vendor Credit entity is an accounts payable transaction that represents a refund or credit
     of payment for goods or services. It is a credit that a vendor owes you for various reasons such as overpaid

@@ -1,7 +1,7 @@
-from base import Ref, QuickbooksManagedObject
+from base import Ref, QuickbooksManagedObject, LinkedTxnMixin
 
 
-class TimeActivity(QuickbooksManagedObject):
+class TimeActivity(QuickbooksManagedObject, LinkedTxnMixin):
     """
     QBO definition: The TimeActivity entity represents a record of time worked by a vendor or employee.
     """

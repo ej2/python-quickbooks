@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity
+from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin
 from tax import TxnTaxDetail
 
 
@@ -47,7 +47,7 @@ class JournalEntryLine(QuickbooksBaseObject):
         return str(self.Amount)
 
 
-class JournalEntry(QuickbooksManagedObject, QuickbooksTransactionEntity):
+class JournalEntry(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: Journal Entry is a transaction in which:
         - There are at least two parts - a Debit and a Credit - called distribution lines.
@@ -72,6 +72,7 @@ class JournalEntry(QuickbooksManagedObject, QuickbooksTransactionEntity):
         super(JournalEntry, self).__init__()
         self.Adjustment = False
         self.TxnDate = ""
+        self.DocNumber = ""
         self.TotalAmt = 0
         self.Line = []
         self.TxnTaxDetail = None

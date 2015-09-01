@@ -1,4 +1,5 @@
-from base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject, QuickbooksTransactionEntity
+from base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject, QuickbooksTransactionEntity, \
+    LinkedTxnMixin
 
 
 class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
@@ -38,7 +39,7 @@ class BillLine(QuickbooksBaseObject):
         return str(self.Amount)
 
 
-class Bill(QuickbooksManagedObject, QuickbooksTransactionEntity):
+class Bill(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: A Bill entity is an AP transaction representing a request-for-payment from a third party for
     goods/services rendered and/or received.

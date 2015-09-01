@@ -39,6 +39,7 @@ class Payment(QuickbooksManagedObject, QuickbooksTransactionEntity):
     class_dict = {
         "CustomerRef": Ref,
         "PaymentMethodRef": Ref,
+        "DepositToAccountRef": Ref
     }
 
     list_dict = {
@@ -53,8 +54,11 @@ class Payment(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.TotalAmt = 0
         self.UnappliedAmt = 0
         self.TxnDate = ""
+        self.PrivateNote = ""
+        self.TxnStatus = ""
         self.CustomerRef = None
         self.PaymentMethodRef = None
+        self.DepositToAccountRef = None
         self.Line = []
 
     def __unicode__(self):

@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref, CustomField, QuickbooksManagedObject
+from base import QuickbooksBaseObject, Ref, CustomField, QuickbooksManagedObject, LinkedTxnMixin
 from tax import TxnTaxDetail
 
 
@@ -31,7 +31,7 @@ class RefundReceiptLine(QuickbooksBaseObject):
         return str(self.Amount)
 
 
-class RefundReceipt(QuickbooksManagedObject):
+class RefundReceipt(QuickbooksManagedObject, LinkedTxnMixin):
     """
     QBO definition: RefundReceipt represents a refund to the customer for a product or service that was given.
     """

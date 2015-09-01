@@ -1,5 +1,5 @@
 from base import QuickbooksBaseObject, Ref, CustomField, Address, EmailAddress, CustomerMemo, QuickbooksManagedObject, \
-    QuickbooksTransactionEntity, LinkedTxn
+    QuickbooksTransactionEntity, LinkedTxn, LinkedTxnMixin
 from tax import TxnTaxDetail
 
 
@@ -56,7 +56,7 @@ class InvoiceDetail(QuickbooksBaseObject):
         return "[{0}] {1} {2}".format(self.LineNum, self.Description, self.Amount)
 
 
-class Invoice(QuickbooksManagedObject, QuickbooksTransactionEntity):
+class Invoice(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: An Invoice represents a sales form where the customer pays for a product or service later.
 

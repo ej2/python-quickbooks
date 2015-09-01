@@ -1,4 +1,5 @@
-from base import QuickbooksBaseObject, Address, EmailAddress, Ref, CustomField, CustomerMemo, QuickbooksManagedObject
+from base import QuickbooksBaseObject, Address, EmailAddress, Ref, CustomField, CustomerMemo, QuickbooksManagedObject, \
+    LinkedTxnMixin
 from tax import TxnTaxDetail
 
 
@@ -38,7 +39,7 @@ class CreditMemoLine(QuickbooksBaseObject):
         return "[{0}] {1} {2}".format(self.LineNum, self.Description, self.Amount)
 
 
-class CreditMemo(QuickbooksManagedObject):
+class CreditMemo(QuickbooksManagedObject, LinkedTxnMixin):
     """
     QBO definition: The CreditMemo is a financial transaction representing a refund or credit of payment or part
     of a payment for goods or services that have been sold.

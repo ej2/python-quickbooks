@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject
+from base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject, LinkedTxnMixin
 
 
 class DepositLine(QuickbooksBaseObject):
@@ -21,7 +21,7 @@ class DepositLine(QuickbooksBaseObject):
         return str(self.Amount)
 
 
-class Deposit(QuickbooksManagedObject):
+class Deposit(QuickbooksManagedObject, LinkedTxnMixin):
     """
     QBO definition: A deposit object is a transaction that records one or more deposits of the following types:
 

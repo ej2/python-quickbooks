@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref, CustomField, QuickbooksManagedObject
+from base import QuickbooksBaseObject, Ref, CustomField, QuickbooksManagedObject, LinkedTxnMixin
 from tax import TxnTaxDetail
 
 
@@ -37,7 +37,7 @@ class SalesReceiptLine(QuickbooksBaseObject):
         return str(self.Amount)
 
 
-class SalesReceipt(QuickbooksManagedObject):
+class SalesReceipt(QuickbooksManagedObject, LinkedTxnMixin):
     """
     QBO definition: SalesReceipt represents the sales receipt that is given to a customer. A sales receipt is
     similar to an invoice. However, for a sales receipt, payment is received as part of the sale of goods and

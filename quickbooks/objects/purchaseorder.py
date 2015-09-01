@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref, Address, QuickbooksManagedObject
+from base import QuickbooksBaseObject, Ref, Address, QuickbooksManagedObject, LinkedTxnMixin
 from purchase import AccountBasedExpenseLineDetail
 
 
@@ -40,7 +40,7 @@ class PurchaseOrderLine(QuickbooksBaseObject):
         return str(self.Amount)
 
 
-class PurchaseOrder(QuickbooksManagedObject):
+class PurchaseOrder(QuickbooksManagedObject, LinkedTxnMixin):
     """
     QBO definition: The PurchaseOrder entity is a non-posting transaction representing a request to purchase
     goods or services from a third party.

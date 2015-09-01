@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject
+from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, LinkedTxnMixin
 
 
 class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
@@ -41,7 +41,7 @@ class PurchaseLine(QuickbooksBaseObject):
         return str(self.Amount)
 
 
-class Purchase(QuickbooksManagedObject):
+class Purchase(QuickbooksManagedObject, LinkedTxnMixin):
     """
     QBO definition: This entity represents expenses, such as a purchase made from a vendor.
     There are three types of Purchases: Cash, Check, and Credit Card.

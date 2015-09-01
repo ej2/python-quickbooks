@@ -32,6 +32,16 @@ class MetaData:
         return "Created {0}".format(self.CreateTime)
 
 
+class LinkedTxnMixin(object):
+    def to_linked_txn(self):
+        linked_txn = LinkedTxn()
+        linked_txn.TxnId = self.Id
+        linked_txn.TxnType = self.qbo_object_name
+        linked_txn.TxnLineId = 1
+
+        return linked_txn
+
+
 class Address(ToJsonMixin, FromJsonMixin):
     def __init__(self):
         self.Id = 0

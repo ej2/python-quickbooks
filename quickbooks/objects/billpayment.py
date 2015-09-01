@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject
+from base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject, LinkedTxnMixin
 
 
 class CheckPayment(QuickbooksBaseObject):
@@ -33,7 +33,7 @@ class BillPaymentLine(QuickbooksBaseObject):
         return str(self.Amount)
 
 
-class BillPayment(QuickbooksManagedObject):
+class BillPayment(QuickbooksManagedObject, LinkedTxnMixin):
     """
     QBO definition: A BillPayment entity represents the financial transaction of payment of bills that the
     business owner receives from a vendor for goods or services purchased from the vendor. QuickBooks Online
