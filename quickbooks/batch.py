@@ -34,7 +34,6 @@ class BatchManager(object):
 
         batch = self.list_to_batch_request(obj_list)
         json_data = qb.batch_operation(batch.to_json())
-
         batch_response = self.batch_results_to_list(json_data, batch, obj_list)
 
         return batch_response
@@ -69,7 +68,9 @@ class BatchManager(object):
                 response.faults.append(response_item.Fault)
 
             else:
-                response.successes.append(response_item.get_object())
+                class_obj = type(response_item.get_object())
+                new_object = class_obj.from_json(data[class_obj.qbo_object_name])
+                response.successes.append(new_object)
 
         return response
 

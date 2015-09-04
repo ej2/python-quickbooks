@@ -1,7 +1,6 @@
 from ..mixins import ToJsonMixin, FromJsonMixin, ReadMixin, ListMixin, UpdateMixin
 
 
-
 class QuickbooksBaseObject(ToJsonMixin, FromJsonMixin):
     class_dict = {}
     list_dict = {}

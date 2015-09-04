@@ -63,3 +63,23 @@ class Payment(QuickbooksManagedObject, QuickbooksTransactionEntity):
 
     def __unicode__(self):
         return str(self.TotalAmt)
+
+#
+# {'CurrencyRef': {u'name': u'United States Dollar', u'value': u'USD'},
+#  'CustomerRef': <quickbooks.objects.base.Ref object at 0x113e0ca90>,
+#  'DepositToAccountRef': <quickbooks.objects.base.Ref object at 0x113dff1d0>,
+#  'Id': u'291',
+#  'Line': [],
+#  'MetaData': {u'CreateTime': u'2015-09-03T09:01:33-07:00',
+#               u'LastUpdatedTime': u'2015-09-03T09:01:33-07:00'},
+#  'PaymentMethodRef': None,
+#  'PaymentRefNum': u'123',
+#  'PrivateNote': u'test',
+#  'ProcessPayment': False,
+#  'SyncToken': u'0',
+#  'TotalAmt': 1000.0,
+#  'TxnDate': u'2015-09-03',
+#  'TxnStatus': '',
+#  'UnappliedAmt': 1000.0,
+#  'domain': u'QBO',
+#  'sparse': False}
