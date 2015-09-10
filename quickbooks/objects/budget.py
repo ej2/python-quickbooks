@@ -1,10 +1,12 @@
-from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject
+from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity
 
 
 class BudgetDetail(QuickbooksBaseObject):
     class_dict = {
         "AccountRef": Ref,
-        "CustomerRef": Ref
+        "CustomerRef": Ref,
+        "ClassRef": Ref,
+        "DepartmentRef": Ref,
     }
 
     def __init__(self):
@@ -14,12 +16,14 @@ class BudgetDetail(QuickbooksBaseObject):
 
         self.AccountRef = None
         self.CustomerRef = None
+        self.ClassRef = None
+        self.DepartmentRef = None
 
     def __unicode__(self):
         return str(self.Amount)
 
 
-class Budget(QuickbooksManagedObject):
+class Budget(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: The Budget endpoint allows you to retrieve the current state of budgets already set up in the user's
     company file. A budget allows for an amount to be assigned on a monthly, quarterly, or annual basis for a specific
@@ -27,7 +31,7 @@ class Budget(QuickbooksManagedObject):
     should be spent against that account or customer in the give time period.
     """
 
-    class_dict = {
+    list_dict = {
         "BudgetDetail": BudgetDetail,
     }
 
@@ -42,7 +46,7 @@ class Budget(QuickbooksManagedObject):
         self.BudgetEntryType = ""
         self.Active = True
 
-        self.BudgetDetail = None
+        self.BudgetDetail = []
 
     def __unicode__(self):
         return self.Name
