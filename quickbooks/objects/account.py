@@ -12,6 +12,8 @@ class Account(QuickbooksManagedObject, QuickbooksTransactionEntity):
 
     class_dict = {
         "CurrencyRef": Ref,
+        "ParentRef": Ref,
+        "TaxCodeRef": Ref,
     }
 
     qbo_object_name = "Account"
@@ -26,9 +28,13 @@ class Account(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.Classification = ""
         self.AccountType = ""
         self.AccountSubType = ""
+        self.Description = ""
+        self.AcctNum = ""
         self.CurrentBalance = 0
         self.CurrentBalanceWithSubAccounts = 0
         self.CurrencyRef = None
+        self.ParentRef = None
+        self.TaxCodeRef = None
 
     def __unicode__(self):
         return self.FullyQualifiedName
