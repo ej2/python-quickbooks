@@ -26,7 +26,9 @@ class Customer(QuickbooksManagedObject, QuickbooksTransactionEntity):
         "DefaultTaxCodeRef": Ref,
         "SalesTermRef": Ref,
         "PaymentMethodRef": Ref,
-        "CurrencyRef": Ref
+        "CurrencyRef": Ref,
+        "ParentRef": Ref,
+        "ARAccountRef": Ref,
     }
 
     qbo_object_name = "Customer"
@@ -40,7 +42,7 @@ class Customer(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.Suffix = ""
         self.FullyQualifiedName = ""
         self.CompanyName = ""
-        self.DisplayName = ""
+        self.DisplayName = ""  # Constraints:Must be unique
         self.PrintOnCheckName = ""
         self.Notes = ""
         self.Active = True
@@ -51,10 +53,13 @@ class Customer(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.BalanceWithJobs = 0
         self.PreferredDeliveryMethod = ""
         self.ResaleNum = ""
+        self.Level = 0
+        self.OpenBalanceDate = ""
 
         self.BillAddr = None
         self.ShipAddr = None
         self.PrimaryPhone = None
+        self.AlternatePhone = None
         self.Mobile = None
         self.Fax = None
         self.PrimaryEmailAddr = None
@@ -62,6 +67,8 @@ class Customer(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.DefaultTaxCodeRef = None
         self.SalesTermRef = None
         self.PaymentMethodRef = None
+        self.ParentRef = None
+        self.ARAccountRef = None
 
     def __unicode__(self):
         return self.DisplayName
