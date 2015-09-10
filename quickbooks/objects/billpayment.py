@@ -1,4 +1,5 @@
-from base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject, LinkedTxnMixin
+from base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject, LinkedTxnMixin, \
+    QuickbooksTransactionEntity
 
 
 class CheckPayment(QuickbooksBaseObject):
@@ -17,6 +18,18 @@ class CheckPayment(QuickbooksBaseObject):
         return self.PrintStatus
 
 
+class BillPaymentCreditCard(QuickbooksBaseObject):
+    class_dict = {
+        "CCAccountRef": Ref
+    }
+
+    qbo_object_name = "BillPaymentCreditCard"
+
+    def __init__(self):
+        super(BillPaymentCreditCard, self).__init__()
+        self.CCAccountRef = None
+
+
 class BillPaymentLine(QuickbooksBaseObject):
     list_dict = {
         "LinkedTxn": LinkedTxn
@@ -33,7 +46,7 @@ class BillPaymentLine(QuickbooksBaseObject):
         return str(self.Amount)
 
 
-class BillPayment(QuickbooksManagedObject, LinkedTxnMixin):
+class BillPayment(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: A BillPayment entity represents the financial transaction of payment of bills that the
     business owner receives from a vendor for goods or services purchased from the vendor. QuickBooks Online
@@ -47,7 +60,10 @@ class BillPayment(QuickbooksManagedObject, LinkedTxnMixin):
     class_dict = {
         "VendorRef": Ref,
         "CheckPayment": CheckPayment,
+        "CreditCardPayment": BillPaymentCreditCard,
         "APAccountRef": Ref,
+        "DepartmentRef": Ref,
+
     }
 
     list_dict = {
@@ -62,10 +78,14 @@ class BillPayment(QuickbooksManagedObject, LinkedTxnMixin):
         self.TotalAmt = 0
         self.TxnDate = ""
         self.PrivateNote = ""
+        self.DocNumber = ""
+        self.ProcessBillPayment = False
 
         self.VendorRef = None
         self.CheckPayment = None
         self.APAccountRef = None
+        self.DepartmentRef = None
+        self.CreditCardPayment = None
 
         self.Line = []
 
