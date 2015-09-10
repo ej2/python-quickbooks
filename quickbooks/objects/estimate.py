@@ -1,5 +1,5 @@
 from base import QuickbooksBaseObject, CustomField, Ref, CustomerMemo, Address, EmailAddress, QuickbooksManagedObject, \
-    LinkedTxnMixin
+    LinkedTxnMixin, QuickbooksTransactionEntity
 from tax import TxnTaxDetail
 
 class SalesItemLineDetail(QuickbooksBaseObject):
@@ -34,7 +34,7 @@ class EstimateLine(QuickbooksBaseObject):
         return str(self.Amount)
 
 
-class Estimate(QuickbooksManagedObject, LinkedTxnMixin):
+class Estimate(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: The Estimate represents a proposal for a financial transaction from a business to a customer
     for goods or services proposed to be sold, including proposed pricing.

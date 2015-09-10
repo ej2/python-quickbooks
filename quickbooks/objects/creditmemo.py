@@ -34,6 +34,7 @@ class SubtotalLineDetail(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(SubtotalLineDetail, self).__init__()
         self.ItemRef = None
 
 
@@ -44,6 +45,7 @@ class DiscountOverride(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(DiscountOverride, self).__init__()
         self.PercentBased = False
         self.DiscountPercent = 0
         self.DiscountAccountRef = None
@@ -58,6 +60,7 @@ class DiscountLineDetail(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(DiscountLineDetail, self).__init__()
         self.ClassRef = None
         self.TaxCodeRef = None
         self.Discount = None
@@ -69,6 +72,7 @@ class DescriptionLineDetail(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(DescriptionLineDetail, self).__init__()
         self.ServiceDate = ""
         self.TaxCodeRef = None
 

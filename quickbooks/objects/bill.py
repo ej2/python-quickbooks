@@ -9,6 +9,7 @@ class MarkupInfo(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(MarkupInfo, self).__init__()
         self.PercentBased = False
         self.Value = 0
         self.Percent = 0
@@ -25,6 +26,7 @@ class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(AccountBasedExpenseLineDetail, self).__init__()
         self.BillableStatus = ""
         self.TaxAmount = 0
         self.TaxInclusiveAmt = 0
@@ -48,6 +50,7 @@ class ItemBasedExpenseLineDetail(QuickbooksBaseObject):
     }
 
     def __init__(self):
+        super(ItemBasedExpenseLineDetail, self).__init__()
         self.BillableStatus = ""
         self.UnitPrice = 0
         self.TaxInclusiveAmt = 0
