@@ -12,16 +12,25 @@ class JournalentryTests(unittest.TestCase):
 
 
 class JournalEntryLineTests(unittest.TestCase):
-    def test_unicode(self):
+    def test_init(self):
         journalentry = JournalEntryLine()
-        journalentry.Amount = 100
 
-        self.assertEquals(unicode(journalentry), "100")
+        self.assertEquals(journalentry.DetailType, "JournalEntryLineDetail")
+        self.assertEquals(journalentry.JournalEntryLineDetail, None)
 
 
 class JournalEntryLineDetailTests(unittest.TestCase):
-    def test_unicode(self):
+    def test_init(self):
         journalentry = JournalEntryLineDetail()
-        journalentry.PostingType = "test"
 
-        self.assertEquals(unicode(journalentry), "test")
+        self.assertEquals(journalentry.PostingType, "")
+        self.assertEquals(journalentry.TaxApplicableOn, "")
+        self.assertEquals(journalentry.Type, "")
+        self.assertEquals(journalentry.TaxAmount, 0)
+        self.assertEquals(journalentry.BillableStatus, "")
+        self.assertEquals(journalentry.Entity, None)
+        self.assertEquals(journalentry.EntityRef, None)
+        self.assertEquals(journalentry.AccountRef, None)
+        self.assertEquals(journalentry.ClassRef, None)
+        self.assertEquals(journalentry.DepartmentRef, None)
+        self.assertEquals(journalentry.TaxCodeRef, None)
