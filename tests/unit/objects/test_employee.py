@@ -9,3 +9,14 @@ class EmployeeTests(unittest.TestCase):
         employee.DisplayName = "test"
 
         self.assertEquals(unicode(employee), "test")
+
+    def test_to_ref(self):
+        employee = Employee()
+        employee.DisplayName = "test"
+        employee.Id = 100
+
+        ref = employee.to_ref()
+
+        self.assertEquals(ref.name, "test")
+        self.assertEquals(ref.type, "Employee")
+        self.assertEquals(ref.value, 100)
