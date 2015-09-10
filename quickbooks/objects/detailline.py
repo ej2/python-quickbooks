@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref, CustomField, LinkedTxn
+from base import QuickbooksBaseObject, Ref, CustomField, LinkedTxn, MarkupInfo
 
 
 class DetailLine(QuickbooksBaseObject):
@@ -112,15 +112,21 @@ class SalesItemLineDetail(QuickbooksBaseObject):
         "ClassRef": Ref,
         "TaxCodeRef": Ref,
         "PriceLevelRef": Ref,
+        "MarkupInfo": MarkupInfo,
     }
 
     def __init__(self):
         super(SalesItemLineDetail, self).__init__()
         self.UnitPrice = 0
         self.Qty = 0
-        self.MarkupInfo = ""
         self.ServiceDate = ""
         self.TaxInclusiveAmt = 0
+
+        self.MarkupInfo = None
+        self.ItemRef = None
+        self.ClassRef = None
+        self.TaxCodeRef = None
+        self.PriceLevelRef = None
 
     def __unicode__(self):
         return str(self.UnitPrice)

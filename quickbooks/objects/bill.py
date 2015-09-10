@@ -1,19 +1,6 @@
 from base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject, QuickbooksTransactionEntity, \
-    LinkedTxnMixin
+    LinkedTxnMixin, MarkupInfo
 from tax import TxnTaxDetail
-
-
-class MarkupInfo(QuickbooksBaseObject):
-    class_dict = {
-        "PriceLevelRef": Ref,
-    }
-
-    def __init__(self):
-        super(MarkupInfo, self).__init__()
-        self.PercentBased = False
-        self.Value = 0
-        self.Percent = 0
-        self.PriceLevelRef = None
 
 
 class AccountBasedExpenseLineDetail(QuickbooksBaseObject):

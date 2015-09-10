@@ -1,5 +1,5 @@
 from base import QuickbooksBaseObject, Address, EmailAddress, Ref, CustomField, CustomerMemo, QuickbooksManagedObject, \
-    LinkedTxnMixin, LinkedTxn
+    LinkedTxnMixin, LinkedTxn, MarkupInfo
 from tax import TxnTaxDetail
 
 
@@ -9,16 +9,17 @@ class SalesItemLineDetail(QuickbooksBaseObject):
         "TaxCodeRef": Ref,
         "ClassRef": Ref,
         "PriceLevelRef": Ref,
+        "MarkupInfo": MarkupInfo
     }
 
     def __init__(self):
         super(SalesItemLineDetail, self).__init__()
         self.Qty = 0
         self.UnitPrice = 0
-        self.MarkupInfo = ""
         self.ServiceDate = ""
         self.TaxInclusiveAmt = 0
 
+        self.MarkupInfo = None
         self.ItemRef = None
         self.TaxCodeRef = None
         self.ClassRef = None

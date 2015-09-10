@@ -1,7 +1,7 @@
 import unittest
 
-from quickbooks.objects.base import CustomerMemo, CustomField, Ref, WebAddress, EmailAddress, PhoneNumber, Address, LinkedTxn, MetaData
-
+from quickbooks.objects.base import CustomerMemo, CustomField, Ref, WebAddress, EmailAddress, PhoneNumber, \
+    Address, LinkedTxn, MetaData, MarkupInfo
 
 
 class AddressTests(unittest.TestCase):
@@ -80,3 +80,12 @@ class MetaDataTests(unittest.TestCase):
 
         self.assertEquals(unicode(meta), "Created 1/1/2000")
 
+
+class MarkupInfoTests(unittest.TestCase):
+    def test_init(self):
+        markup = MarkupInfo()
+
+        self.assertEquals(markup.PercentBased, False)
+        self.assertEquals(markup.Value, 0)
+        self.assertEquals(markup.Percent, 0)
+        self.assertEquals(markup.PriceLevelRef, None)

@@ -125,4 +125,14 @@ class CustomerMemo(QuickbooksBaseObject):
         return self.Value
 
 
+class MarkupInfo(QuickbooksBaseObject):
+    class_dict = {
+        "PriceLevelRef": Ref,
+    }
 
+    def __init__(self):
+        super(MarkupInfo, self).__init__()
+        self.PercentBased = False
+        self.Value = 0
+        self.Percent = 0
+        self.PriceLevelRef = None

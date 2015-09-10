@@ -1,4 +1,7 @@
-from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, LinkedTxnMixin
+from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin, \
+    LinkedTxn, Address, CustomField, MarkupInfo
+
+from tax import TxnTaxDetail
 
 
 class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
@@ -21,27 +24,63 @@ class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
         return self.BillableStatus
 
 
+class ItemBasedExpenseLineDetail(QuickbooksBaseObject):
+
+    class_dict = {
+        "ItemRef": Ref,
+        "ClassRef": Ref,
+        "PriceLevelRef": Ref,
+        "TaxCodeRef": Ref,
+        "CustomerRef": Ref,
+        "MarkupInfo": MarkupInfo
+    }
+
+    def __init__(self):
+
+        self.UnitPrice = 0
+        self.Qty = 0
+        self.BillableStatus = ""
+        self.TaxInclusiveAmt = 0
+
+        self.ItemRef = None
+        self.ClassRef = None
+        self.PriceLevelRef = None
+        self.TaxCodeRef = None
+        self.CustomerRef = None
+        self.MarkupInfo = None
+
+
 class PurchaseLine(QuickbooksBaseObject):
     class_dict = {
         "AccountBasedExpenseLineDetail": Ref,
+        "ItemBasedExpenseLineDetail": ItemBasedExpenseLineDetail,
     }
 
-    list_dict = {}
+    list_dict = {
+        "LinkedTxn": LinkedTxn,
+        "CustomField": CustomField,
+    }
 
     def __init__(self):
         super(PurchaseLine, self).__init__()
+        self.Id = 0
+        self.LineNum = 0
+        self.Description = ""
         self.Amount = 0
-        self.DetailType = ""
+        self.DetailType = "ItemBasedExpenseLineDetail"
 
         self.TaxCodeRef = None
         self.AccountRef = None
+        self.ItemBasedExpenseLineDetail = None
+
+        self.LinkedTxn = []
         self.AccountBasedExpenseLineDetail = []
 
     def __unicode__(self):
         return str(self.Amount)
 
 
-class Purchase(QuickbooksManagedObject, LinkedTxnMixin):
+class Purchase(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: This entity represents expenses, such as a purchase made from a vendor.
     There are three types of Purchases: Cash, Check, and Credit Card.
@@ -59,20 +98,44 @@ class Purchase(QuickbooksManagedObject, LinkedTxnMixin):
     class_dict = {
         "AccountRef": Ref,
         "EntityRef": Ref,
+        "DepartmentRef": Ref,
+        "CurrencyRef": Ref,
+        "PaymentMethodRef": Ref,
+        "RemitToAddr": Address,
+        "TxnTaxDetail": TxnTaxDetail
     }
 
     list_dict = {
-        "Line": PurchaseLine
+        "Line": PurchaseLine,
+        "LinkedTxn": LinkedTxn,
     }
 
     qbo_object_name = "Purchase"
 
     def __init__(self):
         super(Purchase, self).__init__()
+        self.DocNumber = ""
+        self.TxnDate = ""
+        self.ExchangeRate = 1
+        self.PrivateNote = ""
         self.PaymentType = ""
         self.Credit = False
         self.TotalAmt = 0
-        self.TxnDate = ""
+        self.PrintStatus = "NeedToPrint"
+        self.PurchaseEx = ""
+        self.TxnSource = ""
+        self.GlobalTaxCalculation = "TaxExcluded"
+
+        self.TxnTaxDetail = None
+        self.DepartmentRef = None
+        self.AccountRef = None
+        self.EnitityRef = None
+        self.CurrencyRef = None
+        self.PaymentMethodRef = None
+        self.RemitToAddr = None
+
+        self.Line = []
+        self.LinkedTxn = []
 
     def __unicode__(self):
         return str(self.TotalAmt)
