@@ -1,6 +1,6 @@
 import unittest
 
-from quickbooks.objects.creditmemo import SalesItemLineDetail, CreditMemoLine, CreditMemo
+from quickbooks.objects.creditmemo import SalesItemLineDetail, CreditMemoLine, CreditMemo, DiscountLineDetail
 
 
 class SalesItemLineDetailTests(unittest.TestCase):
@@ -27,3 +27,12 @@ class CreditMemoTests(unittest.TestCase):
         credit_memo.TotalAmt = 1000
 
         self.assertEquals(unicode(credit_memo), "1000")
+
+
+class DiscountLineDetailTests(unittest.TestCase):
+    def test_init(self):
+        discount_detail = DiscountLineDetail()
+
+        self.assertEquals(discount_detail.ClassRef, None)
+        self.assertEquals(discount_detail.TaxCodeRef, None)
+        self.assertEquals(discount_detail.Discount, None)
