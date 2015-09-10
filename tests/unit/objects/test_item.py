@@ -9,3 +9,14 @@ class ItemTests(unittest.TestCase):
         item.Name = "test"
 
         self.assertEquals(unicode(item), "test")
+
+    def test_to_ref(self):
+        item = Item()
+        item.Name = "test"
+        item.Id = 100
+
+        ref = item.to_ref()
+
+        self.assertEquals(ref.name, "test")
+        self.assertEquals(ref.type, "Item")
+        self.assertEquals(ref.value, 100)

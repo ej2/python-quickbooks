@@ -13,7 +13,7 @@ class CustomerTests(unittest.TestCase):
     def test_to_ref(self):
         customer = Customer()
         customer.DisplayName = "test"
-        customer.Id  = 100
+        customer.Id = 100
 
         ref = customer.to_ref()
 

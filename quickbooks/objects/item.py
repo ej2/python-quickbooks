@@ -1,7 +1,7 @@
-from base import Ref, QuickbooksManagedObject
+from base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity
 
 
-class Item(QuickbooksManagedObject):
+class Item(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: An item is a thing that your company buys, sells, or re-sells, such as products and services.
     An item is shown as a line on an invoice or other sales form. The Item.Type attribute, which specifies how
@@ -18,7 +18,10 @@ class Item(QuickbooksManagedObject):
     class_dict = {
         "AssetAccountRef": Ref,
         "ExpenseAccountRef": Ref,
-        "IncomeAccountRef": Ref
+        "IncomeAccountRef": Ref,
+        "ParentRef": Ref,
+        "SalesTaxCodeRef": Ref,
+        "PurchaseTaxCodeRef": Ref,
     }
 
     qbo_object_name = "Item"
@@ -28,21 +31,41 @@ class Item(QuickbooksManagedObject):
         self.Name = ""
         self.Description = ""
         self.Active = True
+        self.SubItem = False
         self.FullyQualifiedName = ""
-        self.Taxable = ""
+        self.Taxable = False
+        self.SalesTaxInclusive = False
         self.UnitPrice = ""
-        self.Type = ""
+        self.Type = "Inventory"
+        self.ItemCategoryType = "Product"
+        self.Level = 0
         self.PurchaseDesc = ""
+        self.PurchaseTaxInclusive = False
         self.PurchaseCost = 0
-        self.TrackQtyOnHand = True
+        self.TrackQtyOnHand = False
         self.QtyOnHand = 0
         self.InvStartDate = ""
+
+        self.AbatementRate = ""
+        self.ReverseChargeRate = ""
+        self.ServiceType = ""
 
         self.AssetAccountRef = None
         self.ExpenseAccountRef = None
         self.IncomeAccountRef = None
+        self.SalesTaxCodeRef = None
+        self.ParentRef = None
+        self.PurchaseTaxCodeRef = None
 
     def __unicode__(self):
         return self.Name
 
+    def to_ref(self):
+        ref = Ref()
+
+        ref.name = self.Name
+        ref.type = self.qbo_object_name
+        ref.value = self.Id
+
+        return ref
 
