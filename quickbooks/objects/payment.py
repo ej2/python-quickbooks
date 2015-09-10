@@ -1,4 +1,5 @@
 from base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject, QuickbooksTransactionEntity
+from creditcardpayment import CreditCardPayment
 
 
 class PaymentLine(QuickbooksBaseObject):
@@ -8,9 +9,10 @@ class PaymentLine(QuickbooksBaseObject):
 
     def __init__(self):
         super(PaymentLine, self).__init__()
-        self.Amount = 0
+        self.Id = 0
         self.LineNum = 0
         self.Description = ""
+        self.Amount = 0
 
         self.LinkedTxn = []
 
@@ -37,9 +39,12 @@ class Payment(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
 
     class_dict = {
+        "ARAccountRef": Ref,
         "CustomerRef": Ref,
         "PaymentMethodRef": Ref,
-        "DepositToAccountRef": Ref
+        "DepositToAccountRef": Ref,
+        "CurrencyRef": Ref,
+        "CreditCardPayment": CreditCardPayment,
     }
 
     list_dict = {
@@ -50,36 +55,22 @@ class Payment(QuickbooksManagedObject, QuickbooksTransactionEntity):
 
     def __init__(self):
         super(Payment, self).__init__()
-        self.PaymentRefNum = 0
+        self.PaymentRefNum = ""
         self.TotalAmt = 0
         self.UnappliedAmt = 0
+        self.ExchangeRate = 1
         self.TxnDate = ""
+        self.TxnSource = ""
         self.PrivateNote = ""
-        self.TxnStatus = ""
+        self.TxnStatus = "PAID"
+
+        self.CreditCardPayment = None
+        self.ARAccountRef = None
         self.CustomerRef = None
+        self.CurrencyRef = None
         self.PaymentMethodRef = None
         self.DepositToAccountRef = None
         self.Line = []
 
     def __unicode__(self):
         return str(self.TotalAmt)
-
-#
-# {'CurrencyRef': {u'name': u'United States Dollar', u'value': u'USD'},
-#  'CustomerRef': <quickbooks.objects.base.Ref object at 0x113e0ca90>,
-#  'DepositToAccountRef': <quickbooks.objects.base.Ref object at 0x113dff1d0>,
-#  'Id': u'291',
-#  'Line': [],
-#  'MetaData': {u'CreateTime': u'2015-09-03T09:01:33-07:00',
-#               u'LastUpdatedTime': u'2015-09-03T09:01:33-07:00'},
-#  'PaymentMethodRef': None,
-#  'PaymentRefNum': u'123',
-#  'PrivateNote': u'test',
-#  'ProcessPayment': False,
-#  'SyncToken': u'0',
-#  'TotalAmt': 1000.0,
-#  'TxnDate': u'2015-09-03',
-#  'TxnStatus': '',
-#  'UnappliedAmt': 1000.0,
-#  'domain': u'QBO',
-#  'sparse': False}
