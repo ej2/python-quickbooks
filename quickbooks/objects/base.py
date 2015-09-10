@@ -123,3 +123,6 @@ class CustomerMemo(QuickbooksBaseObject):
 
     def __unicode__(self):
         return self.Value
+
+
+

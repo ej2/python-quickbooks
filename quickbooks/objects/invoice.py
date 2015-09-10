@@ -1,59 +1,14 @@
 from base import QuickbooksBaseObject, Ref, CustomField, Address, EmailAddress, CustomerMemo, QuickbooksManagedObject, \
     QuickbooksTransactionEntity, LinkedTxn, LinkedTxnMixin
 from tax import TxnTaxDetail
+from detailline import DetailLine
 
 
-class DiscountLineDetail(QuickbooksBaseObject):
-    class_dict = {
-        "DiscountAccountRef": Ref
-    }
-
+class DeliveryInfo(QuickbooksBaseObject):
     def __init__(self):
-        super(DiscountLineDetail, self).__init__()
-        self.PercentBased = True
-        self.DiscountPercent = 0
-        self.DiscountAccountRef = None
-
-    def __unicode__(self):
-        return str(self.DiscountPercent)
-
-
-class SalesItemLineDetail(QuickbooksBaseObject):
-    class_dict = {
-        "ItemRef": Ref,
-        "TaxCodeRef": Ref
-    }
-
-    def __init__(self):
-        super(SalesItemLineDetail, self).__init__()
-        self.UnitPrice = 0
-        self.Qty = 0
-
-        self.ItemRef = None
-        self.TaxCodeRef = None
-
-    def __unicode__(self):
-        return str(self.UnitPrice)
-
-
-class InvoiceDetail(QuickbooksBaseObject):
-    class_dict = {
-        "DiscountLineDetail": DiscountLineDetail,
-        "SalesItemLineDetail": SalesItemLineDetail,
-    }
-
-    def __init__(self):
-        super(InvoiceDetail, self).__init__()
-        self.LineNum = ""
-        self.Description = ""
-        self.Amount = ""
-        self.DetailType = "SalesItemLineDetail"
-
-        self.DiscountLineDetail = None
-        self.SalesItemLineDetail = None
-
-    def __unicode__(self):
-        return "[{0}] {1} {2}".format(self.LineNum, self.Description, self.Amount)
+        super(DeliveryInfo, self).__init__()
+        self.DeliveryType = ""
+        self.DeliveryTime = ""
 
 
 class Invoice(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
@@ -74,12 +29,14 @@ class Invoice(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMix
         "ShipAddr": Address,
         "TxnTaxDetail": TxnTaxDetail,
         "BillEmail": EmailAddress,
-        "CustomerMemo": CustomerMemo
+        "CustomerMemo": CustomerMemo,
+        "DeliveryInfo": DeliveryInfo
     }
 
     list_dict = {
         "CustomField": CustomField,
-        "Line": InvoiceDetail
+        "Line": DetailLine,
+        "LinkedTxn": LinkedTxn,
     }
 
     qbo_object_name = "Invoice"
@@ -91,23 +48,30 @@ class Invoice(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMix
         self.AllowIPNPayment = True
         self.DocNumber = ""
         self.TxnDate = ""
+        self.TxnSource = ""
         self.PrivateNote = ""
         self.DueDate = ""
         self.ShipDate = ""
         self.TrackingNum = ""
         self.TotalAmt = ""
-        self.ApplyTaxAfterDiscount = ""
+        self.ApplyTaxAfterDiscount = False
         self.PrintStatus = "NotSet"
         self.EmailStatus = "NotSet"
+        self.ExchangeRate = 1
+        self.GlobalTaxCalculation = "TaxExcluded"
 
         self.BillAddr = None
         self.ShipAddr = None
         self.BillEmail = None
         self.CustomerRef = None
-        self.CustomerMemo = None
+        self.CurrencyRef = None
+        self.DepartmentRef = None
+        self.TxnTaxDetail = None
+        self.DeliveryInfo = None
 
         self.CustomField = []
         self.Line = []
+        self.LinkedTxn = []
 
     def __unicode__(self):
         return str(self.TotalAmt)
