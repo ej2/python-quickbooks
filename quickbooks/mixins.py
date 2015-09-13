@@ -76,12 +76,12 @@ class ListMixin(object):
         return cls.where("", start_position=start_position, max_results=max_results)
 
     @classmethod
-    def filter(cls, **kwargs):
+    def filter(cls, start_position="", max_results="", **kwargs):
         """
         :param kwargs: field names and values to filter the query
         :return: Filtered list
         """
-        return cls.where(build_where_clause(**kwargs))
+        return cls.where(build_where_clause(**kwargs), start_position=start_position, max_results=max_results)
 
     @classmethod
     def where(cls, where_clause="", start_position="", max_results=""):

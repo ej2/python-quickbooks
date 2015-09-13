@@ -19,12 +19,12 @@ class ListMixinTest(unittest.TestCase):
     @patch('quickbooks.mixins.ListMixin.where')
     def test_all(self, where):
         Department.all()
-        where.assert_called_once_with('', max_results=1000, start_position='')
+        where.assert_called_once_with('', max_results=100, start_position='')
 
     @patch('quickbooks.mixins.ListMixin.where')
     def test_filter(self, where):
-        Department.filter(Active=True)
-        where.assert_called_once_with("Active = True")
+        Department.filter(max_results=25, start_position='1', Active=True)
+        where.assert_called_once_with("Active = True", max_results=25, start_position='1')
 
     @patch('quickbooks.mixins.ListMixin.query')
     def test_where(self, query):

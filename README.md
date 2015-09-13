@@ -68,12 +68,17 @@ List of objects:
     customers = Customer.all()
 
 __Note:__ The maximum number of entities that can be returned in a response is 1000.  If the result size is not specified, the default number is 100. 
-(See [Intuit developer guide](https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/querying_data) for supported SQL statements)
+(See [Intuit developer guide](https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/querying_data) for details)
 
 Filtered list of objects:
 
     customers = Customer.filter(Active=True, FamilyName="Smith")
+    
 
+Filtered list of objects with paging:
+
+    customers = Customer.filter(start_position=1, max_results=25, Active=True, FamilyName="Smith")
+    
 
 List with custom Where Clause (do not include the "WHERE"):
         
@@ -83,7 +88,7 @@ List with custom Where Clause (do not include the "WHERE"):
 List with custom Where Clause with paging:
  
 
-    customers = Customer.where("Active = True AND CompanyName LIKE 'S%'", start_position=1, max_results=25)
+    customers = Customer.where("CompanyName LIKE 'S%'", start_position=1, max_results=25)
  
  
 Filtering a list with a custom query (See [Intuit developer guide](https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/querying_data) for supported SQL statements):
