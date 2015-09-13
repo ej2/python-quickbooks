@@ -68,8 +68,12 @@ class ListMixin(object):
     qbo_object_name = ""
 
     @classmethod
-    def all(cls):
-        return cls.where("")
+    def all(cls, start_position="", max_results=100):
+        """
+        :param max_results: The maximum number of entities that can be returned in a response is 1000.
+        :return: Returns list
+        """
+        return cls.where("", start_position=start_position, max_results=max_results)
 
     @classmethod
     def filter(cls, **kwargs):
@@ -80,7 +84,7 @@ class ListMixin(object):
         return cls.where(build_where_clause(**kwargs))
 
     @classmethod
-    def where(cls, where_clause=""):
+    def where(cls, where_clause="", start_position="", max_results=""):
         """
         :param where_clause: QBO SQL where clause (DO NOT include 'WHERE')
         :return: Returns list filtered by input where_clause
@@ -88,7 +92,13 @@ class ListMixin(object):
         if where_clause:
             where_clause = "WHERE " + where_clause
 
-        select = "select * from {0} {1}".format(cls.qbo_object_name, where_clause)
+        if start_position:
+            start_position = " STARTPOSITION " + start_position
+
+        if max_results:
+            max_results = " MAXRESULTS " + max_results
+
+        select = "select * from {0} {1}{2}{3}".format(cls.qbo_object_name, where_clause, start_position, max_results)
 
         return cls.query(select)
 
@@ -96,7 +106,7 @@ class ListMixin(object):
     def query(cls, select):
         """
         :param select: QBO SQL query select statement
-        :return: List
+        :return: Returns list
         """
 
         qb = QuickBooks()

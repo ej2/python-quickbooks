@@ -19,7 +19,7 @@ class ListMixinTest(unittest.TestCase):
     @patch('quickbooks.mixins.ListMixin.where')
     def test_all(self, where):
         Department.all()
-        where.assert_called_once_with("")
+        where.assert_called_once_with('', max_results=1000, start_position='')
 
     @patch('quickbooks.mixins.ListMixin.where')
     def test_filter(self, where):
