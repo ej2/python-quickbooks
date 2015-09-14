@@ -1,49 +1,30 @@
-from base import QuickbooksBaseObject, Ref, CustomField, QuickbooksManagedObject, LinkedTxnMixin
+from base import Ref, CustomField, QuickbooksManagedObject, \
+    LinkedTxnMixin, QuickbooksTransactionEntity, LinkedTxn, Address, EmailAddress
 from tax import TxnTaxDetail
+from detailline import DetailLine
 
 
-class SalesItemLineDetail(QuickbooksBaseObject):
-    class_dict = {
-        "ItemRef": Ref,
-        "TaxCodeRef": Ref
-    }
-
-    def __init__(self):
-        super(SalesItemLineDetail, self).__init__()
-        self.ItemRef = None
-        self.TaxCodeRef = None
-
-
-class RefundReceiptLine(QuickbooksBaseObject):
-    class_dict = {
-        "SalesItemLineDetail": SalesItemLineDetail
-    }
-
-    def __init__(self):
-        super(RefundReceiptLine, self).__init__()
-        self.LineNum = ""
-        self.Amount = 0
-        self.DetailType = ""
-
-        self.SalesItemLineDetail = None
-
-    def __unicode__(self):
-        return str(self.Amount)
-
-
-class RefundReceipt(QuickbooksManagedObject, LinkedTxnMixin):
+class RefundReceipt(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: RefundReceipt represents a refund to the customer for a product or service that was given.
     """
     class_dict = {
         "DepartmentRef": Ref,
+        "CurrencyRef": Ref,
         "TxnTaxDetail": TxnTaxDetail,
-        "DepositToAccountRef": Ref
+        "DepositToAccountRef": Ref,
+        "CustomerRef": Ref,
+        "BillAddr":  Address,
+        "ShipAddr":  Address,
+        "ClassRef": Ref,
+        "BillEmail": EmailAddress,
+        "PaymentMethodRef": Ref,
     }
 
     list_dict = {
         "CustomField": CustomField,
-        "Line": RefundReceiptLine,
+        "Line": DetailLine,
+        "LinkedTxn": LinkedTxn
     }
 
     qbo_object_name = "RefundReceipt"
@@ -56,12 +37,24 @@ class RefundReceipt(QuickbooksManagedObject, LinkedTxnMixin):
         self.PrintStatus = ""
         self.Balance = 0
         self.PaymentRefNum = ""
+        self.TxnDate = ""
+        self.ExchangeRate = 1
+        self.PrivateNote = ""
+        self.CustomerMemo = ""
+        self.PaymentRefNum = ""
+        self.PaymentType = ""
+        self.CheckPayment = ""
+        self.CreditCardPayment = ""
+        self.TxnSource = ""
+        self.GlobalTaxCalculation = "TaxExcluded"
 
         self.DepartmentRef = None
+        self.CurrencyRef = None
         self.TxnTaxDetail = None
         self.DepositToAccountRef = None
         self.CustomField = []
         self.Line = []
+        self.LinkedTxn = []
 
     def __unicode__(self):
         return str(self.TotalAmt)
