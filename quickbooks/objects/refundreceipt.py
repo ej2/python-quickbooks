@@ -52,6 +52,13 @@ class RefundReceipt(QuickbooksManagedObject, QuickbooksTransactionEntity, Linked
         self.CurrencyRef = None
         self.TxnTaxDetail = None
         self.DepositToAccountRef = None
+        self.CustomerRef = None
+        self.BillAddr = None
+        self.ShipAddr = None
+        self.ClassRef = None
+        self.BillEmail = None
+        self.PaymentMethodRef = None
+
         self.CustomField = []
         self.Line = []
         self.LinkedTxn = []
