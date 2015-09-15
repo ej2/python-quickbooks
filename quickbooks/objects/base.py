@@ -13,7 +13,7 @@ class QuickbooksTransactionEntity(QuickbooksBaseObject):
     def __init__(self):
         self.Id = None
         self.SyncToken = 0
-        self.sparse = "false"
+        self.sparse = False
         self.domain = "QBO"
         self.TxnDate = ""
 
@@ -43,7 +43,7 @@ class LinkedTxnMixin(object):
 
 class Address(ToJsonMixin, FromJsonMixin):
     def __init__(self):
-        self.Id = 0
+        self.Id = None
         self.Line1 = ""
         self.Line2 = ""
         self.City = ""

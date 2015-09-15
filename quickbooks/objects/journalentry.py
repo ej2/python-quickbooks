@@ -4,21 +4,34 @@ from tax import TxnTaxDetail
 from detailline import DetailLine
 
 
+class Entity(QuickbooksBaseObject):
+    class_dict = {
+        "EntityRef": Ref
+    }
+
+    def __init__(self):
+        super(Entity, self).__init__()
+        self.Type = ""
+        self.EntityRef = None
+
+
 class JournalEntryLineDetail(QuickbooksBaseObject):
     class_dict = {
-        "Entity": Ref
+        "Entity": Entity,
+        "AccountRef": Ref,
+        "ClassRef": Ref,
+        "DepartmentRef": Ref,
+        "TaxCodeRef": Ref,
     }
 
     def __init__(self):
         super(JournalEntryLineDetail, self).__init__()
         self.PostingType = ""
-        self.TaxApplicableOn = ""
-        self.Type = ""
+        self.TaxApplicableOn = "Sales"
         self.TaxAmount = 0
         self.BillableStatus = ""
 
         self.Entity = None
-        self.EntityRef = None
         self.AccountRef = None
         self.ClassRef = None
         self.DepartmentRef = None
@@ -82,7 +95,7 @@ class JournalEntry(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedT
         super(JournalEntry, self).__init__()
         self.Adjustment = False
         self.TxnDate = ""
-        self.TxnSource = ""
+        #self.TxnSource = ""
         self.DocNumber = ""
         self.PrivateNote = ""
         self.TotalAmt = 0

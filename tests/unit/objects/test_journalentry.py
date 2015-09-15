@@ -24,12 +24,10 @@ class JournalEntryLineDetailTests(unittest.TestCase):
         journalentry = JournalEntryLineDetail()
 
         self.assertEquals(journalentry.PostingType, "")
-        self.assertEquals(journalentry.TaxApplicableOn, "")
-        self.assertEquals(journalentry.Type, "")
+        self.assertEquals(journalentry.TaxApplicableOn, "Sales")
         self.assertEquals(journalentry.TaxAmount, 0)
         self.assertEquals(journalentry.BillableStatus, "")
         self.assertEquals(journalentry.Entity, None)
-        self.assertEquals(journalentry.EntityRef, None)
         self.assertEquals(journalentry.AccountRef, None)
         self.assertEquals(journalentry.ClassRef, None)
         self.assertEquals(journalentry.DepartmentRef, None)

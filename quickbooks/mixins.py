@@ -4,8 +4,13 @@ from client import QuickBooks
 
 class ToJsonMixin(object):
     def to_json(self):
-        return json.dumps(self, default=lambda obj: {k: v for k, v in obj.__dict__.items() if not k.startswith('_')},
-                          sort_keys=True, indent=4)
+        return json.dumps(self, default=self.json_filter(), sort_keys=True, indent=4)
+
+    def json_filter(self):
+        # filter out properties that have names starting with _ or properties that have a value of None
+        return lambda obj: {k: v for k, v in obj.__dict__.items()
+                                   if not k.startswith('_') and getattr(obj, k) is not None}
+
 
 class FromJsonMixin(object):
     class_dict = {}
