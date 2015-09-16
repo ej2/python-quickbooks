@@ -22,7 +22,6 @@ class QuickBooks(object):
     session = None
     sandbox = False
     verbose = False
-    ssl_verify = True
 
     qbService = None
 
@@ -77,9 +76,6 @@ class QuickBooks(object):
             if 'verbose' in args:
                 cls.verbose = True
 
-            if 'ssl_verify' in args:
-                cls.ssl_verify = args['ssl_verify']
-
         return QuickBooks.__instance
 
     def _drop(self):
@@ -106,7 +102,7 @@ class QuickBooks(object):
 
         return self.session
 
-    def get_authorize_url(self, verify=True):
+    def get_authorize_url(self):
         """
         Returns the Authorize URL as returned by QB, and specified by OAuth 1.0a.
         :return URI:
@@ -115,7 +111,7 @@ class QuickBooks(object):
             self.set_up_service()
 
         self.request_token, self.request_token_secret = self.qbService.get_request_token(
-            params={'oauth_callback': self.callback_url}, verify=self.ssl_verify)
+            params={'oauth_callback': self.callback_url})
 
         return self.qbService.get_authorize_url(self.request_token)
 
@@ -139,8 +135,7 @@ class QuickBooks(object):
         session = self.qbService.get_auth_session(
             self.request_token,
             self.request_token_secret,
-            data={'oauth_verifier': oauth_verifier},
-            verify=self.ssl_verify)
+            data={'oauth_verifier': oauth_verifier})
 
         self.access_token = session.access_token
         self.access_token_secret = session.access_token_secret
