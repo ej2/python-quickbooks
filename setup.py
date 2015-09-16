@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 
-VERSION = (0, 2, 7)
+VERSION = (0, 2, 8)
 version = '.'.join(map(str, VERSION))
 
 setup(
@@ -16,7 +16,8 @@ setup(
 
     install_requires=[
         'setuptools',
-        'rauth',
+        'rauth>=0.7.1',
+        'requests>=2.7.0'
         'simplejson>=2.2.0',
         'six>=1.4.0',
         'python-dateutil',
