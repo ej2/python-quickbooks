@@ -1,7 +1,7 @@
-from base import Ref, QuickbooksManagedObject, LinkedTxnMixin
+from base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin
 
 
-class Transfer(QuickbooksManagedObject, LinkedTxnMixin):
+class Transfer(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: A Transfer represents a transaction where funds are moved between two accounts from the
     company's QuickBooks chart of accounts.
@@ -16,6 +16,10 @@ class Transfer(QuickbooksManagedObject, LinkedTxnMixin):
     def __init__(self):
         super(Transfer, self).__init__()
         self.Amount = 0
+        self.TxnDate = ""
+        self.PrivateNote = ""
+        self.TxnSource = ""
+
         self.FromAccountRef = None
         self.ToAccountRef = None
 
