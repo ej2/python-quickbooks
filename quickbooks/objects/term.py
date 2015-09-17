@@ -1,7 +1,30 @@
-from base import QuickbooksManagedObject
+from base import QuickbooksBaseObject, QuickbooksManagedObject, QuickbooksTransactionEntity, Ref, CustomField
 
 
-class Term(QuickbooksManagedObject):
+class AttachableRef(QuickbooksBaseObject):
+    class_dict = {
+        "EntityRef": Ref
+    }
+
+    list_dict = {
+        "CustomField": CustomField
+    }
+
+    qbo_object_name = "AttachableRef"
+
+    def __init__(self):
+        super(AttachableRef, self).__init__()
+
+        self.LineInfo = ""
+        self.IncludeOnSend = False
+        self.Inactive = False
+        self.NoRefOnly = False
+
+        self.EntityRef = None
+        self.CustomField = []
+
+
+class Term(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: The Term entity represents the terms under which a sale is made, typically expressed in the
     form of days due after the goods are received. Optionally, a discount of the total amount may be applied if
@@ -19,8 +42,10 @@ class Term(QuickbooksManagedObject):
         self.Name = ""
         self.Type = ""
         self.DiscountPercent = 0
+        self.DueDays = 0
         self.DayOfMonthDue = 0
         self.DueNextMonthDays = 0
+        self.DiscountDays = 0
         self.DiscountDayOfMonth = 0
         self.Active = True
 
