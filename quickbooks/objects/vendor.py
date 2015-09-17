@@ -1,7 +1,20 @@
-from base import Address, PhoneNumber, EmailAddress, WebAddress, Ref, QuickbooksManagedObject
+from base import Address, PhoneNumber, EmailAddress, WebAddress, Ref, QuickbooksBaseObject, \
+    QuickbooksManagedObject, QuickbooksTransactionEntity
 
 
-class Vendor(QuickbooksManagedObject):
+class ContactInfo(QuickbooksBaseObject):
+        class_dict = {
+            "Telephone": PhoneNumber
+        }
+
+        def __init__(self):
+            super(ContactInfo, self).__init__()
+
+            self.Type = ""
+            self.Telephone = None
+
+
+class Vendor(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: The Vendor represents the seller from whom your company purchases any service or product.
     """
@@ -10,10 +23,13 @@ class Vendor(QuickbooksManagedObject):
         "BillAddr": Address,
         "TermRef": Ref,
         "PrimaryPhone": PhoneNumber,
+        "AlternatePhone": PhoneNumber,
         "Mobile": PhoneNumber,
         "Fax": PhoneNumber,
         "PrimaryEmailAddr": EmailAddress,
         "WebAddr": WebAddress,
+        "CurrencyRef": Ref,
+        "APAccountRef": Ref
     }
 
     qbo_object_name = "Vendor"
@@ -22,24 +38,29 @@ class Vendor(QuickbooksManagedObject):
         super(Vendor, self).__init__()
         self.Title = ""
         self.GivenName = ""
+        self.MiddleName = ""
         self.FamilyName = ""
         self.Suffix = ""
         self.CompanyName = ""
         self.DisplayName = ""
         self.PrintOnCheckName = ""
         self.Active = True
-        self.TaxIdentifier = 0
+        self.TaxIdentifier = ""
         self.Balance = 0
         self.AcctNum = ""
         self.Vendor1099 = True
+        self.TaxReportingBasis = ""
 
         self.BillAddr = None
         self.PrimaryPhone = None
+        self.AlternatePhone = None
         self.Mobile = None
         self.Fax = None
         self.PrimaryEmailAddr = None
         self.WebAddr = None
         self.TermRef = None
+        self.CurrencyRef = None
+        self.APAccountRef = None
 
     def __unicode__(self):
         return self.DisplayName
