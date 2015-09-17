@@ -1,7 +1,7 @@
 import unittest
 
 from quickbooks.objects.base import CustomerMemo, CustomField, Ref, WebAddress, EmailAddress, PhoneNumber, \
-    Address, LinkedTxn, MetaData, MarkupInfo
+    Address, LinkedTxn, MetaData, MarkupInfo, AttachableRef
 
 
 class AddressTests(unittest.TestCase):
@@ -89,3 +89,15 @@ class MarkupInfoTests(unittest.TestCase):
         self.assertEquals(markup.Value, 0)
         self.assertEquals(markup.Percent, 0)
         self.assertEquals(markup.PriceLevelRef, None)
+
+
+class AttachableRefTests(unittest.TestCase):
+    def test_init(self):
+        attachable = AttachableRef()
+        attachable.Name = "test"
+
+        self.assertEquals(attachable.LineInfo, "")
+        self.assertEquals(attachable.IncludeOnSend, False)
+        self.assertEquals(attachable.Inactive, False)
+        self.assertEquals(attachable.NoRefOnly, False)
+        self.assertEquals(attachable.EntityRef, None)

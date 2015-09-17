@@ -1,27 +1,4 @@
-from base import QuickbooksBaseObject, QuickbooksManagedObject, QuickbooksTransactionEntity, Ref, CustomField
-
-
-class AttachableRef(QuickbooksBaseObject):
-    class_dict = {
-        "EntityRef": Ref
-    }
-
-    list_dict = {
-        "CustomField": CustomField
-    }
-
-    qbo_object_name = "AttachableRef"
-
-    def __init__(self):
-        super(AttachableRef, self).__init__()
-
-        self.LineInfo = ""
-        self.IncludeOnSend = False
-        self.Inactive = False
-        self.NoRefOnly = False
-
-        self.EntityRef = None
-        self.CustomField = []
+from base import QuickbooksManagedObject, QuickbooksTransactionEntity, AttachableRef
 
 
 class Term(QuickbooksManagedObject, QuickbooksTransactionEntity):
@@ -34,7 +11,9 @@ class Term(QuickbooksManagedObject, QuickbooksTransactionEntity):
     date -A percent discount -An absolute discount
     """
 
-    class_dict = {}
+    class_dict = {
+        "AttachableRef": AttachableRef
+    }
     qbo_object_name = "Term"
 
     def __init__(self):
@@ -48,6 +27,8 @@ class Term(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.DiscountDays = 0
         self.DiscountDayOfMonth = 0
         self.Active = True
+
+        self.AttachableRef = None
 
     def __unicode__(self):
         return self.Name

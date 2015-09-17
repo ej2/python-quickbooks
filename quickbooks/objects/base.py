@@ -136,3 +136,26 @@ class MarkupInfo(QuickbooksBaseObject):
         self.Value = 0
         self.Percent = 0
         self.PriceLevelRef = None
+
+
+class AttachableRef(QuickbooksBaseObject):
+    class_dict = {
+        "EntityRef": Ref
+    }
+
+    list_dict = {
+        "CustomField": CustomField
+    }
+
+    qbo_object_name = "AttachableRef"
+
+    def __init__(self):
+        super(AttachableRef, self).__init__()
+
+        self.LineInfo = ""
+        self.IncludeOnSend = False
+        self.Inactive = False
+        self.NoRefOnly = False
+
+        self.EntityRef = None
+        self.CustomField = []
