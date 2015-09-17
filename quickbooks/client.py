@@ -109,7 +109,6 @@ class QuickBooks(object):
         """
         if self.qbService is None:
             self.set_up_service()
-        import pdb; pdb.set_trace()
 
         response = self.qbService.get_raw_request_token(
            params={'oauth_callback': self.callback_url})
