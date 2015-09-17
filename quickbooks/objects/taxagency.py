@@ -1,7 +1,7 @@
-from base import QuickbooksManagedObject
+from base import QuickbooksTransactionEntity, QuickbooksManagedObject
 
 
-class TaxAgency(QuickbooksManagedObject):
+class TaxAgency(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: Tax Agency is an entity that is associated with a tax rate and identifies the agency to which that tax rate
     applies, that is, the entity that collects those taxes.
@@ -14,6 +14,7 @@ class TaxAgency(QuickbooksManagedObject):
     def __init__(self):
         super(TaxAgency, self).__init__()
         self.DisplayName = ""
+        self.TaxRegistrationNumber = ""
         self.TaxTrackedOnSales = True
         self.TaxTrackedOnPurchases = False
 

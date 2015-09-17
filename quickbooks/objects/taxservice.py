@@ -1,4 +1,5 @@
-from base import QuickbooksBaseObject, QuickbooksManagedObject
+from base import QuickbooksBaseObject
+from ..mixins import UpdateMixin
 
 
 class TaxRateDetails(QuickbooksBaseObject):
@@ -7,16 +8,16 @@ class TaxRateDetails(QuickbooksBaseObject):
     def __init__(self):
         super(TaxRateDetails, self).__init__()
         self.TaxRateName = ""
-        self.TaxRateId = 0
-        self.RateValue = 0
-        self.TaxAgencyId = 0
-        self.TaxApplicableOn = ""
+        self.TaxRateId = False
+        self.RateValue = ""
+        self.TaxAgencyId = ""
+        self.TaxApplicableOn = "Sales"
 
     def __unicode__(self):
         return self.TaxRateName
 
 
-class TaxService(QuickbooksManagedObject):
+class TaxService(QuickbooksBaseObject, UpdateMixin):
     """
     QBO definition: The TaxService endpoint allows you to perform the following actions:
 
@@ -32,13 +33,14 @@ class TaxService(QuickbooksManagedObject):
         "TaxRateDetails": TaxRateDetails
     }
 
-    qbo_object_name = "TaxService"
+    qbo_object_name = "TaxService/Taxcode"
 
     def __init__(self):
         super(TaxService, self).__init__()
         self.TaxCode = ""
         self.TaxCodeId = ""
-        self.Active = True
+
+        self.TaxRateDetails = None
 
     def __unicode__(self):
         return self.TaxCode

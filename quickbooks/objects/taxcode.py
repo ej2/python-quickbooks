@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject
+from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity
 
 
 class TaxRateDetail(QuickbooksBaseObject):
@@ -27,7 +27,7 @@ class TaxRateList(QuickbooksBaseObject):
         self.TaxRateDetail = []
 
 
-class TaxCode(QuickbooksManagedObject):
+class TaxCode(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: The PaymentMethod entity provides the method of payment for received goods. Delete is achieved by setting the
     Active attribute to false in an entity update request; thus, making it inactive. In this type of delete,
