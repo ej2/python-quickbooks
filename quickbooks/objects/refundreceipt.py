@@ -1,9 +1,11 @@
+from six import python_2_unicode_compatible
 from .base import Ref, CustomField, QuickbooksManagedObject, \
     LinkedTxnMixin, QuickbooksTransactionEntity, LinkedTxn, Address, EmailAddress
 from .tax import TxnTaxDetail
 from .detailline import DetailLine
 
 
+@python_2_unicode_compatible
 class RefundReceipt(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: RefundReceipt represents a refund to the customer for a product or service that was given.
@@ -63,5 +65,5 @@ class RefundReceipt(QuickbooksManagedObject, QuickbooksTransactionEntity, Linked
         self.Line = []
         self.LinkedTxn = []
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.TotalAmt)

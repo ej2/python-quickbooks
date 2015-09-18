@@ -1,19 +1,21 @@
+from six import python_2_unicode_compatible
 from .base import Address, PhoneNumber, EmailAddress, WebAddress, Ref, QuickbooksBaseObject, \
     QuickbooksManagedObject, QuickbooksTransactionEntity
 
 
 class ContactInfo(QuickbooksBaseObject):
-        class_dict = {
-            "Telephone": PhoneNumber
-        }
+    class_dict = {
+        "Telephone": PhoneNumber
+    }
 
-        def __init__(self):
-            super(ContactInfo, self).__init__()
+    def __init__(self):
+        super(ContactInfo, self).__init__()
 
-            self.Type = ""
-            self.Telephone = None
+        self.Type = ""
+        self.Telephone = None
 
 
+@python_2_unicode_compatible
 class Vendor(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: The Vendor represents the seller from whom your company purchases any service or product.
@@ -62,7 +64,7 @@ class Vendor(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.CurrencyRef = None
         self.APAccountRef = None
 
-    def __unicode__(self):
+    def __str__(self):
         return self.DisplayName
 
     def to_ref(self):

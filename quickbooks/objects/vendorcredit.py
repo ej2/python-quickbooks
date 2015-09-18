@@ -1,3 +1,4 @@
+from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, \
     LinkedTxnMixin, MarkupInfo
 from .detailline import DetailLine
@@ -61,6 +62,7 @@ class AccountBasedExpenseLine(DetailLine):
         self.AccountBasedExpenseLineDetail = None
 
 
+@python_2_unicode_compatible
 class VendorCredit(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: The Vendor Credit entity is an accounts payable transaction that represents a refund or credit
@@ -94,5 +96,5 @@ class VendorCredit(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedT
 
         self.Line = []
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.TotalAmt)

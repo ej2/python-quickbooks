@@ -1,3 +1,4 @@
+from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, CustomField, Address, EmailAddress, CustomerMemo, QuickbooksManagedObject, \
     QuickbooksTransactionEntity, LinkedTxn, LinkedTxnMixin
 from .tax import TxnTaxDetail
@@ -11,6 +12,7 @@ class DeliveryInfo(QuickbooksBaseObject):
         self.DeliveryTime = ""
 
 
+@python_2_unicode_compatible
 class Invoice(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: An Invoice represents a sales form where the customer pays for a product or service later.
@@ -73,7 +75,7 @@ class Invoice(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMix
         self.Line = []
         self.LinkedTxn = []
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.TotalAmt)
 
     def to_linked_txn(self):

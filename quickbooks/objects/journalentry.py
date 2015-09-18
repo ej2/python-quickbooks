@@ -1,3 +1,4 @@
+from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, \
     LinkedTxnMixin
 from .tax import TxnTaxDetail
@@ -69,6 +70,7 @@ class DescriptionOnlyLine(DetailLine):
         self.DetailType = "DescriptionOnly"
 
 
+@python_2_unicode_compatible
 class JournalEntry(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: Journal Entry is a transaction in which:
@@ -105,5 +107,5 @@ class JournalEntry(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedT
 
         self.CurrencyRef = None
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.TotalAmt)

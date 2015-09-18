@@ -1,3 +1,4 @@
+from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject, LinkedTxnMixin, \
     QuickbooksTransactionEntity, CustomField
 
@@ -48,6 +49,7 @@ class DepositLineDetail(QuickbooksBaseObject):
         self.TxnType = ""
 
 
+@python_2_unicode_compatible
 class DepositLine(QuickbooksBaseObject):
     class_dict = {
         "DepositToAccountRef": Ref,
@@ -71,10 +73,11 @@ class DepositLine(QuickbooksBaseObject):
         self.LinkedTxn = []
         self.CustomField = []
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.Amount)
 
 
+@python_2_unicode_compatible
 class Deposit(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: A deposit object is a transaction that records one or more deposits of the following types:
@@ -118,5 +121,5 @@ class Deposit(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMix
         self.AttachableRef = None
         self.Line = []
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.TotalAmt)

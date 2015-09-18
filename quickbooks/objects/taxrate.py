@@ -1,6 +1,8 @@
+from six import python_2_unicode_compatible
 from .base import QuickbooksManagedObject, QuickbooksTransactionEntity, Ref
 
 
+@python_2_unicode_compatible
 class TaxRate(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: A TaxRate object represents rate applied to calculate tax liability. Use the TaxService
@@ -25,7 +27,7 @@ class TaxRate(QuickbooksManagedObject, QuickbooksTransactionEntity):
 
         self.AgencyRef = None
 
-    def __unicode__(self):
+    def __str__(self):
         return self.Name
 
 

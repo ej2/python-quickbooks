@@ -1,7 +1,9 @@
+from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject, QuickbooksTransactionEntity
 from .creditcardpayment import CreditCardPayment
 
 
+@python_2_unicode_compatible
 class PaymentLine(QuickbooksBaseObject):
     list_dict = {
         "LinkedTxn": LinkedTxn,
@@ -16,10 +18,11 @@ class PaymentLine(QuickbooksBaseObject):
 
         self.LinkedTxn = []
 
-    def __unicode__(self):
+    def __str__(self):
         return "[{0}] {1} {2}".format(self.LineNum, self.Description, self.Amount)
 
 
+@python_2_unicode_compatible
 class Payment(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: A Payment entity records a payment in QuickBooks. The payment can be applied for a particular
@@ -72,5 +75,5 @@ class Payment(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.DepositToAccountRef = None
         self.Line = []
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.TotalAmt)

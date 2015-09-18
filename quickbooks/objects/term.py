@@ -1,6 +1,8 @@
+from six import python_2_unicode_compatible
 from .base import QuickbooksManagedObject, QuickbooksTransactionEntity, AttachableRef
 
 
+@python_2_unicode_compatible
 class Term(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: The Term entity represents the terms under which a sale is made, typically expressed in the
@@ -30,5 +32,5 @@ class Term(QuickbooksManagedObject, QuickbooksTransactionEntity):
 
         self.AttachableRef = None
 
-    def __unicode__(self):
+    def __str__(self):
         return self.Name

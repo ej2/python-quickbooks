@@ -1,6 +1,8 @@
+from six import python_2_unicode_compatible
 from .base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity
 
 
+@python_2_unicode_compatible
 class Item(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: An item is a thing that your company buys, sells, or re-sells, such as products and services.
@@ -57,7 +59,7 @@ class Item(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.ParentRef = None
         self.PurchaseTaxCodeRef = None
 
-    def __unicode__(self):
+    def __str__(self):
         return self.Name
 
     def to_ref(self):

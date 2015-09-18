@@ -1,6 +1,8 @@
+from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity
 
 
+@python_2_unicode_compatible
 class BudgetDetail(QuickbooksBaseObject):
     class_dict = {
         "AccountRef": Ref,
@@ -19,10 +21,11 @@ class BudgetDetail(QuickbooksBaseObject):
         self.ClassRef = None
         self.DepartmentRef = None
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.Amount)
 
 
+@python_2_unicode_compatible
 class Budget(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: The Budget endpoint allows you to retrieve the current state of budgets already set up in the user's
@@ -48,6 +51,6 @@ class Budget(QuickbooksManagedObject, QuickbooksTransactionEntity):
 
         self.BudgetDetail = []
 
-    def __unicode__(self):
+    def __str__(self):
         return self.Name
 

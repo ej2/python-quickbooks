@@ -1,6 +1,8 @@
+from six import python_2_unicode_compatible
 from .base import QuickbooksManagedObject, QuickbooksTransactionEntity
 
 
+@python_2_unicode_compatible
 class PaymentMethod(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: The PaymentMethod entity provides the method of payment for received goods. Delete is achieved by setting the
@@ -19,6 +21,6 @@ class PaymentMethod(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.Type = ""
         self.Active = True
 
-    def __unicode__(self):
+    def __str__(self):
         return self.Name
 

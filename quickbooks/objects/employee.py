@@ -1,6 +1,8 @@
+from six import python_2_unicode_compatible
 from .base import Address, PhoneNumber, QuickbooksManagedObject, QuickbooksTransactionEntity, Ref
 
 
+@python_2_unicode_compatible
 class Employee(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: Employee represents the people who are working for the company.
@@ -36,7 +38,7 @@ class Employee(QuickbooksManagedObject, QuickbooksTransactionEntity):
 
         self.PrimaryAddr = None
 
-    def __unicode__(self):
+    def __str__(self):
         return self.DisplayName
 
     def to_ref(self):

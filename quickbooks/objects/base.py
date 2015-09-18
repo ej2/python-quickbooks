@@ -1,3 +1,4 @@
+from six import python_2_unicode_compatible
 from ..mixins import ToJsonMixin, FromJsonMixin, ReadMixin, ListMixin, UpdateMixin
 
 
@@ -22,12 +23,13 @@ class QuickbooksManagedObject(QuickbooksBaseObject, ReadMixin, ListMixin, Update
     pass
 
 
+@python_2_unicode_compatible
 class MetaData:
     def __init__(self):
         self.CreateTime = ""
         self.LastUpdatedTime = ""
 
-    def __unicode__(self):
+    def __str__(self):
         return "Created {0}".format(self.CreateTime)
 
 
@@ -41,6 +43,7 @@ class LinkedTxnMixin(object):
         return linked_txn
 
 
+@python_2_unicode_compatible
 class Address(ToJsonMixin, FromJsonMixin):
     def __init__(self):
         self.Id = None
@@ -52,34 +55,38 @@ class Address(ToJsonMixin, FromJsonMixin):
         self.Lat = ""
         self.Long = ""
 
-    def __unicode__(self):
+    def __str__(self):
         return "{0} {1}, {2} {3}".format(self.Line1, self.City, self.CountrySubDivisionCode, self.PostalCode)
 
 
+@python_2_unicode_compatible
 class PhoneNumber(ToJsonMixin, FromJsonMixin):
     def __init__(self):
         self.FreeFormNumber = ""
 
-    def __unicode__(self):
+    def __str__(self):
         return self.FreeFormNumber
 
 
+@python_2_unicode_compatible
 class EmailAddress(ToJsonMixin, FromJsonMixin):
     def __init__(self):
         self.Address = ""
 
-    def __unicode__(self):
+    def __str__(self):
         return self.Address
 
 
+@python_2_unicode_compatible
 class WebAddress(ToJsonMixin, FromJsonMixin):
     def __init__(self):
         self.URI = ""
 
-    def __unicode__(self):
+    def __str__(self):
         return self.URI
 
 
+@python_2_unicode_compatible
 class Ref(ToJsonMixin, FromJsonMixin):
     class_dict = {}
     list_dict = {}
@@ -89,20 +96,22 @@ class Ref(ToJsonMixin, FromJsonMixin):
         self.name = ""
         self.type = ""
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
+@python_2_unicode_compatible
 class CustomField(ToJsonMixin, FromJsonMixin):
     def __init__(self):
         self.Type = ""
         self.Name = ""
         self.StringValue = ""
 
-    def __unicode__(self):
+    def __str__(self):
         return self.Name
 
 
+@python_2_unicode_compatible
 class LinkedTxn(QuickbooksBaseObject):
     qbo_object_name = "LinkedTxn"
 
@@ -112,16 +121,17 @@ class LinkedTxn(QuickbooksBaseObject):
         self.TxnType = 0
         self.TxnLineId = 0
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.TxnId)
 
 
+@python_2_unicode_compatible
 class CustomerMemo(QuickbooksBaseObject):
     def __init__(self):
         super(CustomerMemo, self).__init__()
         self.Value = ""
 
-    def __unicode__(self):
+    def __str__(self):
         return self.Value
 
 

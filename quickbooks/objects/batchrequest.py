@@ -1,3 +1,4 @@
+from six import python_2_unicode_compatible
 from ..mixins import ToJsonMixin, FromJsonMixin
 
 
@@ -7,6 +8,7 @@ class BatchOperation(object):
     DELETE = "delete"
 
 
+@python_2_unicode_compatible
 class FaultError(FromJsonMixin):
     qbo_object_name = "Error"
 
@@ -18,7 +20,7 @@ class FaultError(FromJsonMixin):
         self.Detail = ""
         self.element = ""
 
-    def __unicode__(self):
+    def __str__(self):
         return "{0} ({1})".format(self.Message, self.code)
 
 

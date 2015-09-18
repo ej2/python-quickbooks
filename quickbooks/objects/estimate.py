@@ -1,9 +1,11 @@
+from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, CustomField, Ref, CustomerMemo, Address, EmailAddress, QuickbooksManagedObject, \
     LinkedTxnMixin, QuickbooksTransactionEntity, LinkedTxn
 from .tax import TxnTaxDetail
 from .detailline import DetailLine
 
 
+@python_2_unicode_compatible
 class Estimate(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: The Estimate represents a proposal for a financial transaction from a business to a customer
@@ -63,5 +65,5 @@ class Estimate(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMi
         self.LinkedTxn = []
         self.Line = []
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.TotalAmt)

@@ -1,9 +1,11 @@
+from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, CustomField, QuickbooksManagedObject, LinkedTxnMixin, Address, \
     EmailAddress, QuickbooksTransactionEntity, LinkedTxn
 from .tax import TxnTaxDetail
 from .detailline import DetailLine
 
 
+@python_2_unicode_compatible
 class SalesReceipt(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: SalesReceipt represents the sales receipt that is given to a customer. A sales receipt is
@@ -69,5 +71,5 @@ class SalesReceipt(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedT
         self.Line = []
         self.LinkedTxn = []
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.TotalAmt)

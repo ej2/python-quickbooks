@@ -1,9 +1,11 @@
+from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin, \
     LinkedTxn, Address, CustomField, MarkupInfo
 
 from .tax import TxnTaxDetail
 
 
+@python_2_unicode_compatible
 class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
     class_dict = {
         "ClassRef": Ref,
@@ -20,7 +22,7 @@ class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
         self.AccountRef = None
         self.TaxCodeRef = None
 
-    def __unicode__(self):
+    def __str__(self):
         return self.BillableStatus
 
 
@@ -50,6 +52,7 @@ class ItemBasedExpenseLineDetail(QuickbooksBaseObject):
         self.MarkupInfo = None
 
 
+@python_2_unicode_compatible
 class PurchaseLine(QuickbooksBaseObject):
     class_dict = {
         "AccountBasedExpenseLineDetail": Ref,
@@ -76,10 +79,11 @@ class PurchaseLine(QuickbooksBaseObject):
         self.LinkedTxn = []
         self.AccountBasedExpenseLineDetail = []
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.Amount)
 
 
+@python_2_unicode_compatible
 class Purchase(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: This entity represents expenses, such as a purchase made from a vendor.
@@ -137,5 +141,5 @@ class Purchase(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMi
         self.Line = []
         self.LinkedTxn = []
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.TotalAmt)

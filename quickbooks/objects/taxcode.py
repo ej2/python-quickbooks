@@ -1,3 +1,4 @@
+from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity
 
 
@@ -27,6 +28,7 @@ class TaxRateList(QuickbooksBaseObject):
         self.TaxRateDetail = []
 
 
+@python_2_unicode_compatible
 class TaxCode(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: The PaymentMethod entity provides the method of payment for received goods. Delete is achieved by setting the
@@ -53,5 +55,5 @@ class TaxCode(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.SalesTaxRateList = None
         self.PurchaseTaxRateList = None
 
-    def __unicode__(self):
+    def __str__(self):
         return self.Name

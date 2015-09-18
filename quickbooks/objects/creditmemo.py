@@ -1,8 +1,10 @@
+from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Address, EmailAddress, Ref, CustomField, CustomerMemo, QuickbooksManagedObject, \
     LinkedTxnMixin, LinkedTxn, MarkupInfo
 from .tax import TxnTaxDetail
 
 
+@python_2_unicode_compatible
 class SalesItemLineDetail(QuickbooksBaseObject):
     class_dict = {
         "ItemRef": Ref,
@@ -25,7 +27,7 @@ class SalesItemLineDetail(QuickbooksBaseObject):
         self.ClassRef = None
         self.PriceLevelRef = None
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.UnitPrice)
 
 
@@ -78,6 +80,7 @@ class DescriptionLineDetail(QuickbooksBaseObject):
         self.TaxCodeRef = None
 
 
+@python_2_unicode_compatible
 class CreditMemoLine(QuickbooksBaseObject):
     class_dict = {
         "SalesItemLineDetail": SalesItemLineDetail,
@@ -107,10 +110,11 @@ class CreditMemoLine(QuickbooksBaseObject):
         self.LinkedTxn = []
         self.CustomField = []
 
-    def __unicode__(self):
+    def __str__(self):
         return "[{0}] {1} {2}".format(self.LineNum, self.Description, self.Amount)
 
 
+@python_2_unicode_compatible
 class CreditMemo(QuickbooksManagedObject, LinkedTxnMixin):
     """
     QBO definition: The CreditMemo is a financial transaction representing a refund or credit of payment or part
@@ -168,5 +172,5 @@ class CreditMemo(QuickbooksManagedObject, LinkedTxnMixin):
         self.CustomField = []
         self.Line = []
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.TotalAmt)

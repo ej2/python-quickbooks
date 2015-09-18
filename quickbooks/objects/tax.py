@@ -1,6 +1,8 @@
+from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, QuickbooksManagedObject
 
 
+@python_2_unicode_compatible
 class TaxLineDetail(QuickbooksBaseObject):
     class_dict = {
         "TaxRateRef": Ref
@@ -12,10 +14,11 @@ class TaxLineDetail(QuickbooksBaseObject):
         self.TaxPercent = 0
         self.NetAmountTaxable = 0
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.TaxPercent)
 
 
+@python_2_unicode_compatible
 class TaxLine(QuickbooksBaseObject):
     class_dict = {
         "TaxLineDetail": TaxLineDetail
@@ -26,10 +29,11 @@ class TaxLine(QuickbooksBaseObject):
         self.Amount = 0
         self.DetailType = ""
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.Amount)
 
 
+@python_2_unicode_compatible
 class TxnTaxDetail(QuickbooksManagedObject):
     class_dict = {
         "TxnTaxCodeRef": Ref,
@@ -45,5 +49,5 @@ class TxnTaxDetail(QuickbooksManagedObject):
         self.TxnTaxCodeRef = None
         self.TaxLine = []
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.TotalTax)

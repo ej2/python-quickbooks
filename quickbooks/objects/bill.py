@@ -1,8 +1,10 @@
+from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject, QuickbooksTransactionEntity, \
     LinkedTxnMixin, MarkupInfo
 from .tax import TxnTaxDetail
 
 
+@python_2_unicode_compatible
 class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
     class_dict = {
         "CustomerRef": Ref,
@@ -22,7 +24,7 @@ class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
         self.AccountRef = None
         self.TaxCodeRef = None
 
-    def __unicode__(self):
+    def __str__(self):
         return self.BillableStatus
 
 
@@ -50,6 +52,7 @@ class ItemBasedExpenseLineDetail(QuickbooksBaseObject):
         self.CustomerRef = None
 
 
+@python_2_unicode_compatible
 class BillLine(QuickbooksBaseObject):
     class_dict = {
         "AccountBasedExpenseLineDetail": AccountBasedExpenseLineDetail,
@@ -72,10 +75,11 @@ class BillLine(QuickbooksBaseObject):
         self.AccountBasedExpenseLineDetail = None
         self.ItemBasedExpenseLineDetail = None
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.Amount)
 
 
+@python_2_unicode_compatible
 class Bill(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: A Bill entity is an AP transaction representing a request-for-payment from a third party for
@@ -121,5 +125,5 @@ class Bill(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin)
         self.LinkedTxn = []
         self.Line = []
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.Balance)

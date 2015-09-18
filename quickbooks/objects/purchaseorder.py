@@ -1,3 +1,4 @@
+from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, Address, QuickbooksManagedObject, LinkedTxnMixin, \
     QuickbooksTransactionEntity, CustomField, LinkedTxn, MarkupInfo
 from .tax import TxnTaxDetail
@@ -26,6 +27,7 @@ class ItemBasedExpenseLineDetail(QuickbooksBaseObject):
         self.MarkupInfo = None
 
 
+@python_2_unicode_compatible
 class PurchaseOrderLine(QuickbooksBaseObject):
     class_dict = {
         "ItemBasedExpenseLineDetail": ItemBasedExpenseLineDetail,
@@ -59,10 +61,11 @@ class PurchaseOrderLine(QuickbooksBaseObject):
         self.LinkedTxn = []
         self.CustomField = []
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.Amount)
 
 
+@python_2_unicode_compatible
 class PurchaseOrder(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: The PurchaseOrder entity is a non-posting transaction representing a request to purchase
@@ -117,5 +120,5 @@ class PurchaseOrder(QuickbooksManagedObject, QuickbooksTransactionEntity, Linked
         self.CustomField = []
         self.LinkedTxn = []
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.TotalAmt)

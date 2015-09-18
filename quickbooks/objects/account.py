@@ -1,6 +1,8 @@
+from six import python_2_unicode_compatible
 from .base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity
 
 
+@python_2_unicode_compatible
 class Account(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: Account is a component of a Chart Of Accounts, and is part of a Ledger. Used to record a total
@@ -36,7 +38,7 @@ class Account(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.ParentRef = None
         self.TaxCodeRef = None
 
-    def __unicode__(self):
+    def __str__(self):
         return self.FullyQualifiedName
 
     def to_ref(self):
