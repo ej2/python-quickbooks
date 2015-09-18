@@ -1,5 +1,7 @@
 # python-quickbooks
 
+[![Build Status](https://travis-ci.org/sidecars/python-quickbooks.svg?branch=master)](https://travis-ci.org/sidecars/python-quickbooks)
+
 A Python library for accessing the Quickbooks API. 
 Complete rework of [quickbooks-python](https://github.com/troolee/quickbooks-python).
 
