@@ -31,7 +31,43 @@ class ClientTest(unittest.TestCase):
         self.assertEquals(self.qb_client.access_token_secret, "access_token_secret")
         self.assertEquals(self.qb_client.company_id, "company_id")
         self.assertEquals(self.qb_client.callback_url, "callback_url")
-        self.assertEquals(self.qb_client.verbose, True)
+
+    def test_client_updated(self):
+        self.qb_client = client.QuickBooks(
+            sandbox=False,
+            consumer_key="consumer_key",
+            consumer_secret="consumer_secret",
+            access_token="access_token",
+            access_token_secret="access_token_secret",
+            company_id="company_id",
+            callback_url="callback_url",
+        )
+
+        self.qb_client2 = client.QuickBooks(
+            sandbox=True,
+            consumer_key="update_consumer_key",
+            consumer_secret="update_consumer_secret",
+            access_token="update_access_token",
+            access_token_secret="update_access_token_secret",
+            company_id="update_company_id",
+            callback_url="update_callback_url",
+        )
+
+        self.assertEquals(self.qb_client.sandbox, True)
+        self.assertEquals(self.qb_client.consumer_key, "update_consumer_key")
+        self.assertEquals(self.qb_client.consumer_secret, "update_consumer_secret")
+        self.assertEquals(self.qb_client.access_token, "update_access_token")
+        self.assertEquals(self.qb_client.access_token_secret, "update_access_token_secret")
+        self.assertEquals(self.qb_client.company_id, "update_company_id")
+        self.assertEquals(self.qb_client.callback_url, "update_callback_url")
+
+        self.assertEquals(self.qb_client2.sandbox, True)
+        self.assertEquals(self.qb_client2.consumer_key, "update_consumer_key")
+        self.assertEquals(self.qb_client2.consumer_secret, "update_consumer_secret")
+        self.assertEquals(self.qb_client2.access_token, "update_access_token")
+        self.assertEquals(self.qb_client2.access_token_secret, "update_access_token_secret")
+        self.assertEquals(self.qb_client2.company_id, "update_company_id")
+        self.assertEquals(self.qb_client2.callback_url, "update_callback_url")
 
     def test_api_url(self):
         qb_client = client.QuickBooks(sandbox=False)

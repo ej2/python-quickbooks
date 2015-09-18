@@ -24,7 +24,6 @@ class QuickBooks(object):
     callback_url = ''
     session = None
     sandbox = False
-    verbose = False
 
     qbService = None
 
@@ -51,35 +50,36 @@ class QuickBooks(object):
 
     __instance = None
 
-    def __new__(cls, **args):
+    def __new__(cls, **kwargs):
         if QuickBooks.__instance is None:
             QuickBooks.__instance = object.__new__(cls)
 
-            if 'consumer_key' in args:
-                cls.consumer_key = args['consumer_key']
+        if 'consumer_key' in kwargs:
+            cls.consumer_key = kwargs['consumer_key']
 
-            if 'consumer_secret' in args:
-                cls.consumer_secret = args['consumer_secret']
+        if 'consumer_secret' in kwargs:
+            cls.consumer_secret = kwargs['consumer_secret']
 
-            if 'access_token' in args:
-                cls.access_token = args['access_token']
+        if 'access_token' in kwargs:
+            cls.access_token = kwargs['access_token']
 
-            if 'access_token_secret' in args:
-                cls.access_token_secret = args['access_token_secret']
+        if 'access_token_secret' in kwargs:
+            cls.access_token_secret = kwargs['access_token_secret']
 
-            if 'company_id' in args:
-                cls.company_id = args['company_id']
+        if 'company_id' in kwargs:
+            cls.company_id = kwargs['company_id']
 
-            if 'callback_url' in args:
-                cls.callback_url = args['callback_url']
+        if 'callback_url' in kwargs:
+            cls.callback_url = kwargs['callback_url']
 
-            if 'sandbox' in args:
-                cls.sandbox = args['sandbox']
-
-            if 'verbose' in args:
-                cls.verbose = True
+        if 'sandbox' in kwargs:
+            cls.sandbox = kwargs['sandbox']
 
         return QuickBooks.__instance
+
+    @classmethod
+    def get_instance(cls):
+        return cls.__instance
 
     def _drop(self):
         QuickBooks.__instance = None
