@@ -10,7 +10,7 @@ def read(*parts):
         return fp.read()
 
 
-VERSION = (0, 2, 10)
+VERSION = (0, 3, 0)
 version = '.'.join(map(str, VERSION))
 
 setup(
