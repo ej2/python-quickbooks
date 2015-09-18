@@ -7,7 +7,7 @@ def build_where_clause(**kwargs):
     if len(kwargs) > 0:
         where = []
 
-        for key, value in kwargs.iteritems():
+        for key, value in kwargs.items():
             if isinstance(value, six.string_types):
                 where.append("{0} = '{1}'".format(key, value.replace("'", "\'")))
             else:

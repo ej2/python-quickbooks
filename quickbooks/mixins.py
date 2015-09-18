@@ -47,7 +47,6 @@ class ReadMixin(object):
 
     @classmethod
     def get(cls, id):
-        from client import QuickBooks
         qb = QuickBooks()
 
         json_data = qb.get_single_object(cls.qbo_object_name, pk=id)
@@ -58,7 +57,6 @@ class UpdateMixin(object):
     qbo_object_name = ""
 
     def save(self):
-        from .client import QuickBooks
         qb = QuickBooks()
 
         if self.Id > 0:

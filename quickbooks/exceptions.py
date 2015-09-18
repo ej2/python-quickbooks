@@ -6,6 +6,7 @@ class QuickbooksException(Exception):
 
         self.error_code = error_code
         self.detail = detail
+        self.message = message
 
 
 class AuthorizationException(QuickbooksException):
