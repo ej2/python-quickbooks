@@ -1,4 +1,4 @@
-from base import QuickbooksManagedObject, QuickbooksTransactionEntity
+from .base import QuickbooksManagedObject, QuickbooksTransactionEntity
 
 
 class PaymentMethod(QuickbooksManagedObject, QuickbooksTransactionEntity):

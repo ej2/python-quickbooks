@@ -1,6 +1,6 @@
-from base import QuickbooksBaseObject, Ref, Address, QuickbooksManagedObject, LinkedTxnMixin, \
+from .base import QuickbooksBaseObject, Ref, Address, QuickbooksManagedObject, LinkedTxnMixin, \
     QuickbooksTransactionEntity, CustomField, LinkedTxn, MarkupInfo
-from tax import TxnTaxDetail
+from .tax import TxnTaxDetail
 
 
 class ItemBasedExpenseLineDetail(QuickbooksBaseObject):

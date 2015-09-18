@@ -1,7 +1,7 @@
-from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, \
+from .base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, \
     LinkedTxnMixin
-from tax import TxnTaxDetail
-from detailline import DetailLine
+from .tax import TxnTaxDetail
+from .detailline import DetailLine
 
 
 class Entity(QuickbooksBaseObject):

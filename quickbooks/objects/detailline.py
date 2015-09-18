@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref, CustomField, LinkedTxn, MarkupInfo
+from .base import QuickbooksBaseObject, Ref, CustomField, LinkedTxn, MarkupInfo
 
 
 class DetailLine(QuickbooksBaseObject):

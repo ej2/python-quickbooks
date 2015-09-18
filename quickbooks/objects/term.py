@@ -1,4 +1,4 @@
-from base import QuickbooksManagedObject, QuickbooksTransactionEntity, AttachableRef
+from .base import QuickbooksManagedObject, QuickbooksTransactionEntity, AttachableRef
 
 
 class Term(QuickbooksManagedObject, QuickbooksTransactionEntity):

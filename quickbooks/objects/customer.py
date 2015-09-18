@@ -1,4 +1,4 @@
-from base import Address, PhoneNumber, EmailAddress, WebAddress, Ref, QuickbooksManagedObject, \
+from .base import Address, PhoneNumber, EmailAddress, WebAddress, Ref, QuickbooksManagedObject, \
     QuickbooksTransactionEntity
 
 

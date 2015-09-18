@@ -1,7 +1,7 @@
-from base import Ref, CustomField, QuickbooksManagedObject, \
+from .base import Ref, CustomField, QuickbooksManagedObject, \
     LinkedTxnMixin, QuickbooksTransactionEntity, LinkedTxn, Address, EmailAddress
-from tax import TxnTaxDetail
-from detailline import DetailLine
+from .tax import TxnTaxDetail
+from .detailline import DetailLine
 
 
 class RefundReceipt(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):

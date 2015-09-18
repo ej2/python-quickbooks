@@ -1,8 +1,8 @@
 import uuid
 
-from client import QuickBooks
-from exceptions import QuickbooksException
-from objects.batchrequest import IntuitBatchRequest, BatchItemRequest, BatchOperation, BatchResponse, BatchItemResponse
+from .client import QuickBooks
+from .exceptions import QuickbooksException
+from .objects.batchrequest import IntuitBatchRequest, BatchItemRequest, BatchOperation, BatchResponse, BatchItemResponse
 
 
 class BatchManager(object):

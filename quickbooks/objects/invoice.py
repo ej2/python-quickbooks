@@ -1,7 +1,7 @@
-from base import QuickbooksBaseObject, Ref, CustomField, Address, EmailAddress, CustomerMemo, QuickbooksManagedObject, \
+from .base import QuickbooksBaseObject, Ref, CustomField, Address, EmailAddress, CustomerMemo, QuickbooksManagedObject, \
     QuickbooksTransactionEntity, LinkedTxn, LinkedTxnMixin
-from tax import TxnTaxDetail
-from detailline import DetailLine
+from .tax import TxnTaxDetail
+from .detailline import DetailLine
 
 
 class DeliveryInfo(QuickbooksBaseObject):

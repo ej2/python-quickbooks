@@ -1,6 +1,6 @@
-from base import QuickbooksBaseObject, Address, EmailAddress, Ref, CustomField, CustomerMemo, QuickbooksManagedObject, \
+from .base import QuickbooksBaseObject, Address, EmailAddress, Ref, CustomField, CustomerMemo, QuickbooksManagedObject, \
     LinkedTxnMixin, LinkedTxn, MarkupInfo
-from tax import TxnTaxDetail
+from .tax import TxnTaxDetail
 
 
 class SalesItemLineDetail(QuickbooksBaseObject):

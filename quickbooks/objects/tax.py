@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject, Ref, QuickbooksManagedObject
+from .base import QuickbooksBaseObject, Ref, QuickbooksManagedObject
 
 
 class TaxLineDetail(QuickbooksBaseObject):

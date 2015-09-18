@@ -1,4 +1,4 @@
-from base import Address, PhoneNumber, QuickbooksManagedObject, QuickbooksTransactionEntity, Ref
+from .base import Address, PhoneNumber, QuickbooksManagedObject, QuickbooksTransactionEntity, Ref
 
 
 class Employee(QuickbooksManagedObject, QuickbooksTransactionEntity):

@@ -1,5 +1,5 @@
-from base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject, QuickbooksTransactionEntity
-from creditcardpayment import CreditCardPayment
+from .base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject, QuickbooksTransactionEntity
+from .creditcardpayment import CreditCardPayment
 
 
 class PaymentLine(QuickbooksBaseObject):

@@ -1,4 +1,4 @@
-from base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin
+from .base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin
 
 
 class Transfer(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):

@@ -1,7 +1,9 @@
-import httplib
-import six
+try:
+    import httplib  # Python 2
+except ImportError:
+    import http.client as httplib  # Python 3
 
-from exceptions import QuickbooksException, SevereException
+from .exceptions import QuickbooksException, SevereException
 
 try:
     from rauth import OAuth1Session, OAuth1Service

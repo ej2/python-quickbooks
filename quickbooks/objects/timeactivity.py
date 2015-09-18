@@ -1,4 +1,4 @@
-from base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin, AttachableRef
+from .base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin, AttachableRef
 
 
 class TimeActivity(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):

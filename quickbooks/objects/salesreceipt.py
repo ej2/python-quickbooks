@@ -1,7 +1,7 @@
-from base import QuickbooksBaseObject, Ref, CustomField, QuickbooksManagedObject, LinkedTxnMixin, Address, \
+from .base import QuickbooksBaseObject, Ref, CustomField, QuickbooksManagedObject, LinkedTxnMixin, Address, \
     EmailAddress, QuickbooksTransactionEntity, LinkedTxn
-from tax import TxnTaxDetail
-from detailline import DetailLine
+from .tax import TxnTaxDetail
+from .detailline import DetailLine
 
 
 class SalesReceipt(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):

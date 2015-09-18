@@ -1,7 +1,7 @@
-from base import QuickbooksBaseObject, CustomField, Ref, CustomerMemo, Address, EmailAddress, QuickbooksManagedObject, \
+from .base import QuickbooksBaseObject, CustomField, Ref, CustomerMemo, Address, EmailAddress, QuickbooksManagedObject, \
     LinkedTxnMixin, QuickbooksTransactionEntity, LinkedTxn
-from tax import TxnTaxDetail
-from detailline import DetailLine
+from .tax import TxnTaxDetail
+from .detailline import DetailLine
 
 
 class Estimate(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):

@@ -1,4 +1,4 @@
-from base import QuickbooksManagedObject, QuickbooksTransactionEntity, Ref
+from .base import QuickbooksManagedObject, QuickbooksTransactionEntity, Ref
 
 
 class Department(QuickbooksManagedObject, QuickbooksTransactionEntity):

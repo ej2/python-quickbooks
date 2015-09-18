@@ -1,4 +1,4 @@
-from base import QuickbooksTransactionEntity, QuickbooksManagedObject
+from .base import QuickbooksTransactionEntity, QuickbooksManagedObject
 
 
 class TaxAgency(QuickbooksManagedObject, QuickbooksTransactionEntity):

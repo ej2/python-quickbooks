@@ -1,4 +1,4 @@
-from base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity
+from .base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity
 
 
 class Account(QuickbooksManagedObject, QuickbooksTransactionEntity):
