@@ -8,6 +8,7 @@ try:
 except ImportError:
     print("Please import Rauth:\n\n")
     print("http://rauth.readthedocs.org/en/latest/\n")
+    raise
 
 
 class QuickBooks(object):
@@ -166,7 +167,7 @@ class QuickBooks(object):
         try:
             result = req.json()
         except:
-            raise QuickbooksException("Error reading json response", 10000, "")
+            raise QuickbooksException("Error reading json response", 10000)
 
         if req.status_code is not httplib.OK or "Fault" in result:
             self.handle_exceptions(result["Fault"])

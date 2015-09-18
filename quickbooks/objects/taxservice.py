@@ -1,4 +1,4 @@
-from base import QuickbooksBaseObject
+from .base import QuickbooksBaseObject
 from ..mixins import UpdateMixin
 
 
