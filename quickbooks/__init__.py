@@ -1,1 +1,1 @@
-from client import QuickBooks
+from .client import QuickBooks

@@ -11,8 +11,8 @@ class ToJsonMixin(object):
         """
         filter out properties that have names starting with _ or properties that have a value of None
         """
-        return lambda obj: {k: v for k, v in obj.__dict__.items()
-                                   if not k.startswith('_') and getattr(obj, k) is not None}
+        return lambda obj: dict((k, v) for k, v in obj.__dict__.items()
+                                if not k.startswith('_') and getattr(obj, k) is not None)
 
 
 class FromJsonMixin(object):
