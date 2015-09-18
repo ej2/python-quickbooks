@@ -8,7 +8,7 @@ class VendorTests(unittest.TestCase):
         vendor = Vendor()
         vendor.DisplayName = "test"
 
-        self.assertEquals(unicode(vendor), "test")
+        self.assertEquals(str(vendor), "test")
 
     def test_to_ref(self):
         vendor = Vendor()

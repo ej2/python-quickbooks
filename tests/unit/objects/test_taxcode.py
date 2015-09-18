@@ -8,7 +8,7 @@ class TaxCodeTests(unittest.TestCase):
         taxcode = TaxCode()
         taxcode.Name = "test"
 
-        self.assertEquals(unicode(taxcode), "test")
+        self.assertEquals(str(taxcode), "test")
 
 class TaxRateDetailTests(unittest.TestCase):
     def test_init(self):

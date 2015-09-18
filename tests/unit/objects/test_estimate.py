@@ -8,4 +8,4 @@ class EstimateTests(unittest.TestCase):
         estimate = Estimate()
         estimate.TotalAmt = 10
 
-        self.assertEquals(unicode(estimate), "10")
+        self.assertEquals(str(estimate), "10")

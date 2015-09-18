@@ -8,7 +8,7 @@ class ItemTests(unittest.TestCase):
         item = Item()
         item.Name = "test"
 
-        self.assertEquals(unicode(item), "test")
+        self.assertEquals(str(item), "test")
 
     def test_to_ref(self):
         item = Item()

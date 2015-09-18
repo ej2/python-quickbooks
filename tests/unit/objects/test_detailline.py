@@ -11,7 +11,7 @@ class DetailLineTests(unittest.TestCase):
         detail.Description = "Product Description"
         detail.Amount = 100
 
-        self.assertEquals(unicode(detail), "[1] Product Description 100")
+        self.assertEquals(str(detail), "[1] Product Description 100")
 
 
 class SalesItemLineDetailTests(unittest.TestCase):
@@ -19,7 +19,7 @@ class SalesItemLineDetailTests(unittest.TestCase):
         sales_detail = SalesItemLineDetail()
         sales_detail.UnitPrice = 10
 
-        self.assertEquals(unicode(sales_detail), "10")
+        self.assertEquals(str(sales_detail), "10")
 
 
 class DiscountOverrideTests(unittest.TestCase):

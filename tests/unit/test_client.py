@@ -54,8 +54,7 @@ class ClientTest(unittest.TestCase):
     def test_isvalid_object_name_invalid(self):
         qb_client = client.QuickBooks()
 
-        with self.assertRaises(Exception):
-            qb_client.isvalid_object_name("invalid")
+        self.assertRaises(Exception, qb_client.isvalid_object_name, "invalid")
 
     @patch('quickbooks.client.QuickBooks.make_request')
     def test_batch_operation(self, make_req):

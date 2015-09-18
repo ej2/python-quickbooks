@@ -9,7 +9,7 @@ class VendorCreditTests(unittest.TestCase):
         vendor_credit = VendorCredit()
         vendor_credit.TotalAmt = 1000
 
-        self.assertEquals(unicode(vendor_credit), "1000")
+        self.assertEquals(str(vendor_credit), "1000")
 
 
 class ItemBasedExpenseLineDetailTests(unittest.TestCase):

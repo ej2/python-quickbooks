@@ -8,7 +8,7 @@ class PurchaseOrderLineTests(unittest.TestCase):
         purchase_line = PurchaseOrderLine()
         purchase_line.Amount = 100
 
-        self.assertEquals(unicode(purchase_line), '100')
+        self.assertEquals(str(purchase_line), '100')
 
 
 class PurchaseOrderTests(unittest.TestCase):
@@ -16,4 +16,4 @@ class PurchaseOrderTests(unittest.TestCase):
         purchase_order = PurchaseOrder()
         purchase_order.TotalAmt = 1000
 
-        self.assertEquals(unicode(purchase_order), '1000')
+        self.assertEquals(str(purchase_order), '1000')

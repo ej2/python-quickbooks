@@ -8,7 +8,7 @@ class InvoiceTests(unittest.TestCase):
         invoice = Invoice()
         invoice.TotalAmt = 10
 
-        self.assertEquals(unicode(invoice), "10")
+        self.assertEquals(str(invoice), "10")
 
     def test_to_LinkedTxn(self):
         invoice = Invoice()

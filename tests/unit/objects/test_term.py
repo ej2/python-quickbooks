@@ -8,6 +8,6 @@ class TermTests(unittest.TestCase):
         term = Term()
         term.Name = "test"
 
-        self.assertEquals(unicode(term), "test")
+        self.assertEquals(str(term), "test")
 
 

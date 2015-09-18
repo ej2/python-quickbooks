@@ -12,7 +12,7 @@ class AddressTests(unittest.TestCase):
         address.CountrySubDivisionCode = "MO"
         address.PostalCode = "12345"
 
-        self.assertEquals(unicode(address), "123 Main Joplin, MO 12345")
+        self.assertEquals(str(address), "123 Main Joplin, MO 12345")
 
 
 class PhoneNumberTests(unittest.TestCase):
@@ -20,7 +20,7 @@ class PhoneNumberTests(unittest.TestCase):
         number = PhoneNumber()
         number.FreeFormNumber = "555-555-5555"
 
-        self.assertEquals(unicode(number), "555-555-5555")
+        self.assertEquals(str(number), "555-555-5555")
 
 
 class EmailAddressTests(unittest.TestCase):
@@ -28,7 +28,7 @@ class EmailAddressTests(unittest.TestCase):
         email = EmailAddress()
         email.Address = "email@gmail.com"
 
-        self.assertEquals(unicode(email), "email@gmail.com")
+        self.assertEquals(str(email), "email@gmail.com")
 
 
 class WebAddressTests(unittest.TestCase):
@@ -36,7 +36,7 @@ class WebAddressTests(unittest.TestCase):
         url = WebAddress()
         url.URI = "www.website.com"
 
-        self.assertEquals(unicode(url), "www.website.com")
+        self.assertEquals(str(url), "www.website.com")
 
 
 class RefTests(unittest.TestCase):
@@ -46,7 +46,7 @@ class RefTests(unittest.TestCase):
         ref.name = "test"
         ref.value = 1
 
-        self.assertEquals(unicode(ref), "test")
+        self.assertEquals(str(ref), "test")
 
 
 class CustomFieldTests(unittest.TestCase):
@@ -54,7 +54,7 @@ class CustomFieldTests(unittest.TestCase):
         custom = CustomField()
         custom.Name = "name"
 
-        self.assertEquals(unicode(custom), "name")
+        self.assertEquals(str(custom), "name")
 
 
 class CustomerMemoTests(unittest.TestCase):
@@ -62,7 +62,7 @@ class CustomerMemoTests(unittest.TestCase):
         memo = CustomerMemo()
         memo.Value = "value"
 
-        self.assertEquals(unicode(memo), "value")
+        self.assertEquals(str(memo), "value")
 
 
 class LinkedTxnTests(unittest.TestCase):
@@ -70,7 +70,7 @@ class LinkedTxnTests(unittest.TestCase):
         linked = LinkedTxn()
         linked.TxnId = 1
 
-        self.assertEquals(unicode(linked), "1")
+        self.assertEquals(str(linked), "1")
 
 
 class MetaDataTests(unittest.TestCase):
@@ -78,7 +78,7 @@ class MetaDataTests(unittest.TestCase):
         meta = MetaData()
         meta.CreateTime = "1/1/2000"
 
-        self.assertEquals(unicode(meta), "Created 1/1/2000")
+        self.assertEquals(str(meta), "Created 1/1/2000")
 
 
 class MarkupInfoTests(unittest.TestCase):

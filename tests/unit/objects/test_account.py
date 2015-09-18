@@ -8,7 +8,7 @@ class AccountTests(unittest.TestCase):
         account = Account()
         account.FullyQualifiedName = "test"
 
-        self.assertEquals(unicode(account), "test")
+        self.assertEquals(str(account), "test")
 
     def test_to_ref(self):
         account = Account()

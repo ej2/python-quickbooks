@@ -8,7 +8,7 @@ class JournalentryTests(unittest.TestCase):
         journalentry = JournalEntry()
         journalentry.TotalAmt = 1000
 
-        self.assertEquals(unicode(journalentry), '1000')
+        self.assertEquals(str(journalentry), '1000')
 
 
 class JournalEntryLineTests(unittest.TestCase):

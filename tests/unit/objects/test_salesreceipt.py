@@ -8,4 +8,4 @@ class SalesReceiptTests(unittest.TestCase):
         sales_receipt = SalesReceipt()
         sales_receipt.TotalAmt = 100
 
-        self.assertEquals(unicode(sales_receipt), "100")
+        self.assertEquals(str(sales_receipt), "100")

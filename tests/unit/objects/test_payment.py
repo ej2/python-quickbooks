@@ -10,7 +10,7 @@ class PaymentLineTests(unittest.TestCase):
         payment_line.Description = "Product Description"
         payment_line.Amount = 100
 
-        self.assertEquals(unicode(payment_line), "[1] Product Description 100")
+        self.assertEquals(str(payment_line), "[1] Product Description 100")
 
 
 class PaymentTests(unittest.TestCase):
@@ -18,4 +18,4 @@ class PaymentTests(unittest.TestCase):
         payment = Payment()
         payment.TotalAmt = 1000
 
-        self.assertEquals(unicode(payment), '1000')
+        self.assertEquals(str(payment), '1000')

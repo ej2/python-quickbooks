@@ -9,7 +9,7 @@ class AccountBasedExpenseLineDetailTests(unittest.TestCase):
         detail = AccountBasedExpenseLineDetail()
         detail.BillableStatus = "Test"
 
-        self.assertEquals(unicode(detail), "Test")
+        self.assertEquals(str(detail), "Test")
 
 
 class PurchaseLineTests(unittest.TestCase):
@@ -17,7 +17,7 @@ class PurchaseLineTests(unittest.TestCase):
         purchase_line = PurchaseLine()
         purchase_line.Amount = 100
 
-        self.assertEquals(unicode(purchase_line), "100")
+        self.assertEquals(str(purchase_line), "100")
 
 
 class PurchaseTests(unittest.TestCase):
@@ -25,7 +25,7 @@ class PurchaseTests(unittest.TestCase):
         purchase = Purchase()
         purchase.TotalAmt = 1000
 
-        self.assertEquals(unicode(purchase), "1000")
+        self.assertEquals(str(purchase), "1000")
 
 
 class ItemBasedExpenseLineDetailTest(unittest.TestCase):
