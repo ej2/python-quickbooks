@@ -99,12 +99,12 @@ class ListMixin(object):
             where_clause = "WHERE " + where_clause
 
         if start_position:
-            start_position = " STARTPOSITION " + start_position
+            start_position = " STARTPOSITION " + str(start_position)
 
         if max_results:
-            max_results = " MAXRESULTS " + max_results
+            max_results = " MAXRESULTS " + str(max_results)
 
-        select = "select * from {0} {1}{2}{3}".format(cls.qbo_object_name, where_clause, start_position, max_results)
+        select = "SELECT * FROM {0} {1}{2}{3}".format(cls.qbo_object_name, where_clause, start_position, max_results)
 
         return cls.query(select)
 

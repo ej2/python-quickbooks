@@ -1,6 +1,7 @@
 import unittest
 
-from quickbooks.objects.creditmemo import SalesItemLineDetail, CreditMemoLine, CreditMemo, DiscountLineDetail
+from quickbooks.objects.creditmemo import SalesItemLineDetail, CreditMemoLine, CreditMemo, \
+    DiscountLineDetail, SubtotalLineDetail, DiscountOverride, DescriptionLineDetail
 
 
 class SalesItemLineDetailTests(unittest.TestCase):
@@ -36,3 +37,28 @@ class DiscountLineDetailTests(unittest.TestCase):
         self.assertEquals(discount_detail.ClassRef, None)
         self.assertEquals(discount_detail.TaxCodeRef, None)
         self.assertEquals(discount_detail.Discount, None)
+
+
+class SubtotalLineDetailTests(unittest.TestCase):
+    def test_init(self):
+        detail = SubtotalLineDetail()
+
+        self.assertEquals(detail.ItemRef, None)
+
+
+class DiscountOverrideTests(unittest.TestCase):
+    def test_init(self):
+        discount_detail = DiscountOverride()
+
+        self.assertEquals(discount_detail.PercentBased, False)
+        self.assertEquals(discount_detail.DiscountPercent, 0)
+        self.assertEquals(discount_detail.DiscountAccountRef, None)
+        self.assertEquals(discount_detail.DiscountRef, None)
+
+
+class DescriptionLineDetailTests(unittest.TestCase):
+    def test_init(self):
+        detail = DescriptionLineDetail()
+
+        self.assertEquals(detail.ServiceDate, "")
+        self.assertEquals(detail.TaxCodeRef, None)

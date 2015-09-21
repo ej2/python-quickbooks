@@ -1,7 +1,9 @@
 import unittest
 
 from quickbooks.objects.base import CustomerMemo, CustomField, Ref, WebAddress, EmailAddress, PhoneNumber, \
-    Address, LinkedTxn, MetaData, MarkupInfo, AttachableRef
+    Address, LinkedTxn, MetaData, MarkupInfo, AttachableRef, LinkedTxnMixin
+
+from quickbooks.objects.deposit import Deposit
 
 
 class AddressTests(unittest.TestCase):
@@ -101,3 +103,16 @@ class AttachableRefTests(unittest.TestCase):
         self.assertEquals(attachable.Inactive, False)
         self.assertEquals(attachable.NoRefOnly, False)
         self.assertEquals(attachable.EntityRef, None)
+
+
+class LinkedTxnMixinTests(unittest.TestCase):
+    def test_to_linked_txn(self):
+
+        deposit = Deposit()
+        deposit.Id = 100
+
+        linked_txn = deposit.to_linked_txn()
+
+        self.assertEquals(linked_txn.TxnId, 100)
+        self.assertEquals(linked_txn.TxnType, "Deposit")
+        self.assertEquals(linked_txn.TxnLineId, 1)

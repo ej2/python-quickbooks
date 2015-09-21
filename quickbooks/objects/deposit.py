@@ -48,6 +48,11 @@ class DepositLineDetail(QuickbooksBaseObject):
         self.CheckNum = ""
         self.TxnType = ""
 
+        self.Entity = None
+        self.ClassRef = None
+        self.AccountRef = None
+        self.PaymentMethodRef = None
+
 
 @python_2_unicode_compatible
 class DepositLine(QuickbooksBaseObject):

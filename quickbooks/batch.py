@@ -43,7 +43,7 @@ class BatchManager(object):
 
         for obj in obj_list:
             batch_item = BatchItemRequest()
-            batch_item.bId = str(uuid.uuid1())
+            batch_item.bId = str(uuid.uuid4())
             batch_item.operation = self._operation
             batch_item.set_object(obj)
 

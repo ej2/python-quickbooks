@@ -2,6 +2,7 @@ import unittest
 from mock import patch
 from quickbooks import batch, client
 from quickbooks.objects.customer import Customer
+from quickbooks.exceptions import QuickbooksException
 
 
 class BatchTests(unittest.TestCase):
@@ -20,6 +21,9 @@ class BatchTests(unittest.TestCase):
         self.object1 = Customer()
         self.object2 = Customer()
         self.obj_list = [self.object1, self.object2]
+
+    def test_invalid_operation(self):
+        self.assertRaises(QuickbooksException, batch.BatchManager, "invalid")
 
     @patch('quickbooks.batch.BatchManager.process_batch')
     def test_batch_create(self, process_batch):
@@ -46,6 +50,7 @@ class BatchTests(unittest.TestCase):
 
         batch_item = batch_request.BatchItemRequest[0]
         self.assertTrue(batch_item.bId)
+        self.assertLess(len(batch_item.bId), 50)
         self.assertEquals(batch_item.operation, "create")
         self.assertEquals(batch_item.get_object(), self.object1)
 

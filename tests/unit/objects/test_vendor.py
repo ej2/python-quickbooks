@@ -1,6 +1,6 @@
 import unittest
 
-from quickbooks.objects.vendor import Vendor
+from quickbooks.objects.vendor import Vendor, ContactInfo
 
 
 class VendorTests(unittest.TestCase):
@@ -20,3 +20,11 @@ class VendorTests(unittest.TestCase):
         self.assertEquals(ref.name, "test")
         self.assertEquals(ref.type, "Vendor")
         self.assertEquals(ref.value, 100)
+
+
+class ContactInfoTests(unittest.TestCase):
+    def test_init(self):
+        contact_info = ContactInfo()
+
+        self.assertEquals(contact_info.Type, "")
+        self.assertEquals(contact_info.Telephone, None)

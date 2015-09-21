@@ -1,6 +1,6 @@
 import unittest
 
-from quickbooks.objects.bill import Bill, BillLine, AccountBasedExpenseLineDetail
+from quickbooks.objects.bill import Bill, BillLine, AccountBasedExpenseLineDetail, ItemBasedExpenseLineDetail
 
 
 class AccountBasedExpenseLineDetailTests(unittest.TestCase):
@@ -25,3 +25,19 @@ class BillLineTests(unittest.TestCase):
         bill_line.Amount = 1000
 
         self.assertEquals(str(bill_line), "1000")
+
+
+class ItemBasedExpenseLineDetailTest(unittest.TestCase):
+    def test_init(self):
+        detail = ItemBasedExpenseLineDetail()
+
+        self.assertEquals(detail.BillableStatus, "")
+        self.assertEquals(detail.UnitPrice, 0)
+        self.assertEquals(detail.TaxInclusiveAmt, 0)
+        self.assertEquals(detail.Qty, 0)
+        self.assertEquals(detail.ItemRef, None)
+        self.assertEquals(detail.ClassRef, None)
+        self.assertEquals(detail.PriceLevelRef, None)
+        self.assertEquals(detail.TaxCodeRef, None)
+        self.assertEquals(detail.MarkupInfo, None)
+        self.assertEquals(detail.CustomerRef, None)

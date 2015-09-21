@@ -28,12 +28,12 @@ class ListMixinTest(unittest.TestCase):
 
     @patch('quickbooks.mixins.ListMixin.query')
     def test_where(self, query):
-        Department.where("Active=True")
-        query.assert_called_once_with("select * from Department WHERE Active=True")
+        Department.where("Active=True", 1, 10)
+        query.assert_called_once_with("SELECT * FROM Department WHERE Active=True STARTPOSITION 1 MAXRESULTS 10")
 
     @patch('quickbooks.mixins.QuickBooks.query')
     def test_query(self, query):
-        select = "select * from Department WHERE Active=True"
+        select = "SELECT * FROM Department WHERE Active=True"
         Department.query(select)
         query.assert_called_once_with(select)
 
@@ -51,3 +51,12 @@ class UpdateMixinTest(unittest.TestCase):
         department = Department()
         department.save()
         create_object.assert_called_once_with("Department", department.to_json())
+
+    @patch('quickbooks.mixins.QuickBooks.update_object')
+    def test_save_update(self, update_object):
+        department = Department()
+        department.Id = 1
+        json = department.to_json()
+
+        department.save()
+        update_object.assert_called_once_with("Department", json)
