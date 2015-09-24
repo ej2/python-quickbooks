@@ -50,7 +50,7 @@ class BatchTests(unittest.TestCase):
 
         batch_item = batch_request.BatchItemRequest[0]
         self.assertTrue(batch_item.bId)
-        self.assertLess(len(batch_item.bId), 50)
+        self.assertTrue(len(batch_item.bId) < 50)
         self.assertEquals(batch_item.operation, "create")
         self.assertEquals(batch_item.get_object(), self.object1)
 
