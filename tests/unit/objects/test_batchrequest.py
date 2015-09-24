@@ -8,8 +8,9 @@ class FaultErrorTests(unittest.TestCase):
         fault_error = FaultError()
         fault_error.Message = "test"
         fault_error.code = 100
+        fault_error.Detail = "detail"
 
-        self.assertEquals(str(fault_error), "test (100)")
+        self.assertEquals(str(fault_error), "Code: 100 Message: test Detail: detail")
 
 
 class BatchItemResponseTests(unittest.TestCase):

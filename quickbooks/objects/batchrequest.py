@@ -21,7 +21,10 @@ class FaultError(FromJsonMixin):
         self.element = ""
 
     def __str__(self):
-        return "{0} ({1})".format(self.Message, self.code)
+        return "Code: {0} Message: {1} Detail: {2}".format(self.code, self.Message, self.Detail)
+
+    def __repr__(self):
+        return self.__str__()
 
 
 class Fault(FromJsonMixin):
@@ -37,6 +40,9 @@ class Fault(FromJsonMixin):
         self.type = ""
         self.original_object = None
         self.Error = []
+
+    def __repr__(self):
+        return "{0} Errors".format(len(self.Error))
 
 
 class BatchItemResponse(FromJsonMixin):

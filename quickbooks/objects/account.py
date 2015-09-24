@@ -32,8 +32,8 @@ class Account(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.AccountSubType = ""
         self.Description = ""
         self.AcctNum = ""
-        self.CurrentBalance = 0
-        self.CurrentBalanceWithSubAccounts = 0
+        self.CurrentBalance = None  # Readonly
+        self.CurrentBalanceWithSubAccounts = None  # Readonly
         self.CurrencyRef = None
         self.ParentRef = None
         self.TaxCodeRef = None
