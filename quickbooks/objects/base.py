@@ -16,7 +16,6 @@ class QuickbooksTransactionEntity(QuickbooksBaseObject):
         self.SyncToken = 0
         self.sparse = False
         self.domain = "QBO"
-        self.TxnDate = None
 
 
 class QuickbooksManagedObject(QuickbooksBaseObject, ReadMixin, ListMixin, UpdateMixin):
