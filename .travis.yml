@@ -8,4 +8,4 @@ python:
 install:
   - pip install -e .
   - pip install coverage
-script: nosetests . --with-coverage --cover-package=quickbooks
+script: nosetests -w /quickbooks/tests/unit --with-coverage --cover-package=quickbooks
