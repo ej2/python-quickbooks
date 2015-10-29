@@ -27,8 +27,8 @@ class Account(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.SubAccount = False
         self.FullyQualifiedName = ""
         self.Active = True
-        self.Classification = ""
-        self.AccountType = ""
+        self.Classification = None
+        self.AccountType = None
         self.AccountSubType = ""
         self.Description = ""
         self.AcctNum = ""

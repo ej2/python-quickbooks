@@ -16,7 +16,7 @@ class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
 
     def __init__(self):
         super(AccountBasedExpenseLineDetail, self).__init__()
-        self.BillableStatus = ""
+        self.BillableStatus = None
         self.TaxAmount = 0
         self.TaxInclusiveAmt = 0
 
@@ -113,7 +113,7 @@ class Bill(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin)
         self.DocNumber = ""
         self.PrivateNote = ""
         self.ExchangeRate = 0
-        self.GlobalTaxCalculation = ""
+        self.GlobalTaxCalculation = None
 
         self.SalesTermRef = None
         self.CurrencyRef = None

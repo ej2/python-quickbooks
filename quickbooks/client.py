@@ -169,7 +169,7 @@ class QuickBooks(object):
         try:
             result = req.json()
         except:
-            raise QuickbooksException("Error reading json response", 10000)
+            raise QuickbooksException("Error reading json response: {0}".format(req.text), 10000)
 
         if req.status_code is not httplib.OK or "Fault" in result:
             self.handle_exceptions(result["Fault"])
