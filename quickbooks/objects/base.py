@@ -128,10 +128,10 @@ class LinkedTxn(QuickbooksBaseObject):
 class CustomerMemo(QuickbooksBaseObject):
     def __init__(self):
         super(CustomerMemo, self).__init__()
-        self.Value = ""
+        self.value = ""
 
     def __str__(self):
-        return self.Value
+        return self.value
 
 
 class MarkupInfo(QuickbooksBaseObject):

@@ -49,8 +49,6 @@ class Invoice(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMix
         self.Balance = 0
         self.AllowIPNPayment = True
         self.DocNumber = ""
-        self.TxnDate = ""
-        self.TxnSource = ""
         self.PrivateNote = ""
         self.DueDate = ""
         self.ShipDate = ""
@@ -67,6 +65,7 @@ class Invoice(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMix
         self.BillEmail = None
         self.CustomerRef = None
         self.CurrencyRef = None
+        self.CustomerMemo = None
         self.DepartmentRef = None
         self.TxnTaxDetail = None
         self.DeliveryInfo = None
