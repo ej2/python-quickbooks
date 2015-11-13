@@ -62,7 +62,7 @@ class CustomFieldTests(unittest.TestCase):
 class CustomerMemoTests(unittest.TestCase):
     def test_unicode(self):
         memo = CustomerMemo()
-        memo.Value = "value"
+        memo.value = "value"
 
         self.assertEquals(str(memo), "value")
 
