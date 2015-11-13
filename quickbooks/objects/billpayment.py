@@ -13,7 +13,7 @@ class CheckPayment(QuickbooksBaseObject):
 
     def __init__(self):
         super(CheckPayment, self).__init__()
-        self.PrintStatus = ""
+        self.PrintStatus = "NotSet"
         self.BankAccountRef = None
 
     def __str__(self):
@@ -80,10 +80,9 @@ class BillPayment(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTx
         super(BillPayment, self).__init__()
         self.PayType = ""
         self.TotalAmt = 0
-        self.TxnDate = ""
         self.PrivateNote = ""
         self.DocNumber = ""
-        self.ProcessBillPayment = False
+        #self.ProcessBillPayment = False
 
         self.VendorRef = None
         self.CheckPayment = None

@@ -98,7 +98,6 @@ class Bill(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin)
 
     list_dict = {
         "Line": BillLine,
-        "LinkedTxn": LinkedTxn
     }
 
     qbo_object_name = "Bill"
@@ -127,3 +126,11 @@ class Bill(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin)
 
     def __str__(self):
         return str(self.Balance)
+
+    def to_linked_txn(self):
+        linked_txn = LinkedTxn()
+        linked_txn.TxnId = self.Id
+        linked_txn.TxnType = "Bill"
+        linked_txn.TxnLineId = 1
+
+        return linked_txn

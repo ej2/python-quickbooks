@@ -18,6 +18,16 @@ class BillTests(unittest.TestCase):
 
         self.assertEquals(str(bill), "1000")
 
+    def test_to_LinkedTxn(self):
+        bill = Bill()
+        bill.Id = 10
+
+        linked_txn = bill.to_linked_txn()
+
+        self.assertEquals(linked_txn.TxnId, bill.Id)
+        self.assertEquals(linked_txn.TxnType, "Bill")
+        self.assertEquals(linked_txn.TxnLineId, 1)
+
 
 class BillLineTests(unittest.TestCase):
     def test_unicode(self):
