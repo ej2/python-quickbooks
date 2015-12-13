@@ -24,6 +24,7 @@ class QuickBooks(object):
     callback_url = ''
     session = None
     sandbox = False
+    minorversion = None
 
     qbService = None
 
@@ -74,6 +75,9 @@ class QuickBooks(object):
 
         if 'sandbox' in kwargs:
             cls.sandbox = kwargs['sandbox']
+
+        if 'minorversion' in kwargs:
+            cls.minorversion = kwargs['minorversion']
 
         return QuickBooks.__instance
 
@@ -153,6 +157,12 @@ class QuickBooks(object):
         return session
 
     def make_request(self, request_type, url, request_body=None, content_type='application/json'):
+
+        params = {}
+
+        if self.minorversion:
+            params['minorversion'] = self.minorversion
+
         if not request_body:
             request_body = {}
 
@@ -164,7 +174,7 @@ class QuickBooks(object):
             'Accept': 'application/json'
         }
 
-        req = self.session.request(request_type, url, True, self.company_id, headers=headers, data=request_body)
+        req = self.session.request(request_type, url, True, self.company_id, headers=headers, params=params, data=request_body)
 
         try:
             result = req.json()
