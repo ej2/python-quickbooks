@@ -17,6 +17,7 @@ def build_where_clause(**kwargs):
 
     return where_clause
 
+
 def build_choose_clause(choices, field):
     where_clause = ""
 
