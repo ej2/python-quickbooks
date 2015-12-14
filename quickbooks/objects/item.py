@@ -31,6 +31,7 @@ class Item(QuickbooksManagedObject, QuickbooksTransactionEntity):
     def __init__(self):
         super(Item, self).__init__()
         self.Name = ""
+        self.Sku = ""
         self.Description = ""
         self.Active = True
         self.SubItem = False
