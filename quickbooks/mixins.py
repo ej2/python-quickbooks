@@ -1,5 +1,5 @@
 import simplejson as json
-from .utils import build_where_clause
+from .utils import build_where_clause, build_choose_clause
 from .client import QuickBooks
 
 
@@ -88,6 +88,14 @@ class ListMixin(object):
         :return: Filtered list
         """
         return cls.where(build_where_clause(**kwargs), start_position=start_position, max_results=max_results)
+
+    @classmethod
+    def choose(cls, choices, field="Id"):
+        """
+        :param kwargs: field names and values to filter the query
+        :return: Filtered list
+        """
+        return cls.where(build_choose_clause(choices, field))
 
     @classmethod
     def where(cls, where_clause="", start_position="", max_results=""):
