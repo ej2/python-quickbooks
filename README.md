@@ -66,7 +66,7 @@ Setup the client connection using the stored `access_token` and the `access_toke
 
 List of objects:
 
-    from quickbooks.object.customer import Customer
+    from quickbooks.objects.customer import Customer
     customers = Customer.all()
 
 __Note:__ The maximum number of entities that can be returned in a response is 1000.  If the result size is not specified, the default number is 100. 
