@@ -1,11 +1,9 @@
 import unittest
 from datetime import datetime
 
-from quickbooks.objects.creditcardpayment import CreditCardPayment
 from quickbooks.objects.account import Account
 from quickbooks.objects.bill import Bill
-from quickbooks.objects.billpayment import BillPayment, BillPaymentLine
-from quickbooks.objects.base import Ref
+from quickbooks.objects.billpayment import BillPayment, BillPaymentLine, CheckPayment
 from quickbooks.objects.vendor import Vendor
 
 
@@ -18,17 +16,16 @@ class BillPaymentTest(unittest.TestCase):
     def test_create(self):
         bill_payment = BillPayment()
 
-        bill_payment.PayType = "CreditCard"
+        bill_payment.PayType = "Check"
         bill_payment.TotalAmt = 200
         bill_payment.PrivateNote = "Private Note"
 
         vendor = Vendor.all(max_results=1)[0]
         bill_payment.VendorRef = vendor.to_ref()
 
-        bill_payment.CreditCardPayment = CreditCardPayment()
-
-        #account = Account.all(max_results=1)[0]
-        #bill_payment.CreditCardPayment.CCAccountRef = account.to_ref()
+        bill_payment.CheckPayment = CheckPayment()
+        account = Account.where("AccountSubType = 'Checking'")[0]
+        bill_payment.CheckPayment.BankAccountRef = account.to_ref()
 
         ap_account = Account.where("AccountSubType = 'AccountsPayable'")[0]
         bill_payment.APAccountRef = ap_account.to_ref()
