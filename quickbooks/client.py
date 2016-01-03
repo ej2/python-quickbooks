@@ -1,7 +1,9 @@
-try:
-    import httplib  # Python 2
-except ImportError:
-    import http.client as httplib  # Python 3
+try:  # Python 3
+    import http.client as httplib
+    from urllib.parse import parse_qs
+except ImportError:  # Python 2
+    import httplib
+    from urlparse import parse_qs
 
 from .exceptions import QuickbooksException, SevereException
 
@@ -120,12 +122,10 @@ class QuickBooks(object):
         response = self.qbService.get_raw_request_token(
            params={'oauth_callback': self.callback_url})
 
-        text = response.text.split('&')
+        oauth_resp = parse_qs(response.text)
 
-        self.request_token = text[2].split("=")[1]
-        self.request_token_secret = text[0].split("=")[1]
-        #self.request_token, self.request_token_secret = self.qbService.get_raw_request_token(
-        #   params={'oauth_callback': self.callback_url})
+        self.request_token = oauth_resp['oauth_token']
+        self.request_token_secret = oauth_resp['oauth_token_secret']
 
         return self.qbService.get_authorize_url(self.request_token)
 
