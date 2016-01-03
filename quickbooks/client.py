@@ -120,10 +120,10 @@ class QuickBooks(object):
         response = self.qbService.get_raw_request_token(
            params={'oauth_callback': self.callback_url})
 
-        content = str.split(response.content, '&')
+        text = response.text.split('&')
 
-        self.request_token = str.split(content[2], "=")[1]
-        self.request_token_secret = str.split(content[0], "=")[1]
+        self.request_token = text[2].split("=")[1]
+        self.request_token_secret = text[0].split("=")[1]
         #self.request_token, self.request_token_secret = self.qbService.get_raw_request_token(
         #   params={'oauth_callback': self.callback_url})
 
