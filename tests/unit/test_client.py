@@ -1,7 +1,7 @@
 import unittest
 from mock import patch
 
-from quickbooks.exceptions import QuickbooksException
+from quickbooks.exceptions import QuickbooksException, SevereException
 from quickbooks import client
 
 
@@ -183,3 +183,29 @@ class ClientTest(unittest.TestCase):
                 "GET", url, True, "1234", data={},
                 headers={'Content-Type': 'application/json', 'Accept': 'application/json'},
                 params={'minorversion': 4})
+
+    def test_handle_exceptions(self):
+        qb_client = client.QuickBooks()
+        error_data = {
+            "Error": [{
+                "Message": "message",
+                "Detail": "detail",
+                "code": "2030",
+                "element": "Id"}],
+            "type": "ValidationFault"
+        }
+
+        self.assertRaises(QuickbooksException, qb_client.handle_exceptions, error_data)
+
+    def test_handle_exceptions_severe(self):
+        qb_client = client.QuickBooks()
+        error_data = {
+            "Error": [{
+                "Message": "message",
+                "Detail": "detail",
+                "code": "10001",
+                "element": "Id"}],
+            "type": "ValidationFault"
+        }
+
+        self.assertRaises(SevereException, qb_client.handle_exceptions, error_data)
