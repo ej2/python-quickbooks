@@ -140,4 +140,4 @@ class ClientTest(unittest.TestCase):
         session = qb_client.get_access_tokens("oauth_verifier")
 
         qbService.get_auth_session.assert_called_with('token', 'secret', data={'oauth_verifier': 'oauth_verifier'})
-        self.assertIsNotNone(session)
+        self.assertFalse(session is None)
