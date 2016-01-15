@@ -42,3 +42,6 @@ class TimeActivity(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedT
         self.ItemRef = None
         self.ClassRef = None
         self.AttachableRef = None
+
+    def __str__(self):
+        return self.NameOf

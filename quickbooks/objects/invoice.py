@@ -86,3 +86,10 @@ class Invoice(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMix
         linked_txn.TxnLineId = 1
 
         return linked_txn
+
+    @property
+    def email_sent(self):
+        if self.EmailStatus == "EmailSent":
+            return True
+
+        return False
