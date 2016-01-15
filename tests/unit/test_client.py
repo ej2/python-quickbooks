@@ -1,6 +1,7 @@
 import unittest
 from mock import patch
 
+from quickbooks.exceptions import QuickbooksException
 from quickbooks import client
 
 
@@ -141,3 +142,23 @@ class ClientTest(unittest.TestCase):
 
         qbService.get_auth_session.assert_called_with('token', 'secret', data={'oauth_verifier': 'oauth_verifier'})
         self.assertFalse(session is None)
+
+    def test_get_instance(self):
+        qb_client = client.QuickBooks()
+
+        instance = qb_client.get_instance()
+        self.assertEquals(qb_client, instance)
+
+    @patch('quickbooks.client.OAuth1Session')
+    def test_create_session(self, auth_Session):
+        qb_client = client.QuickBooks()
+        session = qb_client.create_session()
+
+        self.assertTrue(auth_Session.called)
+        self.assertFalse(session is None)
+
+    def test_create_session_missing_auth_info_exception(self):
+        qb_client = client.QuickBooks()
+        qb_client.consumer_secret = None
+
+        self.assertRaises(QuickbooksException, qb_client.create_session)
