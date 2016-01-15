@@ -60,7 +60,7 @@ class Invoice(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMix
         self.ExchangeRate = 1
         self.GlobalTaxCalculation = "TaxExcluded"
 
-        self.EInvoiceStatus = ""
+        self.EInvoiceStatus = None
 
         self.BillAddr = None
         self.ShipAddr = None
