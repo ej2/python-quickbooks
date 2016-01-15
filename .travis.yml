@@ -5,7 +5,11 @@ python:
   - 3.3
   - 3.4
   - 3.5
+before_install:
+  - pip install coveralls
 install:
   - pip install -e .
   - pip install coverage
 script: nosetests . --with-coverage --cover-package=quickbooks
+after_success:
+  - coveralls
