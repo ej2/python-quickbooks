@@ -162,3 +162,24 @@ class ClientTest(unittest.TestCase):
         qb_client.consumer_secret = None
 
         self.assertRaises(QuickbooksException, qb_client.create_session)
+
+    @patch('quickbooks.client.QuickBooks.make_request')
+    def test_get_single_object(self, make_req):
+        qb_client = client.QuickBooks()
+        qb_client.company_id = "1234"
+
+        result = qb_client.get_single_object("test", 1)
+        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1/"
+        make_req.assert_called_with("GET", url, {})
+
+    @patch('quickbooks.client.QuickBooks.session')
+    def test_make_request(self, qb_session):
+        qb_client = client.QuickBooks()
+        qb_client.company_id = "1234"
+        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1/"
+        qb_client.make_request("GET", url, request_body=None, content_type='application/json')
+
+        qb_session.request.assert_called_with(
+                "GET", url, True, "1234", data={},
+                headers={'Content-Type': 'application/json', 'Accept': 'application/json'},
+                params={'minorversion': 4})
