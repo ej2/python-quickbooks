@@ -121,3 +121,23 @@ class ClientTest(unittest.TestCase):
         qb_client.update_object("Customer", "request_body")
 
         self.assertTrue(make_req.called)
+
+    @patch('quickbooks.client.parse_qs')
+    def test_get_authorize_url(self, parse_qs):
+        parse_qs.method.return_value = {'oauth_token': '1234', 'oauth_token_secret': '45678'}
+
+        qb_client = client.QuickBooks()
+        results = qb_client.get_authorize_url()
+
+        self.assertTrue('https://appcenter.intuit.com/Connect/Begin' in results)
+        self.assertTrue('oauth_token' in results)
+
+    @patch('quickbooks.client.QuickBooks.qbService')
+    def test_get_access_tokens(self, qbService):
+        qb_client = client.QuickBooks()
+        qb_client.request_token = "token"
+        qb_client.request_token_secret = "secret"
+        session = qb_client.get_access_tokens("oauth_verifier")
+
+        qbService.get_auth_session.assert_called_with('token', 'secret', data={'oauth_verifier': 'oauth_verifier'})
+        self.assertIsNotNone(session)

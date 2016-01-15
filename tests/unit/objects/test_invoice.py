@@ -21,6 +21,16 @@ class InvoiceTests(unittest.TestCase):
         self.assertEquals(linked_txn.TxnType, "Invoice")
         self.assertEquals(linked_txn.TxnLineId, 1)
 
+    def test_email_sent_true(self):
+        invoice = Invoice()
+        invoice.EmailStatus = "EmailSent"
+        self.assertTrue(invoice.email_sent)
+
+    def test_email_sent_false(self):
+        invoice = Invoice()
+        invoice.EmailStatus = "NotSent"
+        self.assertFalse(invoice.email_sent)
+
 
 class DeliveryInfoTests(unittest.TestCase):
     def test_init(self):

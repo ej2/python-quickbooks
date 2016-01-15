@@ -10,6 +10,7 @@ class TaxCodeTests(unittest.TestCase):
 
         self.assertEquals(str(taxcode), "test")
 
+
 class TaxRateDetailTests(unittest.TestCase):
     def test_init(self):
         tax_rate = TaxRateDetail()

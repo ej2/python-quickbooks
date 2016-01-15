@@ -60,7 +60,7 @@ class Invoice(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMix
         self.ExchangeRate = 1
         self.GlobalTaxCalculation = "TaxExcluded"
 
-        self.EInvoiceStatus = ""
+        self.EInvoiceStatus = None
 
         self.BillAddr = None
         self.ShipAddr = None
@@ -86,3 +86,10 @@ class Invoice(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMix
         linked_txn.TxnLineId = 1
 
         return linked_txn
+
+    @property
+    def email_sent(self):
+        if self.EmailStatus == "EmailSent":
+            return True
+
+        return False
