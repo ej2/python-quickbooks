@@ -64,6 +64,20 @@ Setup the client connection using the stored `access_token` and the `access_toke
     )
 
 
+If you need to access a minor version (See [Minor versions](https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/minor_versions) for details)
+pass in minorversion when setting up the client:
+
+    QuickBooks(
+        sandbox=True,
+        consumer_key=QUICKBOOKS_CLIENT_KEY,
+        consumer_secret=QUICKBOOKS_CLIENT_SECRET,
+        access_token=access_token,
+        access_token_secret=access_token_secret,
+        company_id=realm_id,
+        minorversion=4
+    )
+
+
 List of objects:
 
     from quickbooks.objects.customer import Customer
@@ -82,11 +96,17 @@ Filtered list of objects with paging:
     customers = Customer.filter(start_position=1, max_results=25, Active=True, FamilyName="Smith")
     
 
+List Filtered by values in list:
+
+    customer_names = ['Customer1', 'Customer2', 'Customer3']
+    customers = Customer.choose(customer_names, field="DisplayName")
+
+
 List with custom Where Clause (do not include the "WHERE"):
         
     customers = Customer.where("Active = True AND CompanyName LIKE 'S%'")
  
- 
+
 List with custom Where Clause with paging:
  
 

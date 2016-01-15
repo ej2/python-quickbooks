@@ -37,6 +37,11 @@ class ListMixinTest(unittest.TestCase):
         Department.query(select)
         query.assert_called_once_with(select)
 
+    @patch('quickbooks.mixins.ListMixin.where')
+    def test_choose(self, where):
+        Department.choose(['name1', 'name2'], field="Name")
+        where.assert_called_once_with("Name in ('name1', 'name2')")
+
 
 class ReadMixinTest(unittest.TestCase):
     @patch('quickbooks.mixins.QuickBooks.get_single_object')

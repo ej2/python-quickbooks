@@ -21,7 +21,8 @@ class ClientTest(unittest.TestCase):
             access_token_secret="access_token_secret",
             company_id="company_id",
             callback_url="callback_url",
-            verbose=True
+            verbose=True,
+            minorversion=4
         )
 
         self.assertEquals(self.qb_client.sandbox, False)
@@ -31,6 +32,7 @@ class ClientTest(unittest.TestCase):
         self.assertEquals(self.qb_client.access_token_secret, "access_token_secret")
         self.assertEquals(self.qb_client.company_id, "company_id")
         self.assertEquals(self.qb_client.callback_url, "callback_url")
+        self.assertEquals(self.qb_client.minorversion, 4)
 
     def test_client_updated(self):
         self.qb_client = client.QuickBooks(
