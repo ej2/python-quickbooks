@@ -204,7 +204,7 @@ class QuickBooks(object):
 
             code = ""
             if "code" in error:
-                code = error["code"]
+                code = int(error["code"])
 
             if code >= 10000:
                 raise SevereException(message, code, detail)
