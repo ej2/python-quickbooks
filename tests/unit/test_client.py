@@ -135,8 +135,6 @@ class ClientTest(unittest.TestCase):
 
             self.assertTrue('https://appcenter.intuit.com/Connect/Begin' in results)
             self.assertTrue('oauth_token' in results)
-            self.assertIsInstance(qb_client.request_token, str)
-            self.assertIsInstance(qb_client.request_token_secret, str)
             self.assertEqual(qb_client.request_token, 'tokenvalue')
             self.assertTrue(qb_client.request_token_secret, 'secretvalue')
 
