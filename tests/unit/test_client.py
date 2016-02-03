@@ -1,5 +1,4 @@
 import unittest
-import urlparse
 
 from mock import patch
 
@@ -136,8 +135,10 @@ class ClientTest(unittest.TestCase):
 
             self.assertTrue('https://appcenter.intuit.com/Connect/Begin' in results)
             self.assertTrue('oauth_token' in results)
-            self.assertTrue(isinstance(qb_client.request_token, str))
-            self.assertTrue(isinstance(qb_client.request_token_secret, str))
+            self.assertIsInstance(qb_client.request_token, str)
+            self.assertIsInstance(qb_client.request_token_secret, str)
+            self.assertEqual(qb_client.request_token, 'tokenvalue')
+            self.assertTrue(qb_client.request_token_secret, 'secretvalue')
 
     @patch('quickbooks.client.QuickBooks.qbService')
     def test_get_access_tokens(self, qbService):
