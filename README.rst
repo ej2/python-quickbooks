@@ -96,8 +96,7 @@ List of objects:
 ::
 
     
-    from quickbooks.objects.customer import Customer customers =
-Customer.all()
+    from quickbooks.objects.customer import Customer customers = Customer.all()
 
 **Note:** The maximum number of entities that can be returned in a
 response is 1000. If the result size is not specified, the default
@@ -128,7 +127,7 @@ List with custom Where Clause (do not include the “WHERE”):
 
     customers = Customer.where("Active = True AND CompanyName LIKE 'S%'")
 
-List with custom Where Clause with paging:
+List with custom Where Clause and paging:
 
 ::
 

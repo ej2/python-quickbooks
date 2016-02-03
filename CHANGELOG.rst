@@ -1,6 +1,9 @@
 Changelog
 ========
 
+* 0.3.6 (February 3, 2016)
+    * Fixed issues with README
+
 * 0.3.5 (February 3, 2016)
     * Added MANIFEST.
     * Converted README to reStructureText.
