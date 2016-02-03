@@ -1,4 +1,6 @@
 import unittest
+import urlparse
+
 from mock import patch
 
 from quickbooks.exceptions import QuickbooksException, SevereException
@@ -123,15 +125,19 @@ class ClientTest(unittest.TestCase):
 
         self.assertTrue(make_req.called)
 
-    @patch('quickbooks.client.parse_qs')
-    def test_get_authorize_url(self, parse_qs):
-        parse_qs.method.return_value = {'oauth_token': '1234', 'oauth_token_secret': '45678'}
-
+    def test_get_authorize_url(self):
         qb_client = client.QuickBooks()
-        results = qb_client.get_authorize_url()
+        qb_client.set_up_service()
 
-        self.assertTrue('https://appcenter.intuit.com/Connect/Begin' in results)
-        self.assertTrue('oauth_token' in results)
+        with patch.object(qb_client.qbService, "get_raw_request_token",
+                          return_value=MockResponse()):
+
+            results = qb_client.get_authorize_url()
+
+            self.assertTrue('https://appcenter.intuit.com/Connect/Begin' in results)
+            self.assertTrue('oauth_token' in results)
+            self.assertTrue(isinstance(qb_client.request_token, str))
+            self.assertTrue(isinstance(qb_client.request_token_secret, str))
 
     @patch('quickbooks.client.QuickBooks.qbService')
     def test_get_access_tokens(self, qbService):
@@ -209,3 +215,9 @@ class ClientTest(unittest.TestCase):
         }
 
         self.assertRaises(SevereException, qb_client.handle_exceptions, error_data)
+
+
+class MockResponse(object):
+    @property
+    def text(self):
+        return "oauth_token_secret=secretvalue&oauth_callback_confirmed=true&oauth_token=tokenvalue"
