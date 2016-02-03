@@ -120,7 +120,8 @@ class QuickBooks(object):
             self.set_up_service()
 
         response = self.qbService.get_raw_request_token(
-           params={'oauth_callback': self.callback_url})
+           params={'oauth_callback': self.callback_url}
+        )
 
         oauth_resp = dict(parse_qsl(response.text))
 
