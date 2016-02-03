@@ -10,7 +10,7 @@ def read(*parts):
         return fp.read()
 
 
-VERSION = (0, 3, 4)
+VERSION = (0, 3, 5)
 version = '.'.join(map(str, VERSION))
 
 setup(
@@ -22,7 +22,7 @@ setup(
     url='https://github.com/sidecars/python-quickbooks',
     license='MIT',
     keywords=['quickbooks', 'qbo', 'accounting'],
-    long_description=read('README.md'),
+    long_description=read('README.rst'),
 
     install_requires=[
         'setuptools',

@@ -1,6 +1,10 @@
 Changelog
 ========
 
+* 0.3.5 (February 3, 2016)
+    * Added MANIFEST.
+    * Converted README to reStructureText.
+
 * 0.3.4 (February 3, 2016)
     * Fixed issues with get_authorize_url.
 
