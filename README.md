@@ -197,6 +197,6 @@ Review results for batch operation:
 __Note:__ Objects and object property names match their Quickbooks counterparts and do not follow PEP8. 
 
 __Note:__ This is a work-in-progress made public to help other developers access the QuickBooks API. 
-Built for a Django project running on Python 2. It has not been tested with Python 3.
+Built for a Django project running on Python 2.
 
 
