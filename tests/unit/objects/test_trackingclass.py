@@ -1,17 +1,17 @@
 import unittest
 
-from quickbooks.objects.trackingclass import TrackingClass
+from quickbooks.objects.trackingclass import Class
 
 
-class TrackingClassTests(unittest.TestCase):
+class ClassTests(unittest.TestCase):
     def test_unicode(self):
-        cls = TrackingClass()
+        cls = Class()
         cls.Name = "test"
 
         self.assertEquals(str(cls), "test")
 
     def test_to_ref(self):
-        cls = TrackingClass()
+        cls = Class()
         cls.Name = "test"
         cls.Id = 100
 

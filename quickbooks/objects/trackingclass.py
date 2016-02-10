@@ -3,7 +3,7 @@ from .base import QuickbooksManagedObject, QuickbooksTransactionEntity, Ref
 
 
 @python_2_unicode_compatible
-class TrackingClass(QuickbooksManagedObject, QuickbooksTransactionEntity):
+class Class(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: Classes provide a way to track different segments of the business so they're
     not tied to a particular client or project. For example, you can define classes to break down
@@ -19,7 +19,7 @@ class TrackingClass(QuickbooksManagedObject, QuickbooksTransactionEntity):
     qbo_object_name = "Class"
 
     def __init__(self):
-        super(TrackingClass, self).__init__()
+        super(Class, self).__init__()
         self.Name = ""
         self.SubClass = False
         self.FullyQualifiedName = ""

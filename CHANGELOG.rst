@@ -1,6 +1,9 @@
 Changelog
 ========
 
+* 0.3.7 (February 10, 2016)
+    * Added missing quickbook object Class
+
 * 0.3.6 (February 3, 2016)
     * Fixed issues with README
 
