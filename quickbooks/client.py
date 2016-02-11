@@ -1,9 +1,9 @@
 try:  # Python 3
     import http.client as httplib
-    from urllib.parse import parse_qs
+    from urllib.parse import parse_qsl
 except ImportError:  # Python 2
     import httplib
-    from urlparse import parse_qs
+    from urlparse import parse_qsl
 
 from .exceptions import QuickbooksException, SevereException
 
@@ -122,7 +122,7 @@ class QuickBooks(object):
         response = self.qbService.get_raw_request_token(
            params={'oauth_callback': self.callback_url})
 
-        oauth_resp = parse_qs(response.text)
+        oauth_resp = dict(parse_qsl(response.text))
 
         self.request_token = oauth_resp['oauth_token']
         self.request_token_secret = oauth_resp['oauth_token_secret']
@@ -204,7 +204,7 @@ class QuickBooks(object):
 
             code = ""
             if "code" in error:
-                code = error["code"]
+                code = int(error["code"])
 
             if code >= 10000:
                 raise SevereException(message, code, detail)

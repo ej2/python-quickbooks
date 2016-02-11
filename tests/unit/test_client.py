@@ -1,6 +1,8 @@
 import unittest
+
 from mock import patch
 
+from quickbooks.exceptions import QuickbooksException, SevereException
 from quickbooks import client
 
 
@@ -122,15 +124,19 @@ class ClientTest(unittest.TestCase):
 
         self.assertTrue(make_req.called)
 
-    @patch('quickbooks.client.parse_qs')
-    def test_get_authorize_url(self, parse_qs):
-        parse_qs.method.return_value = {'oauth_token': '1234', 'oauth_token_secret': '45678'}
-
+    def test_get_authorize_url(self):
         qb_client = client.QuickBooks()
-        results = qb_client.get_authorize_url()
+        qb_client.set_up_service()
 
-        self.assertTrue('https://appcenter.intuit.com/Connect/Begin' in results)
-        self.assertTrue('oauth_token' in results)
+        with patch.object(qb_client.qbService, "get_raw_request_token",
+                          return_value=MockResponse()):
+
+            results = qb_client.get_authorize_url()
+
+            self.assertTrue('https://appcenter.intuit.com/Connect/Begin' in results)
+            self.assertTrue('oauth_token' in results)
+            self.assertEqual(qb_client.request_token, 'tokenvalue')
+            self.assertTrue(qb_client.request_token_secret, 'secretvalue')
 
     @patch('quickbooks.client.QuickBooks.qbService')
     def test_get_access_tokens(self, qbService):
@@ -141,3 +147,76 @@ class ClientTest(unittest.TestCase):
 
         qbService.get_auth_session.assert_called_with('token', 'secret', data={'oauth_verifier': 'oauth_verifier'})
         self.assertFalse(session is None)
+
+    def test_get_instance(self):
+        qb_client = client.QuickBooks()
+
+        instance = qb_client.get_instance()
+        self.assertEquals(qb_client, instance)
+
+    @patch('quickbooks.client.OAuth1Session')
+    def test_create_session(self, auth_Session):
+        qb_client = client.QuickBooks()
+        session = qb_client.create_session()
+
+        self.assertTrue(auth_Session.called)
+        self.assertFalse(session is None)
+
+    def test_create_session_missing_auth_info_exception(self):
+        qb_client = client.QuickBooks()
+        qb_client.consumer_secret = None
+
+        self.assertRaises(QuickbooksException, qb_client.create_session)
+
+    @patch('quickbooks.client.QuickBooks.make_request')
+    def test_get_single_object(self, make_req):
+        qb_client = client.QuickBooks()
+        qb_client.company_id = "1234"
+
+        result = qb_client.get_single_object("test", 1)
+        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1/"
+        make_req.assert_called_with("GET", url, {})
+
+    @patch('quickbooks.client.QuickBooks.session')
+    def test_make_request(self, qb_session):
+        qb_client = client.QuickBooks()
+        qb_client.company_id = "1234"
+        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1/"
+        qb_client.make_request("GET", url, request_body=None, content_type='application/json')
+
+        qb_session.request.assert_called_with(
+                "GET", url, True, "1234", data={},
+                headers={'Content-Type': 'application/json', 'Accept': 'application/json'},
+                params={'minorversion': 4})
+
+    def test_handle_exceptions(self):
+        qb_client = client.QuickBooks()
+        error_data = {
+            "Error": [{
+                "Message": "message",
+                "Detail": "detail",
+                "code": "2030",
+                "element": "Id"}],
+            "type": "ValidationFault"
+        }
+
+        self.assertRaises(QuickbooksException, qb_client.handle_exceptions, error_data)
+
+    def test_handle_exceptions_severe(self):
+        qb_client = client.QuickBooks()
+        error_data = {
+            "Error": [{
+                "Message": "message",
+                "Detail": "detail",
+                "code": "10001",
+                "element": "Id"}],
+            "type": "ValidationFault"
+        }
+
+        self.assertRaises(SevereException, qb_client.handle_exceptions, error_data)
+
+
+class MockResponse(object):
+    @property
+    def text(self):
+        return "oauth_token_secret=secretvalue&oauth_callback_confirmed=true&oauth_token=tokenvalue"
