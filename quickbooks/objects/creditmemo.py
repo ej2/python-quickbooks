@@ -96,7 +96,7 @@ class CreditMemoLine(QuickbooksBaseObject):
 
     def __init__(self):
         super(CreditMemoLine, self).__init__()
-        self.Id = ""
+        self.Id = None
         self.LineNum = ""
         self.Description = ""
         self.Amount = ""
@@ -150,7 +150,6 @@ class CreditMemo(QuickbooksTransactionEntity, QuickbooksManagedObject, LinkedTxn
         self.DocNumber = ""
         self.TxnDate = ""
         self.PrivateNote = ""
-        self.CustomerMemo = ""
         self.TotalAmt = 0
         self.ApplyTaxAfterDiscount = ""
         self.PrintStatus = "NotSet"

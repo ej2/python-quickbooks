@@ -26,7 +26,7 @@ class CreditMemoTest(unittest.TestCase):
         credit_memo.CustomerRef = customer.to_ref()
 
         detail_line = CreditMemoLine()
-        detail_line.LineNum = "1"
+        detail_line.LineNum = 1
         detail_line.Description = "Test Description"
         detail_line.Amount = 100
         detail_line.DetailType = "SalesItemLineDetail"
@@ -39,4 +39,20 @@ class CreditMemoTest(unittest.TestCase):
 
         self.assertEquals(credit_memo.Id, query_credit_memo.Id)
         self.assertEquals(query_credit_memo.CustomerRef.value, customer.Id)
-        self.assertEquals(len(query_credit_memo.Line), 1)
+
+        line = query_credit_memo.Line[0]
+        self.assertEquals(line.LineNum, 1)
+        self.assertEquals(line.Description, "Test Description")
+        self.assertEquals(line.Amount, 100)
+        self.assertEquals(line.DetailType, "SalesItemLineDetail")
+        self.assertEquals(line.SalesItemLineDetail.ItemRef.value, item.Id)
+
+    def test_update(self):
+        credit_memo = CreditMemo.all(max_results=1)[0]
+        credit_memo.PrivateNote = "Test"
+        credit_memo.save()
+
+        query_credit_memo = CreditMemo.get(credit_memo.Id)
+        self.assertEquals(query_credit_memo.PrivateNote, "Test")
+
+
