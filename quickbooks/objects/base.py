@@ -22,6 +22,10 @@ class QuickbooksManagedObject(QuickbooksBaseObject, ReadMixin, ListMixin, Update
     pass
 
 
+class QuickbooksReadOnlyObject(QuickbooksBaseObject, ReadMixin, ListMixin):
+    pass
+
+
 @python_2_unicode_compatible
 class MetaData:
     def __init__(self):

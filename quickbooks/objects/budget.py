@@ -1,5 +1,6 @@
 from six import python_2_unicode_compatible
-from .base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity
+from .base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, \
+    QuickbooksReadOnlyObject
 
 
 @python_2_unicode_compatible
@@ -26,12 +27,14 @@ class BudgetDetail(QuickbooksBaseObject):
 
 
 @python_2_unicode_compatible
-class Budget(QuickbooksManagedObject, QuickbooksTransactionEntity):
+class Budget(QuickbooksReadOnlyObject, QuickbooksTransactionEntity):
     """
     QBO definition: The Budget endpoint allows you to retrieve the current state of budgets already set up in the user's
     company file. A budget allows for an amount to be assigned on a monthly, quarterly, or annual basis for a specific
     account or customer and are created to give a business measurable expense goals. This amount represents how much
     should be spent against that account or customer in the give time period.
+
+    Note: Budgets cannot be created or updated via the Quickbooks API
     """
 
     list_dict = {
