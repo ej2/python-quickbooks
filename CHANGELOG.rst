@@ -1,6 +1,11 @@
 Changelog
 ========
 
+* 0.3.8 (February 11, 2016)
+    * Updated Budget object to be read only.
+    * Added missing fields on CreditMemo object.
+    * Changed CreditMemoLine Id to initialize to None.
+
 * 0.3.7 (February 10, 2016)
     * Added missing quickbook object Class
 
