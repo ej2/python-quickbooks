@@ -1,5 +1,5 @@
 from six import python_2_unicode_compatible
-from .base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, \
+from .base import QuickbooksBaseObject, Ref, QuickbooksTransactionEntity, \
     QuickbooksReadOnlyObject
 
 
