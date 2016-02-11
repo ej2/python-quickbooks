@@ -1,6 +1,6 @@
 from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Address, EmailAddress, Ref, CustomField, CustomerMemo, QuickbooksManagedObject, \
-    LinkedTxnMixin, LinkedTxn, MarkupInfo
+    LinkedTxnMixin, LinkedTxn, MarkupInfo, QuickbooksTransactionEntity
 from .tax import TxnTaxDetail
 
 
@@ -115,7 +115,7 @@ class CreditMemoLine(QuickbooksBaseObject):
 
 
 @python_2_unicode_compatible
-class CreditMemo(QuickbooksManagedObject, LinkedTxnMixin):
+class CreditMemo(QuickbooksTransactionEntity, QuickbooksManagedObject, LinkedTxnMixin):
     """
     QBO definition: The CreditMemo is a financial transaction representing a refund or credit of payment or part
     of a payment for goods or services that have been sold.
