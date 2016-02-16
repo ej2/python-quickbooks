@@ -52,11 +52,16 @@ class Address(ToJsonMixin, FromJsonMixin):
         self.Id = None
         self.Line1 = ""
         self.Line2 = ""
+        self.Line3 = ""
+        self.Line4 = ""
+        self.Line5 = ""
         self.City = ""
         self.CountrySubDivisionCode = ""
+        self.Country = ""
         self.PostalCode = ""
         self.Lat = ""
         self.Long = ""
+        self.Note = ""
 
     def __str__(self):
         return "{0} {1}, {2} {3}".format(self.Line1, self.City, self.CountrySubDivisionCode, self.PostalCode)

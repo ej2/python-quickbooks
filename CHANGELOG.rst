@@ -1,6 +1,9 @@
 Changelog
 ========
 
+* 0.3.9 (February 16, 2016)
+    * Added missing fields (Country, Note, Line3, Line4, and Line5) to Address object.
+
 * 0.3.8 (February 11, 2016)
     * Updated Budget object to be read only.
     * Added missing fields on CreditMemo object.
