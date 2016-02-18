@@ -26,8 +26,10 @@ Connecting your application to Quickbooks Online
        )
 
        authorize_url = quickbooks.get_authorize_url()
+       request_token = quickbooks.request_token
+       request_token_secret = quickbooks.request_token_secret
 
-   Store the authorize\_url, request\_token, and request\_token\_secret
+   Store the ``authorize_url``, ``request_token``, and ``request_token_secret``
    for use in the Callback method.
 
 2. Handle the callback:
@@ -52,8 +54,7 @@ Connecting your application to Quickbooks Online
        access_token = quickbooks.access_token
        access_token_secret = quickbooks.access_token_secret
 
-   Store realm\_id, access\_token, and access\_token\_secret need to be
-   stored for later use.
+   Store ``realm_id``, ``access_token``, and ``access_token_secret`` for later use.
 
 Accessing the API
 -----------------
