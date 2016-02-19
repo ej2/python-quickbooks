@@ -1,6 +1,9 @@
 Changelog
 ========
 
+* 0.3.10 (February 19, 2016)
+    * Updated field defaults on Item object
+
 * 0.3.9 (February 16, 2016)
     * Added missing fields (Country, Note, Line3, Line4, and Line5) to Address object.
 
