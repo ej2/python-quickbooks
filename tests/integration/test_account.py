@@ -7,7 +7,7 @@ from quickbooks.objects.account import Account
 
 class AccountTest(unittest.TestCase):
     def setUp(self):
-        QuickBooks(
+        self.qb_client = QuickBooks(
             sandbox=True,
             consumer_key=os.environ.get('CONSUMER_KEY'),
             consumer_secret=os.environ.get('CONSUMER_SECRET'),
@@ -24,10 +24,10 @@ class AccountTest(unittest.TestCase):
         account.AcctNum = self.account_number
         account.Name = self.name
         account.AccountSubType = "CashOnHand"
-        account.save()
+        account.save(qb=self.qb_client)
 
         self.id = account.Id
-        query_account = Account.get(account.Id)
+        query_account = Account.get(account.Id, qb=self.qb_client)
 
         self.assertEquals(account.Id, query_account.Id)
         self.assertEquals(query_account.Name, self.name)
@@ -37,8 +37,8 @@ class AccountTest(unittest.TestCase):
         account = Account.filter(Name=self.name)[0]
 
         account.Name = "Updated Name {0}".format(self.account_number)
-        account.save()
+        account.save(qb=self.qb_client)
 
-        query_account = Account.get(account.Id)
+        query_account = Account.get(account.Id, qb=self.qb_client)
 
         self.assertEquals(query_account.Name, "Updated Name {0}".format(self.account_number))

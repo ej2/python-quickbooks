@@ -52,40 +52,63 @@ class QuickBooks(object):
     ]
 
     __instance = None
+    __use_global = True
 
     def __new__(cls, **kwargs):
-        if QuickBooks.__instance is None:
-            QuickBooks.__instance = object.__new__(cls)
+        """
+        If global is disabled, don't set global client instance.
+        """
+        if QuickBooks.__use_global:
+            if QuickBooks.__instance is None:
+                QuickBooks.__instance = object.__new__(cls)
+            instance = QuickBooks.__instance
+        else:
+            instance = object.__new__(cls)
 
         if 'consumer_key' in kwargs:
-            cls.consumer_key = kwargs['consumer_key']
+            instance.consumer_key = kwargs['consumer_key']
 
         if 'consumer_secret' in kwargs:
-            cls.consumer_secret = kwargs['consumer_secret']
+            instance.consumer_secret = kwargs['consumer_secret']
 
         if 'access_token' in kwargs:
-            cls.access_token = kwargs['access_token']
+            instance.access_token = kwargs['access_token']
 
         if 'access_token_secret' in kwargs:
-            cls.access_token_secret = kwargs['access_token_secret']
+            instance.access_token_secret = kwargs['access_token_secret']
 
         if 'company_id' in kwargs:
-            cls.company_id = kwargs['company_id']
+            instance.company_id = kwargs['company_id']
 
         if 'callback_url' in kwargs:
-            cls.callback_url = kwargs['callback_url']
+            instance.callback_url = kwargs['callback_url']
 
         if 'sandbox' in kwargs:
-            cls.sandbox = kwargs['sandbox']
+            instance.sandbox = kwargs['sandbox']
 
         if 'minorversion' in kwargs:
-            cls.minorversion = kwargs['minorversion']
+            instance.minorversion = kwargs['minorversion']
 
-        return QuickBooks.__instance
+        return instance
 
     @classmethod
     def get_instance(cls):
         return cls.__instance
+
+    @classmethod
+    def disable_global(cls):
+        """
+        Disable use of singleton pattern.
+        """
+        QuickBooks.__use_global = False
+        QuickBooks.__instance = None
+
+    @classmethod
+    def enable_global(cls):
+        """
+        Allow use of singleton pattern.
+        """
+        QuickBooks.__use_global = True
 
     def _drop(self):
         QuickBooks.__instance = None

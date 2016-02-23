@@ -10,7 +10,22 @@ class ClientTest(unittest.TestCase):
     def setUp(self):
         pass
 
+    def setUp(self):
+        """
+        Use a consistent set of defaults.
+        """
+        client.QuickBooks(
+            sandbox=True,
+            consumer_key="update_consumer_key",
+            consumer_secret="update_consumer_secret",
+            access_token="update_access_token",
+            access_token_secret="update_access_token_secret",
+            company_id="update_company_id",
+            callback_url="update_callback_url"
+        )
+
     def tearDown(self):
+        client.QuickBooks.enable_global()
         self.qb_client = client.QuickBooks()
         self.qb_client._drop()
 
@@ -72,6 +87,19 @@ class ClientTest(unittest.TestCase):
         self.assertEquals(self.qb_client2.access_token_secret, "update_access_token_secret")
         self.assertEquals(self.qb_client2.company_id, "update_company_id")
         self.assertEquals(self.qb_client2.callback_url, "update_callback_url")
+
+    def test_disable_global(self):
+        client.QuickBooks.disable_global()
+        self.qb_client = client.QuickBooks()
+
+        self.assertFalse(self.qb_client.sandbox)
+        self.assertFalse(self.qb_client.consumer_key)
+        self.assertFalse(self.qb_client.consumer_secret)
+        self.assertFalse(self.qb_client.access_token)
+        self.assertFalse(self.qb_client.access_token_secret)
+        self.assertFalse(self.qb_client.company_id)
+        self.assertFalse(self.qb_client.callback_url)
+        self.assertFalse(self.qb_client.minorversion)
 
     def test_api_url(self):
         qb_client = client.QuickBooks(sandbox=False)
@@ -186,8 +214,7 @@ class ClientTest(unittest.TestCase):
 
         qb_session.request.assert_called_with(
                 "GET", url, True, "1234", data={},
-                headers={'Content-Type': 'application/json', 'Accept': 'application/json'},
-                params={'minorversion': 4})
+                headers={'Content-Type': 'application/json', 'Accept': 'application/json'}, params={})
 
     def test_handle_exceptions(self):
         qb_client = client.QuickBooks()

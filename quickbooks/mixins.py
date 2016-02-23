@@ -46,8 +46,9 @@ class ReadMixin(object):
     qbo_object_name = ""
 
     @classmethod
-    def get(cls, id):
-        qb = QuickBooks()
+    def get(cls, id, qb=None):
+        if not qb:
+            qb = QuickBooks()
 
         json_data = qb.get_single_object(cls.qbo_object_name, pk=id)
         return cls.from_json(json_data[cls.qbo_object_name])
@@ -56,8 +57,9 @@ class ReadMixin(object):
 class UpdateMixin(object):
     qbo_object_name = ""
 
-    def save(self):
-        qb = QuickBooks()
+    def save(self, qb=None):
+        if not qb:
+            qb = QuickBooks()
 
         if self.Id and self.Id > 0:
             json_data = qb.update_object(self.qbo_object_name, self.to_json())
@@ -74,31 +76,31 @@ class ListMixin(object):
     qbo_object_name = ""
 
     @classmethod
-    def all(cls, start_position="", max_results=100):
+    def all(cls, start_position="", max_results=100, qb=None):
         """
         :param max_results: The maximum number of entities that can be returned in a response is 1000.
         :return: Returns list
         """
-        return cls.where("", start_position=start_position, max_results=max_results)
+        return cls.where("", start_position=start_position, max_results=max_results, qb=qb)
 
     @classmethod
-    def filter(cls, start_position="", max_results="", **kwargs):
+    def filter(cls, start_position="", max_results="", qb=None, **kwargs):
         """
         :param kwargs: field names and values to filter the query
         :return: Filtered list
         """
-        return cls.where(build_where_clause(**kwargs), start_position=start_position, max_results=max_results)
+        return cls.where(build_where_clause(**kwargs), start_position=start_position, max_results=max_results, qb=qb)
 
     @classmethod
-    def choose(cls, choices, field="Id"):
+    def choose(cls, choices, field="Id", qb=None):
         """
         :param kwargs: field names and values to filter the query
         :return: Filtered list
         """
-        return cls.where(build_choose_clause(choices, field))
+        return cls.where(build_choose_clause(choices, field), qb=qb)
 
     @classmethod
-    def where(cls, where_clause="", start_position="", max_results=""):
+    def where(cls, where_clause="", start_position="", max_results="", qb=None):
         """
         :param where_clause: QBO SQL where clause (DO NOT include 'WHERE')
         :return: Returns list filtered by input where_clause
@@ -114,16 +116,16 @@ class ListMixin(object):
 
         select = "SELECT * FROM {0} {1}{2}{3}".format(cls.qbo_object_name, where_clause, start_position, max_results)
 
-        return cls.query(select)
+        return cls.query(select, qb=qb)
 
     @classmethod
-    def query(cls, select):
+    def query(cls, select, qb=None):
         """
         :param select: QBO SQL query select statement
         :return: Returns list
         """
-
-        qb = QuickBooks()
+        if not qb:
+            qb = QuickBooks()
 
         json_data = qb.query(select)
 

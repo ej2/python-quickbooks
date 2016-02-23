@@ -14,13 +14,13 @@ class BatchManager(object):
         else:
             raise QuickbooksException("Operation not supported.")
 
-    def save(self, obj_list):
+    def save(self, obj_list, qb=None):
         batch_response = BatchResponse()
 
         while len(obj_list) > 0:
             temp_list = obj_list[:self._max_request_items]
             obj_list = [item for item in obj_list if item not in temp_list]
-            result = self.process_batch(temp_list)
+            result = self.process_batch(temp_list, qb=qb)
 
             batch_response.batch_responses += result.batch_responses
             batch_response.original_list += result.original_list
@@ -29,8 +29,9 @@ class BatchManager(object):
 
         return batch_response
 
-    def process_batch(self, obj_list):
-        qb = QuickBooks()
+    def process_batch(self, obj_list, qb=None):
+        if not qb:
+            qb = QuickBooks()
 
         batch = self.list_to_batch_request(obj_list)
         json_data = qb.batch_operation(batch.to_json())
@@ -75,16 +76,16 @@ class BatchManager(object):
         return response
 
 
-def batch_create(obj_list):
+def batch_create(obj_list, qb=None):
     batch_mgr = BatchManager(BatchOperation.CREATE)
-    return batch_mgr.save(obj_list)
+    return batch_mgr.save(obj_list, qb=qb)
 
 
-def batch_update(obj_list):
+def batch_update(obj_list, qb=None):
     batch_mgr = BatchManager(BatchOperation.UPDATE)
-    return batch_mgr.save(obj_list)
+    return batch_mgr.save(obj_list, qb=qb)
 
 
-def batch_delete(obj_list):
+def batch_delete(obj_list, qb=None):
     batch_mgr = BatchManager(BatchOperation.DELETE)
-    return batch_mgr.save(obj_list)
+    return batch_mgr.save(obj_list, qb=qb)
