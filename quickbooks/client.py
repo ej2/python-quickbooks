@@ -5,7 +5,7 @@ except ImportError:  # Python 2
     import httplib
     from urlparse import parse_qsl
 
-from .exceptions import QuickbooksException, SevereException
+from .exceptions import QuickbooksException, SevereException, AuthorizationException
 
 try:
     from rauth import OAuth1Session, OAuth1Service
@@ -198,6 +198,8 @@ class QuickBooks(object):
         }
 
         req = self.session.request(request_type, url, True, self.company_id, headers=headers, params=params, data=request_body)
+        if req.status_code == httplib.UNAUTHORIZED:
+            raise AuthorizationException("Application authentication failed")
 
         try:
             result = req.json()
