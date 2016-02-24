@@ -1,6 +1,11 @@
 Changelog
 ========
 
+* 0.3.11 (February 24, 2016)
+    * Updated field defaults on Payment object.
+    * Added minor version 4 field to Payment object.
+    * Removed invalid fields from PaymentLine object.
+
 * 0.3.10 (February 19, 2016)
     * Updated field defaults on Item object
 

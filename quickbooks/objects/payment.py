@@ -11,15 +11,11 @@ class PaymentLine(QuickbooksBaseObject):
 
     def __init__(self):
         super(PaymentLine, self).__init__()
-        self.Id = 0
-        self.LineNum = 0
-        self.Description = ""
         self.Amount = 0
-
         self.LinkedTxn = []
 
     def __str__(self):
-        return "[{0}] {1} {2}".format(self.LineNum, self.Description, self.Amount)
+        return str(self.Amount)
 
 
 @python_2_unicode_compatible
@@ -58,22 +54,25 @@ class Payment(QuickbooksManagedObject, QuickbooksTransactionEntity):
 
     def __init__(self):
         super(Payment, self).__init__()
-        self.PaymentRefNum = ""
-        self.TotalAmt = 0
-        self.UnappliedAmt = 0
-        self.ExchangeRate = 1
-        self.TxnDate = ""
-        self.TxnSource = ""
-        self.PrivateNote = ""
-        self.TxnStatus = "PAID"
+        self.PaymentRefNum = None
+        self.TotalAmt = None
+        self.UnappliedAmt = None  # Readonly
+        self.ExchangeRate = None
+        self.TxnDate = None
+        self.TxnSource = None
+        self.PrivateNote = None
+        self.TxnStatus = None
 
         self.CreditCardPayment = None
         self.ARAccountRef = None
         self.CustomerRef = None
-        self.CurrencyRef = None
+        self.CurrencyRef = None  # Readonly
         self.PaymentMethodRef = None
         self.DepositToAccountRef = None
         self.Line = []
+
+        # These fields are for minor version 4
+        self.TransactionLocationType = None
 
     def __str__(self):
         return str(self.TotalAmt)
