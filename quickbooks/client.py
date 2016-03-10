@@ -257,7 +257,7 @@ class QuickBooks(object):
         self.isvalid_object_name(qbbo)
 
         url = self.api_url + "/company/{0}/{1}".format(self.company_id, qbbo.lower())
-        results = self.make_request("POST", url, request_body, file=_file_path)
+        results = self.make_request("POST", url, request_body, file_path=_file_path)
 
         return results
 
@@ -275,7 +275,7 @@ class QuickBooks(object):
 
     def update_object(self, qbbo, request_body, _file_path=None):
         url = self.api_url + "/company/{0}/{1}".format(self.company_id, qbbo.lower())
-        result = self.make_request("POST", url, request_body, file=_file_path)
+        result = self.make_request("POST", url, request_body, file_path=_file_path)
 
         return result
 
