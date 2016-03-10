@@ -7,7 +7,8 @@ except ImportError:  # Python 2
 
 from .exceptions import QuickbooksException, SevereException
 import textwrap
-
+import json
+import os
 try:
     from rauth import OAuth1Session, OAuth1Service
 except ImportError:
@@ -177,9 +178,7 @@ class QuickBooks(object):
         if file_path:
             attachment = open(file_path, 'rb')
             url = url.replace('attachable', 'upload')
-            file_name = attachment.name + ""
-            if "/" in file_name:
-                file_name = file_name.rsplit("/", 1)[1]
+            file_name, extension = os.path.splitext(json.loads(request_body)['FileName'])
             boundary = '-------------PythonMultipartPost'
             headers.update({
                 'Content-Type': 'multipart/form-data; boundary=%s' % boundary,
@@ -188,12 +187,7 @@ class QuickBooks(object):
                 'Accept': 'application/json',
                 'Connection': 'close'
             })
-            extension = file_name.rsplit(".", 1)[1]
 
-            mime_type = {
-                "pdf": "pdf",
-                "xlsx": "vnd.ms-excel",
-                "pptx": "vnd.ms-powerpoint"}.get(extension, "plain/text")
             binary_data = attachment.read()
 
             request_body = textwrap.dedent(
@@ -205,16 +199,14 @@ class QuickBooks(object):
                 %s
 
                 --%s
-                Content-Disposition: form-data; name="file_content_01"; filename="%s"
-                Content-Type: application/%s
-                Content-Length: %d
-                Content-Transfer-Encoding: binary
+                Content-Disposition: form-data; name="file_content_01"
+                Content-Type: application/pdf
 
                 %s
 
                 --%s--
                 """
-            ) % (boundary, request_body, boundary, file_name, mime_type, len(binary_data), binary_data, boundary)
+            ) % (boundary, request_body, boundary, binary_data, boundary)
         req = self.session.request(request_type, url, True, self.company_id, headers=headers, params=params,
                                    data=request_body)
 
