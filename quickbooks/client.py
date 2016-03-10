@@ -116,8 +116,7 @@ class QuickBooks(object):
         Returns the Authorize URL as returned by QB, and specified by OAuth 1.0a.
         :return URI:
         """
-        if '?' in self.authorize_url:
-            self.authorize_url = self.authorize_url[:self.authorize_url.find('?')]
+        self.authorize_url = self.authorize_url[:self.authorize_url.find('?')] if '?' in self.authorize_url else self.authorize_url
         if self.qbService is None:
             self.set_up_service()
 
