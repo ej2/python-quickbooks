@@ -6,6 +6,7 @@ except ImportError:  # Python 2
     from urlparse import parse_qsl
 
 from .exceptions import QuickbooksException, SevereException
+import textwrap
 
 try:
     from rauth import OAuth1Session, OAuth1Service
@@ -116,18 +117,18 @@ class QuickBooks(object):
         Returns the Authorize URL as returned by QB, and specified by OAuth 1.0a.
         :return URI:
         """
-        self.authorize_url = self.authorize_url[:self.authorize_url.find('?')] if '?' in self.authorize_url else self.authorize_url
+        self.authorize_url = self.authorize_url[:self.authorize_url.find('?')] \
+            if '?' in self.authorize_url else self.authorize_url
         if self.qbService is None:
             self.set_up_service()
 
         response = self.qbService.get_raw_request_token(
-           params={'oauth_callback': self.callback_url})
+            params={'oauth_callback': self.callback_url})
 
         oauth_resp = dict(parse_qsl(response.text))
 
         self.request_token = oauth_resp['oauth_token']
         self.request_token_secret = oauth_resp['oauth_token_secret']
-
         return self.qbService.get_authorize_url(self.request_token)
 
     def set_up_service(self):
@@ -157,7 +158,7 @@ class QuickBooks(object):
 
         return session
 
-    def make_request(self, request_type, url, request_body=None, content_type='application/json'):
+    def make_request(self, request_type, url, request_body=None, content_type='application/json', file=None):
 
         params = {}
 
@@ -169,13 +170,52 @@ class QuickBooks(object):
 
         if self.session is None:
             self.create_session()
-
         headers = {
             'Content-Type': content_type,
             'Accept': 'application/json'
         }
+        if file:
+            url = url.replace('attachable', 'upload')
+            file_name = file.name + ""
+            if "/" in file_name:
+                file_name = file_name.rsplit("/", 1)[1]
+            boundary = '-------------PythonMultipartPost'
+            headers.update({
+                'Content-Type': 'multipart/form-data; boundary=%s' % boundary,
+                'Accept-Encoding': 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+                'User-Agent': 'OAuth gem v0.4.7',
+                'Accept': 'application/json',
+                'Connection': 'close'
+            })
+            extension = file_name.rsplit(".", 1)[1]
 
-        req = self.session.request(request_type, url, True, self.company_id, headers=headers, params=params, data=request_body)
+            mime_type = {
+                "pdf": "pdf",
+                "xlsx": "vnd.ms-excel",
+                "pptx": "vnd.ms-powerpoint"}.get(extension, "plain/text")
+            binary_data = file.read()
+
+            request_body = textwrap.dedent(
+                """
+                --%s
+                Content-Disposition: form-data; name="file_metadata_01"
+                Content-Type: application/json
+
+                %s
+
+                --%s
+                Content-Disposition: form-data; name="file_content_01"; filename="%s"
+                Content-Type: application/%s
+                Content-Length: %d
+                Content-Transfer-Encoding: binary
+
+                %s
+
+                --%s--
+                """
+            ) % (boundary, request_body, boundary, file_name, mime_type, len(binary_data), binary_data, boundary)
+        req = self.session.request(request_type, url, True, self.company_id, headers=headers, params=params,
+                                   data=request_body)
 
         try:
             result = req.json()
@@ -212,11 +252,11 @@ class QuickBooks(object):
             else:
                 raise QuickbooksException(message, code, detail)
 
-    def create_object(self, qbbo, request_body):
+    def create_object(self, qbbo, request_body, _file=None):
         self.isvalid_object_name(qbbo)
 
         url = self.api_url + "/company/{0}/{1}".format(self.company_id, qbbo.lower())
-        results = self.make_request("POST", url, request_body)
+        results = self.make_request("POST", url, request_body, file=file)
 
         return results
 
