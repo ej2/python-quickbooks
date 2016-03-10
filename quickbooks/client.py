@@ -178,7 +178,6 @@ class QuickBooks(object):
         if file_path:
             attachment = open(file_path, 'rb')
             url = url.replace('attachable', 'upload')
-            file_name, extension = os.path.splitext(json.loads(request_body)['FileName'])
             boundary = '-------------PythonMultipartPost'
             headers.update({
                 'Content-Type': 'multipart/form-data; boundary=%s' % boundary,
