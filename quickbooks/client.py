@@ -158,7 +158,7 @@ class QuickBooks(object):
 
         return session
 
-    def make_request(self, request_type, url, request_body=None, content_type='application/json', file=None):
+    def make_request(self, request_type, url, request_body=None, content_type='application/json', file_path=None):
 
         params = {}
 
@@ -174,9 +174,10 @@ class QuickBooks(object):
             'Content-Type': content_type,
             'Accept': 'application/json'
         }
-        if file:
+        if file_path:
+            attachment = open(file_path, 'rb')
             url = url.replace('attachable', 'upload')
-            file_name = file.name + ""
+            file_name = attachment.name + ""
             if "/" in file_name:
                 file_name = file_name.rsplit("/", 1)[1]
             boundary = '-------------PythonMultipartPost'
@@ -193,7 +194,7 @@ class QuickBooks(object):
                 "pdf": "pdf",
                 "xlsx": "vnd.ms-excel",
                 "pptx": "vnd.ms-powerpoint"}.get(extension, "plain/text")
-            binary_data = file.read()
+            binary_data = attachment.read()
 
             request_body = textwrap.dedent(
                 """
@@ -252,11 +253,11 @@ class QuickBooks(object):
             else:
                 raise QuickbooksException(message, code, detail)
 
-    def create_object(self, qbbo, request_body, _file=None):
+    def create_object(self, qbbo, request_body, _file_path=None):
         self.isvalid_object_name(qbbo)
 
         url = self.api_url + "/company/{0}/{1}".format(self.company_id, qbbo.lower())
-        results = self.make_request("POST", url, request_body, file=file)
+        results = self.make_request("POST", url, request_body, file=_file_path)
 
         return results
 
@@ -272,9 +273,9 @@ class QuickBooks(object):
 
         return True
 
-    def update_object(self, qbbo, request_body):
+    def update_object(self, qbbo, request_body, _file_path=None):
         url = self.api_url + "/company/{0}/{1}".format(self.company_id, qbbo.lower())
-        result = self.make_request("POST", url, request_body)
+        result = self.make_request("POST", url, request_body, file=_file_path)
 
         return result
 
