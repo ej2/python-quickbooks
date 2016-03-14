@@ -40,21 +40,21 @@ class SalesReceipt(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedT
         self.DocNumber = ""
         self.TxnDate = ""
         self.PrivateNote = ""
-        self.CustomerMemo = ""
         self.ShipDate = ""
         self.TrackingNum = ""
         self.TotalAmt = 0
         self.PrintStatus = "NotSet"
         self.EmailStatus = "NotSet"
-        self.DeliveryInfo = ""
         self.Balance = 0
         self.PaymentRefNum = ""
-        self.CreditCardPayment = ""
-        self.TxnSource = ""
         self.ApplyTaxAfterDiscount = False
         self.ExchangeRate = 1
         self.GlobalTaxCalculation = "TaxExcluded"
 
+        self.CustomerMemo = None
+        self.DeliveryInfo = None
+        self.CreditCardPayment = None
+        self.TxnSource = None
         self.DepartmentRef = None
         self.CurrencyRef = None
         self.TxnTaxDetail = None
