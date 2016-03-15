@@ -1,6 +1,7 @@
 import simplejson as json
 from .utils import build_where_clause, build_choose_clause
 from .client import QuickBooks
+from .exceptions import QuickbooksException
 
 
 class ToJsonMixin(object):
@@ -134,3 +135,14 @@ class ListMixin(object):
                 obj_list.append(cls.from_json(item_json))
 
         return obj_list
+
+
+class QuickbooksPdfDownloadable(object):
+    qbo_object_name = ""
+
+    def download_pdf(self):
+        if self.Id and self.Id > 0:
+            qb = QuickBooks()
+            return qb.download_pdf(self.qbo_object_name, self.Id)
+        else:
+            raise QuickbooksException("Cannot download {} when no Id is assigned".format(self.qbo_object_name))
