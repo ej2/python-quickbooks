@@ -76,3 +76,9 @@ class DownloadPdfTest(unittest.TestCase):
 
         receipt.download_pdf()
         download_pdf.assert_called_once_with('SalesReceipt', 1)
+
+    def test_download_missing_id(self):
+        from quickbooks.exceptions import QuickbooksException
+
+        receipt = SalesReceipt()
+        self.assertRaises(QuickbooksException, receipt.download_pdf)
