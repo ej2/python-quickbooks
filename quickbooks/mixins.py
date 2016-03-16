@@ -145,4 +145,4 @@ class QuickbooksPdfDownloadable(object):
             qb = QuickBooks()
             return qb.download_pdf(self.qbo_object_name, self.Id)
         else:
-            raise QuickbooksException("Cannot download {} when no Id is assigned".format(self.qbo_object_name))
+            raise QuickbooksException("Cannot download {0} when no Id is assigned".format(self.qbo_object_name))
