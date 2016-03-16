@@ -4,6 +4,7 @@ from mock import patch
 
 from quickbooks.exceptions import QuickbooksException, SevereException
 from quickbooks import client
+from quickbooks.objects.salesreceipt import SalesReceipt
 
 
 class ClientTest(unittest.TestCase):
@@ -214,6 +215,20 @@ class ClientTest(unittest.TestCase):
         }
 
         self.assertRaises(SevereException, qb_client.handle_exceptions, error_data)
+
+    @patch('quickbooks.client.QuickBooks.session')
+    def test_download_pdf(self, qb_session):
+        qb_client = client.QuickBooks(sandbox=True)
+        qb_client.company_id = "1234"
+        receipt = SalesReceipt()
+        receipt.Id = 1
+
+        receipt.download_pdf()
+
+        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/salesreceipt/1/pdf"
+        qb_session.request.assert_called_with(
+            "GET", url, True, "1234",
+            headers={'Content-Type': 'application/pdf', 'Accept': 'application/pdf, application/json'})
 
 
 class MockResponse(object):
