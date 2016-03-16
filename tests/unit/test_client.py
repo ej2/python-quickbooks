@@ -230,6 +230,11 @@ class ClientTest(unittest.TestCase):
             "GET", url, True, "1234",
             headers={'Content-Type': 'application/pdf', 'Accept': 'application/pdf, application/json'})
 
+    def test_download_nonexistent_pdf(self):
+        receipt = SalesReceipt()
+        receipt.Id = 666
+        self.assertRaises(QuickbooksException, receipt.download_pdf)
+
 
 class MockResponse(object):
     @property
