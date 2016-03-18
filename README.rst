@@ -39,8 +39,7 @@ Connecting your application to Quickbooks Online
        quickbooks = QuickBooks(
            sandbox=True,
            consumer_key=QUICKBOOKS_CLIENT_KEY,
-           consumer_secret=QUICKBOOKS_CLIENT_SECRET,
-           callback_url=CALLBACK_URL
+           consumer_secret=QUICKBOOKS_CLIENT_SECRET
        )
 
        quickbooks.authorize_url = authorize_url
@@ -97,7 +96,8 @@ List of objects:
 ::
 
     
-    from quickbooks.objects.customer import Customer customers = Customer.all()
+    from quickbooks.objects.customer
+    import Customer customers = Customer.all()
 
 **Note:** The maximum number of entities that can be returned in a
 response is 1000. If the result size is not specified, the default
