@@ -255,7 +255,10 @@ class MockResponse(object):
 class MockPdfResponse(object):
     @property
     def status_code(self):
-        import httplib
+        try:
+            import httplib  # python 2
+        except ImportError:
+            import http.client as httplib  # python 3
         return httplib.OK
 
     @property
