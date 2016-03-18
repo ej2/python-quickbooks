@@ -3,10 +3,11 @@ from .base import QuickbooksBaseObject, Ref, CustomField, QuickbooksManagedObjec
     EmailAddress, QuickbooksTransactionEntity, LinkedTxn
 from .tax import TxnTaxDetail
 from .detailline import DetailLine
+from ..mixins import QuickbooksPdfDownloadable
 
 
 @python_2_unicode_compatible
-class SalesReceipt(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
+class SalesReceipt(QuickbooksPdfDownloadable, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: SalesReceipt represents the sales receipt that is given to a customer. A sales receipt is
     similar to an invoice. However, for a sales receipt, payment is received as part of the sale of goods and

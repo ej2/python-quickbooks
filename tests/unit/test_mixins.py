@@ -3,6 +3,7 @@ from mock import patch
 
 from quickbooks.objects.base import PhoneNumber
 from quickbooks.objects.department import Department
+from quickbooks.objects.salesreceipt import SalesReceipt
 
 
 class ToJsonMixinTest(unittest.TestCase):
@@ -65,3 +66,19 @@ class UpdateMixinTest(unittest.TestCase):
 
         department.save()
         update_object.assert_called_once_with("Department", json)
+
+
+class DownloadPdfTest(unittest.TestCase):
+    @patch('quickbooks.client.QuickBooks.download_pdf')
+    def test_download_invoice(self, download_pdf):
+        receipt = SalesReceipt()
+        receipt.Id = 1
+
+        receipt.download_pdf()
+        download_pdf.assert_called_once_with('SalesReceipt', 1)
+
+    def test_download_missing_id(self):
+        from quickbooks.exceptions import QuickbooksException
+
+        receipt = SalesReceipt()
+        self.assertRaises(QuickbooksException, receipt.download_pdf)

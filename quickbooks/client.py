@@ -242,3 +242,25 @@ class QuickBooks(object):
         results = self.make_request("POST", url, request_body)
 
         return results
+
+    def download_pdf(self, qbbo, item_id):
+        url = self.api_url + "/company/{0}/{1}/{2}/pdf".format(self.company_id, qbbo.lower(), item_id)
+
+        if self.session is None:
+            self.create_session()
+
+        headers = {
+            'Content-Type': 'application/pdf',
+            'Accept': 'application/pdf, application/json',
+        }
+
+        response = self.session.request("GET", url, True, self.company_id, headers=headers)
+
+        if response.status_code is not httplib.OK:
+            try:
+                json = response.json()
+            except:
+                raise QuickbooksException("Error reading json response: {0}".format(response.text), 10000)
+            self.handle_exceptions(json["Fault"])
+        else:
+            return response.content
