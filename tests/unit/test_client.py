@@ -190,6 +190,11 @@ class ClientTest(unittest.TestCase):
                 headers={'Content-Type': 'application/json', 'Accept': 'application/json'},
                 params={'minorversion': 4})
 
+    def test_make_request_create_session(self):
+        receipt = SalesReceipt()
+        receipt.Id = 1
+        self.assertRaises(QuickbooksException, receipt.save)
+
     def test_handle_exceptions(self):
         qb_client = client.QuickBooks()
         error_data = {
