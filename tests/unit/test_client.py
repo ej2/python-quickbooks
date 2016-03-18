@@ -230,6 +230,11 @@ class ClientTest(unittest.TestCase):
             "GET", url, True, "1234",
             headers={'Content-Type': 'application/pdf', 'Accept': 'application/pdf, application/json'})
 
+        qb_session.request.return_value = MockPdfResponse()
+        response = receipt.download_pdf()
+
+        self.assertEqual(response, 'sample pdf content')
+
     def test_download_nonexistent_pdf(self):
         receipt = SalesReceipt()
         receipt.Id = 666
@@ -240,3 +245,14 @@ class MockResponse(object):
     @property
     def text(self):
         return "oauth_token_secret=secretvalue&oauth_callback_confirmed=true&oauth_token=tokenvalue"
+
+
+class MockPdfResponse(object):
+    @property
+    def status_code(self):
+        import httplib
+        return httplib.OK
+
+    @property
+    def content(self):
+        return "sample pdf content"
