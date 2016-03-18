@@ -70,7 +70,7 @@ class DepositLine(QuickbooksBaseObject):
 
     def __init__(self):
         super(DepositLine, self).__init__()
-        self.Id = 0
+        self.Id = None
         self.LineNum = 0
         self.Description = ""
         self.Amount = 0

@@ -66,10 +66,10 @@ class BillLine(QuickbooksBaseObject):
     def __init__(self):
         super(BillLine, self).__init__()
 
-        self.Id = 0
+        self.Id = None
         self.LineNum = 0
         self.Description = ""
-        self.Amount = ""
+        self.Amount = 0
         self.DetailType = "AccountBasedExpenseLineDetail"
 
         self.AccountBasedExpenseLineDetail = None
