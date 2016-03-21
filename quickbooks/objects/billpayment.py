@@ -67,7 +67,7 @@ class BillPayment(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTx
         "CreditCardPayment": BillPaymentCreditCard,
         "APAccountRef": Ref,
         "DepartmentRef": Ref,
-
+        "CurrencyRef" : Ref
     }
 
     list_dict = {
