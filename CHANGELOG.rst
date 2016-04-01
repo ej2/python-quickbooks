@@ -1,6 +1,15 @@
 Changelog
 ========
 
+* 0.3.12 (March 18, 2016)
+    * Updated field defaults on SalesReceipt object.
+    * Updated Id field default on BillLine object.
+    * Updated Id field default on DepositLine object.
+    * Updated Id field default on PurchaseLine object.
+    * Updated Id field default on PurchaseOrderLine object.
+    * Added support for downloading PDFs.
+    * Added .DS_Store and .idea/ to .gitignore.
+
 * 0.3.11 (February 24, 2016)
     * Updated field defaults on Payment object.
     * Added minor version 4 field to Payment object.

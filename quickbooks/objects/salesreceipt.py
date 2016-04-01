@@ -3,10 +3,11 @@ from .base import QuickbooksBaseObject, Ref, CustomField, QuickbooksManagedObjec
     EmailAddress, QuickbooksTransactionEntity, LinkedTxn
 from .tax import TxnTaxDetail
 from .detailline import DetailLine
+from ..mixins import QuickbooksPdfDownloadable
 
 
 @python_2_unicode_compatible
-class SalesReceipt(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
+class SalesReceipt(QuickbooksPdfDownloadable, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: SalesReceipt represents the sales receipt that is given to a customer. A sales receipt is
     similar to an invoice. However, for a sales receipt, payment is received as part of the sale of goods and
@@ -40,21 +41,21 @@ class SalesReceipt(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedT
         self.DocNumber = ""
         self.TxnDate = ""
         self.PrivateNote = ""
-        self.CustomerMemo = ""
         self.ShipDate = ""
         self.TrackingNum = ""
         self.TotalAmt = 0
         self.PrintStatus = "NotSet"
         self.EmailStatus = "NotSet"
-        self.DeliveryInfo = ""
         self.Balance = 0
         self.PaymentRefNum = ""
-        self.CreditCardPayment = ""
-        self.TxnSource = ""
         self.ApplyTaxAfterDiscount = False
         self.ExchangeRate = 1
         self.GlobalTaxCalculation = "TaxExcluded"
 
+        self.CustomerMemo = None
+        self.DeliveryInfo = None
+        self.CreditCardPayment = None
+        self.TxnSource = None
         self.DepartmentRef = None
         self.CurrencyRef = None
         self.TxnTaxDetail = None

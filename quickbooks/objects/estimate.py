@@ -3,10 +3,11 @@ from .base import QuickbooksBaseObject, CustomField, Ref, CustomerMemo, Address,
     LinkedTxnMixin, QuickbooksTransactionEntity, LinkedTxn
 from .tax import TxnTaxDetail
 from .detailline import DetailLine
+from ..mixins import QuickbooksPdfDownloadable
 
 
 @python_2_unicode_compatible
-class Estimate(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
+class Estimate(QuickbooksPdfDownloadable, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: The Estimate represents a proposal for a financial transaction from a business to a customer
     for goods or services proposed to be sold, including proposed pricing.

@@ -4,6 +4,7 @@ from mock import patch
 
 from quickbooks.exceptions import QuickbooksException, SevereException
 from quickbooks import client
+from quickbooks.objects.salesreceipt import SalesReceipt
 
 
 class ClientTest(unittest.TestCase):
@@ -189,6 +190,11 @@ class ClientTest(unittest.TestCase):
                 headers={'Content-Type': 'application/json', 'Accept': 'application/json'},
                 params={'minorversion': 4})
 
+    def test_make_request_create_session(self):
+        receipt = SalesReceipt()
+        receipt.Id = 1
+        self.assertRaises(QuickbooksException, receipt.save)
+
     def test_handle_exceptions(self):
         qb_client = client.QuickBooks()
         error_data = {
@@ -215,8 +221,46 @@ class ClientTest(unittest.TestCase):
 
         self.assertRaises(SevereException, qb_client.handle_exceptions, error_data)
 
+    @patch('quickbooks.client.QuickBooks.session')
+    def test_download_pdf(self, qb_session):
+        qb_client = client.QuickBooks(sandbox=True)
+        qb_client.company_id = "1234"
+        receipt = SalesReceipt()
+        receipt.Id = 1
+
+        receipt.download_pdf()
+
+        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/salesreceipt/1/pdf"
+        qb_session.request.assert_called_with(
+            "GET", url, True, "1234",
+            headers={'Content-Type': 'application/pdf', 'Accept': 'application/pdf, application/json'})
+
+        qb_session.request.return_value = MockPdfResponse()
+        response = receipt.download_pdf()
+
+        self.assertEqual(response, 'sample pdf content')
+
+    def test_download_nonexistent_pdf(self):
+        receipt = SalesReceipt()
+        receipt.Id = 666
+        self.assertRaises(QuickbooksException, receipt.download_pdf)
+
 
 class MockResponse(object):
     @property
     def text(self):
         return "oauth_token_secret=secretvalue&oauth_callback_confirmed=true&oauth_token=tokenvalue"
+
+
+class MockPdfResponse(object):
+    @property
+    def status_code(self):
+        try:
+            import httplib  # python 2
+        except ImportError:
+            import http.client as httplib  # python 3
+        return httplib.OK
+
+    @property
+    def content(self):
+        return "sample pdf content"
