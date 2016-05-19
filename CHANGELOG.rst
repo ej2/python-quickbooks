@@ -6,7 +6,7 @@ Changelog
     * Improved error handling.
     * Added missing field CurrencyRef on BillPayment.
     * Fixed issue on TaxRate.
-
+    * Fixed issue with authorize url.
 
 * 0.3.12 (March 18, 2016)
     * Updated field defaults on SalesReceipt object.
