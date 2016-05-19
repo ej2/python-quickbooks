@@ -52,7 +52,7 @@ class QuickBooks(object):
     ]
 
     __instance = None
-    __use_global = True
+    __use_global = False
 
     def __new__(cls, **kwargs):
         """

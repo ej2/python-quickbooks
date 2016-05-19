@@ -58,8 +58,7 @@ Connecting your application to Quickbooks Online
 Accessing the API
 -----------------
 
-QuickBooks client uses a singleton pattern. Just be sure to create the
-QuickBooks object before you make any calls to QBO. Setup the client
+Create the QuickBooks client object before you make any calls to QBO. Setup the client
 connection using the stored ``access_token`` and the
 ``access_token_secret`` and ``realm_id``:
 
@@ -67,7 +66,7 @@ connection using the stored ``access_token`` and the
 
     from quickbooks import QuickBooks
 
-    QuickBooks(
+    client = QuickBooks(
         sandbox=True,
         consumer_key=QUICKBOOKS_CLIENT_KEY,
         consumer_secret=QUICKBOOKS_CLIENT_SECRET,
@@ -81,7 +80,7 @@ details) pass in minorversion when setting up the client:
 
 ::
 
-    QuickBooks(
+    client = QuickBooks(
         sandbox=True,
         consumer_key=QUICKBOOKS_CLIENT_KEY,
         consumer_secret=QUICKBOOKS_CLIENT_SECRET,
@@ -91,13 +90,19 @@ details) pass in minorversion when setting up the client:
         minorversion=4
     )
 
+If your consumer_key never changes you can enable the client to stay running:
+
+::
+
+   QuickBooks.enable_global()
+
 List of objects:
 
 ::
 
     
     from quickbooks.objects.customer
-    import Customer customers = Customer.all()
+    import Customer customers = Customer.all(qb=client)
 
 **Note:** The maximum number of entities that can be returned in a
 response is 1000. If the result size is not specified, the default
@@ -107,53 +112,53 @@ Filtered list of objects:
 
 ::
 
-    customers = Customer.filter(Active=True, FamilyName="Smith")
+    customers = Customer.filter(Active=True, FamilyName="Smith", qb=client)
 
 Filtered list of objects with paging:
 
 ::
 
-    customers = Customer.filter(start_position=1, max_results=25, Active=True, FamilyName="Smith")
+    customers = Customer.filter(start_position=1, max_results=25, Active=True, FamilyName="Smith", qb=client)
 
 List Filtered by values in list:
 
 ::
 
     customer_names = ['Customer1', 'Customer2', 'Customer3']
-    customers = Customer.choose(customer_names, field="DisplayName")
+    customers = Customer.choose(customer_names, field="DisplayName", qb=client)
 
 List with custom Where Clause (do not include the “WHERE”):
 
 ::
 
-    customers = Customer.where("Active = True AND CompanyName LIKE 'S%'")
+    customers = Customer.where("Active = True AND CompanyName LIKE 'S%'", qb=client)
 
 List with custom Where Clause and paging:
 
 ::
 
-    customers = Customer.where("CompanyName LIKE 'S%'", start_position=1, max_results=25)
+    customers = Customer.where("CompanyName LIKE 'S%'", start_position=1, max_results=25, qb=client)
 
 Filtering a list with a custom query (See `Intuit developer guide`_ for
 supported SQL statements):
 
 ::
 
-    customer = Customer.query("SELECT * FROM Customer WHERE Active = True")
+    customer = Customer.query("SELECT * FROM Customer WHERE Active = True", qb=client)
 
 Filtering a list with a custom query with paging:
 
 ::
 
-    customer = Customer.query("SELECT * FROM Customer WHERE Active = True STARTPOSITION 1 MAXRESULTS 25")
+    customer = Customer.query("SELECT * FROM Customer WHERE Active = True STARTPOSITION 1 MAXRESULTS 25", qb=client)
 
 Get single object by Id and update:
 
 ::
 
-    customer = Customer.get(1)
+    customer = Customer.get(1, qb=client)
     customer.CompanyName = "New Test Company Name"
-    customer.save()
+    customer.save(qb=client)
 
 Create new object:
 
@@ -161,7 +166,7 @@ Create new object:
 
     customer = Customer()
     customer.CompanyName = "Test Company"
-    customer.save()
+    customer.save(qb=client)
 
 Batch Operations
 ----------------
@@ -178,17 +183,15 @@ Batch create a list of objects:
 
     customer1 = Customer()
     customer1.CompanyName = "Test Company 1"
-    customer1.save()
 
     customer2 = Customer()
     customer2.CompanyName = "Test Company 2"
-    customer2.save()
 
     customers = []
     customers.append(customer1)
     customers.append(customer2)
 
-    results = batch_create(customers)
+    results = batch_create(customers, qb=client)
 
 Batch update a list of objects:
 
@@ -200,7 +203,7 @@ Batch update a list of objects:
 
     # Update customer records
 
-    results = batch_update(customers)
+    results = batch_update(customers, qb=client)
 
 Batch delete a list of objects:
 
@@ -209,16 +212,8 @@ Batch delete a list of objects:
     from quickbooks.batch import batch_delete
 
     customers = Customer.filter(Active=False)
-    results = batch_delete(customers)
-    
-    Batch delete a list of objects:
+    results = batch_delete(customers, qb=client)
 
-::
-
-    from quickbooks.batch import batch_delete
-
-    customers = Customer.filter(Active=False)
-    results = batch_delete(customers)
 
 Review results for batch operation:
 

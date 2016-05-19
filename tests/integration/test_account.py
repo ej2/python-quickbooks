@@ -34,7 +34,7 @@ class AccountTest(unittest.TestCase):
         self.assertEquals(query_account.AcctNum, self.account_number)
 
     def test_update(self):
-        account = Account.filter(Name=self.name)[0]
+        account = Account.filter(Name=self.name, qb=self.qb_client)[0]
 
         account.Name = "Updated Name {0}".format(self.account_number)
         account.save(qb=self.qb_client)

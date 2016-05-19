@@ -2,7 +2,7 @@ Changelog
 ========
 
 * 0.3.13 (May 18, 2016)
-    * Added option to enable or disable singeton pattern.
+    * Added option to enable or disable singeton pattern (it defaults to disabled).
     * Improved error handling.
     * Added missing field CurrencyRef on BillPayment.
     * Fixed issue on TaxRate.
