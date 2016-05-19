@@ -18,16 +18,16 @@ Connecting your application to Quickbooks Online
 
        from quickbooks import QuickBooks
 
-       quickbooks = QuickBooks(
+       client = QuickBooks(
            sandbox=True,
            consumer_key=QUICKBOOKS_CLIENT_KEY,
            consumer_secret=QUICKBOOKS_CLIENT_SECRET,
            callback_url=CALLBACK_URL
        )
 
-       authorize_url = quickbooks.get_authorize_url()
-       request_token = quickbooks.request_token
-       request_token_secret = quickbooks.request_token_secret
+       authorize_url = client.get_authorize_url()
+       request_token = client.request_token
+       request_token_secret = client.request_token_secret
 
    Store the ``authorize_url``, ``request_token``, and ``request_token_secret``
    for use in the Callback method.
@@ -36,22 +36,22 @@ Connecting your application to Quickbooks Online
 
    ::
 
-       quickbooks = QuickBooks(
+       client = QuickBooks(
            sandbox=True,
            consumer_key=QUICKBOOKS_CLIENT_KEY,
            consumer_secret=QUICKBOOKS_CLIENT_SECRET
        )
 
-       quickbooks.authorize_url = authorize_url
-       quickbooks.request_token = request_token
-       quickbooks.request_token_secret = request_token_secret
-       quickbooks.set_up_service()
+       client.authorize_url = authorize_url
+       client.request_token = request_token
+       client.request_token_secret = request_token_secret
+       client.set_up_service()
 
-       quickbooks.get_access_tokens(request.GET['oauth_verifier'])
+       client.get_access_tokens(request.GET['oauth_verifier'])
 
        realm_id = request.GET['realmId']
-       access_token = quickbooks.access_token
-       access_token_secret = quickbooks.access_token_secret
+       access_token = client.access_token
+       access_token_secret = client.access_token_secret
 
    Store ``realm_id``, ``access_token``, and ``access_token_secret`` for later use.
 
@@ -95,6 +95,12 @@ If your consumer_key never changes you can enable the client to stay running:
 ::
 
    QuickBooks.enable_global()
+
+You can disable the global client like so:
+
+::
+
+   QuickBooks.disable_global()
 
 List of objects:
 
