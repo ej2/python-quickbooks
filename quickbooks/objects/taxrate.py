@@ -10,6 +10,7 @@ class TaxRate(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     class_dict = {
         "AgencyRef": Ref
+        ,"TaxReturnLineRef" : Ref
     }
 
     qbo_object_name = "TaxRate"
