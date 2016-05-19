@@ -13,7 +13,8 @@ class AuthorizationException(QuickbooksException):
     """
     Quickbooks Error Codes from 1 to 499
     """
-    pass
+    def __str__(self):
+        return "QB Auth Exception: " + self.message + " \n\n" + self.detail
 
 
 class UnsupportedException(QuickbooksException):
