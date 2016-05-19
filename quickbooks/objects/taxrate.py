@@ -9,8 +9,8 @@ class TaxRate(QuickbooksManagedObject, QuickbooksTransactionEntity):
     entity to create a taxrate.
     """
     class_dict = {
-        "AgencyRef": Ref
-        ,"TaxReturnLineRef" : Ref
+        "AgencyRef": Ref,
+        "TaxReturnLineRef": Ref,
     }
 
     qbo_object_name = "TaxRate"
@@ -22,11 +22,11 @@ class TaxRate(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.RateValue = 0
         self.SpecialTaxType = ""
         self.Active = True
-        self.TaxReturnLineRef = ""
         self.DisplayType = ""
         self.EffectiveTaxRate = ""
 
         self.AgencyRef = None
+        self.TaxReturnLineRef = None
 
     def __str__(self):
         return self.Name

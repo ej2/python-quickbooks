@@ -1,6 +1,13 @@
 Changelog
 ========
 
+* 0.3.13 (May 18, 2016)
+    * Added option to enable or disable singeton pattern (it defaults to disabled).
+    * Improved error handling.
+    * Added missing field CurrencyRef on BillPayment.
+    * Fixed issue on TaxRate.
+
+
 * 0.3.12 (March 18, 2016)
     * Updated field defaults on SalesReceipt object.
     * Updated Id field default on BillLine object.

@@ -11,7 +11,22 @@ class ClientTest(unittest.TestCase):
     def setUp(self):
         pass
 
+    def setUp(self):
+        """
+        Use a consistent set of defaults.
+        """
+        client.QuickBooks(
+            sandbox=True,
+            consumer_key="update_consumer_key",
+            consumer_secret="update_consumer_secret",
+            access_token="update_access_token",
+            access_token_secret="update_access_token_secret",
+            company_id="update_company_id",
+            callback_url="update_callback_url"
+        )
+
     def tearDown(self):
+        client.QuickBooks.enable_global()
         self.qb_client = client.QuickBooks()
         self.qb_client._drop()
 
@@ -73,6 +88,19 @@ class ClientTest(unittest.TestCase):
         self.assertEquals(self.qb_client2.access_token_secret, "update_access_token_secret")
         self.assertEquals(self.qb_client2.company_id, "update_company_id")
         self.assertEquals(self.qb_client2.callback_url, "update_callback_url")
+
+    def test_disable_global(self):
+        client.QuickBooks.disable_global()
+        self.qb_client = client.QuickBooks()
+
+        self.assertFalse(self.qb_client.sandbox)
+        self.assertFalse(self.qb_client.consumer_key)
+        self.assertFalse(self.qb_client.consumer_secret)
+        self.assertFalse(self.qb_client.access_token)
+        self.assertFalse(self.qb_client.access_token_secret)
+        self.assertFalse(self.qb_client.company_id)
+        self.assertFalse(self.qb_client.callback_url)
+        self.assertFalse(self.qb_client.minorversion)
 
     def test_api_url(self):
         qb_client = client.QuickBooks(sandbox=False)
@@ -180,6 +208,8 @@ class ClientTest(unittest.TestCase):
 
     @patch('quickbooks.client.QuickBooks.session')
     def test_make_request(self, qb_session):
+        qb_session.request.return_value = MockResponse()
+
         qb_client = client.QuickBooks()
         qb_client.company_id = "1234"
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1/"
@@ -187,8 +217,8 @@ class ClientTest(unittest.TestCase):
 
         qb_session.request.assert_called_with(
                 "GET", url, True, "1234", data={},
-                headers={'Content-Type': 'application/json', 'Accept': 'application/json'},
-                params={'minorversion': 4})
+                headers={'Content-Type': 'application/json', 'Accept': 'application/json'}, params={})
+
 
     def test_make_request_create_session(self):
         receipt = SalesReceipt()
@@ -250,6 +280,17 @@ class MockResponse(object):
     @property
     def text(self):
         return "oauth_token_secret=secretvalue&oauth_callback_confirmed=true&oauth_token=tokenvalue"
+
+    @property
+    def status_code(self):
+        try:
+            import httplib  # python 2
+        except ImportError:
+            import http.client as httplib  # python 3
+        return httplib.OK
+
+    def json(self):
+        return "{}"
 
 
 class MockPdfResponse(object):
