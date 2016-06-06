@@ -177,6 +177,15 @@ class ClientTest(unittest.TestCase):
         qbService.get_auth_session.assert_called_with('token', 'secret', data={'oauth_verifier': 'oauth_verifier'})
         self.assertFalse(session is None)
 
+    @patch('quickbooks.client.QuickBooks.make_request')
+    def test_disconnect_account(self, make_req):
+        qb_client = client.QuickBooks()
+        qb_client.company_id = "1234"
+
+        result = qb_client.disconnect_account()
+        url = "https://appcenter.intuit.com/api/v1/connection/disconnect"
+        make_req.assert_called_with("GET", url)
+
     def test_get_instance(self):
         qb_client = client.QuickBooks()
 
