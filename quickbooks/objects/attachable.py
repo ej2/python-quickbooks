@@ -46,8 +46,9 @@ class Attachable(QuickbooksManagedObject, QuickbooksTransactionEntity):
         ref.value = self.Id
         return ref
 
-    def save(self):
-        qb = QuickBooks()
+    def save(self, qb=None):
+        if not qb:
+            qb = QuickBooks()
 
         if self.Id and self.Id > 0:
             json_data = qb.update_object(self.qbo_object_name, self.to_json(), _file_path=self._FilePath)
