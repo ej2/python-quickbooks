@@ -51,7 +51,7 @@ class QuickBooks(object):
         "Item", "JournalEntry", "Payment", "PaymentMethod",
         "Preferences", "Purchase", "PurchaseOrder",
         "SalesReceipt", "TaxCode", "TaxRate", "Term",
-        "TimeActivity", "Vendor", "VendorCredit"
+        "TimeActivity", "Transfer", "Vendor", "VendorCredit"
     ]
 
     __instance = None
