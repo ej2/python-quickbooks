@@ -90,6 +90,12 @@ details) pass in minorversion when setting up the client:
         minorversion=4
     )
 
+You can disconnect the current Quickbooks Account like so (See `Disconnect documentation`_ for full details):
+
+::
+
+   client.disconnect_account()
+
 If your consumer_key never changes you can enable the client to stay running:
 
 ::
@@ -102,11 +108,6 @@ You can disable the global client like so:
 
    QuickBooks.disable_global()
 
-You can disconnect a Quickbooks Account like so (See `Disconnect documentation`_ for full details):
-
-::
-
-   client.disconnect_account()
 
 List of objects:
 
