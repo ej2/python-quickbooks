@@ -1,5 +1,6 @@
 import unittest
 
+from quickbooks import QuickBooks
 from quickbooks.objects.purchase import Purchase, PurchaseLine, AccountBasedExpenseLineDetail, \
     ItemBasedExpenseLineDetail
 
@@ -26,6 +27,13 @@ class PurchaseTests(unittest.TestCase):
         purchase.TotalAmt = 1000
 
         self.assertEquals(str(purchase), "1000")
+
+    def test_valid_object_name(self):
+        obj = Purchase()
+        client = QuickBooks()
+        result = client.isvalid_object_name(obj.qbo_object_name)
+
+        self.assertTrue(result)
 
 
 class ItemBasedExpenseLineDetailTest(unittest.TestCase):

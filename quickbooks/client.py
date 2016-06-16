@@ -44,11 +44,11 @@ class QuickBooks(object):
     _BUSINESS_OBJECTS = [
         "Account", "Attachable", "Bill", "BillPayment",
         "Class", "CompanyInfo", "CreditMemo", "Customer",
-        "Department", "Employee", "Estimate", "Invoice",
+        "Department", "Deposit", "Employee", "Estimate", "Invoice",
         "Item", "JournalEntry", "Payment", "PaymentMethod",
-        "Preferences", "Purchase", "PurchaseOrder",
+        "Purchase", "PurchaseOrder", "RefundReceipt",
         "SalesReceipt", "TaxCode", "TaxRate", "Term",
-        "TimeActivity", "Vendor", "VendorCredit"
+        "TimeActivity", "Transfer", "Vendor", "VendorCredit"
     ]
 
     __instance = None

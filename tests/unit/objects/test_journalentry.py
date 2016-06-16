@@ -1,8 +1,8 @@
 import unittest
 
+from quickbooks import QuickBooks
 from quickbooks.objects.journalentry import JournalEntry, JournalEntryLine, JournalEntryLineDetail, Entity, \
     DescriptionLineDetail, DescriptionOnlyLine
-
 
 
 class JournalentryTests(unittest.TestCase):
@@ -11,6 +11,13 @@ class JournalentryTests(unittest.TestCase):
         journalentry.TotalAmt = 1000
 
         self.assertEquals(str(journalentry), '1000')
+
+    def test_valid_object_name(self):
+        obj = JournalEntry()
+        client = QuickBooks()
+        result = client.isvalid_object_name(obj.qbo_object_name)
+
+        self.assertTrue(result)
 
 
 class JournalEntryLineTests(unittest.TestCase):

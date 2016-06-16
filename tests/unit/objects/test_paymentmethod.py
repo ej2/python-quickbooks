@@ -1,5 +1,6 @@
 import unittest
 
+from quickbooks import QuickBooks
 from quickbooks.objects.paymentmethod import PaymentMethod
 
 
@@ -9,3 +10,10 @@ class PaymentMethodTests(unittest.TestCase):
         payment_method.Name = "test"
 
         self.assertEquals(str(payment_method), "test")
+
+    def test_valid_object_name(self):
+        obj = PaymentMethod()
+        client = QuickBooks()
+        result = client.isvalid_object_name(obj.qbo_object_name)
+
+        self.assertTrue(result)

@@ -1,5 +1,6 @@
 import unittest
 
+from quickbooks import QuickBooks
 from quickbooks.objects.bill import Bill, BillLine, AccountBasedExpenseLineDetail, ItemBasedExpenseLineDetail
 
 
@@ -27,6 +28,13 @@ class BillTests(unittest.TestCase):
         self.assertEquals(linked_txn.TxnId, bill.Id)
         self.assertEquals(linked_txn.TxnType, "Bill")
         self.assertEquals(linked_txn.TxnLineId, 1)
+
+    def test_valid_object_name(self):
+        obj = Bill()
+        client = QuickBooks()
+        result = client.isvalid_object_name(obj.qbo_object_name)
+
+        self.assertTrue(result)
 
 
 class BillLineTests(unittest.TestCase):

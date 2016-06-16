@@ -1,5 +1,6 @@
 import unittest
 
+from quickbooks import QuickBooks
 from quickbooks.objects.vendorcredit import VendorCredit, ItemBasedExpenseLineDetail, ItemBasedExpenseLine, \
     AccountBasedExpenseLineDetail, AccountBasedExpenseLine
 
@@ -10,6 +11,13 @@ class VendorCreditTests(unittest.TestCase):
         vendor_credit.TotalAmt = 1000
 
         self.assertEquals(str(vendor_credit), "1000")
+
+    def test_valid_object_name(self):
+        obj = VendorCredit()
+        client = QuickBooks()
+        result = client.isvalid_object_name(obj.qbo_object_name)
+
+        self.assertTrue(result)
 
 
 class ItemBasedExpenseLineDetailTests(unittest.TestCase):

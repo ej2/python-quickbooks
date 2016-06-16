@@ -1,5 +1,6 @@
 import unittest
 
+from quickbooks import QuickBooks
 from quickbooks.objects.customer import Customer
 
 
@@ -20,3 +21,10 @@ class CustomerTests(unittest.TestCase):
         self.assertEquals(ref.name, "test")
         self.assertEquals(ref.type, "Customer")
         self.assertEquals(ref.value, 100)
+
+    def test_valid_object_name(self):
+        obj = Customer()
+        client = QuickBooks()
+        result = client.isvalid_object_name(obj.qbo_object_name)
+
+        self.assertTrue(result)
