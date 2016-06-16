@@ -183,7 +183,10 @@ class QuickBooks(object):
         return session
 
     def disconnect_account(self):
-        '''Disconnect this account from the application'''
+        """
+        Disconnect current account from the application
+        :return:
+        """
         url = self.disconnect_url
         result = self.make_request("GET", url)
         return result

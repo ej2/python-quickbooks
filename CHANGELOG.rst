@@ -7,7 +7,7 @@ Changelog
     * Removed CompanyInfo from object names used by isvalid_object_name.
     * Changed default of TxnSource to None on the following objects: Deposit, Purchase, RefundReceipt, and Transfer.
     * Changed TxnTaxDetail from a QuickbooksManagedObject to a QuickbooksBaseObject.
-
+    * Added a way of disconnecting a Quickbooks Account to client.
 
 * 0.3.13 (May 18, 2016)
     * Added option to enable or disable singeton pattern (it defaults to disabled).

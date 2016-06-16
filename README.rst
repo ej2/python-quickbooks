@@ -102,6 +102,12 @@ You can disable the global client like so:
 
    QuickBooks.disable_global()
 
+You can disconnect a Quickbooks Account like so (See `Disconnect documentation`_ for full details):
+
+::
+
+   client.disconnect_account()
+
 List of objects:
 
 ::
@@ -236,6 +242,8 @@ Review results for batch operation:
         for error in fault.Error:
             print "Error " + error.Message 
 
+
+
 **Note:** Objects and object property names match their Quickbooks
 counterparts and do not follow PEP8.
 
@@ -246,7 +254,7 @@ on Python 2.
 .. _Intuit developer guide: https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/querying_data
 .. _Intuit Batch Operations Guide: https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/batch_operations
     
-
+.. _Disconnect documentation: https://developer.intuit.com/docs/0050_quickbooks_api/0020_authentication_and_authorization/oauth_management_api#/Disconnect
 .. _quickbooks-python: https://github.com/troolee/quickbooks-python
 .. _Minor versions: https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/minor_versions
 
