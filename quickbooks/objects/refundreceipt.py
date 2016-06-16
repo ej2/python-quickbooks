@@ -47,7 +47,7 @@ class RefundReceipt(QuickbooksManagedObject, QuickbooksTransactionEntity, Linked
         self.PaymentType = ""
         self.CheckPayment = ""
         self.CreditCardPayment = ""
-        self.TxnSource = ""
+        self.TxnSource = None
         self.GlobalTaxCalculation = "TaxExcluded"
 
         self.DepartmentRef = None

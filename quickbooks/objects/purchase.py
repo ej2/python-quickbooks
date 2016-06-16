@@ -127,7 +127,7 @@ class Purchase(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMi
         self.TotalAmt = 0
         self.PrintStatus = "NeedToPrint"
         self.PurchaseEx = None
-        self.TxnSource = ""
+        self.TxnSource = None
         self.GlobalTaxCalculation = "TaxExcluded"
 
         self.TxnTaxDetail = None

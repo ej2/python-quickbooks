@@ -1,6 +1,14 @@
 Changelog
 ========
 
+* 0.3.13 (June 15, 2016)
+    * Fixed issue with PurchaseEx on Purchase
+    * Added missing object names to isvalid_object_name.
+    * Removed CompanyInfo from object names used by isvalid_object_name.
+    * Changed default of TxnSource to None on the following objects: Deposit, Purchase, RefundReceipt, and Transfer.
+    * Changed TxnTaxDetail from a QuickbooksManagedObject to a QuickbooksBaseObject.
+
+
 * 0.3.13 (May 18, 2016)
     * Added option to enable or disable singeton pattern (it defaults to disabled).
     * Improved error handling.

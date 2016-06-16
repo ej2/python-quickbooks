@@ -20,7 +20,7 @@ class Transfer(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMi
         self.Amount = 0
         self.TxnDate = ""
         self.PrivateNote = ""
-        self.TxnSource = ""
+        self.TxnSource = None
 
         self.FromAccountRef = None
         self.ToAccountRef = None

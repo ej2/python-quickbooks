@@ -118,7 +118,7 @@ class Deposit(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMix
         self.GlobalTaxCalculation = "TaxExcluded"
         self.PrivateNote = ""
         self.TxnStatus = ""
-        self.TxnSource = ""
+        self.TxnSource = None
 
         self.DepositToAccountRef = None
         self.DepartmentRef = None

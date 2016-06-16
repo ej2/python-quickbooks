@@ -34,7 +34,7 @@ class TaxLine(QuickbooksBaseObject):
 
 
 @python_2_unicode_compatible
-class TxnTaxDetail(QuickbooksManagedObject):
+class TxnTaxDetail(QuickbooksBaseObject):
     class_dict = {
         "TxnTaxCodeRef": Ref,
     }
