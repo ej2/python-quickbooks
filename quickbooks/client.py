@@ -38,6 +38,8 @@ class QuickBooks(object):
 
     authorize_url = "https://appcenter.intuit.com/Connect/Begin"
 
+    disconnect_url = "https://appcenter.intuit.com/api/v1/connection/disconnect"
+
     request_token = ''
     request_token_secret = ''
 
@@ -179,6 +181,12 @@ class QuickBooks(object):
         self.access_token_secret = session.access_token_secret
 
         return session
+
+    def disconnect_account(self):
+        '''Disconnect this account from the application'''
+        url = self.disconnect_url
+        result = self.make_request("GET", url)
+        return result
 
     def make_request(self, request_type, url, request_body=None, content_type='application/json'):
         params = {}
