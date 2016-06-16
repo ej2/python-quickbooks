@@ -5,6 +5,9 @@ except ImportError:  # Python 2
     import httplib
     from urlparse import parse_qsl
 
+import textwrap
+import json
+import os
 from .exceptions import QuickbooksException, SevereException, AuthorizationException
 
 try:
@@ -141,18 +144,18 @@ class QuickBooks(object):
         Returns the Authorize URL as returned by QB, and specified by OAuth 1.0a.
         :return URI:
         """
-        self.authorize_url = self.authorize_url[:self.authorize_url.find('?')] if '?' in self.authorize_url else self.authorize_url
+        self.authorize_url = self.authorize_url[:self.authorize_url.find('?')] \
+            if '?' in self.authorize_url else self.authorize_url
         if self.qbService is None:
             self.set_up_service()
 
         response = self.qbService.get_raw_request_token(
-           params={'oauth_callback': self.callback_url})
+            params={'oauth_callback': self.callback_url})
 
         oauth_resp = dict(parse_qsl(response.text))
 
         self.request_token = oauth_resp['oauth_token']
         self.request_token_secret = oauth_resp['oauth_token_secret']
-
         return self.qbService.get_authorize_url(self.request_token)
 
     def get_report(self, report_type, qs=None):
@@ -200,7 +203,9 @@ class QuickBooks(object):
         result = self.make_request("GET", url)
         return result
 
-    def make_request(self, request_type, url, request_body=None, content_type='application/json', params=None):
+    def make_request(self, request_type, url, request_body=None, content_type='application/json',
+                     params=None, file_path=None):
+
         if not params:
             params = {}
 
@@ -212,13 +217,46 @@ class QuickBooks(object):
 
         if self.session is None:
             self.create_session()
-
         headers = {
             'Content-Type': content_type,
             'Accept': 'application/json'
         }
 
-        req = self.session.request(request_type, url, True, self.company_id, headers=headers, params=params, data=request_body)
+        if file_path:
+            attachment = open(file_path, 'rb')
+            url = url.replace('attachable', 'upload')
+            boundary = '-------------PythonMultipartPost'
+            headers.update({
+                'Content-Type': 'multipart/form-data; boundary=%s' % boundary,
+                'Accept-Encoding': 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+                'User-Agent': 'OAuth gem v0.4.7',
+                'Accept': 'application/json',
+                'Connection': 'close'
+            })
+
+            binary_data = attachment.read()
+
+            request_body = textwrap.dedent(
+                """
+                --%s
+                Content-Disposition: form-data; name="file_metadata_01"
+                Content-Type: application/json
+
+                %s
+
+                --%s
+                Content-Disposition: form-data; name="file_content_01"
+                Content-Type: application/pdf
+
+                %s
+
+                --%s--
+                """
+            ) % (boundary, request_body, boundary, binary_data, boundary)
+
+        req = self.session.request(
+            request_type, url, True, self.company_id, headers=headers, params=params, data=request_body)
+
         if req.status_code == httplib.UNAUTHORIZED:
             raise AuthorizationException("Application authentication failed", detail=req.text)
 
@@ -260,11 +298,11 @@ class QuickBooks(object):
             else:
                 raise QuickbooksException(message, code, detail)
 
-    def create_object(self, qbbo, request_body):
+    def create_object(self, qbbo, request_body, _file_path=None):
         self.isvalid_object_name(qbbo)
 
         url = self.api_url + "/company/{0}/{1}".format(self.company_id, qbbo.lower())
-        results = self.make_request("POST", url, request_body)
+        results = self.make_request("POST", url, request_body, file_path=_file_path)
 
         return results
 
@@ -280,9 +318,9 @@ class QuickBooks(object):
 
         return True
 
-    def update_object(self, qbbo, request_body):
+    def update_object(self, qbbo, request_body, _file_path=None):
         url = self.api_url + "/company/{0}/{1}".format(self.company_id, qbbo.lower())
-        result = self.make_request("POST", url, request_body)
+        result = self.make_request("POST", url, request_body, file_path=_file_path)
 
         return result
 

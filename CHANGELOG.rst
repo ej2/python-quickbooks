@@ -8,7 +8,8 @@ Changelog
     * Changed default of TxnSource to None on the following objects: Deposit, Purchase, RefundReceipt, and Transfer.
     * Changed TxnTaxDetail from a QuickbooksManagedObject to a QuickbooksBaseObject.
     * Added a way of disconnecting a Quickbooks Account to client.
-    * Add support for Quickbooks reports.
+    * Added support for Quickbooks Reports.
+    * Added support for Quickbooks Attachments.
 
 * 0.3.13 (May 18, 2016)
     * Added option to enable or disable singeton pattern (it defaults to disabled).
