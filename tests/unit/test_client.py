@@ -186,6 +186,15 @@ class ClientTest(unittest.TestCase):
         url = "https://appcenter.intuit.com/api/v1/connection/disconnect"
         make_req.assert_called_with("GET", url)
 
+    @patch('quickbooks.client.QuickBooks.make_request')
+    def test_get_report(self, make_req):
+        qb_client = client.QuickBooks()
+        qb_client.company_id = "1234"
+
+        result = qb_client.get_report("profitandloss", {1: 2})
+        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/reports/profitandloss"
+        make_req.assert_called_with("GET", url, params={1: 2})
+
     def test_get_instance(self):
         qb_client = client.QuickBooks()
 

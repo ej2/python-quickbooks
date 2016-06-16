@@ -155,6 +155,15 @@ class QuickBooks(object):
 
         return self.qbService.get_authorize_url(self.request_token)
 
+    def get_report(self, report_type, qs=None):
+        '''Get data from the report endpoint'''
+        if qs == None:
+            qs = {}
+
+        url = self.api_url + "/company/{0}/reports/{1}".format(self.company_id, report_type)
+        result = self.make_request("GET", url, params=qs)
+        return result
+
     def set_up_service(self):
         self.qbService = OAuth1Service(
             name=None,
@@ -191,8 +200,9 @@ class QuickBooks(object):
         result = self.make_request("GET", url)
         return result
 
-    def make_request(self, request_type, url, request_body=None, content_type='application/json'):
-        params = {}
+    def make_request(self, request_type, url, request_body=None, content_type='application/json', params=None):
+        if not params:
+            params = {}
 
         if self.minorversion:
             params['minorversion'] = self.minorversion
