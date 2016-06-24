@@ -187,6 +187,15 @@ class ClientTest(unittest.TestCase):
         make_req.assert_called_with("GET", url)
 
     @patch('quickbooks.client.QuickBooks.make_request')
+    def test_reconnect_account(self, make_req):
+        qb_client = client.QuickBooks()
+        qb_client.company_id = "1234"
+
+        result = qb_client.reconnect_account()
+        url = "https://appcenter.intuit.com/api/v1/connection/reconnect"
+        make_req.assert_called_with("GET", url)
+
+    @patch('quickbooks.client.QuickBooks.make_request')
     def test_get_report(self, make_req):
         qb_client = client.QuickBooks()
         qb_client.company_id = "1234"

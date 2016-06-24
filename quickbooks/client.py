@@ -42,6 +42,7 @@ class QuickBooks(object):
     authorize_url = "https://appcenter.intuit.com/Connect/Begin"
 
     disconnect_url = "https://appcenter.intuit.com/api/v1/connection/disconnect"
+    reconnect_url = "https://appcenter.intuit.com/api/v1/connection/reconnect"
 
     request_token = ''
     request_token_secret = ''
@@ -200,6 +201,15 @@ class QuickBooks(object):
         :return:
         """
         url = self.disconnect_url
+        result = self.make_request("GET", url)
+        return result
+
+    def reconnect_account(self):
+        """
+        Reconnect current account by refreshing OAuth access tokens
+        :return:
+        """
+        url = self.reconnect_url
         result = self.make_request("GET", url)
         return result
 
