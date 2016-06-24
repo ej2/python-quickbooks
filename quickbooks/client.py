@@ -41,6 +41,8 @@ class QuickBooks(object):
 
     authorize_url = "https://appcenter.intuit.com/Connect/Begin"
 
+    current_user_url = "https://appcenter.intuit.com/api/v1/user/current"
+
     disconnect_url = "https://appcenter.intuit.com/api/v1/connection/disconnect"
     reconnect_url = "https://appcenter.intuit.com/api/v1/connection/reconnect"
 
@@ -158,6 +160,12 @@ class QuickBooks(object):
         self.request_token = oauth_resp['oauth_token']
         self.request_token_secret = oauth_resp['oauth_token_secret']
         return self.qbService.get_authorize_url(self.request_token)
+
+    def get_current_user(self):
+        '''Get data from the current user endpoint'''
+        url = self.current_user_url
+        result = self.make_request("GET", url)
+        return result
 
     def get_report(self, report_type, qs=None):
         '''Get data from the report endpoint'''
