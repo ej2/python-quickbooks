@@ -259,7 +259,7 @@ Attaching a note:
      attachment.AttachableRef.append(attachable_ref)
 
      attachment.Note = 'This is a note'
-     attachment.save(qb=qb)
+     attachment.save(qb=client)
 
 Attaching a file:
 
@@ -275,8 +275,31 @@ Attaching a file:
      attachment.FileName = 'Filename'
      attachment._FilePath = '/folder/filename'  # full path to file
      attachment.ContentType = 'application/pdf'
-     attachment.save(qb=qb)
+     attachment.save(qb=client)
 
+Working with JSON data
+----------------
+All objects include to_json() and from_json() methods.
+
+Converting an object to JSON data:
+
+::
+
+   account = Account.get(1, qb=client)
+   json_data = account.to_json()
+
+Loading JSON data into a quickbooks object:
+
+::
+
+   account = Account()
+   account.from_json(
+     {
+      "AccountType": "Accounts Receivable",
+      "Name": "MyJobs"
+     }
+   )
+   account.save(qb=client)
 
 **Note:** Objects and object property names match their Quickbooks
 counterparts and do not follow PEP8.
