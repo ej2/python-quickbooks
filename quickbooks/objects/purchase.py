@@ -55,7 +55,7 @@ class ItemBasedExpenseLineDetail(QuickbooksBaseObject):
 @python_2_unicode_compatible
 class PurchaseLine(QuickbooksBaseObject):
     class_dict = {
-        "AccountBasedExpenseLineDetail": Ref,
+        "AccountBasedExpenseLineDetail": AccountBasedExpenseLineDetail,
         "ItemBasedExpenseLineDetail": ItemBasedExpenseLineDetail,
     }
 
