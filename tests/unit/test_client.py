@@ -167,6 +167,15 @@ class ClientTest(unittest.TestCase):
             self.assertEqual(qb_client.request_token, 'tokenvalue')
             self.assertTrue(qb_client.request_token_secret, 'secretvalue')
 
+    @patch('quickbooks.client.QuickBooks.make_request')
+    def test_get_current_user(self, make_req):
+        qb_client = client.QuickBooks()
+        qb_client.company_id = "1234"
+
+        result = qb_client.get_current_user()
+        url = "https://appcenter.intuit.com/api/v1/user/current"
+        make_req.assert_called_with("GET", url)
+
     @patch('quickbooks.client.QuickBooks.qbService')
     def test_get_access_tokens(self, qbService):
         qb_client = client.QuickBooks()
@@ -184,6 +193,15 @@ class ClientTest(unittest.TestCase):
 
         result = qb_client.disconnect_account()
         url = "https://appcenter.intuit.com/api/v1/connection/disconnect"
+        make_req.assert_called_with("GET", url)
+
+    @patch('quickbooks.client.QuickBooks.make_request')
+    def test_reconnect_account(self, make_req):
+        qb_client = client.QuickBooks()
+        qb_client.company_id = "1234"
+
+        result = qb_client.reconnect_account()
+        url = "https://appcenter.intuit.com/api/v1/connection/reconnect"
         make_req.assert_called_with("GET", url)
 
     @patch('quickbooks.client.QuickBooks.make_request')
