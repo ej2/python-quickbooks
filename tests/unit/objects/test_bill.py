@@ -36,6 +36,17 @@ class BillTests(unittest.TestCase):
 
         self.assertTrue(result)
 
+    def test_to_ref(self):
+        bill = Bill()
+        bill.DisplayName = "test"
+        bill.Id = 100
+
+        ref = bill.to_ref()
+
+        self.assertEquals(ref.name, "test")
+        self.assertEquals(ref.type, "Bill")
+        self.assertEquals(ref.value, 100)
+
 
 class BillLineTests(unittest.TestCase):
     def test_unicode(self):

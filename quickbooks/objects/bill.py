@@ -134,3 +134,13 @@ class Bill(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin)
         linked_txn.TxnLineId = 1
 
         return linked_txn
+
+    def to_ref(self):
+        ref = Ref()
+
+        ref.name = self.DisplayName
+        ref.type = self.qbo_object_name
+        ref.value = self.Id
+
+        return ref
+
