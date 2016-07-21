@@ -7,6 +7,8 @@ Changelog
     * Added support to reconnect an account.
     * Added to_ref method to Bill object.
     * Fixed issues creating notes with Attachable.
+    * Updated default values on Transfer.
+    * Fixed issue with default values on Deposit.
 
 * 0.4.0 (June 15, 2016)
     * Added a way of disconnecting a Quickbooks Account to client.
