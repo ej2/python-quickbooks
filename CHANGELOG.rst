@@ -5,7 +5,8 @@ Changelog
     * Fixed bug on PurchaseLine.
     * Added ability to query current user.
     * Added support to reconnect an account.
-
+    * Added to_ref method to Bill object.
+    * Fixed issues creating notes with Attachable.
 
 * 0.4.0 (June 15, 2016)
     * Added a way of disconnecting a Quickbooks Account to client.
