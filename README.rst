@@ -279,7 +279,7 @@ Attaching a file:
 
 Working with JSON data
 ----------------
-All objects include to_json() and from_json() methods.
+All objects include ``to_json`` and ``from_json`` methods.
 
 Converting an object to JSON data:
 
