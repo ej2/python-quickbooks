@@ -46,7 +46,7 @@ class DepositLineDetail(QuickbooksBaseObject):
     def __init__(self):
         super(DepositLineDetail, self).__init__()
         self.CheckNum = ""
-        self.TxnType = ""
+        self.TxnType = None
 
         self.Entity = None
         self.ClassRef = None
