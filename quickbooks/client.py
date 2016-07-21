@@ -41,7 +41,10 @@ class QuickBooks(object):
 
     authorize_url = "https://appcenter.intuit.com/Connect/Begin"
 
+    current_user_url = "https://appcenter.intuit.com/api/v1/user/current"
+
     disconnect_url = "https://appcenter.intuit.com/api/v1/connection/disconnect"
+    reconnect_url = "https://appcenter.intuit.com/api/v1/connection/reconnect"
 
     request_token = ''
     request_token_secret = ''
@@ -158,6 +161,12 @@ class QuickBooks(object):
         self.request_token_secret = oauth_resp['oauth_token_secret']
         return self.qbService.get_authorize_url(self.request_token)
 
+    def get_current_user(self):
+        '''Get data from the current user endpoint'''
+        url = self.current_user_url
+        result = self.make_request("GET", url)
+        return result
+
     def get_report(self, report_type, qs=None):
         '''Get data from the report endpoint'''
         if qs == None:
@@ -200,6 +209,15 @@ class QuickBooks(object):
         :return:
         """
         url = self.disconnect_url
+        result = self.make_request("GET", url)
+        return result
+
+    def reconnect_account(self):
+        """
+        Reconnect current account by refreshing OAuth access tokens
+        :return:
+        """
+        url = self.reconnect_url
         result = self.make_request("GET", url)
         return result
 
