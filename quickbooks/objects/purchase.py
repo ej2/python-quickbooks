@@ -8,6 +8,7 @@ from .tax import TxnTaxDetail
 @python_2_unicode_compatible
 class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
     class_dict = {
+        "CustomerRef": Ref,
         "ClassRef": Ref,
         "AccountRef": Ref,
         "TaxCodeRef": Ref
@@ -18,6 +19,8 @@ class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
     def __init__(self):
         super(AccountBasedExpenseLineDetail, self).__init__()
         self.BillableStatus = ""
+        self.TaxAmount = None
+        self.TaxInclusiveAmt = None  # Available in Minor verion 1
         self.ClassRef = None
         self.AccountRef = None
         self.TaxCodeRef = None

@@ -97,8 +97,11 @@ class AttachableRefTests(unittest.TestCase):
     def test_init(self):
         attachable = AttachableRef()
         attachable.Name = "test"
+        attachable.IncludeOnSend = False
+        attachable.Inactive = False
+        attachable.NoRefOnly = False
 
-        self.assertEquals(attachable.LineInfo, "")
+        self.assertEquals(attachable.LineInfo, None)
         self.assertEquals(attachable.IncludeOnSend, False)
         self.assertEquals(attachable.Inactive, False)
         self.assertEquals(attachable.NoRefOnly, False)

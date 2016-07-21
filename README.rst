@@ -243,7 +243,63 @@ Review results for batch operation:
         for error in fault.Error:
             print "Error " + error.Message 
 
+Attachments
+----------------
+See `Attachable documentation`_ for list of valid file types.
 
+Attaching a note:
+
+::
+
+     attachment = Attachable()
+
+     attachable_ref = AttachableRef()
+     attachable_ref = .EntityRef = entity.to_ref()
+
+     attachment.AttachableRef.append(attachable_ref)
+
+     attachment.Note = 'This is a note'
+     attachment.save(qb=client)
+
+Attaching a file:
+
+::
+
+     attachment = Attachable()
+
+     attachable_ref = AttachableRef()
+     attachable_ref = .EntityRef = entity.to_ref()
+
+     attachment.AttachableRef.append(attachable_ref)
+
+     attachment.FileName = 'Filename'
+     attachment._FilePath = '/folder/filename'  # full path to file
+     attachment.ContentType = 'application/pdf'
+     attachment.save(qb=client)
+
+Working with JSON data
+----------------
+All objects include ``to_json`` and ``from_json`` methods.
+
+Converting an object to JSON data:
+
+::
+
+   account = Account.get(1, qb=client)
+   json_data = account.to_json()
+
+Loading JSON data into a quickbooks object:
+
+::
+
+   account = Account()
+   account.from_json(
+     {
+      "AccountType": "Accounts Receivable",
+      "Name": "MyJobs"
+     }
+   )
+   account.save(qb=client)
 
 **Note:** Objects and object property names match their Quickbooks
 counterparts and do not follow PEP8.
@@ -258,6 +314,7 @@ on Python 2.
 .. _Disconnect documentation: https://developer.intuit.com/docs/0050_quickbooks_api/0020_authentication_and_authorization/oauth_management_api#/Disconnect
 .. _quickbooks-python: https://github.com/troolee/quickbooks-python
 .. _Minor versions: https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/minor_versions
+.. _Attachable documentation: https://developer.intuit.com/docs/api/accounting/Attachable
 
 .. |Build Status| image:: https://travis-ci.org/sidecars/python-quickbooks.svg?branch=master
    :target: https://travis-ci.org/sidecars/python-quickbooks
