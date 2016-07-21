@@ -243,6 +243,8 @@ Review results for batch operation:
         for error in fault.Error:
             print "Error " + error.Message 
 
+Attachments
+----------------
 
 Adding attachments (See `Attachable documentation`_ for list of valid file types):
 
@@ -250,13 +252,16 @@ Adding attachments (See `Attachable documentation`_ for list of valid file types
 
      attachment = Attachable()
 
-     attachment.AttachableRef = AttachableRef()
-     attachment.AttachableRef.EntityRef = entity.to_ref()
+     attachable_ref = AttachableRef()
+     attachable_ref = .EntityRef = entity.to_ref()
+
+     attachment.AttachableRef.append(attachable_ref)
 
      attachment.FileName = 'Filename'
      attachment._FilePath = 'full path to file'
      attachment.ContentType = 'application/pdf'
      attachment.save(qb=qb)
+
 
 **Note:** Objects and object property names match their Quickbooks
 counterparts and do not follow PEP8.
