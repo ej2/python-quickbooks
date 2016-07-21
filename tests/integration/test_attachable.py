@@ -46,3 +46,21 @@ class AttachableTest(unittest.TestCase):
 
         query_attachable = Attachable.get(attachable.Id, qb=self.qb_client)
         self.assertEquals(query_attachable.Note, "Note updated on {}".format(self.time.strftime("%Y-%m-%d %H:%M:%S")))
+
+    def test_create_file(self):
+        attachable = Attachable()
+
+        vendor = Vendor.all(max_results=1, qb=self.qb_client)[0]
+
+        attachable_ref = AttachableRef()
+        attachable_ref.EntityRef = vendor.to_ref()
+        attachable.AttachableRef.append(attachable_ref)
+
+        attachable.FileName = 'TestFileName'
+        attachable._FilePath = __file__
+        attachable.ContentType = 'application/txt'
+
+        attachable.save(qb=self.qb_client)
+        query_attachable = Attachable.get(attachable.Id, qb=self.qb_client)
+
+        self.assertEquals(query_attachable.AttachableRef[0].EntityRef.value, vendor.Id)

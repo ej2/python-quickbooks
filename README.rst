@@ -245,8 +245,22 @@ Review results for batch operation:
 
 Attachments
 ----------------
+See `Attachable documentation`_ for list of valid file types
+Attaching a note:
 
-Adding attachments (See `Attachable documentation`_ for list of valid file types):
+::
+
+     attachment = Attachable()
+
+     attachable_ref = AttachableRef()
+     attachable_ref = .EntityRef = entity.to_ref()
+
+     attachment.AttachableRef.append(attachable_ref)
+
+     attachment.Note = 'This is a note'
+     attachment.save(qb=qb)
+
+Attaching a file:
 
 ::
 
