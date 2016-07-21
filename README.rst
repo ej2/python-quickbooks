@@ -245,7 +245,8 @@ Review results for batch operation:
 
 Attachments
 ----------------
-See `Attachable documentation`_ for list of valid file types
+See `Attachable documentation`_ for list of valid file types.
+
 Attaching a note:
 
 ::
@@ -272,7 +273,7 @@ Attaching a file:
      attachment.AttachableRef.append(attachable_ref)
 
      attachment.FileName = 'Filename'
-     attachment._FilePath = 'full path to file'
+     attachment._FilePath = '/folder/filename'  # full path to file
      attachment.ContentType = 'application/pdf'
      attachment.save(qb=qb)
 
