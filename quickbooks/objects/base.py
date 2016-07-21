@@ -170,10 +170,10 @@ class AttachableRef(QuickbooksBaseObject):
     def __init__(self):
         super(AttachableRef, self).__init__()
 
-        self.LineInfo = ""
+        self.LineInfo = None
         self.IncludeOnSend = False
-        self.Inactive = False
-        self.NoRefOnly = False
+        self.Inactive = None
+        self.NoRefOnly = None
 
         self.EntityRef = None
         self.CustomField = []

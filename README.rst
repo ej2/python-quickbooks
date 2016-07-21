@@ -244,6 +244,19 @@ Review results for batch operation:
             print "Error " + error.Message 
 
 
+Adding attachments (See `Attachable documentation`_ for list of valid file types):
+
+::
+
+     attachment = Attachable()
+
+     attachment.AttachableRef = AttachableRef()
+     attachment.AttachableRef.EntityRef = entity.to_ref()
+
+     attachment.FileName = 'Filename'
+     attachment._FilePath = 'full path to file'
+     attachment.ContentType = 'application/pdf'
+     attachment.save(qb=qb)
 
 **Note:** Objects and object property names match their Quickbooks
 counterparts and do not follow PEP8.
@@ -258,6 +271,7 @@ on Python 2.
 .. _Disconnect documentation: https://developer.intuit.com/docs/0050_quickbooks_api/0020_authentication_and_authorization/oauth_management_api#/Disconnect
 .. _quickbooks-python: https://github.com/troolee/quickbooks-python
 .. _Minor versions: https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/minor_versions
+.. _Attachable documentation: https://developer.intuit.com/docs/api/accounting/Attachable
 
 .. |Build Status| image:: https://travis-ci.org/sidecars/python-quickbooks.svg?branch=master
    :target: https://travis-ci.org/sidecars/python-quickbooks

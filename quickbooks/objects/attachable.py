@@ -1,5 +1,5 @@
 from six import python_2_unicode_compatible
-from .base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity
+from .base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, AttachableRef
 from ..client import QuickBooks
 
 
@@ -14,6 +14,10 @@ class Attachable(QuickbooksManagedObject, QuickbooksTransactionEntity):
 
     class_dict = {
         "EntityRef": Ref,
+    }
+
+    list_dict = {
+        "AttachableRef": AttachableRef,
     }
 
     qbo_object_name = "Attachable"
@@ -45,17 +49,3 @@ class Attachable(QuickbooksManagedObject, QuickbooksTransactionEntity):
         ref.type = self.qbo_object_name
         ref.value = self.Id
         return ref
-
-    def save(self, qb=None):
-        if not qb:
-            qb = QuickBooks()
-
-        if self.Id and self.Id > 0:
-            json_data = qb.update_object(self.qbo_object_name, self.to_json(), _file_path=self._FilePath)
-        else:
-            json_data = qb.create_object(self.qbo_object_name, self.to_json(), _file_path=self._FilePath)
-
-        obj = type(self).from_json(json_data['AttachableResponse'][0]['Attachable'])
-        self.Id = obj.Id
-
-        return obj
