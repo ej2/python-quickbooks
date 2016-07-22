@@ -18,8 +18,8 @@ class Transfer(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMi
     def __init__(self):
         super(Transfer, self).__init__()
         self.Amount = 0
-        self.TxnDate = ""
-        self.PrivateNote = ""
+        self.TxnDate = None
+        self.PrivateNote = None
         self.TxnSource = None
 
         self.FromAccountRef = None
