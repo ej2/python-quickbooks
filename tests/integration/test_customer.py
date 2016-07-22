@@ -2,6 +2,8 @@ from datetime import datetime
 import os
 import unittest
 
+from quickbooks.objects.base import Address, PhoneNumber, EmailAddress
+
 from quickbooks.objects.customer import Customer
 
 from quickbooks import QuickBooks
@@ -37,9 +39,22 @@ class CustomerTest(unittest.TestCase):
         customer.FullyQualifiedName = self.fully_qualified_name
         customer.CompanyName = self.company_name
         customer.DisplayName = self.display_name
-        customer.save(qb=self.qb_client)
 
-        self.Id = customer.Id
+        customer.BillAddr = Address()
+        customer.BillAddr.Line1 = "123 Main"
+        customer.BillAddr.Line2 = "Apartment 1"
+        customer.BillAddr.City = "City"
+        customer.BillAddr.Country = "U.S.A"
+        customer.BillAddr.CountrySubDivisionCode = "CA"
+        customer.BillAddr.PostalCode = "94030"
+
+        customer.PrimaryPhone = PhoneNumber()
+        customer.PrimaryPhone.FreeFormNumber = '555-555-5555'
+
+        customer.PrimaryEmailAddr = EmailAddress()
+        customer.PrimaryEmailAddr.Address = 'test@email.com'
+
+        customer.save(qb=self.qb_client)
 
         query_customer = Customer.get(customer.Id, qb=self.qb_client)
 
@@ -52,6 +67,14 @@ class CustomerTest(unittest.TestCase):
         self.assertEqual(query_customer.FullyQualifiedName, self.fully_qualified_name)
         self.assertEqual(query_customer.CompanyName, self.company_name)
         self.assertEqual(query_customer.DisplayName, self.display_name)
+        self.assertEqual(query_customer.BillAddr.Line1, customer.BillAddr.Line1)
+        self.assertEqual(query_customer.BillAddr.Line2, customer.BillAddr.Line2)
+        self.assertEqual(query_customer.BillAddr.City, customer.BillAddr.City)
+        self.assertEqual(query_customer.BillAddr.Country, customer.BillAddr.Country)
+        self.assertEqual(query_customer.BillAddr.CountrySubDivisionCode, customer.BillAddr.CountrySubDivisionCode)
+        self.assertEqual(query_customer.BillAddr.PostalCode, customer.BillAddr.PostalCode)
+        self.assertEqual(query_customer.PrimaryPhone.FreeFormNumber, customer.PrimaryPhone.FreeFormNumber)
+        self.assertEqual(query_customer.PrimaryEmailAddr.Address, customer.PrimaryEmailAddr.Address)
 
     def test_update(self):
         customer = Customer.all(max_results=1, qb=self.qb_client)[0]
