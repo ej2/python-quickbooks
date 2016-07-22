@@ -1,5 +1,5 @@
 from six import python_2_unicode_compatible
-from .base import QuickbooksManagedObject, QuickbooksTransactionEntity, AttachableRef
+from .base import QuickbooksManagedObject, QuickbooksTransactionEntity
 
 
 @python_2_unicode_compatible
@@ -13,24 +13,19 @@ class Term(QuickbooksManagedObject, QuickbooksTransactionEntity):
     date -A percent discount -An absolute discount
     """
 
-    class_dict = {
-        "AttachableRef": AttachableRef
-    }
     qbo_object_name = "Term"
 
     def __init__(self):
         super(Term, self).__init__()
         self.Name = ""
-        self.Type = ""
-        self.DiscountPercent = 0
-        self.DueDays = 0
-        self.DayOfMonthDue = 0
-        self.DueNextMonthDays = 0
-        self.DiscountDays = 0
-        self.DiscountDayOfMonth = 0
         self.Active = True
-
-        self.AttachableRef = None
+        self.Type = None  # Readonly
+        self.DiscountPercent = None
+        self.DueDays = None
+        self.DiscountDays = None
+        self.DayOfMonthDue = None
+        self.DueNextMonthDays = None
+        self.DiscountDayOfMonth = None
 
     def __str__(self):
         return self.Name

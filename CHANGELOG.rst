@@ -1,14 +1,22 @@
 Changelog
 ========
 
-* 0.4.1 (July 22, 2016)
+* 0.5.0 (July 22, 2016)
     * Fixed bug on PurchaseLine.
     * Added ability to query current user.
     * Added support to reconnect an account.
     * Added to_ref method to Bill object.
-    * Fixed issues creating notes with Attachable.
+    * Added date and datetime format helper functions.
     * Updated default values on Transfer.
-    * Fixed issue with default values on Deposit.
+    * Fixed issues creating notes with Attachable.
+    * Fixed issues with default values on Deposit.
+    * Fixed issues with default values on Emloyee.
+    * Fixed issues with default values on TimeActivity.
+    * Fixed issues with default values on Term.
+    * Fixed issues with default values on TaxService and TaxRateDetails.
+    * Fixed issues that prevented save from working on TaxService.
+    * Removed unsupported save method from TaxRate.
+    * Removed unsupported save method from TaxCode.
 
 * 0.4.0 (June 15, 2016)
     * Added a way of disconnecting a Quickbooks Account to client.
