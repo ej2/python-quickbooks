@@ -56,4 +56,4 @@ class DepositLineDetailTests(unittest.TestCase):
         self.assertEquals(detail.AccountRef, None)
         self.assertEquals(detail.PaymentMethodRef, None)
         self.assertEquals(detail.CheckNum, "")
-        self.assertEquals(detail.TxnType, "")
+        self.assertEquals(detail.TxnType, None)
