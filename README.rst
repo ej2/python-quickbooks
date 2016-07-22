@@ -8,7 +8,7 @@ A Python library for accessing the Quickbooks API. Complete rework of
 
 These instructions were written for a Django application. Make sure to
 change it to whatever framework/method you’re using.
-You can find additioinal examples of usage in `Integration tests folder`_.
+You can find additional examples of usage in `Integration tests folder`_.
 
 Connecting your application to Quickbooks Online
 ------------------------------------------------
