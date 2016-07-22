@@ -8,6 +8,7 @@ A Python library for accessing the Quickbooks API. Complete rework of
 
 These instructions were written for a Django application. Make sure to
 change it to whatever framework/method you’re using.
+You can find additioinal examples of usage in `Integration tests folder`_.
 
 Connecting your application to Quickbooks Online
 ------------------------------------------------
@@ -315,6 +316,7 @@ on Python 2.
 .. _quickbooks-python: https://github.com/troolee/quickbooks-python
 .. _Minor versions: https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/minor_versions
 .. _Attachable documentation: https://developer.intuit.com/docs/api/accounting/Attachable
+.. _Integration tests folder: https://github.com/sidecars/python-quickbooks/tree/master/tests/integration
 
 .. |Build Status| image:: https://travis-ci.org/sidecars/python-quickbooks.svg?branch=master
    :target: https://travis-ci.org/sidecars/python-quickbooks
