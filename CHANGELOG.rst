@@ -9,6 +9,9 @@ Changelog
     * Fixed issues creating notes with Attachable.
     * Updated default values on Transfer.
     * Fixed issue with default values on Deposit.
+    * Fixed issue with default values on Emloyee.
+    * Fixed issue with default vaules on TimeActivity.
+    * Added date and datetime format helper functions.
 
 * 0.4.0 (June 15, 2016)
     * Added a way of disconnecting a Quickbooks Account to client.

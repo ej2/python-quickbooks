@@ -302,6 +302,18 @@ Loading JSON data into a quickbooks object:
    )
    account.save(qb=client)
 
+Date formatting
+----------------
+When setting date or datetime fields, Quickbooks requires a specific format.
+Formating helpers are available in helpers.py. Example usage:
+
+::
+
+   date_string = qb_date_format(date(2016, 7, 22))
+   date_time_string = qb_datetime_format(datetime(2016, 7, 22, 10, 35, 00))
+   date_time_with_utc_string = qb_datetime_utc_offset_format(datetime(2016, 7, 22, 10, 35, 00), '-06:00')
+
+
 **Note:** Objects and object property names match their Quickbooks
 counterparts and do not follow PEP8.
 
