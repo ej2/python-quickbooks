@@ -245,30 +245,30 @@ Review results for batch operation:
 
 Attachments
 ----------------
-See `Attachable documentation`_ for list of valid file types.
+See `Attachable documentation`_ for list of valid file types, file size limits and other restrictions.
 
-Attaching a note:
+Attaching a note to a customer:
 
 ::
 
      attachment = Attachable()
 
      attachable_ref = AttachableRef()
-     attachable_ref = .EntityRef = entity.to_ref()
+     attachable_ref.EntityRef = customer.to_ref()
 
      attachment.AttachableRef.append(attachable_ref)
 
      attachment.Note = 'This is a note'
      attachment.save(qb=client)
 
-Attaching a file:
+Attaching a file to customer:
 
 ::
 
      attachment = Attachable()
 
      attachable_ref = AttachableRef()
-     attachable_ref = .EntityRef = entity.to_ref()
+     attachable_ref.EntityRef = customer.to_ref()
 
      attachment.AttachableRef.append(attachable_ref)
 
