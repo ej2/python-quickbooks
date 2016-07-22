@@ -13,6 +13,8 @@ Changelog
     * Fixed issues with default values on Emloyee.
     * Fixed issues with default values on TimeActivity.
     * Fixed issues with default values on Term.
+    * Fixed issues with default values on TaxService and TaxRateDetails.
+    * Fixed issues that prevented save from working on TaxService.
 
 * 0.4.0 (June 15, 2016)
     * Added a way of disconnecting a Quickbooks Account to client.
