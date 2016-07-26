@@ -60,3 +60,12 @@ class TaxCode(QuickbooksTransactionEntity, QuickbooksBaseObject, ReadMixin, List
 
     def __str__(self):
         return self.Name
+
+    def to_ref(self):
+        ref = Ref()
+
+        ref.type = self.qbo_object_name
+        ref.value = self.Name
+        ref.name = None
+
+        return ref

@@ -1,7 +1,8 @@
 import unittest
 
 from quickbooks.objects.detailline import SalesItemLineDetail, DiscountOverride, DetailLine, SubtotalLineDetail, \
-    DiscountLineDetail, SubtotalLine, DescriptionLineDetail, DescriptionLine, SaleItemLine, DiscountLine
+    DiscountLineDetail, SubtotalLine, DescriptionLineDetail, DescriptionLine, SalesItemLine, DiscountLine, GroupLine, \
+    AccountBasedExpenseLineDetail, ItemBasedExpenseLineDetail, DescriptionOnlyLine, ItemBasedExpenseLine
 
 
 class DetailLineTests(unittest.TestCase):
@@ -71,9 +72,9 @@ class DescriptionLineTest(unittest.TestCase):
         self.assertEquals(line.DescriptionLineDetail, None)
 
 
-class SaleItemLineTest(unittest.TestCase):
+class SalesItemLineTest(unittest.TestCase):
     def test_init(self):
-        line = SaleItemLine()
+        line = SalesItemLine()
 
         self.assertEquals(line.DetailType, "SalesItemLineDetail")
         self.assertEquals(line.SalesItemLineDetail, None)
@@ -85,3 +86,51 @@ class DiscountLineTest(unittest.TestCase):
 
         self.assertEquals(line.DetailType, "DiscountLineDetail")
         self.assertEquals(line.DiscountLineDetail, None)
+
+
+class GroupLineTest(unittest.TestCase):
+    def test_init(self):
+        line = GroupLine()
+
+        self.assertEquals(line.DetailType, "SalesItemLineDetail")
+        self.assertEquals(line.SalesItemLineDetail, None)
+
+
+class ItemBasedExpenseLineDetailTest(unittest.TestCase):
+    def test_init(self):
+        detail = ItemBasedExpenseLineDetail()
+
+        self.assertEquals(detail.BillableStatus, "")
+        self.assertEquals(detail.UnitPrice, 0)
+        self.assertEquals(detail.TaxInclusiveAmt, 0)
+        self.assertEquals(detail.Qty, 0)
+        self.assertEquals(detail.ItemRef, None)
+        self.assertEquals(detail.ClassRef, None)
+        self.assertEquals(detail.PriceLevelRef, None)
+        self.assertEquals(detail.TaxCodeRef, None)
+        self.assertEquals(detail.MarkupInfo, None)
+        self.assertEquals(detail.CustomerRef, None)
+
+
+class ItemBasedExpenseLineTests(unittest.TestCase):
+    def test_unicode(self):
+        line = ItemBasedExpenseLine()
+
+        self.assertEquals(line.DetailType, "ItemBasedExpenseLineDetail")
+        self.assertEquals(line.ItemBasedExpenseLineDetail, None)
+
+
+class AccountBasedExpenseLineDetailTests(unittest.TestCase):
+    def test_unicode(self):
+        acct_detail = AccountBasedExpenseLineDetail()
+        acct_detail.BillableStatus = "test"
+
+        self.assertEquals(str(acct_detail), "test")
+
+
+class DescriptionOnlyLineTests(unittest.TestCase):
+    def test_unicode(self):
+        line = DescriptionOnlyLine()
+
+        self.assertEquals(line.DetailType, "DescriptionLineDetail")
+        self.assertEquals(line.DescriptionLineDetail, None)

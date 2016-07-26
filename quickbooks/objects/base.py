@@ -5,12 +5,10 @@ from ..mixins import ToJsonMixin, FromJsonMixin, ReadMixin, ListMixin, UpdateMix
 class QuickbooksBaseObject(ToJsonMixin, FromJsonMixin):
     class_dict = {}
     list_dict = {}
+    detail_dict = {}
 
 
 class QuickbooksTransactionEntity(QuickbooksBaseObject):
-    class_dict = {}
-    list_dict = {}
-
     def __init__(self):
         self.Id = None
         self.SyncToken = 0
@@ -47,7 +45,7 @@ class LinkedTxnMixin(object):
 
 
 @python_2_unicode_compatible
-class Address(ToJsonMixin, FromJsonMixin):
+class Address(QuickbooksBaseObject):
     def __init__(self):
         self.Id = None
         self.Line1 = ""
@@ -77,7 +75,7 @@ class PhoneNumber(ToJsonMixin, FromJsonMixin):
 
 
 @python_2_unicode_compatible
-class EmailAddress(ToJsonMixin, FromJsonMixin):
+class EmailAddress(QuickbooksBaseObject):
     def __init__(self):
         self.Address = ""
 
@@ -86,7 +84,7 @@ class EmailAddress(ToJsonMixin, FromJsonMixin):
 
 
 @python_2_unicode_compatible
-class WebAddress(ToJsonMixin, FromJsonMixin):
+class WebAddress(QuickbooksBaseObject):
     def __init__(self):
         self.URI = ""
 
@@ -95,10 +93,7 @@ class WebAddress(ToJsonMixin, FromJsonMixin):
 
 
 @python_2_unicode_compatible
-class Ref(ToJsonMixin, FromJsonMixin):
-    class_dict = {}
-    list_dict = {}
-
+class Ref(QuickbooksBaseObject):
     def __init__(self):
         self.value = ""
         self.name = ""
@@ -109,7 +104,7 @@ class Ref(ToJsonMixin, FromJsonMixin):
 
 
 @python_2_unicode_compatible
-class CustomField(ToJsonMixin, FromJsonMixin):
+class CustomField(QuickbooksBaseObject):
     def __init__(self):
         self.Type = ""
         self.Name = ""

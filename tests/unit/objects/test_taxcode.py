@@ -18,6 +18,13 @@ class TaxCodeTests(unittest.TestCase):
 
         self.assertTrue(result)
 
+    def test_to_ref(self):
+        taxcode = TaxCode()
+        taxcode.Name = "test"
+
+        ref = taxcode.to_ref()
+        self.assertEquals(ref.value, "test")
+
 
 class TaxRateDetailTests(unittest.TestCase):
     def test_init(self):

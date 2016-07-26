@@ -4,7 +4,8 @@ from datetime import datetime
 
 from quickbooks.client import QuickBooks
 from quickbooks.objects.base import Ref
-from quickbooks.objects.bill import Bill, BillLine, AccountBasedExpenseLineDetail
+from quickbooks.objects.bill import Bill
+from quickbooks.objects.detailline import AccountBasedExpenseLine, AccountBasedExpenseLineDetail
 from quickbooks.objects.vendor import Vendor
 
 
@@ -25,7 +26,7 @@ class BillTest(unittest.TestCase):
     def test_create(self):
         bill = Bill()
 
-        line = BillLine()
+        line = AccountBasedExpenseLine()
         line.Amount = 200
         line.DetailType = "AccountBasedExpenseLineDetail"
 

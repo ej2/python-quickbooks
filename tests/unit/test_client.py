@@ -255,7 +255,6 @@ class ClientTest(unittest.TestCase):
                 "GET", url, True, "1234", data={},
                 headers={'Content-Type': 'application/json', 'Accept': 'application/json'}, params={})
 
-
     def test_make_request_create_session(self):
         receipt = SalesReceipt()
         receipt.Id = 1

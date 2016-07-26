@@ -55,7 +55,7 @@ class QuickBooks(object):
         "Department", "Deposit", "Employee", "Estimate", "Invoice",
         "Item", "JournalEntry", "Payment", "PaymentMethod",
         "Purchase", "PurchaseOrder", "RefundReceipt",
-        "SalesReceipt", "Taxcode", "TaxService/Taxcode", "TaxRate", "Term",
+        "SalesReceipt", "TaxCode", "TaxService/Taxcode", "TaxRate", "Term",
         "TimeActivity", "Transfer", "Vendor", "VendorCredit"
     ]
 

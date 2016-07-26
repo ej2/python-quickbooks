@@ -106,6 +106,10 @@ class Deposit(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMix
         "Line": DepositLine
     }
 
+    detail_dict = {
+        "DepositLineDetail": DepositLine
+    }
+
     qbo_object_name = "Deposit"
 
     def __init__(self):

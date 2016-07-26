@@ -88,7 +88,12 @@ class JournalEntry(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedT
     }
 
     list_dict = {
-        "Line": JournalEntryLine
+        "Line": DetailLine
+    }
+
+    detail_dict = {
+        "DescriptionOnly": DescriptionOnlyLine,
+        "JournalEntryLineDetail": JournalEntryLine
     }
 
     qbo_object_name = "JournalEntry"

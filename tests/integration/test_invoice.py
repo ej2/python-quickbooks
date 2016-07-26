@@ -3,9 +3,8 @@ import unittest
 
 from quickbooks.client import QuickBooks
 from quickbooks.objects.base import CustomerMemo
-from quickbooks.objects.creditmemo import SalesItemLineDetail
 from quickbooks.objects.customer import Customer
-from quickbooks.objects.detailline import SaleItemLine, SalesItemLineDetail
+from quickbooks.objects.detailline import SalesItemLine, SalesItemLineDetail
 from quickbooks.objects.invoice import Invoice
 from quickbooks.objects.item import Item
 
@@ -24,7 +23,7 @@ class InvoiceTest(unittest.TestCase):
     def test_create(self):
         invoice = Invoice()
 
-        line = SaleItemLine()
+        line = SalesItemLine()
         line.LineNum = 1
         line.Description = "description"
         line.Amount = 100

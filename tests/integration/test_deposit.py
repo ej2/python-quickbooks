@@ -8,7 +8,7 @@ from quickbooks.objects.deposit import Deposit, DepositLine, DepositLineDetail
 from quickbooks import QuickBooks
 
 
-class DepartmentTest(unittest.TestCase):
+class DepositTest(unittest.TestCase):
     def setUp(self):
         self.qb_client = QuickBooks(
             sandbox=True,

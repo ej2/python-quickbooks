@@ -1,89 +1,9 @@
 from six import python_2_unicode_compatible
-from .base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin, \
-    LinkedTxn, Address, CustomField, MarkupInfo
 
+from quickbooks.objects.detailline import DetailLine, AccountBasedExpenseLine, ItemBasedExpenseLine
+from .base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin, \
+    LinkedTxn, Address
 from .tax import TxnTaxDetail
-
-
-@python_2_unicode_compatible
-class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
-    class_dict = {
-        "CustomerRef": Ref,
-        "ClassRef": Ref,
-        "AccountRef": Ref,
-        "TaxCodeRef": Ref
-    }
-
-    list_dict = {}
-
-    def __init__(self):
-        super(AccountBasedExpenseLineDetail, self).__init__()
-        self.BillableStatus = ""
-        self.TaxAmount = None
-        self.TaxInclusiveAmt = None  # Available in Minor verion 1
-        self.ClassRef = None
-        self.AccountRef = None
-        self.TaxCodeRef = None
-
-    def __str__(self):
-        return self.BillableStatus
-
-
-class ItemBasedExpenseLineDetail(QuickbooksBaseObject):
-
-    class_dict = {
-        "ItemRef": Ref,
-        "ClassRef": Ref,
-        "PriceLevelRef": Ref,
-        "TaxCodeRef": Ref,
-        "CustomerRef": Ref,
-        "MarkupInfo": MarkupInfo
-    }
-
-    def __init__(self):
-
-        self.UnitPrice = 0
-        self.Qty = 0
-        self.BillableStatus = ""
-        self.TaxInclusiveAmt = 0
-
-        self.ItemRef = None
-        self.ClassRef = None
-        self.PriceLevelRef = None
-        self.TaxCodeRef = None
-        self.CustomerRef = None
-        self.MarkupInfo = None
-
-
-@python_2_unicode_compatible
-class PurchaseLine(QuickbooksBaseObject):
-    class_dict = {
-        "AccountBasedExpenseLineDetail": AccountBasedExpenseLineDetail,
-        "ItemBasedExpenseLineDetail": ItemBasedExpenseLineDetail,
-    }
-
-    list_dict = {
-        "LinkedTxn": LinkedTxn,
-        "CustomField": CustomField,
-    }
-
-    def __init__(self):
-        super(PurchaseLine, self).__init__()
-        self.Id = None
-        self.LineNum = 0
-        self.Description = ""
-        self.Amount = 0
-        self.DetailType = "ItemBasedExpenseLineDetail"
-
-        self.TaxCodeRef = None
-        self.AccountRef = None
-        self.ItemBasedExpenseLineDetail = None
-
-        self.LinkedTxn = []
-        self.AccountBasedExpenseLineDetail = []
-
-    def __str__(self):
-        return str(self.Amount)
 
 
 @python_2_unicode_compatible
@@ -113,8 +33,13 @@ class Purchase(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMi
     }
 
     list_dict = {
-        "Line": PurchaseLine,
+        "Line": DetailLine,
         "LinkedTxn": LinkedTxn,
+    }
+
+    detail_dict = {
+        "AccountBasedExpenseLineDetail": AccountBasedExpenseLine,
+        "ItemBasedExpenseLineDetail": ItemBasedExpenseLine,
     }
 
     qbo_object_name = "Purchase"

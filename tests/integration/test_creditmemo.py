@@ -2,9 +2,11 @@ import os
 import unittest
 
 from quickbooks.objects.customer import Customer
+from quickbooks.objects.detailline import SalesItemLine
 from quickbooks.objects.item import Item
 from quickbooks.client import QuickBooks
-from quickbooks.objects.creditmemo import CreditMemo, CreditMemoLine, SalesItemLineDetail
+from quickbooks.objects.creditmemo import CreditMemo
+from quickbooks.objects.detailline import SalesItemLineDetail
 
 
 class CreditMemoTest(unittest.TestCase):
@@ -25,7 +27,7 @@ class CreditMemoTest(unittest.TestCase):
         credit_memo = CreditMemo()
         credit_memo.CustomerRef = customer.to_ref()
 
-        detail_line = CreditMemoLine()
+        detail_line = SalesItemLine()
         detail_line.LineNum = 1
         detail_line.Description = "Test Description"
         detail_line.Amount = 100

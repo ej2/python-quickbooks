@@ -28,11 +28,17 @@ class FromJsonMixin(object):
                 sub_obj = obj.class_dict[key]()
                 sub_obj = sub_obj.from_json(json_data[key])
                 setattr(obj, key, sub_obj)
+
             elif key in obj.list_dict:
                 sub_list = []
 
                 for data in json_data[key]:
-                    sub_obj = obj.list_dict[key]()
+
+                    if 'DetailType' in data and data['DetailType'] in obj.detail_dict:
+                        sub_obj = obj.detail_dict[data['DetailType']]()
+                    else:
+                        sub_obj = obj.list_dict[key]()
+
                     sub_obj = sub_obj.from_json(data)
                     sub_list.append(sub_obj)
 
