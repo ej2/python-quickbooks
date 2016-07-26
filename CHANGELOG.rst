@@ -5,22 +5,16 @@ Changelog
     * Added ability to query current user.
     * Added support to reconnect an account.
     * Added to_ref method to Bill object.
+    * Added to_ref method to TaxCode.
     * Added date and datetime format helper functions.
-    * Updated default values on Transfer.
     * Fixed issues creating notes with Attachable.
-    * Fixed issues with default values on Deposit.
-    * Fixed issues with default values on Emloyee.
-    * Fixed issues with default values on TimeActivity.
-    * Fixed issues with default values on Term.
-    * Fixed issues with default values on TaxService and TaxRateDetails.
+    * Fixed issues with default values on the following objects: Deposit, Employee, Estimate, TimeActivity, Term, Transfer, TaxService and TaxRateDetails
     * Fixed issues that prevented save from working on TaxService.
     * Removed unsupported save method from TaxRate.
     * Removed unsupported save method from TaxCode.
-    * Added to_ref method to TaxCode.
-    * Fixed issues with default values on Estimate.
     * Fixed issues loading detail lines on the following objects: JournalEntry, CreditMemo, Bill, Purchase and PurchaseOrder.
-    * Corrected spelling of object SaleItemLine to SalesItemLine.
     * Removed the following objects: CreditMemoLine, BillLine, JournalEntryLine, PurchaseLine, and PurchaseOrderLine.
+    * Corrected spelling of object SaleItemLine to SalesItemLine.
 
 
 * 0.4.0 (June 15, 2016)
