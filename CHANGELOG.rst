@@ -1,6 +1,9 @@
 Changelog
 ========
 
+* 0.5.1 (July 25, 2016)
+    * Updated qb_datetime_utc_offset_format to support python 2.6.
+
 * 0.5.0 (July 25, 2016)
     * Added ability to query current user.
     * Added support to reconnect an account.

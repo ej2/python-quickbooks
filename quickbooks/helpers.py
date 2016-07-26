@@ -24,4 +24,4 @@ def qb_datetime_utc_offset_format(input_date, utc_offset):
     :param utc_offset: Formatted +/-HH:MM example: -08:00
     :return:
     """
-    return "{}{}".format(qb_datetime_format(input_date), utc_offset)
+    return "{0}{1}".format(qb_datetime_format(input_date), utc_offset)
