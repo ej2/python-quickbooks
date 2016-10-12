@@ -25,7 +25,7 @@ class AttachableRef(QuickbooksBaseObject):
 
 class CashBackInfo(QuickbooksBaseObject):
     class_dict = {
-        "AccountRef": None
+        "AccountRef": Ref
     }
 
     def __init__(self):
