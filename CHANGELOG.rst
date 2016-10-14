@@ -1,6 +1,10 @@
 Changelog
 ========
 
+* 0.5.2 (October 14th, 2016)
+    * Fixed issue on UpdateMixin.
+    * Fixed issue with CashBackInfo.
+
 * 0.5.1 (July 25, 2016)
     * Updated qb_datetime_utc_offset_format to support python 2.6.
 
