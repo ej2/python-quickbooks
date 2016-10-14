@@ -68,7 +68,7 @@ class UpdateMixin(object):
         if not qb:
             qb = QuickBooks()
 
-        if self.Id and self.Id > 0:
+        if self.Id and int(self.Id) > 0:
             json_data = qb.update_object(self.qbo_object_name, self.to_json())
         else:
             json_data = qb.create_object(self.qbo_object_name, self.to_json())
