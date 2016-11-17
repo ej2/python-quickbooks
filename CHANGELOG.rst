@@ -1,6 +1,9 @@
 Changelog
 ========
 
+* 0.5.3 (October 14th, 2016)
+    * Fixed issue in build_choose_clause and build_where_clause that caused single quotes to not be escaped.
+
 * 0.5.2 (October 14th, 2016)
     * Fixed issue on UpdateMixin.
     * Fixed issue with CashBackInfo.
