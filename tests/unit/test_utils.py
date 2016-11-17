@@ -5,7 +5,9 @@ from quickbooks import utils
 class UtilsTests(unittest.TestCase):
     def test_build_where_clause(self):
         where_clause = utils.build_where_clause(field1=1, field2="Someone's Company")
-        self.assertEqual(where_clause, "field2 = 'Someone\\\'s Company' AND field1 = 1")
+
+        self.assertTrue("field1 = 1" in where_clause)
+        self.assertTrue("field2 = 'Someone\\\'s Company'" in where_clause)
 
     def test_build_where_clause_integers(self):
         where_clause = utils.build_choose_clause(choices=[1, 2], field="field1")
