@@ -195,12 +195,23 @@ class UpdateMixinTest(unittest.TestCase):
 
 
 class DownloadPdfTest(unittest.TestCase):
+    def setUp(self):
+        self.qb_client = client.QuickBooks(
+            sandbox=True,
+            consumer_key="update_consumer_key",
+            consumer_secret="update_consumer_secret",
+            access_token="update_access_token",
+            access_token_secret="update_access_token_secret",
+            company_id="update_company_id",
+            callback_url="update_callback_url"
+        )
+
     @patch('quickbooks.client.QuickBooks.download_pdf')
     def test_download_invoice(self, download_pdf):
         receipt = SalesReceipt()
         receipt.Id = 1
 
-        receipt.download_pdf()
+        receipt.download_pdf(self.qb_client)
         download_pdf.assert_called_once_with('SalesReceipt', 1)
 
     def test_download_missing_id(self):
