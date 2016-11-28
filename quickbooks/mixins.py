@@ -152,4 +152,4 @@ class QuickbooksPdfDownloadable(object):
         if self.Id and self.Id > 0 and qb is not None:
             return qb.download_pdf(self.qbo_object_name, self.Id)
         else:
-            raise QuickbooksException("Cannot download {0} when no Id is assigned".format(self.qbo_object_name))
+            raise QuickbooksException("Cannot download {0} when no Id is assigned or if no quickbooks client is passed in".format(self.qbo_object_name))
