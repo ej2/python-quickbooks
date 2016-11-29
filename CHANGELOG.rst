@@ -1,6 +1,9 @@
 Changelog
 ========
 
+* 0.5.4 (November 29th, 2016)
+    * Added quickbooks client parameter to QuickbooksPdfDownloadable mixin.
+
 * 0.5.3 (October 14th, 2016)
     * Fixed issue in build_choose_clause and build_where_clause that caused single quotes to not be escaped.
 
