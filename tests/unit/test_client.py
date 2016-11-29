@@ -293,7 +293,7 @@ class ClientTest(unittest.TestCase):
         receipt = SalesReceipt()
         receipt.Id = 1
 
-        receipt.download_pdf()
+        receipt.download_pdf(qb_client)
 
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/salesreceipt/1/pdf"
         qb_session.request.assert_called_with(
@@ -301,7 +301,7 @@ class ClientTest(unittest.TestCase):
             headers={'Content-Type': 'application/pdf', 'Accept': 'application/pdf, application/json'})
 
         qb_session.request.return_value = MockPdfResponse()
-        response = receipt.download_pdf()
+        response = receipt.download_pdf(qb_client)
 
         self.assertEqual(response, 'sample pdf content')
 
