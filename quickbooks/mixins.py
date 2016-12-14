@@ -163,7 +163,7 @@ class QuickbooksPdfDownloadable(object):
     qbo_object_name = ""
 
     def download_pdf(self, qb=None):
-        if self.Id and self.Id > 0 and qb is not None:
+        if self.Id and int(self.Id) > 0 and qb is not None:
             return qb.download_pdf(self.qbo_object_name, self.Id)
         else:
             raise QuickbooksException(
