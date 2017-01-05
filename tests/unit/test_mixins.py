@@ -1,5 +1,5 @@
 import unittest
-from mock import patch, Mock
+from mock import patch
 
 from quickbooks import client
 

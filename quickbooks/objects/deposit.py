@@ -1,26 +1,6 @@
 from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject, LinkedTxnMixin, \
-    QuickbooksTransactionEntity, CustomField
-
-
-class AttachableRef(QuickbooksBaseObject):
-    class_dict = {
-        "EntityRef": Ref,
-    }
-
-    list_dict = {
-        "CustomField": CustomField
-    }
-
-    def __init__(self):
-        super(AttachableRef, self).__init__()
-        self.LineInfo = ""
-        self.IncludeOnSend = False
-        self.Inactive = False
-        self.NoRefOnly = False
-        self.EntityRef = None
-
-        self.CustomField = []
+    QuickbooksTransactionEntity, CustomField, AttachableRef
 
 
 class CashBackInfo(QuickbooksBaseObject):

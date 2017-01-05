@@ -17,14 +17,13 @@ from .creditmemo import CreditMemo
 from .customer import Customer
 from .department import Department
 from .deposit import (
-    AttachableRef, CashBackInfo, DepositLineDetail, DepositLine, Deposit
+    CashBackInfo, DepositLineDetail, DepositLine, Deposit
 )
 from .detailline import (
     DetailLine, DiscountOverride, DiscountLineDetail, DiscountLine,
     SubtotalLineDetail, SubtotalLine, DescriptionLineDetail, DescriptionLine,
     SalesItemLineDetail, SalesItemLine, GroupLineDetail, GroupLine,
-    DescriptionLineDetail, DescriptionOnlyLine,
-    AccountBasedExpenseLineDetail, AccountBasedExpenseLine,
+    DescriptionOnlyLine, AccountBasedExpenseLineDetail, AccountBasedExpenseLine,
     ItemBasedExpenseLineDetail, ItemBasedExpenseLine,
 
 )
@@ -33,8 +32,7 @@ from .estimate import Estimate
 from .invoice import DeliveryInfo, Invoice
 from .item import Item
 from .journalentry import (
-    Entity, JournalEntryLineDetail, JournalEntryLine, DescriptionLineDetail,
-    DescriptionOnlyLine, JournalEntry
+    Entity, JournalEntryLineDetail, JournalEntryLine, JournalEntry
 )
 from .payment import PaymentLine, Payment
 from .paymentmethod import PaymentMethod

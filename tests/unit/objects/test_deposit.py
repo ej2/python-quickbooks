@@ -1,7 +1,7 @@
 import unittest
 
 from quickbooks import QuickBooks
-from quickbooks.objects.deposit import Deposit, DepositLine, AttachableRef, CashBackInfo, DepositLineDetail
+from quickbooks.objects.deposit import Deposit, DepositLine, CashBackInfo, DepositLineDetail
 
 
 class DepositTests(unittest.TestCase):
@@ -25,17 +25,6 @@ class DepositLineTests(unittest.TestCase):
         deposit.Amount = 100
 
         self.assertEquals(str(deposit), "100")
-
-
-class AttachableRefTests(unittest.TestCase):
-    def test_init(self):
-        attachable_ref = AttachableRef()
-
-        self.assertEquals(attachable_ref.LineInfo, "")
-        self.assertFalse(attachable_ref.IncludeOnSend)
-        self.assertFalse(attachable_ref.Inactive)
-        self.assertFalse(attachable_ref.NoRefOnly)
-        self.assertEquals(attachable_ref.EntityRef, None)
 
 
 class CashBackInfoTests(unittest.TestCase):

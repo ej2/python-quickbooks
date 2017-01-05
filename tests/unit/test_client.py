@@ -9,9 +9,6 @@ from quickbooks.objects.salesreceipt import SalesReceipt
 
 class ClientTest(unittest.TestCase):
     def setUp(self):
-        pass
-
-    def setUp(self):
         """
         Use a consistent set of defaults.
         """
@@ -172,7 +169,7 @@ class ClientTest(unittest.TestCase):
         qb_client = client.QuickBooks()
         qb_client.company_id = "1234"
 
-        result = qb_client.get_current_user()
+        qb_client.get_current_user()
         url = "https://appcenter.intuit.com/api/v1/user/current"
         make_req.assert_called_with("GET", url)
 
@@ -191,7 +188,7 @@ class ClientTest(unittest.TestCase):
         qb_client = client.QuickBooks()
         qb_client.company_id = "1234"
 
-        result = qb_client.disconnect_account()
+        qb_client.disconnect_account()
         url = "https://appcenter.intuit.com/api/v1/connection/disconnect"
         make_req.assert_called_with("GET", url)
 
@@ -200,7 +197,7 @@ class ClientTest(unittest.TestCase):
         qb_client = client.QuickBooks()
         qb_client.company_id = "1234"
 
-        result = qb_client.reconnect_account()
+        qb_client.reconnect_account()
         url = "https://appcenter.intuit.com/api/v1/connection/reconnect"
         make_req.assert_called_with("GET", url)
 
@@ -209,7 +206,7 @@ class ClientTest(unittest.TestCase):
         qb_client = client.QuickBooks()
         qb_client.company_id = "1234"
 
-        result = qb_client.get_report("profitandloss", {1: 2})
+        qb_client.get_report("profitandloss", {1: 2})
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/reports/profitandloss"
         make_req.assert_called_with("GET", url, params={1: 2})
 
@@ -238,7 +235,7 @@ class ClientTest(unittest.TestCase):
         qb_client = client.QuickBooks()
         qb_client.company_id = "1234"
 
-        result = qb_client.get_single_object("test", 1)
+        qb_client.get_single_object("test", 1)
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1/"
         make_req.assert_called_with("GET", url, {})
 

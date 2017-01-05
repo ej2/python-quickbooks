@@ -2,7 +2,7 @@ from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, \
     LinkedTxnMixin
 from .tax import TxnTaxDetail
-from .detailline import DetailLine
+from .detailline import DetailLine, DescriptionOnlyLine
 
 
 class Entity(QuickbooksBaseObject):
@@ -48,26 +48,6 @@ class JournalEntryLine(DetailLine):
         super(JournalEntryLine, self).__init__()
         self.DetailType = "JournalEntryLineDetail"
         self.JournalEntryLineDetail = None
-
-
-class DescriptionLineDetail(QuickbooksBaseObject):
-    class_dict = {
-        "TaxCodeRef": Ref
-    }
-
-    def __init__(self):
-        super(DescriptionLineDetail, self).__init__()
-        self.ServiceDate = ""
-
-
-class DescriptionOnlyLine(DetailLine):
-    class_dict = {
-        "DescriptionLineDetail": DescriptionLineDetail
-    }
-
-    def __init__(self):
-        super(DescriptionOnlyLine, self).__init__()
-        self.DetailType = "DescriptionOnly"
 
 
 @python_2_unicode_compatible

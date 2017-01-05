@@ -1,8 +1,7 @@
 import unittest
 
 from quickbooks import QuickBooks
-from quickbooks.objects.journalentry import JournalEntry, JournalEntryLine, JournalEntryLineDetail, Entity, \
-    DescriptionLineDetail, DescriptionOnlyLine
+from quickbooks.objects.journalentry import JournalEntry, JournalEntryLine, JournalEntryLineDetail, Entity
 
 
 class JournalentryTests(unittest.TestCase):
@@ -49,17 +48,3 @@ class EntityTests(unittest.TestCase):
 
         self.assertEquals(entity.Type, "")
         self.assertEquals(entity.EntityRef, None)
-
-
-class DescriptionLineDetailTests(unittest.TestCase):
-    def test_init(self):
-        detail = DescriptionLineDetail()
-
-        self.assertEquals(detail.ServiceDate, "")
-
-
-class DescriptionOnlyLineTests(unittest.TestCase):
-    def test_init(self):
-        line = DescriptionOnlyLine()
-
-        self.assertEquals(line.DetailType, "DescriptionOnly")

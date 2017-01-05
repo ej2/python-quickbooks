@@ -1,6 +1,12 @@
 Changelog
 ========
 
+* 0.5.5 (January 4th, 2017)
+    * Imported QuickBooks objects into __init__.py for easier imports
+    * Removed duplicate class AttachableRef from deposit.py
+    * Removed duplicate class DescriptionLineDetail from journalentry.py
+    * Removed duplicate class DescriptionOnlyLine from journalentry.py
+
 * 0.5.4 (November 29th, 2016)
     * Added quickbooks client parameter to QuickbooksPdfDownloadable mixin.
 

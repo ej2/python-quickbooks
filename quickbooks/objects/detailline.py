@@ -161,17 +161,6 @@ class GroupLine(DetailLine):
         self.SalesItemLineDetail = None
 
 
-class DescriptionLineDetail(QuickbooksBaseObject):
-    class_dict = {
-        "TaxCodeRef": Ref,
-    }
-
-    def __init__(self):
-        super(DescriptionLineDetail, self).__init__()
-        self.ServiceDate = ""
-        self.TaxCodeRef = None
-
-
 class DescriptionOnlyLine(DetailLine):
     class_dict = {
         "DescriptionLineDetail": DescriptionLineDetail

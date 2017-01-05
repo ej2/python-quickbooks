@@ -2,7 +2,8 @@ import os
 import unittest
 from datetime import datetime
 
-from quickbooks.objects.detailline import DetailLine, SalesItemLineDetail, DiscountLineDetail, SalesItemLine
+from quickbooks.objects.detailline import DetailLine, SalesItemLineDetail, \
+    DiscountLineDetail, SalesItemLine
 
 from quickbooks.objects.tax import TxnTaxDetail
 
@@ -110,20 +111,14 @@ class BillTest(unittest.TestCase):
         self.assertEqual(query_estimate.ApplyTaxAfterDiscount, estimate.ApplyTaxAfterDiscount)
         self.assertEqual(query_estimate.PrintStatus, estimate.PrintStatus)
         self.assertEqual(query_estimate.EmailStatus, estimate.EmailStatus)
-        # self.assertEqual(query_estimate.BillAddr.Id, estimate.BillAddr.Id)
         self.assertEqual(query_estimate.BillAddr.Line1, estimate.BillAddr.Line1)
         self.assertEqual(query_estimate.BillAddr.City, estimate.BillAddr.City)
         self.assertEqual(query_estimate.BillAddr.CountrySubDivisionCode, estimate.BillAddr.CountrySubDivisionCode)
         self.assertEqual(query_estimate.BillAddr.PostalCode, estimate.BillAddr.PostalCode)
-        # self.assertEqual(query_estimate.BillAddr.Lat, estimate.BillAddr.Lat)
-        # self.assertEqual(query_estimate.BillAddr.Long, estimate.BillAddr.Long)
-        # self.assertEqual(query_estimate.ShipAddr.Id, estimate.ShipAddr.Id)
         self.assertEqual(query_estimate.ShipAddr.Line1, estimate.ShipAddr.Line1)
         self.assertEqual(query_estimate.ShipAddr.City, estimate.ShipAddr.City)
         self.assertEqual(query_estimate.ShipAddr.CountrySubDivisionCode, estimate.ShipAddr.CountrySubDivisionCode)
         self.assertEqual(query_estimate.ShipAddr.PostalCode, estimate.ShipAddr.PostalCode)
-        # self.assertEqual(query_estimate.ShipAddr.Lat, estimate.ShipAddr.Lat)
-        # self.assertEqual(query_estimate.ShipAddr.Long, estimate.ShipAddr.Long)
         self.assertEqual(query_estimate.BillEmail.Address, estimate.BillEmail.Address)
         self.assertEqual(query_estimate.CustomerMemo.value, estimate.CustomerMemo.value)
         self.assertEqual(query_estimate.CustomerRef.value, estimate.CustomerRef.value)
@@ -132,6 +127,3 @@ class BillTest(unittest.TestCase):
         self.assertEqual(query_estimate.Line[0].LineNum, estimate.Line[0].LineNum)
         self.assertEqual(query_estimate.Line[0].Description, estimate.Line[0].Description)
         self.assertEqual(query_estimate.Line[0].Amount, estimate.Line[0].Amount)
-        # self.assertEqual(query_estimate.Line[0].SalesItemLineDetail.UnitPrice,
-        #                  estimate.Line[0].SalesItemLineDetail.UnitPrice)
-        # self.assertEqual(query_estimate.Line[0].SalesItemLineDetail.Qty, estimate.Line[0].SalesItemLineDetail.Qty)
