@@ -361,7 +361,7 @@ class QuickBooks(object):
 
         response = self.session.request("GET", url, True, self.company_id, headers=headers)
 
-        if response.status_code is not httplib.OK:
+        if response.status_code != httplib.OK:
             try:
                 json = response.json()
             except:
