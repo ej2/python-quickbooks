@@ -1,5 +1,6 @@
 import unittest
 
+from quickbooks import QuickBooks
 from quickbooks.objects.billpayment import BillPayment, BillPaymentLine, CheckPayment, BillPaymentCreditCard
 
 
@@ -25,6 +26,13 @@ class BillPaymentTests(unittest.TestCase):
         bill_payment.TotalAmt = 1000
 
         self.assertEquals(str(bill_payment), "1000")
+
+    def test_valid_object_name(self):
+        obj = BillPayment()
+        client = QuickBooks()
+        result = client.isvalid_object_name(obj.qbo_object_name)
+
+        self.assertTrue(result)
 
 
 class BillPaymentCreditCardTests(unittest.TestCase):

@@ -1,14 +1,8 @@
 import unittest
 
-from quickbooks.objects.bill import Bill, BillLine, AccountBasedExpenseLineDetail, ItemBasedExpenseLineDetail
+from quickbooks import QuickBooks
+from quickbooks.objects.bill import Bill
 
-
-class AccountBasedExpenseLineDetailTests(unittest.TestCase):
-    def test_unicode(self):
-        acct_detail = AccountBasedExpenseLineDetail()
-        acct_detail.BillableStatus = "test"
-
-        self.assertEquals(str(acct_detail), "test")
 
 
 class BillTests(unittest.TestCase):
@@ -28,26 +22,21 @@ class BillTests(unittest.TestCase):
         self.assertEquals(linked_txn.TxnType, "Bill")
         self.assertEquals(linked_txn.TxnLineId, 1)
 
+    def test_valid_object_name(self):
+        obj = Bill()
+        client = QuickBooks()
+        result = client.isvalid_object_name(obj.qbo_object_name)
 
-class BillLineTests(unittest.TestCase):
-    def test_unicode(self):
-        bill_line = BillLine()
-        bill_line.Amount = 1000
+        self.assertTrue(result)
 
-        self.assertEquals(str(bill_line), "1000")
+    def test_to_ref(self):
+        bill = Bill()
+        bill.DisplayName = "test"
+        bill.Id = 100
 
+        ref = bill.to_ref()
 
-class ItemBasedExpenseLineDetailTest(unittest.TestCase):
-    def test_init(self):
-        detail = ItemBasedExpenseLineDetail()
+        self.assertEquals(ref.name, "test")
+        self.assertEquals(ref.type, "Bill")
+        self.assertEquals(ref.value, 100)
 
-        self.assertEquals(detail.BillableStatus, "")
-        self.assertEquals(detail.UnitPrice, 0)
-        self.assertEquals(detail.TaxInclusiveAmt, 0)
-        self.assertEquals(detail.Qty, 0)
-        self.assertEquals(detail.ItemRef, None)
-        self.assertEquals(detail.ClassRef, None)
-        self.assertEquals(detail.PriceLevelRef, None)
-        self.assertEquals(detail.TaxCodeRef, None)
-        self.assertEquals(detail.MarkupInfo, None)
-        self.assertEquals(detail.CustomerRef, None)

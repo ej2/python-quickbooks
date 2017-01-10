@@ -5,7 +5,10 @@ except ImportError:  # Python 2
     import httplib
     from urlparse import parse_qsl
 
-from .exceptions import QuickbooksException, SevereException
+import textwrap
+import json
+import os
+from .exceptions import QuickbooksException, SevereException, AuthorizationException
 
 try:
     from rauth import OAuth1Session, OAuth1Service
@@ -38,54 +41,82 @@ class QuickBooks(object):
 
     authorize_url = "https://appcenter.intuit.com/Connect/Begin"
 
+    current_user_url = "https://appcenter.intuit.com/api/v1/user/current"
+
+    disconnect_url = "https://appcenter.intuit.com/api/v1/connection/disconnect"
+    reconnect_url = "https://appcenter.intuit.com/api/v1/connection/reconnect"
+
     request_token = ''
     request_token_secret = ''
 
     _BUSINESS_OBJECTS = [
         "Account", "Attachable", "Bill", "BillPayment",
-        "Class", "CompanyInfo", "CreditMemo", "Customer",
-        "Department", "Employee", "Estimate", "Invoice",
+        "Class", "CreditMemo", "Customer",
+        "Department", "Deposit", "Employee", "Estimate", "Invoice",
         "Item", "JournalEntry", "Payment", "PaymentMethod",
-        "Preferences", "Purchase", "PurchaseOrder",
-        "SalesReceipt", "TaxCode", "TaxRate", "Term",
-        "TimeActivity", "Vendor", "VendorCredit"
+        "Purchase", "PurchaseOrder", "RefundReceipt",
+        "SalesReceipt", "TaxCode", "TaxService/Taxcode", "TaxRate", "Term",
+        "TimeActivity", "Transfer", "Vendor", "VendorCredit"
     ]
 
     __instance = None
+    __use_global = False
 
     def __new__(cls, **kwargs):
-        if QuickBooks.__instance is None:
-            QuickBooks.__instance = object.__new__(cls)
+        """
+        If global is disabled, don't set global client instance.
+        """
+        if QuickBooks.__use_global:
+            if QuickBooks.__instance is None:
+                QuickBooks.__instance = object.__new__(cls)
+            instance = QuickBooks.__instance
+        else:
+            instance = object.__new__(cls)
 
         if 'consumer_key' in kwargs:
-            cls.consumer_key = kwargs['consumer_key']
+            instance.consumer_key = kwargs['consumer_key']
 
         if 'consumer_secret' in kwargs:
-            cls.consumer_secret = kwargs['consumer_secret']
+            instance.consumer_secret = kwargs['consumer_secret']
 
         if 'access_token' in kwargs:
-            cls.access_token = kwargs['access_token']
+            instance.access_token = kwargs['access_token']
 
         if 'access_token_secret' in kwargs:
-            cls.access_token_secret = kwargs['access_token_secret']
+            instance.access_token_secret = kwargs['access_token_secret']
 
         if 'company_id' in kwargs:
-            cls.company_id = kwargs['company_id']
+            instance.company_id = kwargs['company_id']
 
         if 'callback_url' in kwargs:
-            cls.callback_url = kwargs['callback_url']
+            instance.callback_url = kwargs['callback_url']
 
         if 'sandbox' in kwargs:
-            cls.sandbox = kwargs['sandbox']
+            instance.sandbox = kwargs['sandbox']
 
         if 'minorversion' in kwargs:
-            cls.minorversion = kwargs['minorversion']
+            instance.minorversion = kwargs['minorversion']
 
-        return QuickBooks.__instance
+        return instance
 
     @classmethod
     def get_instance(cls):
         return cls.__instance
+
+    @classmethod
+    def disable_global(cls):
+        """
+        Disable use of singleton pattern.
+        """
+        QuickBooks.__use_global = False
+        QuickBooks.__instance = None
+
+    @classmethod
+    def enable_global(cls):
+        """
+        Allow use of singleton pattern.
+        """
+        QuickBooks.__use_global = True
 
     def _drop(self):
         QuickBooks.__instance = None
@@ -116,18 +147,34 @@ class QuickBooks(object):
         Returns the Authorize URL as returned by QB, and specified by OAuth 1.0a.
         :return URI:
         """
+        self.authorize_url = self.authorize_url[:self.authorize_url.find('?')] \
+            if '?' in self.authorize_url else self.authorize_url
         if self.qbService is None:
             self.set_up_service()
 
         response = self.qbService.get_raw_request_token(
-           params={'oauth_callback': self.callback_url})
+            params={'oauth_callback': self.callback_url})
 
         oauth_resp = dict(parse_qsl(response.text))
 
         self.request_token = oauth_resp['oauth_token']
         self.request_token_secret = oauth_resp['oauth_token_secret']
-
         return self.qbService.get_authorize_url(self.request_token)
+
+    def get_current_user(self):
+        '''Get data from the current user endpoint'''
+        url = self.current_user_url
+        result = self.make_request("GET", url)
+        return result
+
+    def get_report(self, report_type, qs=None):
+        '''Get data from the report endpoint'''
+        if qs == None:
+            qs = {}
+
+        url = self.api_url + "/company/{0}/reports/{1}".format(self.company_id, report_type)
+        result = self.make_request("GET", url, params=qs)
+        return result
 
     def set_up_service(self):
         self.qbService = OAuth1Service(
@@ -156,9 +203,29 @@ class QuickBooks(object):
 
         return session
 
-    def make_request(self, request_type, url, request_body=None, content_type='application/json'):
+    def disconnect_account(self):
+        """
+        Disconnect current account from the application
+        :return:
+        """
+        url = self.disconnect_url
+        result = self.make_request("GET", url)
+        return result
 
-        params = {}
+    def reconnect_account(self):
+        """
+        Reconnect current account by refreshing OAuth access tokens
+        :return:
+        """
+        url = self.reconnect_url
+        result = self.make_request("GET", url)
+        return result
+
+    def make_request(self, request_type, url, request_body=None, content_type='application/json',
+                     params=None, file_path=None):
+
+        if not params:
+            params = {}
 
         if self.minorversion:
             params['minorversion'] = self.minorversion
@@ -168,21 +235,59 @@ class QuickBooks(object):
 
         if self.session is None:
             self.create_session()
-
         headers = {
             'Content-Type': content_type,
             'Accept': 'application/json'
         }
 
-        req = self.session.request(request_type, url, True, self.company_id, headers=headers, params=params, data=request_body)
+        if file_path:
+            attachment = open(file_path, 'rb')
+            url = url.replace('attachable', 'upload')
+            boundary = '-------------PythonMultipartPost'
+            headers.update({
+                'Content-Type': 'multipart/form-data; boundary=%s' % boundary,
+                'Accept-Encoding': 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+                'User-Agent': 'OAuth gem v0.4.7',
+                'Accept': 'application/json',
+                'Connection': 'close'
+            })
+
+            binary_data = attachment.read()
+
+            request_body = textwrap.dedent(
+                """
+                --%s
+                Content-Disposition: form-data; name="file_metadata_01"
+                Content-Type: application/json
+
+                %s
+
+                --%s
+                Content-Disposition: form-data; name="file_content_01"
+                Content-Type: application/pdf
+
+                %s
+
+                --%s--
+                """
+            ) % (boundary, request_body, boundary, binary_data, boundary)
+
+        req = self.session.request(
+            request_type, url, True, self.company_id, headers=headers, params=params, data=request_body)
+
+        if req.status_code == httplib.UNAUTHORIZED:
+            raise AuthorizationException("Application authentication failed", detail=req.text)
 
         try:
             result = req.json()
         except:
             raise QuickbooksException("Error reading json response: {0}".format(req.text), 10000)
 
-        if req.status_code is not httplib.OK or "Fault" in result:
+        if "Fault" in result:
             self.handle_exceptions(result["Fault"])
+        elif not req.status_code == httplib.OK:
+            raise QuickbooksException("Error returned with status code '{0}': {1}".format(
+                req.status_code, req.text), 10000)
         else:
             return result
 
@@ -211,11 +316,11 @@ class QuickBooks(object):
             else:
                 raise QuickbooksException(message, code, detail)
 
-    def create_object(self, qbbo, request_body):
+    def create_object(self, qbbo, request_body, _file_path=None):
         self.isvalid_object_name(qbbo)
 
         url = self.api_url + "/company/{0}/{1}".format(self.company_id, qbbo.lower())
-        results = self.make_request("POST", url, request_body)
+        results = self.make_request("POST", url, request_body, file_path=_file_path)
 
         return results
 
@@ -231,9 +336,9 @@ class QuickBooks(object):
 
         return True
 
-    def update_object(self, qbbo, request_body):
+    def update_object(self, qbbo, request_body, _file_path=None):
         url = self.api_url + "/company/{0}/{1}".format(self.company_id, qbbo.lower())
-        result = self.make_request("POST", url, request_body)
+        result = self.make_request("POST", url, request_body, file_path=_file_path)
 
         return result
 

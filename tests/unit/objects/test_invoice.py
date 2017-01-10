@@ -1,5 +1,6 @@
 import unittest
 
+from quickbooks import QuickBooks
 from quickbooks.objects.invoice import Invoice, DeliveryInfo
 
 
@@ -30,6 +31,13 @@ class InvoiceTests(unittest.TestCase):
         invoice = Invoice()
         invoice.EmailStatus = "NotSent"
         self.assertFalse(invoice.email_sent)
+
+    def test_valid_object_name(self):
+        obj = Invoice()
+        client = QuickBooks()
+        result = client.isvalid_object_name(obj.qbo_object_name)
+
+        self.assertTrue(result)
 
 
 class DeliveryInfoTests(unittest.TestCase):

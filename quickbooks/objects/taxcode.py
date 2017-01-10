@@ -1,5 +1,6 @@
 from six import python_2_unicode_compatible
-from .base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity
+from quickbooks.mixins import ListMixin, ReadMixin
+from .base import QuickbooksTransactionEntity, Ref, QuickbooksBaseObject
 
 
 class TaxRateDetail(QuickbooksBaseObject):
@@ -29,12 +30,13 @@ class TaxRateList(QuickbooksBaseObject):
 
 
 @python_2_unicode_compatible
-class TaxCode(QuickbooksManagedObject, QuickbooksTransactionEntity):
+class TaxCode(QuickbooksTransactionEntity, QuickbooksBaseObject, ReadMixin, ListMixin):
     """
-    QBO definition: The PaymentMethod entity provides the method of payment for received goods. Delete is achieved by setting the
-    Active attribute to false in an entity update request; thus, making it inactive. In this type of delete,
-    the record is not permanently deleted, but is hidden for display purposes. References to inactive objects are
-    left intact.
+    QBO definition: A TaxCode object is used to track the taxable or non-taxable status of products,
+    services, and customers. You can assign a sales tax code to each of your products, services,
+    and customers based on their taxable or non-taxable status. You can then use these codes to generate
+    reports that provide information to the tax agencies about the taxable or non-taxable status of
+    certain sales. See Global tax model for more information about using TaxCode objects and the tax model in general.
     """
 
     class_dict = {
@@ -46,10 +48,11 @@ class TaxCode(QuickbooksManagedObject, QuickbooksTransactionEntity):
 
     def __init__(self):
         super(TaxCode, self).__init__()
-        self.Name = ""
-        self.Description = ""
-        self.Taxable = True
-        self.TaxGroup = True
+        # All values are readonly - TaxCodes are created with the taxservice api
+        self.Name = None
+        self.Description = None
+        self.Taxable = None
+        self.TaxGroup = None
         self.Active = True
 
         self.SalesTaxRateList = None
@@ -57,3 +60,12 @@ class TaxCode(QuickbooksManagedObject, QuickbooksTransactionEntity):
 
     def __str__(self):
         return self.Name
+
+    def to_ref(self):
+        ref = Ref()
+
+        ref.type = self.qbo_object_name
+        ref.value = self.Name
+        ref.name = None
+
+        return ref

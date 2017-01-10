@@ -29,7 +29,7 @@ class Employee(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.Title = ""
         self.BillRate = 0
         self.BirthDate = ""
-        self.Gender = ""
+        self.Gender = None
         self.HiredDate = ""
         self.ReleasedDate = ""
         self.Active = True

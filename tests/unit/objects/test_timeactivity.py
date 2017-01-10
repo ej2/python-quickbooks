@@ -1,5 +1,6 @@
 import unittest
 
+from quickbooks import QuickBooks
 from quickbooks.objects.timeactivity import TimeActivity
 
 
@@ -28,3 +29,10 @@ class TimeActivityTests(unittest.TestCase):
         self.assertEquals(time_activity.BreakHours, 1)
         self.assertEquals(time_activity.BreakMinutes, 60)
         self.assertEquals(time_activity.Description, "test")
+
+    def test_valid_object_name(self):
+        obj = TimeActivity()
+        client = QuickBooks()
+        result = client.isvalid_object_name(obj.qbo_object_name)
+
+        self.assertTrue(result)

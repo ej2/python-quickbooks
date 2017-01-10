@@ -1,5 +1,6 @@
 import unittest
 
+from quickbooks import QuickBooks
 from quickbooks.objects.taxcode import TaxCode, TaxRateDetail, TaxRateList
 
 
@@ -9,6 +10,20 @@ class TaxCodeTests(unittest.TestCase):
         taxcode.Name = "test"
 
         self.assertEquals(str(taxcode), "test")
+
+    def test_valid_object_name(self):
+        obj = TaxCode()
+        client = QuickBooks()
+        result = client.isvalid_object_name(obj.qbo_object_name)
+
+        self.assertTrue(result)
+
+    def test_to_ref(self):
+        taxcode = TaxCode()
+        taxcode.Name = "test"
+
+        ref = taxcode.to_ref()
+        self.assertEquals(ref.value, "test")
 
 
 class TaxRateDetailTests(unittest.TestCase):

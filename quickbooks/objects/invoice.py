@@ -2,7 +2,7 @@ from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, CustomField, Address, EmailAddress, CustomerMemo, QuickbooksManagedObject, \
     QuickbooksTransactionEntity, LinkedTxn, LinkedTxnMixin
 from .tax import TxnTaxDetail
-from .detailline import DetailLine
+from .detailline import DetailLine, SalesItemLine, SubtotalLine, DiscountLine, GroupLine, DescriptionOnlyLine
 from ..mixins import QuickbooksPdfDownloadable
 
 
@@ -40,6 +40,14 @@ class Invoice(QuickbooksPdfDownloadable, QuickbooksManagedObject, QuickbooksTran
         "CustomField": CustomField,
         "Line": DetailLine,
         "LinkedTxn": LinkedTxn,
+    }
+
+    detail_dict = {
+        "SalesItemLineDetail": SalesItemLine,
+        "SubTotalLineDetail": SubtotalLine,
+        "DiscountLineDetail": DiscountLine,
+        "DescriptionOnly": DescriptionOnlyLine,
+        "GroupLineDetail": GroupLine
     }
 
     qbo_object_name = "Invoice"

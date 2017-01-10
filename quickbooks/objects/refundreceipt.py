@@ -29,6 +29,10 @@ class RefundReceipt(QuickbooksManagedObject, QuickbooksTransactionEntity, Linked
         "LinkedTxn": LinkedTxn
     }
 
+    detail_dict = {
+
+    }
+
     qbo_object_name = "RefundReceipt"
 
     def __init__(self):
@@ -47,7 +51,7 @@ class RefundReceipt(QuickbooksManagedObject, QuickbooksTransactionEntity, Linked
         self.PaymentType = ""
         self.CheckPayment = ""
         self.CreditCardPayment = ""
-        self.TxnSource = ""
+        self.TxnSource = None
         self.GlobalTaxCalculation = "TaxExcluded"
 
         self.DepartmentRef = None

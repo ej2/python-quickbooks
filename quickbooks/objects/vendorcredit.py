@@ -1,65 +1,8 @@
 from six import python_2_unicode_compatible
-from .base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, \
-    LinkedTxnMixin, MarkupInfo
-from .detailline import DetailLine
 
-
-class ItemBasedExpenseLineDetail(QuickbooksBaseObject):
-    class_dict = {
-        "ItemRef": Ref,
-        "ClassRef": Ref,
-        "PriceLevelRef": Ref,
-        "TaxCodeRef": Ref,
-        "MarkupInfo": MarkupInfo,
-        "CustomerRef": Ref,
-    }
-
-    def __init__(self):
-        super(ItemBasedExpenseLineDetail, self).__init__()
-        self.BillableStatus = ""
-        self.UnitPrice = 0
-        self.Qty = 0
-        self.TaxInclusiveAmt = 0
-
-
-class ItemBasedExpenseLine(DetailLine):
-    class_dict = {
-        "ItemBasedExpenseLineDetail": ItemBasedExpenseLineDetail,
-    }
-
-    def __init__(self):
-        super(ItemBasedExpenseLine, self).__init__()
-
-        self.DetailType = "ItemBasedExpenseLineDetail"
-        self.ItemBasedExpenseLineDetail = None
-
-
-class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
-    class_dict = {
-        "CustomerRef": Ref,
-        "ClassRef": Ref,
-        "AccountRef": Ref,
-        "TaxCodeRef": Ref,
-        "MarkupInfo": MarkupInfo,
-    }
-
-    def __init__(self):
-        super(AccountBasedExpenseLineDetail, self).__init__()
-        self.BillableStatus = ""
-        self.TaxAmount = 0
-        self.TaxInclusiveAmt = 0
-
-
-class AccountBasedExpenseLine(DetailLine):
-    class_dict = {
-        "AccountBasedExpenseLineDetail": AccountBasedExpenseLineDetail,
-    }
-
-    def __init__(self):
-        super(AccountBasedExpenseLine, self).__init__()
-
-        self.DetailType = "AccountBasedExpenseLineDetail"
-        self.AccountBasedExpenseLineDetail = None
+from .base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, \
+    LinkedTxnMixin
+from .detailline import DetailLine, AccountBasedExpenseLine, ItemBasedExpenseLine
 
 
 @python_2_unicode_compatible
@@ -78,6 +21,12 @@ class VendorCredit(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedT
 
     list_dict = {
         "Line": DetailLine
+    }
+
+    detail_dict = {
+        "AccountBasedExpenseLineDetail": AccountBasedExpenseLine,
+        "ItemBasedExpenseLineDetail": ItemBasedExpenseLine,
+
     }
 
     qbo_object_name = "VendorCredit"

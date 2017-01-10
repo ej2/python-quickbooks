@@ -1,6 +1,8 @@
 import unittest
 
-from quickbooks.objects.creditmemo import SalesItemLineDetail, CreditMemoLine, CreditMemo, \
+from quickbooks import QuickBooks
+from quickbooks.objects.creditmemo import CreditMemo
+from quickbooks.objects.detailline import SalesItemLineDetail, \
     DiscountLineDetail, SubtotalLineDetail, DiscountOverride, DescriptionLineDetail
 
 
@@ -12,22 +14,19 @@ class SalesItemLineDetailTests(unittest.TestCase):
         self.assertEquals(str(detail), "10")
 
 
-class CreditMemoLineTests(unittest.TestCase):
-    def test_unicode(self):
-        memo_line = CreditMemoLine()
-        memo_line.LineNum = 1
-        memo_line.Description = "Product Description"
-        memo_line.Amount = 100
-
-        self.assertEquals(str(memo_line), "[1] Product Description 100")
-
-
 class CreditMemoTests(unittest.TestCase):
     def test_unicode(self):
         credit_memo = CreditMemo()
         credit_memo.TotalAmt = 1000
 
         self.assertEquals(str(credit_memo), "1000")
+
+    def test_valid_object_name(self):
+        obj = CreditMemo()
+        client = QuickBooks()
+        result = client.isvalid_object_name(obj.qbo_object_name)
+
+        self.assertTrue(result)
 
 
 class DiscountLineDetailTests(unittest.TestCase):

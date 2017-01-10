@@ -1,5 +1,6 @@
 import unittest
 
+from quickbooks import QuickBooks
 from quickbooks.objects.department import Department
 
 
@@ -20,3 +21,10 @@ class DepartmentTests(unittest.TestCase):
         self.assertEquals(dept_ref.name, "test")
         self.assertEquals(dept_ref.type, "Department")
         self.assertEquals(dept_ref.value, 100)
+
+    def test_valid_object_name(self):
+        obj = Department()
+        client = QuickBooks()
+        result = client.isvalid_object_name(obj.qbo_object_name)
+
+        self.assertTrue(result)

@@ -21,19 +21,18 @@ class TimeActivity(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedT
 
     def __init__(self):
         super(TimeActivity, self).__init__()
-        self.NameOf = ""
-        self.TimeZone = ""
-        self.TxnDate = ""
-        self.BillableStatus = ""
+        self.NameOf = ""  # required
+        self.TxnDate = None
+        self.BillableStatus = None
         self.Taxable = False
-        self.HourlyRate = 0
-        self.Hours = 0
-        self.Minutes = 0
-        self.BreakHours = 0
-        self.BreakMinutes = 0
-        self.StartTime = ""
-        self.EndTime = ""
-        self.Description = ""
+        self.HourlyRate = None
+        self.Hours = None
+        self.Minutes = None
+        self.BreakHours = None
+        self.BreakMinutes = None
+        self.StartTime = None
+        self.EndTime = None
+        self.Description = None
 
         self.VendorRef = None
         self.CustomerRef = None

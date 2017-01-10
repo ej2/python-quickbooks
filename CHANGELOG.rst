@@ -1,6 +1,67 @@
 Changelog
 ========
 
+* 0.5.5 (January 4th, 2017)
+    * Imported QuickBooks objects into __init__.py for easier imports
+    * Removed duplicate class AttachableRef from deposit.py
+    * Removed duplicate class DescriptionLineDetail from journalentry.py
+    * Removed duplicate class DescriptionOnlyLine from journalentry.py
+
+* 0.5.4 (November 29th, 2016)
+    * Added quickbooks client parameter to QuickbooksPdfDownloadable mixin.
+
+* 0.5.3 (October 14th, 2016)
+    * Fixed issue in build_choose_clause and build_where_clause that caused single quotes to not be escaped.
+
+* 0.5.2 (October 14th, 2016)
+    * Fixed issue on UpdateMixin.
+    * Fixed issue with CashBackInfo.
+
+* 0.5.1 (July 25, 2016)
+    * Updated qb_datetime_utc_offset_format to support python 2.6.
+
+* 0.5.0 (July 25, 2016)
+    * Added ability to query current user.
+    * Added support to reconnect an account.
+    * Added to_ref method to Bill object.
+    * Added to_ref method to TaxCode.
+    * Added date and datetime format helper functions.
+    * Fixed issues creating notes with Attachable.
+    * Fixed issues with default values on the following objects: Deposit, Employee, Estimate, TimeActivity, Term, Transfer, TaxService and TaxRateDetails
+    * Fixed issues that prevented save from working on TaxService.
+    * Removed unsupported save method from TaxRate.
+    * Removed unsupported save method from TaxCode.
+    * Fixed issues loading detail lines on the following objects: JournalEntry, CreditMemo, Bill, Purchase and PurchaseOrder.
+    * Removed the following objects: CreditMemoLine, BillLine, JournalEntryLine, PurchaseLine, and PurchaseOrderLine.
+    * Corrected spelling of object SaleItemLine to SalesItemLine.
+
+
+* 0.4.0 (June 15, 2016)
+    * Added a way of disconnecting a Quickbooks Account to client.
+    * Added support for Quickbooks Reports.
+    * Added support for Quickbooks Attachments.
+    * Added missing object names to isvalid_object_name.
+    * Fixed issue with PurchaseEx on Purchase
+    * Removed CompanyInfo from object names used by isvalid_object_name.
+    * Changed default of TxnSource to None on the following objects: Deposit, Purchase, RefundReceipt, and Transfer.
+    * Changed TxnTaxDetail from a QuickbooksManagedObject to a QuickbooksBaseObject.
+
+* 0.3.13 (May 18, 2016)
+    * Added option to enable or disable singeton pattern (it defaults to disabled).
+    * Improved error handling.
+    * Added missing field CurrencyRef on BillPayment.
+    * Fixed issue on TaxRate.
+    * Fixed issue with authorize url.
+
+* 0.3.12 (March 18, 2016)
+    * Updated field defaults on SalesReceipt object.
+    * Updated Id field default on BillLine object.
+    * Updated Id field default on DepositLine object.
+    * Updated Id field default on PurchaseLine object.
+    * Updated Id field default on PurchaseOrderLine object.
+    * Added support for downloading PDFs.
+    * Added .DS_Store and .idea/ to .gitignore.
+
 * 0.3.11 (February 24, 2016)
     * Updated field defaults on Payment object.
     * Added minor version 4 field to Payment object.

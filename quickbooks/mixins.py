@@ -28,11 +28,17 @@ class FromJsonMixin(object):
                 sub_obj = obj.class_dict[key]()
                 sub_obj = sub_obj.from_json(json_data[key])
                 setattr(obj, key, sub_obj)
+
             elif key in obj.list_dict:
                 sub_list = []
 
                 for data in json_data[key]:
-                    sub_obj = obj.list_dict[key]()
+
+                    if 'DetailType' in data and data['DetailType'] in obj.detail_dict:
+                        sub_obj = obj.detail_dict[data['DetailType']]()
+                    else:
+                        sub_obj = obj.list_dict[key]()
+
                     sub_obj = sub_obj.from_json(data)
                     sub_list.append(sub_obj)
 
@@ -47,8 +53,9 @@ class ReadMixin(object):
     qbo_object_name = ""
 
     @classmethod
-    def get(cls, id):
-        qb = QuickBooks()
+    def get(cls, id, qb=None):
+        if not qb:
+            qb = QuickBooks()
 
         json_data = qb.get_single_object(cls.qbo_object_name, pk=id)
         return cls.from_json(json_data[cls.qbo_object_name])
@@ -57,10 +64,11 @@ class ReadMixin(object):
 class UpdateMixin(object):
     qbo_object_name = ""
 
-    def save(self):
-        qb = QuickBooks()
+    def save(self, qb=None):
+        if not qb:
+            qb = QuickBooks()
 
-        if self.Id and self.Id > 0:
+        if self.Id and int(self.Id) > 0:
             json_data = qb.update_object(self.qbo_object_name, self.to_json())
         else:
             json_data = qb.create_object(self.qbo_object_name, self.to_json())
@@ -75,31 +83,31 @@ class ListMixin(object):
     qbo_object_name = ""
 
     @classmethod
-    def all(cls, start_position="", max_results=100):
+    def all(cls, start_position="", max_results=100, qb=None):
         """
         :param max_results: The maximum number of entities that can be returned in a response is 1000.
         :return: Returns list
         """
-        return cls.where("", start_position=start_position, max_results=max_results)
+        return cls.where("", start_position=start_position, max_results=max_results, qb=qb)
 
     @classmethod
-    def filter(cls, start_position="", max_results="", **kwargs):
+    def filter(cls, start_position="", max_results="", qb=None, **kwargs):
         """
         :param kwargs: field names and values to filter the query
         :return: Filtered list
         """
-        return cls.where(build_where_clause(**kwargs), start_position=start_position, max_results=max_results)
+        return cls.where(build_where_clause(**kwargs), start_position=start_position, max_results=max_results, qb=qb)
 
     @classmethod
-    def choose(cls, choices, field="Id"):
+    def choose(cls, choices, field="Id", qb=None):
         """
         :param kwargs: field names and values to filter the query
         :return: Filtered list
         """
-        return cls.where(build_choose_clause(choices, field))
+        return cls.where(build_choose_clause(choices, field), qb=qb)
 
     @classmethod
-    def where(cls, where_clause="", start_position="", max_results=""):
+    def where(cls, where_clause="", start_position="", max_results="", qb=None):
         """
         :param where_clause: QBO SQL where clause (DO NOT include 'WHERE')
         :return: Returns list filtered by input where_clause
@@ -115,16 +123,16 @@ class ListMixin(object):
 
         select = "SELECT * FROM {0} {1}{2}{3}".format(cls.qbo_object_name, where_clause, start_position, max_results)
 
-        return cls.query(select)
+        return cls.query(select, qb=qb)
 
     @classmethod
-    def query(cls, select):
+    def query(cls, select, qb=None):
         """
         :param select: QBO SQL query select statement
         :return: Returns list
         """
-
-        qb = QuickBooks()
+        if not qb:
+            qb = QuickBooks()
 
         json_data = qb.query(select)
 
@@ -140,9 +148,8 @@ class ListMixin(object):
 class QuickbooksPdfDownloadable(object):
     qbo_object_name = ""
 
-    def download_pdf(self):
-        if self.Id and self.Id > 0:
-            qb = QuickBooks()
+    def download_pdf(self, qb=None):
+        if self.Id and self.Id > 0 and qb is not None:
             return qb.download_pdf(self.qbo_object_name, self.Id)
         else:
-            raise QuickbooksException("Cannot download {0} when no Id is assigned".format(self.qbo_object_name))
+            raise QuickbooksException("Cannot download {0} when no Id is assigned or if no quickbooks client is passed in".format(self.qbo_object_name))

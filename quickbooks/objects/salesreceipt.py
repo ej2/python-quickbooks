@@ -34,6 +34,10 @@ class SalesReceipt(QuickbooksPdfDownloadable, QuickbooksManagedObject, Quickbook
         "LinkedTxn": LinkedTxn
     }
 
+    detail_dict = {
+
+    }
+
     qbo_object_name = "SalesReceipt"
 
     def __init__(self):

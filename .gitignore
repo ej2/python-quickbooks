@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+.idea/*
 
 # C extensions
 *.so
@@ -36,6 +37,7 @@ pip-delete-this-directory.txt
 
 # Unit test / coverage reports
 htmlcov/
+.env
 .tox/
 .coverage
 .coverage.*
@@ -56,3 +58,7 @@ docs/_build/
 
 # PyBuilder
 target/
+
+#OSX
+.DS_Store
+.idea/
