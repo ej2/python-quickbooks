@@ -1,6 +1,9 @@
 Changelog
 ========
 
+* 0.5.6 (January 18th, 2017)
+    * Fixed issue downloading PDFs in Python 3
+
 * 0.5.5 (January 4th, 2017)
     * Imported QuickBooks objects into __init__.py for easier imports
     * Removed duplicate class AttachableRef from deposit.py

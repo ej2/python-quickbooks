@@ -27,17 +27,17 @@ class BatchTests(unittest.TestCase):
 
     @patch('quickbooks.batch.BatchManager.process_batch')
     def test_batch_create(self, process_batch):
-        results = batch.batch_create(self.obj_list)
+        batch.batch_create(self.obj_list)
         self.assertTrue(process_batch.called)
 
     @patch('quickbooks.batch.BatchManager.process_batch')
     def test_batch_update(self, process_batch):
-        results = batch.batch_update(self.obj_list)
+        batch.batch_update(self.obj_list)
         self.assertTrue(process_batch.called)
 
     @patch('quickbooks.batch.BatchManager.process_batch')
     def test_batch_delete(self, process_batch):
-        results = batch.batch_delete(self.obj_list)
+        batch.batch_delete(self.obj_list)
         self.assertTrue(process_batch.called)
 
     def test_list_to_batch_request(self):

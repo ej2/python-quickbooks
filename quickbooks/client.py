@@ -129,7 +129,8 @@ class QuickBooks(object):
             return self.api_url_v3
 
     def create_session(self):
-        if self.consumer_secret and self.consumer_key and self.access_token_secret and self.access_token:
+        if self.consumer_secret and self.consumer_key \
+                and self.access_token_secret and self.access_token:
             session = OAuth1Session(
                 self.consumer_key,
                 self.consumer_secret,
@@ -138,7 +139,8 @@ class QuickBooks(object):
             )
             self.session = session
         else:
-            raise QuickbooksException("Quickbooks authenication fields not set. Cannot create session.")
+            raise QuickbooksException(
+                "Quickbooks authenication fields not set. Cannot create session.")
 
         return self.session
 
@@ -162,14 +164,14 @@ class QuickBooks(object):
         return self.qbService.get_authorize_url(self.request_token)
 
     def get_current_user(self):
-        '''Get data from the current user endpoint'''
+        """Get data from the current user endpoint"""
         url = self.current_user_url
         result = self.make_request("GET", url)
         return result
 
     def get_report(self, report_type, qs=None):
-        '''Get data from the report endpoint'''
-        if qs == None:
+        """Get data from the report endpoint"""
+        if qs is None:
             qs = {}
 
         url = self.api_url + "/company/{0}/reports/{1}".format(self.company_id, report_type)
@@ -273,7 +275,8 @@ class QuickBooks(object):
             ) % (boundary, request_body, boundary, binary_data, boundary)
 
         req = self.session.request(
-            request_type, url, True, self.company_id, headers=headers, params=params, data=request_body)
+            request_type, url, True, self.company_id,
+            headers=headers, params=params, data=request_body)
 
         if req.status_code == httplib.UNAUTHORIZED:
             raise AuthorizationException("Application authentication failed", detail=req.text)
@@ -349,7 +352,8 @@ class QuickBooks(object):
         return results
 
     def download_pdf(self, qbbo, item_id):
-        url = self.api_url + "/company/{0}/{1}/{2}/pdf".format(self.company_id, qbbo.lower(), item_id)
+        url = self.api_url + "/company/{0}/{1}/{2}/pdf".format(
+            self.company_id, qbbo.lower(), item_id)
 
         if self.session is None:
             self.create_session()
@@ -363,9 +367,10 @@ class QuickBooks(object):
 
         if response.status_code != httplib.OK:
             try:
-                json = response.json()
+                result = response.json()
             except:
                 raise QuickbooksException("Error reading json response: {0}".format(response.text), 10000)
-            self.handle_exceptions(json["Fault"])
+
+            self.handle_exceptions(result["Fault"])
         else:
             return response.content

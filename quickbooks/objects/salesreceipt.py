@@ -1,5 +1,5 @@
 from six import python_2_unicode_compatible
-from .base import QuickbooksBaseObject, Ref, CustomField, QuickbooksManagedObject, LinkedTxnMixin, Address, \
+from .base import Ref, CustomField, QuickbooksManagedObject, LinkedTxnMixin, Address, \
     EmailAddress, QuickbooksTransactionEntity, LinkedTxn
 from .tax import TxnTaxDetail
 from .detailline import DetailLine
@@ -7,12 +7,14 @@ from ..mixins import QuickbooksPdfDownloadable
 
 
 @python_2_unicode_compatible
-class SalesReceipt(QuickbooksPdfDownloadable, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
+class SalesReceipt(QuickbooksPdfDownloadable, QuickbooksManagedObject,
+                   QuickbooksTransactionEntity, LinkedTxnMixin):
     """
-    QBO definition: SalesReceipt represents the sales receipt that is given to a customer. A sales receipt is
-    similar to an invoice. However, for a sales receipt, payment is received as part of the sale of goods and
-    services. The sales receipt specifies a deposit account where the customer deposits the payment. If the
-    deposit account is not specified, the payment type is classified as Undeposited Account.
+    QBO definition: SalesReceipt represents the sales receipt that is given to a customer.
+    A sales receipt is similar to an invoice. However, for a sales receipt, payment is received
+    as part of the sale of goods and services. The sales receipt specifies a deposit account
+    where the customer deposits the payment. If the deposit account is not specified, the
+    payment type is classified as Undeposited Account.
     """
     class_dict = {
         "DepartmentRef": Ref,

@@ -10,7 +10,8 @@ class ToJsonMixin(object):
 
     def json_filter(self):
         """
-        filter out properties that have names starting with _ or properties that have a value of None
+        filter out properties that have names starting with _
+        or properties that have a value of None
         """
         return lambda obj: dict((k, v) for k, v in obj.__dict__.items()
                                 if not k.startswith('_') and getattr(obj, k) is not None)
@@ -85,7 +86,9 @@ class ListMixin(object):
     @classmethod
     def all(cls, start_position="", max_results=100, qb=None):
         """
-        :param max_results: The maximum number of entities that can be returned in a response is 1000.
+        :param start_position:
+        :param max_results: The max number of entities that can be returned in a response is 1000.
+        :param qb:
         :return: Returns list
         """
         return cls.where("", start_position=start_position, max_results=max_results, qb=qb)
@@ -93,15 +96,21 @@ class ListMixin(object):
     @classmethod
     def filter(cls, start_position="", max_results="", qb=None, **kwargs):
         """
+        :param start_position:
+        :param max_results:
+        :param qb:
         :param kwargs: field names and values to filter the query
         :return: Filtered list
         """
-        return cls.where(build_where_clause(**kwargs), start_position=start_position, max_results=max_results, qb=qb)
+        return cls.where(build_where_clause(**kwargs),
+                         start_position=start_position, max_results=max_results, qb=qb)
 
     @classmethod
     def choose(cls, choices, field="Id", qb=None):
         """
-        :param kwargs: field names and values to filter the query
+        :param choices:
+        :param field:
+        :param qb:
         :return: Filtered list
         """
         return cls.where(build_choose_clause(choices, field), qb=qb)
@@ -110,6 +119,9 @@ class ListMixin(object):
     def where(cls, where_clause="", start_position="", max_results="", qb=None):
         """
         :param where_clause: QBO SQL where clause (DO NOT include 'WHERE')
+        :param start_position:
+        :param max_results:
+        :param qb:
         :return: Returns list filtered by input where_clause
         """
         if where_clause:
@@ -121,7 +133,8 @@ class ListMixin(object):
         if max_results:
             max_results = " MAXRESULTS " + str(max_results)
 
-        select = "SELECT * FROM {0} {1}{2}{3}".format(cls.qbo_object_name, where_clause, start_position, max_results)
+        select = "SELECT * FROM {0} {1}{2}{3}".format(
+            cls.qbo_object_name, where_clause, start_position, max_results)
 
         return cls.query(select, qb=qb)
 
@@ -129,6 +142,7 @@ class ListMixin(object):
     def query(cls, select, qb=None):
         """
         :param select: QBO SQL query select statement
+        :param qb:
         :return: Returns list
         """
         if not qb:
@@ -152,4 +166,6 @@ class QuickbooksPdfDownloadable(object):
         if self.Id and self.Id > 0 and qb is not None:
             return qb.download_pdf(self.qbo_object_name, self.Id)
         else:
-            raise QuickbooksException("Cannot download {0} when no Id is assigned or if no quickbooks client is passed in".format(self.qbo_object_name))
+            raise QuickbooksException(
+                "Cannot download {0} when no Id is assigned or if no quickbooks client is passed in".format(
+                    self.qbo_object_name))

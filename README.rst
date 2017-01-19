@@ -3,6 +3,7 @@ python-quickbooks
 
 |Build Status| |Coverage Status|
 
+
 A Python library for accessing the Quickbooks API. Complete rework of
 `quickbooks-python`_.
 
