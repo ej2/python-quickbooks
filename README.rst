@@ -323,11 +323,11 @@ developers access the QuickBooks API. Built for a Django project running
 on Python 2.
 
 .. _Intuit developer guide: https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/querying_data
-.. _Intuit Batch Operations Guide: https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/batch_operations
+.. _Intuit Batch Operations Guide: https://developer.intuit.com/docs/api/accounting/batch
     
 .. _Disconnect documentation: https://developer.intuit.com/docs/0050_quickbooks_api/0020_authentication_and_authorization/oauth_management_api#/Disconnect
 .. _quickbooks-python: https://github.com/troolee/quickbooks-python
-.. _Minor versions: https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/minor_versions
+.. _Minor versions: https://developer.intuit.com/docs/0100_quickbooks_online/0200_dev_guides/accounting/minor_versions
 .. _Attachable documentation: https://developer.intuit.com/docs/api/accounting/Attachable
 .. _Integration tests folder: https://github.com/sidecars/python-quickbooks/tree/master/tests/integration
 
