@@ -209,10 +209,10 @@ class DownloadPdfTest(unittest.TestCase):
     @patch('quickbooks.client.QuickBooks.download_pdf')
     def test_download_invoice(self, download_pdf):
         receipt = SalesReceipt()
-        receipt.Id = 1
+        receipt.Id = "1"
 
         receipt.download_pdf(self.qb_client)
-        download_pdf.assert_called_once_with('SalesReceipt', 1)
+        download_pdf.assert_called_once_with('SalesReceipt', "1")
 
     def test_download_missing_id(self):
         from quickbooks.exceptions import QuickbooksException
