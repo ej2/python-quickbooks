@@ -8,6 +8,7 @@ except ImportError:  # Python 2
 import textwrap
 import json
 import os
+import base64
 from .exceptions import QuickbooksException, SevereException, AuthorizationException
 
 try:
@@ -254,7 +255,10 @@ class QuickBooks(object):
                 'Connection': 'close'
             })
 
-            binary_data = attachment.read()
+            data = base64.b64encode(attachment.read())
+            binary_data = str(data, 'utf-8')
+
+            content_type = json.loads(request_body)['ContentType']
 
             request_body = textwrap.dedent(
                 """
@@ -266,13 +270,14 @@ class QuickBooks(object):
 
                 --%s
                 Content-Disposition: form-data; name="file_content_01"
-                Content-Type: application/pdf
+                Content-Type: %s
+                Content-Transfer-Encoding: base64
 
                 %s
 
                 --%s--
                 """
-            ) % (boundary, request_body, boundary, binary_data, boundary)
+            ) % (boundary, request_body, boundary, content_type, binary_data, boundary)
 
         req = self.session.request(
             request_type, url, True, self.company_id,
