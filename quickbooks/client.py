@@ -8,8 +8,8 @@ except ImportError:  # Python 2
 import textwrap
 import json
 import os
-import base64
 from .exceptions import QuickbooksException, SevereException, AuthorizationException
+import base64
 
 try:
     from rauth import OAuth1Session, OAuth1Service
@@ -255,8 +255,7 @@ class QuickBooks(object):
                 'Connection': 'close'
             })
 
-            data = base64.b64encode(attachment.read())
-            binary_data = str(data, 'utf-8')
+            binary_data = str(base64.b64encode(attachment.read()), 'utf-8')
 
             content_type = json.loads(request_body)['ContentType']
 
