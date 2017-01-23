@@ -1,6 +1,10 @@
 Changelog
 ========
 
+* 0.5.7 (January 23rd, 2017)
+    * Fixed additional issues downloading PDFs in Python 3
+    * Fixed issues caused by hard coded content-type for attachables.
+
 * 0.5.6 (January 18th, 2017)
     * Fixed issue downloading PDFs in Python 3
 

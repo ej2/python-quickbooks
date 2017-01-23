@@ -255,7 +255,7 @@ class QuickBooks(object):
                 'Connection': 'close'
             })
 
-            binary_data = str(base64.b64encode(attachment.read()), 'utf-8')
+            binary_data = str(base64.b64encode(attachment.read()))
 
             content_type = json.loads(request_body)['ContentType']
 
