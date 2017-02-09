@@ -242,16 +242,27 @@ class ObjectListTest(unittest.TestCase):
         test_subclass_primitive_obj = self.TestSubclass(test_primitive_list)
         self.assertEquals(test_primitive_list, test_subclass_primitive_obj[:])
 
-        for index in range (0, len(test_subclass_primitive_obj)):
+        for index in range(0, len(test_subclass_primitive_obj)):
             self.assertEquals(test_primitive_list[index], test_subclass_primitive_obj[index])
+
+        for prim in test_subclass_primitive_obj:
+            self.assertEquals(True, prim in test_subclass_primitive_obj)
 
         self.assertEquals(3, test_subclass_primitive_obj.pop())
         test_subclass_primitive_obj.append(4)
-        self.assertEquals([1,2,4], test_subclass_primitive_obj[:])
+        self.assertEquals([1, 2, 4], test_subclass_primitive_obj[:])
+
+        test_subclass_primitive_obj[0] = 5
+        self.assertEquals([5, 2, 4], test_subclass_primitive_obj[:])
+
+        del test_subclass_primitive_obj[0]
+        self.assertEquals([2, 4], test_subclass_primitive_obj[:])
+
+        self.assertEquals([4, 2], list(reversed(test_subclass_primitive_obj)))
 
     def test_object_list_mixin_with_qb_objects(self):
 
-        pn1, pn2, pn3, pn4 = PhoneNumber(), PhoneNumber(), PhoneNumber(), PhoneNumber()
+        pn1, pn2, pn3, pn4, pn5 = PhoneNumber(), PhoneNumber(), PhoneNumber(), PhoneNumber(), PhoneNumber()
         test_object_list = [pn1, pn2, pn3]
         test_subclass_object_obj = self.TestSubclass(test_object_list)
         self.assertEquals(test_object_list, test_subclass_object_obj[:])
@@ -259,6 +270,17 @@ class ObjectListTest(unittest.TestCase):
         for index in range (0, len(test_subclass_object_obj)):
             self.assertEquals(test_object_list[index], test_subclass_object_obj[index])
 
+        for obj in test_subclass_object_obj:
+            self.assertEquals(True, obj in test_subclass_object_obj)
+
         self.assertEquals(pn3, test_subclass_object_obj.pop())
         test_subclass_object_obj.append(pn4)
         self.assertEquals([pn1, pn2, pn4], test_subclass_object_obj[:])
+
+        test_subclass_object_obj[0] = pn5
+        self.assertEquals([pn5, pn2, pn4], test_subclass_object_obj[:])
+
+        del test_subclass_object_obj[0]
+        self.assertEquals([pn2, pn4], test_subclass_object_obj[:])
+
+        self.assertEquals([pn4, pn2], list(reversed(test_subclass_object_obj)))

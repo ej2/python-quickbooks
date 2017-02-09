@@ -215,7 +215,7 @@ class QuickBooks(object):
         return result
 
     def change_data_capture(self, entity_string, changed_since):
-        url = self.api_url + "/company/{}/cdc".format(self.company_id)
+        url = self.api_url + "/company/{0}/cdc".format(self.company_id)
 
         params = {"entities": entity_string, "changedSince": changed_since}
 
