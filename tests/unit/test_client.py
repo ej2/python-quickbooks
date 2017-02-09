@@ -1,6 +1,9 @@
 import unittest
 
-from mock import patch
+try:
+    from mock import patch
+except ImportError:
+    from unittest.mock import patch
 
 from quickbooks.exceptions import QuickbooksException, SevereException
 from quickbooks import client
