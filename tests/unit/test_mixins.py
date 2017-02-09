@@ -10,6 +10,7 @@ from quickbooks.objects.base import PhoneNumber, QuickbooksBaseObject
 from quickbooks.objects.department import Department
 from quickbooks.objects.journalentry import JournalEntry, JournalEntryLine
 from quickbooks.objects.salesreceipt import SalesReceipt
+from quickbooks.mixins import ObjectListMixin
 
 
 class ToJsonMixinTest(unittest.TestCase):
@@ -222,3 +223,42 @@ class DownloadPdfTest(unittest.TestCase):
 
         receipt = SalesReceipt()
         self.assertRaises(QuickbooksException, receipt.download_pdf)
+
+
+class ObjectListTest(unittest.TestCase):
+
+    def setUp(self):
+        class TestSubclass(ObjectListMixin):
+
+            def __init__(self, obj_list):
+                super(TestSubclass, self).__init__()
+                self._object_list = obj_list
+
+        self.TestSubclass = TestSubclass
+
+    def test_object_list_mixin_with_primitives(self):
+
+        test_primitive_list = [1, 2, 3]
+        test_subclass_primitive_obj = self.TestSubclass(test_primitive_list)
+        self.assertEquals(test_primitive_list, test_subclass_primitive_obj[:])
+
+        for index in range (0, len(test_subclass_primitive_obj)):
+            self.assertEquals(test_primitive_list[index], test_subclass_primitive_obj[index])
+
+        self.assertEquals(3, test_subclass_primitive_obj.pop())
+        test_subclass_primitive_obj.append(4)
+        self.assertEquals([1,2,4], test_subclass_primitive_obj[:])
+
+    def test_object_list_mixin_with_qb_objects(self):
+
+        pn1, pn2, pn3, pn4 = PhoneNumber(), PhoneNumber(), PhoneNumber(), PhoneNumber()
+        test_object_list = [pn1, pn2, pn3]
+        test_subclass_object_obj = self.TestSubclass(test_object_list)
+        self.assertEquals(test_object_list, test_subclass_object_obj[:])
+
+        for index in range (0, len(test_subclass_object_obj)):
+            self.assertEquals(test_object_list[index], test_subclass_object_obj[index])
+
+        self.assertEquals(pn3, test_subclass_object_obj.pop())
+        test_subclass_object_obj.append(pn4)
+        self.assertEquals([pn1, pn2, pn4], test_subclass_object_obj[:])

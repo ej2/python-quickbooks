@@ -169,3 +169,36 @@ class QuickbooksPdfDownloadable(object):
             raise QuickbooksException(
                 "Cannot download {0} when no Id is assigned or if no quickbooks client is passed in".format(
                     self.qbo_object_name))
+
+
+class ObjectListMixin(object):
+    qbo_object_name = ""
+    _object_list = []
+
+    def __iter__(self):
+        return self._object_list.__iter__()
+
+    def __len__(self):
+        return self._object_list.__len__()
+
+    def __contains__(self, item):
+        return self._object_list.__contains__(item)
+
+    def __getitem__(self, key):
+        # if key is of invalid type or value, the list values will raise the error
+        return self._object_list.__getitem__(key)
+
+    def __setitem__(self, key, value):
+        self._object_list.__setitem__(key, value)
+
+    def __delitem__(self, key):
+        self._object_list.__delitem__(key)
+
+    def __reversed__(self):
+        return self._object_list.__reversed__()
+
+    def append(self, value):
+        self._object_list.append(value)
+
+    def pop(self, *args, **kwargs):
+        return self._object_list.pop(*args, **kwargs)
