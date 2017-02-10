@@ -4,10 +4,11 @@ from quickbooks.objects.detailline import DetailLine, AccountBasedExpenseLine, I
 from .base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin, \
     LinkedTxn, Address
 from .tax import TxnTaxDetail
+from ..mixins import DeleteMixin
 
 
 @python_2_unicode_compatible
-class Purchase(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
+class Purchase(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: This entity represents expenses, such as a purchase made from a vendor.
     There are three types of Purchases: Cash, Check, and Credit Card.

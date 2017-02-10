@@ -2,6 +2,7 @@ from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, LinkedTxn, \
     QuickbooksManagedObject, QuickbooksTransactionEntity
 from .creditcardpayment import CreditCardPayment
+from ..mixins import DeleteMixin
 
 
 @python_2_unicode_compatible
@@ -20,7 +21,7 @@ class PaymentLine(QuickbooksBaseObject):
 
 
 @python_2_unicode_compatible
-class Payment(QuickbooksManagedObject, QuickbooksTransactionEntity):
+class Payment(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: A Payment entity records a payment in QuickBooks. The payment can be
     applied for a particular customer against multiple Invoices and Credit Memos. It can also

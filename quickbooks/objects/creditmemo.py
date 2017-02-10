@@ -4,10 +4,11 @@ from quickbooks.objects.detailline import SalesItemLine, SubtotalLine, DiscountL
 from .base import Address, EmailAddress, Ref, CustomField, CustomerMemo, QuickbooksManagedObject, \
     LinkedTxnMixin, QuickbooksTransactionEntity
 from .tax import TxnTaxDetail
+from ..mixins import DeleteMixin
 
 
 @python_2_unicode_compatible
-class CreditMemo(QuickbooksTransactionEntity, QuickbooksManagedObject, LinkedTxnMixin):
+class CreditMemo(DeleteMixin, QuickbooksTransactionEntity, QuickbooksManagedObject, LinkedTxnMixin):
     """
     QBO definition: The CreditMemo is a financial transaction representing a refund or credit of payment or part
     of a payment for goods or services that have been sold.

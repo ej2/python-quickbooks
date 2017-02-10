@@ -1,6 +1,7 @@
 from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject, LinkedTxnMixin, \
     QuickbooksTransactionEntity, CustomField, AttachableRef
+from ..mixins import DeleteMixin
 
 
 class CashBackInfo(QuickbooksBaseObject):
@@ -63,7 +64,7 @@ class DepositLine(QuickbooksBaseObject):
 
 
 @python_2_unicode_compatible
-class Deposit(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
+class Deposit(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: A deposit object is a transaction that records one or more deposits of the following types:
 

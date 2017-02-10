@@ -3,6 +3,7 @@ from .base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, Quickbooks
     LinkedTxnMixin
 from .tax import TxnTaxDetail
 from .detailline import DetailLine, DescriptionOnlyLine
+from ..mixins import DeleteMixin
 
 
 class Entity(QuickbooksBaseObject):
@@ -16,7 +17,7 @@ class Entity(QuickbooksBaseObject):
         self.EntityRef = None
 
 
-class JournalEntryLineDetail(QuickbooksBaseObject):
+class JournalEntryLineDetail(DeleteMixin, QuickbooksBaseObject):
     class_dict = {
         "Entity": Entity,
         "AccountRef": Ref,

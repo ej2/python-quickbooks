@@ -4,10 +4,11 @@ from quickbooks.objects.detailline import DetailLine, ItemBasedExpenseLine, Acco
 from .base import Ref, LinkedTxn, QuickbooksManagedObject, QuickbooksTransactionEntity, \
     LinkedTxnMixin
 from .tax import TxnTaxDetail
+from ..mixins import DeleteMixin
 
 
 @python_2_unicode_compatible
-class Bill(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
+class Bill(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: A Bill entity is an AP transaction representing a request-for-payment from a third party for
     goods/services rendered and/or received.

@@ -1,10 +1,11 @@
 from six import python_2_unicode_compatible
 from .base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, AttachableRef
 from ..client import QuickBooks
+from ..mixins import DeleteMixin
 
 
 @python_2_unicode_compatible
-class Attachable(QuickbooksManagedObject, QuickbooksTransactionEntity):
+class Attachable(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: This page covers the Attachable, Upload, and Download resources used for attachment management. Attachments are supplemental information linked to a transaction or Item object. They can be files, notes, or a combination of both.
     In the case of file attachments, use an upload endpoint multipart request to upload the files to the QuickBooks attachment list and, optionally, to supply metadata for each via an attachable object. If meta data is not supplied with the upload request, the system creates it.
