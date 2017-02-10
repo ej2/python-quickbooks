@@ -80,6 +80,23 @@ class UpdateMixin(object):
         return obj
 
 
+class DeleteMixin(object):
+    qbo_object_name = ""
+
+    def delete(self, qb=None):
+        if not qb:
+            qb = QuickBooks()
+
+        if not self.Id:
+            raise QuickbooksException('Cannot delete unsaved object')
+
+        data = {
+            'Id': self.Id,
+            'SyncToken': self.SyncToken,
+        }
+        return qb.delete_object(self.qbo_object_name, json.dumps(data))
+
+
 class ListMixin(object):
     qbo_object_name = ""
 
