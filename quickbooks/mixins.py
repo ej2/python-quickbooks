@@ -50,6 +50,11 @@ class FromJsonMixin(object):
         return obj
 
 
+class ToDictMixin(object):
+    def to_dict(self):
+        return json.loads(self.to_json())
+
+
 class ReadMixin(object):
     qbo_object_name = ""
 
