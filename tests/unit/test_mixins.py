@@ -62,6 +62,14 @@ class FromJsonMixinTest(unittest.TestCase):
         self.assertEquals(new_obj.TotalAmt, 100)
 
 
+class ToDictMixinTest(unittest.TestCase):
+    def test_to_dict(self):
+        phone = PhoneNumber()
+        phone.FreeFormNumber = "555-555-5555"
+
+        self.assertEquals(phone.to_dict(), {"FreeFormNumber": "555-555-5555"})
+
+
 class ListMixinTest(unittest.TestCase):
     def setUp(self):
         self.qb_client = client.QuickBooks(

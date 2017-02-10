@@ -66,7 +66,7 @@ class Address(QuickbooksBaseObject):
 
 
 @python_2_unicode_compatible
-class PhoneNumber(ToJsonMixin, FromJsonMixin):
+class PhoneNumber(ToJsonMixin, FromJsonMixin, ToDictMixin):
     def __init__(self):
         self.FreeFormNumber = ""
 
