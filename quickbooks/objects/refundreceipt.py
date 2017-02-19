@@ -3,10 +3,11 @@ from .base import Ref, CustomField, QuickbooksManagedObject, \
     LinkedTxnMixin, QuickbooksTransactionEntity, LinkedTxn, Address, EmailAddress
 from .tax import TxnTaxDetail
 from .detailline import DetailLine
+from ..mixins import DeleteMixin
 
 
 @python_2_unicode_compatible
-class RefundReceipt(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
+class RefundReceipt(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: RefundReceipt represents a refund to the customer for a product or service that was given.
     """

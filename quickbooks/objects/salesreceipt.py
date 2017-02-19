@@ -3,11 +3,11 @@ from .base import Ref, CustomField, QuickbooksManagedObject, LinkedTxnMixin, Add
     EmailAddress, QuickbooksTransactionEntity, LinkedTxn
 from .tax import TxnTaxDetail
 from .detailline import DetailLine
-from ..mixins import QuickbooksPdfDownloadable
+from ..mixins import QuickbooksPdfDownloadable, DeleteMixin
 
 
 @python_2_unicode_compatible
-class SalesReceipt(QuickbooksPdfDownloadable, QuickbooksManagedObject,
+class SalesReceipt(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject,
                    QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: SalesReceipt represents the sales receipt that is given to a customer.

@@ -349,6 +349,12 @@ class QuickBooks(object):
 
         return result
 
+    def delete_object(self, qbbo, request_body, _file_path=None):
+        url = self.api_url + "/company/{0}/{1}".format(self.company_id, qbbo.lower())
+        result = self.make_request("POST", url, request_body, params={'operation': 'delete'}, file_path=_file_path)
+
+        return result
+
     def batch_operation(self, request_body):
         url = self.api_url + "/company/{0}/batch".format(self.company_id)
         results = self.make_request("POST", url, request_body)
