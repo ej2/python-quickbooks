@@ -1,6 +1,11 @@
 Changelog
 ========
 
+* 0.6.0 (February 19th, 2017)
+    * Added support for Change Data Capture.
+    * Added ability to delete objects.
+    * Added ToDict to all objects.
+
 * 0.5.7 (January 23rd, 2017)
     * Fixed additional issues downloading PDFs in Python 3
     * Fixed issues caused by hard coded content-type for attachables.
