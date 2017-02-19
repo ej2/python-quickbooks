@@ -203,7 +203,6 @@ class QuickBooks(object):
 
         self.access_token = session.access_token
         self.access_token_secret = session.access_token_secret
-
         return session
 
     def disconnect_account(self):
@@ -213,6 +212,14 @@ class QuickBooks(object):
         """
         url = self.disconnect_url
         result = self.make_request("GET", url)
+        return result
+
+    def change_data_capture(self, entity_string, changed_since):
+        url = self.api_url + "/company/{0}/cdc".format(self.company_id)
+
+        params = {"entities": entity_string, "changedSince": changed_since}
+
+        result = self.make_request("GET", url, params=params)
         return result
 
     def reconnect_account(self):

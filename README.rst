@@ -245,6 +245,38 @@ Review results for batch operation:
         for error in fault.Error:
             print "Error " + error.Message 
 
+Change Data Capture
+-----------------------
+Change Data Capture returns a list of objects that have changed since a given time (see `Change data capture`_ for more
+details):
+
+::
+
+   from quickbooks.cdc import change_data_capture
+   from quickbooks.objects import Invoice
+
+   cdc_response = change_data_capture([Invoice], "2017-01-01T00:00:00", qb=client)
+   for invoice in cdc_response.Invoice:
+      # Do something with the invoice
+
+Querying muliple entity types at the same time:
+
+::
+
+   from quickbooks.objects import Invoice, Customer
+
+   cdc_response = change_data_capture([Invoice, Customer], "2017-01-01T00:00:00", qb=client)
+
+
+If you use a ``datetime`` object for the timestamp, it is automatically converted to a string:
+
+::
+
+   from datetime import datetime
+
+   cdc_response = change_data_capture([Invoice, Customer], datetime(2017, 1, 1, 0, 0, 0), qb=client)
+
+
 Attachments
 ----------------
 See `Attachable documentation`_ for list of valid file types, file size limits and other restrictions.
@@ -278,6 +310,8 @@ Attaching a file to customer:
      attachment._FilePath = '/folder/filename'  # full path to file
      attachment.ContentType = 'application/pdf'
      attachment.save(qb=client)
+
+
 
 Working with JSON data
 ----------------
@@ -330,6 +364,8 @@ on Python 2.
 .. _Minor versions: https://developer.intuit.com/docs/0100_quickbooks_online/0200_dev_guides/accounting/minor_versions
 .. _Attachable documentation: https://developer.intuit.com/docs/api/accounting/Attachable
 .. _Integration tests folder: https://github.com/sidecars/python-quickbooks/tree/master/tests/integration
+.. _Change data capture: https://developer.intuit.com/docs/api/accounting/changedatacapture
+
 
 .. |Build Status| image:: https://travis-ci.org/sidecars/python-quickbooks.svg?branch=master
    :target: https://travis-ci.org/sidecars/python-quickbooks

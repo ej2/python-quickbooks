@@ -1,5 +1,8 @@
 import unittest
-from mock import patch
+try:
+    from mock import patch
+except ImportError:
+    from unittest.mock import patch
 from quickbooks import batch, client
 from quickbooks.objects.customer import Customer
 from quickbooks.exceptions import QuickbooksException
