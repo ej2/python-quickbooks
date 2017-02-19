@@ -1,8 +1,8 @@
 from six import python_2_unicode_compatible
-from ..mixins import ToJsonMixin, FromJsonMixin, ReadMixin, ListMixin, UpdateMixin
+from ..mixins import ToJsonMixin, FromJsonMixin, ReadMixin, ListMixin, UpdateMixin, ToDictMixin
 
 
-class QuickbooksBaseObject(ToJsonMixin, FromJsonMixin):
+class QuickbooksBaseObject(ToJsonMixin, FromJsonMixin, ToDictMixin):
     class_dict = {}
     list_dict = {}
     detail_dict = {}
@@ -66,7 +66,7 @@ class Address(QuickbooksBaseObject):
 
 
 @python_2_unicode_compatible
-class PhoneNumber(ToJsonMixin, FromJsonMixin):
+class PhoneNumber(ToJsonMixin, FromJsonMixin, ToDictMixin):
     def __init__(self):
         self.FreeFormNumber = ""
 

@@ -62,6 +62,63 @@ class FromJsonMixinTest(unittest.TestCase):
         self.assertEquals(new_obj.TotalAmt, 100)
 
 
+class ToDictMixinTest(unittest.TestCase):
+    def test_to_dict(self):
+        json_data = {
+            'DocNumber': '123',
+            'TotalAmt': 100,
+            'Line': [
+                {
+                    "Id": "0",
+                    "Description": "Test",
+                    "Amount": 25.54,
+                    "DetailType": "JournalEntryLineDetail",
+                    "JournalEntryLineDetail": {
+                        "PostingType": "Debit",
+                    }
+                },
+            ],
+        }
+
+        entry = JournalEntry.from_json(json_data)
+        expected = {
+            'DocNumber': '123',
+            'SyncToken': 0,
+            'domain': 'QBO',
+            'TxnDate': '',
+            'TotalAmt': 100,
+            'ExchangeRate': 1,
+            'CurrencyRef': None,
+            'PrivateNote': '',
+            'sparse': False,
+            'Line': [{
+                'LinkedTxn': [],
+                'Description': 'Test',
+                'JournalEntryLineDetail': {
+                    'TaxAmount': 0,
+                    'Entity': None,
+                    'DepartmentRef': None,
+                    'TaxCodeRef': None,
+                    'BillableStatus': '',
+                    'TaxApplicableOn': 'Sales',
+                    'PostingType': 'Debit',
+                    'AccountRef': None,
+                    'ClassRef': None,
+                },
+                'DetailType': 'JournalEntryLineDetail',
+                'LineNum': 0,
+                'Amount': 25.54,
+                'CustomField': [],
+                'Id': '0',
+            }],
+            'Adjustment': False,
+            'Id': None,
+            'TxnTaxDetail': None,
+        }
+
+        self.assertEquals(expected, entry.to_dict())
+
+
 class ListMixinTest(unittest.TestCase):
     def setUp(self):
         self.qb_client = client.QuickBooks(

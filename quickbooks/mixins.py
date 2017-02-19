@@ -1,4 +1,5 @@
 import simplejson as json
+import six
 from .utils import build_where_clause, build_choose_clause
 from .client import QuickBooks
 from .exceptions import QuickbooksException
@@ -48,6 +49,42 @@ class FromJsonMixin(object):
                 setattr(obj, key, json_data[key])
 
         return obj
+
+
+# Based on http://stackoverflow.com/a/1118038
+def to_dict(obj, classkey=None):
+    """
+    Recursively converts Python object into a dictionary
+    """
+    if isinstance(obj, dict):
+        data = {}
+        for (k, v) in obj.items():
+            data[k] = to_dict(v, classkey)
+        return data
+    elif hasattr(obj, "_ast"):
+        return to_dict(obj._ast())
+    elif hasattr(obj, "__iter__") and not isinstance(obj, str):
+        return [to_dict(v, classkey) for v in obj]
+    elif hasattr(obj, "__dict__"):
+        if six.PY2:
+            data = dict([(key, to_dict(value, classkey))
+                        for key, value in obj.__dict__.iteritems()
+                        if not callable(value) and not key.startswith('_')])
+        else:
+            data = dict([(key, to_dict(value, classkey))
+                        for key, value in obj.__dict__.items()
+                        if not callable(value) and not key.startswith('_')])
+
+        if classkey is not None and hasattr(obj, "__class__"):
+            data[classkey] = obj.__class__.__name__
+        return data
+    else:
+        return obj
+
+
+class ToDictMixin(object):
+    def to_dict(self):
+        return to_dict(self)
 
 
 class ReadMixin(object):
