@@ -106,6 +106,7 @@ class Ref(QuickbooksBaseObject):
 @python_2_unicode_compatible
 class CustomField(QuickbooksBaseObject):
     def __init__(self):
+        self.DefinitionId = ""
         self.Type = ""
         self.Name = ""
         self.StringValue = ""
