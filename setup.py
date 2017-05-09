@@ -24,6 +24,10 @@ setup(
     keywords=['quickbooks', 'qbo', 'accounting'],
     long_description=read('README.rst'),
 
+    entry_points={
+        'console_scripts': ['quickbooks-cli=quickbooks.tools.cli:cli_execute']
+    },
+
     install_requires=[
         'setuptools',
         'rauth>=0.7.1',
