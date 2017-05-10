@@ -14,6 +14,17 @@ You can find additional examples of usage in `Integration tests folder`_.
 Connecting your application to Quickbooks Online
 ------------------------------------------------
 
+Theres two ways to connect your application to Quickbooks Online:
+
+With quickbooks-cli
+-------------------
+
+   ::
+       quickbooks-cli [-h] [-s] [-p PORT] consumer_key consumer_secret
+
+Manually
+--------
+
 1. Create the Authorization URL for your application:
 
    ::
