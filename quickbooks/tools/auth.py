@@ -31,7 +31,7 @@ class QuickBooksAuthHandler(BaseHTTPRequestHandler):
             realm_id = realm_id[0]
 
         if oauth_verifier and realm_id:
-            client = QuickBooks(
+            client = self.server.qb_client_class(
                 sandbox=qb_data['sandbox'],
                 consumer_key=qb_data['consumer_key'],
                 consumer_secret=qb_data['consumer_secret']
@@ -65,9 +65,11 @@ class QuickBooksAuthHandler(BaseHTTPRequestHandler):
 
 class QuickBooksAuthServer(HTTPServer):
 
+    qb_client_class = QuickBooks
+
     @classmethod
-    def buid_server(cls, consumer_key, consumer_secret, sandbox, port):
-        client = QuickBooks(
+    def build_server(cls, consumer_key, consumer_secret, sandbox, port):
+        client = cls.qb_client_class(
             sandbox=sandbox,
             consumer_key=consumer_key,
             consumer_secret=consumer_secret,

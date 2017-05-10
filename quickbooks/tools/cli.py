@@ -24,7 +24,7 @@ class CLI(argparse.ArgumentParser):
     def run(self, args=None):
         print('Starting the authentication process...')
 
-        server = QuickBooksAuthServer.buid_server(
+        server = QuickBooksAuthServer.build_server(
             args.consumer_key, args.consumer_secret, args.sandbox, args.port)
 
         print('Copy and paste the authorization url on your browser:')
