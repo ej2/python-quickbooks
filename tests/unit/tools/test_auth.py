@@ -26,6 +26,6 @@ class ClientTest(unittest.TestCase):
                 self.consumer_key, self.consumer_secret,
                 self.sandbox, self.port)
 
-            self.assertIsInstance(server, QuickBooksAuthServer)
-            self.assertIsInstance(server.qb_data, dict)
+            self.assertIs(type(server), QuickBooksAuthServer)
+            self.assertIs(type(server.qb_data), dict)
             self.assertTrue('oauth_token' in server.qb_data['authorize_url'])
