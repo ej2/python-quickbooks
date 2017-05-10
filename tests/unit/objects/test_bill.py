@@ -4,7 +4,6 @@ from quickbooks import QuickBooks
 from quickbooks.objects.bill import Bill
 
 
-
 class BillTests(unittest.TestCase):
     def test_unicode(self):
         bill = Bill()
@@ -31,7 +30,7 @@ class BillTests(unittest.TestCase):
 
     def test_to_ref(self):
         bill = Bill()
-        bill.DisplayName = "test"
+        bill.DocNumber = "test"
         bill.Id = 100
 
         ref = bill.to_ref()
