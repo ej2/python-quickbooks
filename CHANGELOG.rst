@@ -1,6 +1,11 @@
 Changelog
 ========
 
+* 0.6.1 (May 9th, 2017)
+    * Fixed issue with to_ref method on Bill object.
+    * Added DefinitionId to CustomField
+    * Update client.py uploads to be Python3 compatible
+
 * 0.6.0 (February 19th, 2017)
     * Added support for Change Data Capture.
     * Added ability to delete objects.

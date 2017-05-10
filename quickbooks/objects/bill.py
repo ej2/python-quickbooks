@@ -71,7 +71,7 @@ class Bill(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, Li
     def to_ref(self):
         ref = Ref()
 
-        ref.name = self.DisplayName
+        ref.name = self.DocNumber
         ref.type = self.qbo_object_name
         ref.value = self.Id
 
