@@ -1,6 +1,6 @@
 import argparse
 
-from quickbooks.tools.auth import handle_auth
+from quickbooks.tools.auth import QuickBooksAuthServer
 
 
 class CLI(argparse.ArgumentParser):
@@ -22,8 +22,15 @@ class CLI(argparse.ArgumentParser):
                           dest='port', help='auth calback port')
 
     def run(self, args=None):
-        handle_auth(args.consumer_key, args.consumer_secret,
-                    args.sandbox, args.port)
+        print('Starting the authentication process...')
+
+        server = QuickBooksAuthServer.buid_server(
+            args.consumer_key, args.consumer_secret, args.sandbox, args.port)
+
+        print('Copy and paste the authorization url on your browser:')
+        print(server.qb_data['authorize_url'])
+
+        server.serve_forever()
 
 
 def cli_execute():

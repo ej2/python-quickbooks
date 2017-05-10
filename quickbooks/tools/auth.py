@@ -63,29 +63,27 @@ class QuickBooksAuthHandler(BaseHTTPRequestHandler):
                 bytes('<h1>QuickBooks auth failed, try again.</h1>', 'UTF-8'))
 
 
-def handle_auth(consumer_key, consumer_secret, sandbox=False, port=8080):
-    print('Starting the authentication process...')
+class QuickBooksAuthServer(HTTPServer):
 
-    client = QuickBooks(
-        sandbox=sandbox,
-        consumer_key=consumer_key,
-        consumer_secret=consumer_secret,
-        callback_url='http://localhost:{}'.format(port)
-    )
+    @classmethod
+    def buid_server(cls, consumer_key, consumer_secret, sandbox, port):
+        client = QuickBooks(
+            sandbox=sandbox,
+            consumer_key=consumer_key,
+            consumer_secret=consumer_secret,
+            callback_url='http://localhost:{}'.format(port)
+        )
 
-    qb_data = {
-        'authorize_url': client.get_authorize_url(),
-        'request_token': client.request_token,
-        'request_token_secret': client.request_token_secret,
-        'consumer_key': consumer_key,
-        'consumer_secret': consumer_secret,
-        'sandbox': sandbox,
-    }
+        qb_data = {
+            'authorize_url': client.get_authorize_url(),
+            'request_token': client.request_token,
+            'request_token_secret': client.request_token_secret,
+            'consumer_key': consumer_key,
+            'consumer_secret': consumer_secret,
+            'sandbox': sandbox,
+        }
 
-    server = HTTPServer(('', port), QuickBooksAuthHandler)
-    server.qb_data = qb_data
+        instance = cls(('', port), QuickBooksAuthHandler)
+        instance.qb_data = qb_data
 
-    print('Copy and paste the authorization url on your browser:')
-    print(qb_data['authorize_url'])
-
-    server.serve_forever()
+        return instance
