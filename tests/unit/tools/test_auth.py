@@ -15,7 +15,7 @@ class ClientTest(unittest.TestCase):
         self.consumer_secret = 'update_consumer_secret'
         self.sandbox = True
         self.port = 8080
-        self.authorize_url = '{}?oauth_token=testToken'.format(
+        self.authorize_url = '{0}?oauth_token=testToken'.format(
             QuickBooksAuthServer.qb_client_class.authorize_url)
 
     def test_build_server(self):
