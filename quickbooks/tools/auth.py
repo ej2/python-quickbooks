@@ -48,15 +48,15 @@ class QuickBooksAuthHandler(BaseHTTPRequestHandler):
                 bytes('<h1>QuickBooks auth handled with success!</h1>',
                       'UTF-8'))
             self.wfile.write(
-                bytes('<p><b>Sandbox:</b> {}</p>'.format(qb_data['sandbox']),
+                bytes('<p><b>Sandbox:</b> {0}</p>'.format(qb_data['sandbox']),
                       'UTF-8'))
             self.wfile.write(
-                bytes('<p><b>Realm Id:</b> {}</p>'.format(realm_id), 'UTF-8'))
+                bytes('<p><b>Realm Id:</b> {0}</p>'.format(realm_id), 'UTF-8'))
             self.wfile.write(
-                bytes('<p><b>Access Token:</b> {}</p>'.format(
+                bytes('<p><b>Access Token:</b> {0}</p>'.format(
                     client.access_token), 'UTF-8'))
             self.wfile.write(
-                bytes('<p><b>Access Token Secret:</b> {}</p>'.format(
+                bytes('<p><b>Access Token Secret:</b> {0}</p>'.format(
                     client.access_token_secret), 'UTF-8'))
         else:
             self.wfile.write(
@@ -73,7 +73,7 @@ class QuickBooksAuthServer(HTTPServer):
             sandbox=sandbox,
             consumer_key=consumer_key,
             consumer_secret=consumer_secret,
-            callback_url='http://localhost:{}'.format(port)
+            callback_url='http://localhost:{0}'.format(port)
         )
 
         qb_data = {
