@@ -1,6 +1,6 @@
 import argparse
 
-from auth import handle_auth
+from quickbooks.tools.auth import handle_auth
 
 
 class CLI(argparse.ArgumentParser):
