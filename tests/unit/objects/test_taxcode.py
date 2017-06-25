@@ -20,10 +20,13 @@ class TaxCodeTests(unittest.TestCase):
 
     def test_to_ref(self):
         taxcode = TaxCode()
+        taxcode.Id = 2
         taxcode.Name = "test"
 
         ref = taxcode.to_ref()
-        self.assertEquals(ref.value, "test")
+        self.assertEquals(ref.name, "test")
+        self.assertEquals(ref.type, "TaxCode")
+        self.assertEquals(ref.value, 2)
 
 
 class TaxRateDetailTests(unittest.TestCase):
