@@ -253,7 +253,7 @@ class ClientTest(unittest.TestCase):
 
         qb_session.request.assert_called_with(
                 "GET", url, True, "1234", data={},
-                headers={'Content-Type': 'application/json', 'Accept': 'application/json'}, params={})
+                headers={'Content-Type': 'application/json', 'Accept': 'application/json', 'User-Agent': 'python-quickbooks V3 library'}, params={})
 
     def test_make_request_create_session(self):
         receipt = SalesReceipt()
@@ -298,7 +298,7 @@ class ClientTest(unittest.TestCase):
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/salesreceipt/1/pdf"
         qb_session.request.assert_called_with(
             "GET", url, True, "1234",
-            headers={'Content-Type': 'application/pdf', 'Accept': 'application/pdf, application/json'})
+            headers={'Content-Type': 'application/pdf', 'Accept': 'application/pdf, application/json', 'User-Agent': 'python-quickbooks V3 library'})
 
         qb_session.request.return_value = MockPdfResponse()
         response = receipt.download_pdf(qb_client)
