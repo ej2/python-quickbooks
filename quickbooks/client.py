@@ -144,7 +144,7 @@ class QuickBooks(object):
                 self.consumer_key,
                 self.consumer_secret,
                 self.access_token,
-                self.access_token_secret,
+                self.access_tokcreate_sessionen_secret,
             )
             self.session = session
         else:
@@ -246,10 +246,6 @@ class QuickBooks(object):
 
     def make_request(self, request_type, url, request_body=None, content_type='application/json',
                      params=None, file_path=None):
-
-        if self.session_manager is None:
-            raise QuickbooksException('No session manager')
-
         if not params:
             params = {}
 
@@ -300,9 +296,7 @@ class QuickBooks(object):
                 """
             ) % (boundary, request_body, boundary, content_type, binary_data, boundary)
 
-        req = self.session_manager.get_session().request(
-            request_type, url, True, self.company_id,
-            headers=headers, params=params, data=request_body)
+        req = self.process_request(request_type, url, headers=headers, params=params, data=request_body)
 
         if req.status_code == httplib.UNAUTHORIZED:
             raise AuthorizationException("Application authentication failed", detail=req.text)
@@ -319,6 +313,14 @@ class QuickBooks(object):
                 req.status_code, req.text), 10000)
         else:
             return result
+
+    def process_request(self, request_type, url, headers="", params="", data=""):
+        if self.session_manager is None:
+            raise QuickbooksException('No session manager')
+
+        return self.session_manager.get_session().request(
+            request_type, url, True, self.company_id,
+            headers=headers, params=params, data=data)
 
     def get_single_object(self, qbbo, pk):
         url = self.api_url + "/company/{0}/{1}/{2}/".format(self.company_id, qbbo.lower(), pk)
@@ -396,7 +398,7 @@ class QuickBooks(object):
             'User-Agent': 'python-quickbooks V3 library'
         }
 
-        response = self.session_manager.get_session().request("GET", url, True, self.company_id, headers=headers)
+        response = self.process_request("GET", url, headers=headers)
 
         if response.status_code != httplib.OK:
             try:

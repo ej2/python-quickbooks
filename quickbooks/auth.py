@@ -39,6 +39,8 @@ class AuthSessionManager(object):
     sandbox = False
     session = None
     started = False
+    request_token = ''
+    request_token_secret = ''
 
     def __new__(cls, **kwargs):
         instance = object.__new__(cls)
