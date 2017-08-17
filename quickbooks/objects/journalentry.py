@@ -17,7 +17,7 @@ class Entity(QuickbooksBaseObject):
         self.EntityRef = None
 
 
-class JournalEntryLineDetail(DeleteMixin, QuickbooksBaseObject):
+class JournalEntryLineDetail(QuickbooksBaseObject):
     class_dict = {
         "Entity": Entity,
         "AccountRef": Ref,
@@ -52,7 +52,7 @@ class JournalEntryLine(DetailLine):
 
 
 @python_2_unicode_compatible
-class JournalEntry(QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
+class JournalEntry(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: Journal Entry is a transaction in which:
         - There are at least two parts - a Debit and a Credit - called distribution lines.
