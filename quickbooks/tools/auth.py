@@ -1,3 +1,5 @@
+from quickbooks.auth import Oauth1SessionManager
+
 try:  # Python 3
     from urllib.parse import parse_qs, urlparse
     from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -7,8 +9,6 @@ except ImportError:  # Python 2
 
     def bytes(value, encoding):
         return str(value)
-
-from quickbooks import QuickBooks
 
 
 class QuickBooksAuthHandler(BaseHTTPRequestHandler):
@@ -65,7 +65,7 @@ class QuickBooksAuthHandler(BaseHTTPRequestHandler):
 
 class QuickBooksAuthServer(HTTPServer):
 
-    qb_client_class = QuickBooks
+    qb_client_class = Oauth1SessionManager
 
     @classmethod
     def build_server(cls, consumer_key, consumer_secret, sandbox, port):

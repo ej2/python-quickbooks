@@ -1,3 +1,5 @@
+from quickbooks.auth import Oauth1SessionManager
+
 try:  # Python 3
     import http.client as httplib
     from urllib.parse import parse_qsl
@@ -22,17 +24,18 @@ except ImportError:
 class QuickBooks(object):
     """A wrapper class around Python's Rauth module for Quickbooks the API"""
 
-    access_token = ''
-    access_token_secret = ''
-    consumer_key = ''
-    consumer_secret = ''
+    access_token = ''  # TODO REMOVE
+    access_token_secret = ''  # TODO REMOVE
+    consumer_key = ''  # TODO REMOVE
+    consumer_secret = ''  # TODO REMOVE
     company_id = 0
-    callback_url = ''
+    callback_url = ''  # TODO REMOVE
     session = None
+    session_manager = None
     sandbox = False
     minorversion = None
 
-    qbService = None
+    qbService = None  # TODO REMOVE
 
     sandbox_api_url_v3 = "https://sandbox-quickbooks.api.intuit.com/v3"
     api_url_v3 = "https://quickbooks.api.intuit.com/v3"
@@ -74,29 +77,33 @@ class QuickBooks(object):
         else:
             instance = object.__new__(cls)
 
+        # TODO REMOVE
         if 'consumer_key' in kwargs:
             instance.consumer_key = kwargs['consumer_key']
-
+        # TODO REMOVE
         if 'consumer_secret' in kwargs:
             instance.consumer_secret = kwargs['consumer_secret']
-
+        # TODO REMOVE
         if 'access_token' in kwargs:
             instance.access_token = kwargs['access_token']
-
+        # TODO REMOVE
         if 'access_token_secret' in kwargs:
             instance.access_token_secret = kwargs['access_token_secret']
+        # TODO REMOVE
+        if 'callback_url' in kwargs:
+            instance.callback_url = kwargs['callback_url']
 
         if 'company_id' in kwargs:
             instance.company_id = kwargs['company_id']
-
-        if 'callback_url' in kwargs:
-            instance.callback_url = kwargs['callback_url']
 
         if 'sandbox' in kwargs:
             instance.sandbox = kwargs['sandbox']
 
         if 'minorversion' in kwargs:
             instance.minorversion = kwargs['minorversion']
+
+        if 'session_manager' in kwargs:
+            instance.session_manager = kwargs['session_manager']
 
         return instance
 
@@ -129,6 +136,7 @@ class QuickBooks(object):
         else:
             return self.api_url_v3
 
+    # TODO REMOVE
     def create_session(self):
         if self.consumer_secret and self.consumer_key \
                 and self.access_token_secret and self.access_token:
@@ -145,6 +153,7 @@ class QuickBooks(object):
 
         return self.session
 
+    # TODO REMOVE
     def get_authorize_url(self):
         """
         Returns the Authorize URL as returned by QB, and specified by OAuth 1.0a.
@@ -179,6 +188,7 @@ class QuickBooks(object):
         result = self.make_request("GET", url, params=qs)
         return result
 
+    # TODO: REMOVE
     def set_up_service(self):
         self.qbService = OAuth1Service(
             name=None,
@@ -190,6 +200,7 @@ class QuickBooks(object):
             base_url=None
         )
 
+    # TODO: REMOVE
     def get_access_tokens(self, oauth_verifier):
         """
         Wrapper around get_auth_session, returns session, and sets access_token and
@@ -205,6 +216,7 @@ class QuickBooks(object):
         self.access_token_secret = session.access_token_secret
         return session
 
+    # TODO: is disconnect url the same for OAuth 1 and OAuth 2?
     def disconnect_account(self):
         """
         Disconnect current account from the application
@@ -222,6 +234,7 @@ class QuickBooks(object):
         result = self.make_request("GET", url, params=params)
         return result
 
+    # TODO: is reconnect url the same for OAuth 1 and OAuth 2?
     def reconnect_account(self):
         """
         Reconnect current account by refreshing OAuth access tokens
@@ -234,6 +247,9 @@ class QuickBooks(object):
     def make_request(self, request_type, url, request_body=None, content_type='application/json',
                      params=None, file_path=None):
 
+        if self.session_manager is None:
+            raise QuickbooksException('No session manager')
+
         if not params:
             params = {}
 
@@ -243,8 +259,6 @@ class QuickBooks(object):
         if not request_body:
             request_body = {}
 
-        if self.session is None:
-            self.create_session()
         headers = {
             'Content-Type': content_type,
             'Accept': 'application/json',
@@ -286,7 +300,7 @@ class QuickBooks(object):
                 """
             ) % (boundary, request_body, boundary, content_type, binary_data, boundary)
 
-        req = self.session.request(
+        req = self.session_manager.get_session().request(
             request_type, url, True, self.company_id,
             headers=headers, params=params, data=request_body)
 
@@ -370,11 +384,11 @@ class QuickBooks(object):
         return results
 
     def download_pdf(self, qbbo, item_id):
+        if self.session_manager is None:
+            raise QuickbooksException('No session manager')
+
         url = self.api_url + "/company/{0}/{1}/{2}/pdf".format(
             self.company_id, qbbo.lower(), item_id)
-
-        if self.session is None:
-            self.create_session()
 
         headers = {
             'Content-Type': 'application/pdf',
@@ -382,7 +396,7 @@ class QuickBooks(object):
             'User-Agent': 'python-quickbooks V3 library'
         }
 
-        response = self.session.request("GET", url, True, self.company_id, headers=headers)
+        response = self.session_manager.get_session().request("GET", url, True, self.company_id, headers=headers)
 
         if response.status_code != httplib.OK:
             try:
