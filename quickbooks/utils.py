@@ -8,7 +8,9 @@ def build_where_clause(**kwargs):
         where = []
 
         for key, value in kwargs.items():
-            if isinstance(value, six.string_types):
+            if isinstance(value, six.text_type):
+                where.append("{0} = '{1}'".format(key, value.encode('utf-8').replace(r"'", r"\'")))
+            elif isinstance(value, six.string_types):
                 where.append("{0} = '{1}'".format(key, value.replace(r"'", r"\'")))
             else:
                 where.append("{0} = {1}".format(key, value))
@@ -25,7 +27,9 @@ def build_choose_clause(choices, field):
         where = []
 
         for choice in choices:
-            if isinstance(choice, six.string_types):
+            if isinstance(choice, six.text_type):
+                where.append("'{0}'".format(choice.encode('utf-8').replace(r"'", r"\'")))
+            elif isinstance(choice, six.string_types):
                 where.append("'{0}'".format(choice.replace(r"'", r"\'")))
             else:
                 where.append("{0}".format(choice))
