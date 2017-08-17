@@ -247,7 +247,7 @@ class QuickBooks(object):
             self.create_session()
         headers = {
             'Content-Type': content_type,
-            'Accept': 'application/json'
+            'Accept': 'application/json',
         }
 
         if file_path:
@@ -257,7 +257,7 @@ class QuickBooks(object):
             headers.update({
                 'Content-Type': 'multipart/form-data; boundary=%s' % boundary,
                 'Accept-Encoding': 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-                'User-Agent': 'OAuth gem v0.4.7',
+                'User-Agent': 'OAuth gem v0.4.7',  # TODO: Update to 'python-quickbooks'
                 'Accept': 'application/json',
                 'Connection': 'close'
             })
