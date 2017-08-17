@@ -65,7 +65,7 @@ class TaxCode(QuickbooksTransactionEntity, QuickbooksBaseObject, ReadMixin, List
         ref = Ref()
 
         ref.type = self.qbo_object_name
-        ref.value = self.Name
-        ref.name = None
+        ref.value = self.Id
+        ref.name = self.Name
 
         return ref
