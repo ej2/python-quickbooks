@@ -22,23 +22,27 @@ With quickbooks-cli
    ::
        quickbooks-cli [-h] [-s] [-p PORT] consumer_key consumer_secret oauth_version
 
-Manually
+Manually OAuth version 1.0
 --------
 
 1. Create the Authorization URL for your application:
 
    ::
 
-       from quickbooks import QuickBooks
+       from quickbooks import QuickBooks, Oauth1SessionManager
 
-       client = QuickBooks(
+       session_manager = Oauth1SessionManager(
+
+       )
+
+       session_manager = Oauth1SessionManager(
            sandbox=True,
            consumer_key=QUICKBOOKS_CLIENT_KEY,
            consumer_secret=QUICKBOOKS_CLIENT_SECRET,
-           callback_url=CALLBACK_URL
        )
 
-       authorize_url = client.get_authorize_url()
+       callback_url = 'http://localhost:8000'  # Quickbooks will send the response to this url
+       authorize_url = client.get_authorize_url(callback_url)
        request_token = client.request_token
        request_token_secret = client.request_token_secret
 
@@ -49,31 +53,94 @@ Manually
 
    ::
 
-       client = QuickBooks(
+       session_manager = Oauth1SessionManager(
            sandbox=True,
            consumer_key=QUICKBOOKS_CLIENT_KEY,
            consumer_secret=QUICKBOOKS_CLIENT_SECRET
        )
 
-       client.authorize_url = authorize_url
-       client.request_token = request_token
-       client.request_token_secret = request_token_secret
-       client.set_up_service()
+       session_manager.authorize_url = authorize_url
+       session_manager.request_token = request_token
+       session_manager.request_token_secret = request_token_secret
 
-       client.get_access_tokens(request.GET['oauth_verifier'])
+       session_manager.get_access_tokens(request.GET['oauth_verifier'])
 
        realm_id = request.GET['realmId']
-       access_token = client.access_token
-       access_token_secret = client.access_token_secret
+       access_token = session_manager.access_token
+       access_token_secret = session_manager.access_token_secret
 
    Store ``realm_id``, ``access_token``, and ``access_token_secret`` for later use.
+
+
+Manually OAuth version 2.0
+--------
+
+1. Create the Authorization URL for your application:
+
+   ::
+
+       from quickbooks import QuickBooks, Oauth2SessionManager
+
+       session_manager = Oauth2SessionManager(
+           sandbox=True,
+           client_id=QUICKBOOKS_CLIENT_ID,
+           client_secret=QUICKBOOKS_CLIENT_SECRET,
+           base_url='http://localhost:8000',
+       )
+
+       callback_url = 'http://localhost:8000'  # Quickbooks will send the response to this url
+       authorize_url = client.get_authorize_url(callback_url)
+       request_token = client.request_token
+       request_token_secret = client.request_token_secret
+
+   Store the ``authorize_url``, ``request_token``, and ``request_token_secret``
+   for use in the Callback method.
+
+2. Handle the callback:
+
+   ::
+
+       session_manager = Oauth2SessionManager(
+           sandbox=True,
+           client_id=QUICKBOOKS_CLIENT_ID,
+           client_secret=QUICKBOOKS_CLIENT_SECRET,
+           base_url='http://localhost:8000',
+       )
+
+       session_manager.get_access_tokens(request.GET['code'])
+       access_token = client.access_token
+
+   Store ``access_token`` for later use.
 
 Accessing the API
 -----------------
 
-Create the QuickBooks client object before you make any calls to QBO. Setup the client
-connection using the stored ``access_token`` and the
+Set up an OAuth session manager to pass to the QuickBooks client.
+OAuth version 1.0 - Setup the session manager using the stored ``access_token`` and the
 ``access_token_secret`` and ``realm_id``:
+
+    ::
+
+        session_manager = Oauth1SessionManager(
+            sandbox=True,
+            consumer_key=CONSUMER_KEY,
+            consumer_secret=CONSUMER_SECRET,
+            access_token=ACCESS_TOKEN,
+            access_token_secret=ACCESS_TOKEN_SECRET,
+        )
+
+OAuth version 2.0 - Setup the session manager using the stored ``access_token`` and ``realm_id``:
+
+    ::
+
+        self.session_manager = Oauth2SessionManager(
+            sandbox=True,
+            client_id=realm_id,
+            client_secret=CLIENT_SECRET,
+            access_token=AUTH2_ACCESS_TOKEN,
+        )
+
+Then create the QuickBooks client object passing in the session manager:
 
 ::
 
@@ -81,10 +148,7 @@ connection using the stored ``access_token`` and the
 
     client = QuickBooks(
         sandbox=True,
-        consumer_key=QUICKBOOKS_CLIENT_KEY,
-        consumer_secret=QUICKBOOKS_CLIENT_SECRET,
-        access_token=access_token,
-        access_token_secret=access_token_secret,
+        session_manager=session_manager,
         company_id=realm_id
     )
 
