@@ -40,7 +40,7 @@ class QuickBooksAuthHandler(BaseHTTPRequestHandler):
             realm_id = realm_id[0]
 
         if oauth_verifier and realm_id:
-            client = self.server.qb_client_class(
+            client = Oauth1SessionManager(
                 sandbox=qb_data['sandbox'],
                 consumer_key=qb_data['consumer_key'],
                 consumer_secret=qb_data['consumer_secret']
@@ -115,21 +115,20 @@ class QuickBooksAuthHandler(BaseHTTPRequestHandler):
 
 
 class QuickBooksAuthServer(HTTPServer):
-
-    qb_client_class = Oauth1SessionManager
+    #qb_client_class = Oauth1SessionManager
 
     @classmethod
     def build_server(cls, consumer_key, consumer_secret, sandbox, port, oauth_version):
+        callback_url = 'http://localhost:{0}'.format(port)
         if oauth_version == 1:
             client = Oauth1SessionManager(
                 sandbox=sandbox,
                 consumer_key=consumer_key,
                 consumer_secret=consumer_secret,
-                callback_url='http://localhost:{0}'.format(port)
             )
 
             qb_data = {
-                'authorize_url': client.get_authorize_url(),
+                'authorize_url': client.get_authorize_url(callback_url),
                 'request_token': client.request_token,
                 'request_token_secret': client.request_token_secret,
                 'consumer_key': consumer_key,
@@ -143,12 +142,11 @@ class QuickBooksAuthServer(HTTPServer):
                 sandbox=sandbox,
                 client_id=consumer_key,
                 client_secret=consumer_secret,
-                callback_url='http://localhost:{0}'.format(port),
                 base_url='http://localhost:{0}'.format(port),
             )
 
             qb_data = {
-                'authorize_url': client.get_authorize_url(),
+                'authorize_url': client.get_authorize_url(callback_url),
                 'access_token': client.access_token,
                 'refresh_token': client.refresh_token,
                 'consumer_key': consumer_key,
