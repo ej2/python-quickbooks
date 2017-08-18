@@ -1,6 +1,9 @@
 import base64
 import requests
 import json
+
+import sys
+
 from .exceptions import QuickbooksException
 
 try:  # Python 3
@@ -24,18 +27,18 @@ SCOPE = (
 
 
 class AuthSessionManager(object):
+    oauth_version = None
     sandbox = False
-
-    access_token = ''
-    access_token_secret = ''
-    consumer_key = ''
-    consumer_secret = ''
     session = None
     started = False
-    request_token = ''
-    request_token_secret = ''
 
     def start_session(self):
+        raise NotImplemented
+
+    def get_authorize_url(self, callback_url):
+        raise NotImplemented
+
+    def get_access_tokens(self, auth_code):
         raise NotImplemented
 
     def get_session(self):
@@ -46,10 +49,13 @@ class AuthSessionManager(object):
 
 
 class Oauth1SessionManager(AuthSessionManager):
+    oauth_version = 1.0
     request_token_url = "https://oauth.intuit.com/oauth/v1/get_request_token"
     access_token_url = "https://oauth.intuit.com/oauth/v1/get_access_token"
     authorize_url = "https://appcenter.intuit.com/Connect/Begin"
-    current_user_url = "https://appcenter.intuit.com/api/v1/user/current"
+
+    request_token = ''
+    request_token_secret = ''
 
     def __init__(self, **kwargs):
         if 'consumer_key' in kwargs:
@@ -124,7 +130,15 @@ class Oauth1SessionManager(AuthSessionManager):
         access_token_secret on the QB Object.
         :param oauth_verifier: the oauth_verifier as specified by OAuth 1.0a
         """
-        session = self.qbService.get_auth_session(
+        qb_service = OAuth1Service(
+            consumer_key=self.consumer_key,
+            consumer_secret=self.consumer_secret,
+            request_token_url=self.request_token_url,
+            access_token_url=self.access_token_url,
+            authorize_url=self.authorize_url,
+        )
+
+        session = qb_service.get_auth_session(
             self.request_token,
             self.request_token_secret,
             data={'oauth_verifier': oauth_verifier})
@@ -135,10 +149,10 @@ class Oauth1SessionManager(AuthSessionManager):
 
 
 class Oauth2SessionManager(AuthSessionManager):
+    oauth_version = 2.0
     access_token_url = "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
     authorize_url = "https://appcenter.intuit.com/connect/oauth2"
-    redirect_url = "http://localhost:8000"
-    base_url = 'http://localhost:8000'
+    base_url = ''
 
     client_id = ''
     client_secret = ''
@@ -167,34 +181,28 @@ class Oauth2SessionManager(AuthSessionManager):
 
     def start_session(self):
         if not self.started:
-            if self.consumer_key == '':
-                raise QuickbooksException("Consumer Key missing. Cannot create session.")
+            if self.client_id == '':
+                raise QuickbooksException("Client Id missing. Cannot create session.")
 
-            if self.consumer_secret == '':
-                raise QuickbooksException("Consumer Secret missing. Cannot create session.")
+            if self.client_secret == '':
+                raise QuickbooksException("Client Secret missing. Cannot create session.")
 
             if self.access_token == '':
                 raise QuickbooksException("Access Token missing. Cannot create session.")
 
-            if self.access_token_secret == '':
-                raise QuickbooksException("Access Token Secret missing. Cannot create session.")
-
             self.session = OAuth2Session(
-                name='quickbooks',
                 client_id=self.client_id,
                 client_secret=self.client_secret,
-                authorize_url=self.authorize_url,
-                access_token_url=self.access_token_url,
-                base_url=self.base_url,
+                access_token=self.access_token,
             )
 
             self.started = True
 
         return self.session
 
-    def get_authorize_url(self, callback_url):
+    def get_authorize_url(self, callback_url, state=None):
         """
-        Returns the Authorize URL as returned by QB, and specified by OAuth 1.0a.
+        Returns the Authorize URL as returned by QB, and specified by OAuth 2.0a.
         :return URI:
         """
         auth_service = OAuth2Service(
@@ -211,67 +219,45 @@ class Oauth2SessionManager(AuthSessionManager):
             'response_type': 'code',
             'scope': 'com.intuit.quickbooks.accounting',
             'redirect_uri': callback_url,
-            'state': 'quickbooksisdumb',
+            'state': state,
         }
 
         url = auth_service.get_authorize_url(**params)
 
         return url
 
-    # def get_access_tokens_old(self, auth_code):
-    #     """
-    #     Wrapper around get_auth_session, returns session, and sets access_token and
-    #     access_token_secret on the QB Object.
-    #     :param oauth_verifier: the oauth_verifier as specified by OAuth 1.0a
-    #     """
-    #     auth_service = OAuth2Service(
-    #         name='quickbooks',
-    #         client_id=self.client_id,
-    #         client_secret=self.client_secret,
-    #         authorize_url=self.authorize_url,
-    #         access_token_url=self.access_token_url,
-    #         #base_url=self.base_url,
-    #     )
-    #
-    #     data = {'code': auth_code,
-    #             'grant_type': 'authorization_code',
-    #             'redirect_uri': 'http://localhost:8000'}
-    #
-    #     session = auth_service.get_auth_session(data=data, decoder=json.loads)
-    #     #session.access_token
-    #
-    #     return session
-
     def get_access_tokens(self, auth_code):
-        auth_header = 'Basic ' + stringToBase64(self.client_id + ':' + self.client_secret)
-        headers = {'Accept': 'application/json', 'content-type': 'application/x-www-form-urlencoded',
-                   'Authorization': auth_header}
+        headers = {
+            'Accept': 'application/json',
+            'content-type': 'application/x-www-form-urlencoded',
+            'Authorization': self.get_auth_header()
+        }
+
         payload = {
             'code': auth_code,
             'redirect_uri': self.base_url,
             'grant_type': 'authorization_code'
         }
+
         r = requests.post(self.access_token_url, data=payload, headers=headers)
         if r.status_code != 200:
             return r.text
-        bearer_raw = json.loads(r.text)
 
-        if 'id_token' in bearer_raw:
-            idToken = idToken = bearer_raw['id_token']
-        else:
-            idToken = None
+        bearer_raw = json.loads(r.text)
 
         self.x_refresh_token_expires_in = bearer_raw['x_refresh_token_expires_in']
         self.access_token = bearer_raw['access_token']
         self.token_type = bearer_raw['token_type']
         self.refresh_token = bearer_raw['refresh_token']
         self.expires_in = bearer_raw['expires_in']
-        self.id_token = idToken
 
-        # return Bearer(bearer_raw['x_refresh_token_expires_in'], bearer_raw['access_token'], bearer_raw['token_type'],
-        #               bearer_raw['refresh_token'], bearer_raw['expires_in'], idToken=idToken)
+        if 'id_token' in bearer_raw:
+            self.id_token = bearer_raw['id_token']
 
+    def get_auth_header(self):
+        if sys.version_info[0] == 2:
+            auth_header = base64.b64encode(bytearray(self.client_id + ':' + self.client_secret, 'utf-8')).decode()
+        else:  # Python 3
+            auth_header = base64.b64encode(bytes(self.client_id + ':' + self.client_secret, 'utf-8')).decode()
 
-def stringToBase64(s):
-    return base64.b64encode(bytearray(s, 'utf-8')).decode()
-    # return base64.b64encode(bytes(s, 'utf-8')).decode() # Python 3
+        return 'Basic ' + auth_header

@@ -318,9 +318,15 @@ class QuickBooks(object):
         if self.session_manager is None:
             raise QuickbooksException('No session manager')
 
-        return self.session_manager.get_session().request(
-            request_type, url, True, self.company_id,
-            headers=headers, params=params, data=data)
+        if self.session_manager.oauth_version == 2.0:
+            headers.update({'Authorization': 'Bearer ' + self.session_manager.access_token})
+            return self.session_manager.get_session().request(
+                request_type, url, headers=headers, params=params, data=data)
+
+        else:
+            return self.session_manager.get_session().request(
+                request_type, url, True, self.company_id,
+                headers=headers, params=params, data=data)
 
     def get_single_object(self, qbbo, pk):
         url = self.api_url + "/company/{0}/{1}/{2}/".format(self.company_id, qbbo.lower(), pk)
