@@ -1,4 +1,3 @@
-import httplib
 import unittest
 
 try:
