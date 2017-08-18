@@ -2,7 +2,7 @@ from datetime import datetime
 import os
 import unittest
 
-from quickbooks.auth import Oauth1SessionManager
+from quickbooks.auth import Oauth1SessionManager, Oauth2SessionManager
 from quickbooks.client import QuickBooks
 from quickbooks.objects.account import Account
 
@@ -26,51 +26,66 @@ class AccountTest(unittest.TestCase):
         self.account_number = datetime.now().strftime('%d%H%M')
         self.name = "Test Account {0}".format(self.account_number)
 
-    def test_create(self):
-        account = Account()
-        account.AcctNum = self.account_number
-        account.Name = self.name
-        account.AccountSubType = "CashOnHand"
-        account.save(qb=self.qb_client)
-
-        self.id = account.Id
-        query_account = Account.get(account.Id, qb=self.qb_client)
-
-        self.assertEquals(account.Id, query_account.Id)
-        self.assertEquals(query_account.Name, self.name)
-        self.assertEquals(query_account.AcctNum, self.account_number)
-
-    def test_update(self):
-        account = Account.filter(Name=self.name, qb=self.qb_client)[0]
-
-        account.Name = "Updated Name {0}".format(self.account_number)
-        account.save(qb=self.qb_client)
-
-        query_account = Account.get(account.Id, qb=self.qb_client)
-
-        self.assertEquals(query_account.Name, "Updated Name {0}".format(self.account_number))
-
-    # def test_temp(self):
-    #     session_manager = Oauth1SessionManager(
-    #         sandbox=True,
-    #         consumer_key=os.environ.get('CONSUMER_KEY'),
-    #         consumer_secret=os.environ.get('CONSUMER_SECRET'),
-    #         callback_url='http://localhost:8000'
-    #     )
+    # def test_create(self):
+    #     account = Account()
+    #     account.AcctNum = self.account_number
+    #     account.Name = self.name
+    #     account.AccountSubType = "CashOnHand"
+    #     account.save(qb=self.qb_client)
     #
-    #     authorize_url = session_manager.get_authorize_url()
+    #     self.id = account.Id
+    #     query_account = Account.get(account.Id, qb=self.qb_client)
     #
-    #     print authorize_url
-    #     print session_manager.request_token
-    #     print session_manager.request_token_secret
+    #     self.assertEquals(account.Id, query_account.Id)
+    #     self.assertEquals(query_account.Name, self.name)
+    #     self.assertEquals(query_account.AcctNum, self.account_number)
     #
-    #     session_manager.authorize_url = authorize_url
-    #     #session_manager.request_token = request_token
-    #     #session_manager.request_token_secret = request_token_secret
-    #     session_manager.set_up_service()
+    # def test_update(self):
+    #     account = Account.filter(Name=self.name, qb=self.qb_client)[0]
     #
-    #     session_manager.get_access_tokens(request.GET['oauth_verifier'])
+    #     account.Name = "Updated Name {0}".format(self.account_number)
+    #     account.save(qb=self.qb_client)
     #
-    #     realm_id = request.GET['realmId']
-    #     access_token = client.access_token
-    #     access_token_secret = client.access_token_secret
+    #     query_account = Account.get(account.Id, qb=self.qb_client)
+    #
+    #     self.assertEquals(query_account.Name, "Updated Name {0}".format(self.account_number))
+
+    def test_temp(self):
+        session_manager = Oauth2SessionManager(
+            sandbox=True,
+            client_id=os.environ.get('CLIENT_ID'),
+            client_secret=os.environ.get('CLIENT_SECRET'),
+            callback_url='http://localhost:8000'
+        )
+
+        b = False
+
+        if b:
+            authorize_url = session_manager.get_authorize_url()
+
+            print "\nAUTHORIZE URL:"
+            print authorize_url
+            print "\n"
+        else:
+
+            session_manager.get_access_tokens('L011503082534zdKZc41pYqe8sBiORkd8gWW2JZwSwtmRJWWCV')
+            print session_manager.x_refresh_token_expires_in
+            print session_manager.access_token
+            print session_manager.token_type
+            print session_manager.refresh_token
+            print session_manager.expires_in
+            print session_manager.idToken
+
+        # print session_manager.request_token
+        # print session_manager.request_token_secret
+        #
+        # session_manager.authorize_url = authorize_url
+        # #session_manager.request_token = request_token
+        # #session_manager.request_token_secret = request_token_secret
+        # session_manager.set_up_service()
+        #
+        # session_manager.get_access_tokens(request.GET['oauth_verifier'])
+        #
+        # realm_id = request.GET['realmId']
+        # access_token = client.access_token
+        # access_token_secret = client.access_token_secret
