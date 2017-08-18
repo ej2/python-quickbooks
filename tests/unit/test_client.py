@@ -1,3 +1,4 @@
+import httplib
 import unittest
 
 try:
@@ -5,6 +6,7 @@ try:
 except ImportError:
     from unittest.mock import patch
 
+from quickbooks.auth import Oauth1SessionManager
 from quickbooks.exceptions import QuickbooksException, SevereException
 from quickbooks import client
 from quickbooks.objects.salesreceipt import SalesReceipt
@@ -15,12 +17,10 @@ class ClientTest(unittest.TestCase):
         """
         Use a consistent set of defaults.
         """
+
         client.QuickBooks(
+            session_manager=MockSessionManager(),
             sandbox=True,
-            consumer_key="update_consumer_key",
-            consumer_secret="update_consumer_secret",
-            access_token="update_access_token",
-            access_token_secret="update_access_token_secret",
             company_id="update_company_id",
             callback_url="update_callback_url"
         )
@@ -219,13 +219,13 @@ class ClientTest(unittest.TestCase):
         instance = qb_client.get_instance()
         self.assertEquals(qb_client, instance)
 
-    @patch('quickbooks.client.OAuth1Session')
-    def test_create_session(self, auth_Session):
-        qb_client = client.QuickBooks()
-        session = qb_client.create_session()
-
-        self.assertTrue(auth_Session.called)
-        self.assertFalse(session is None)
+    # @patch('quickbooks.client.OAuth1Session')
+    # def test_create_session(self, auth_Session):
+    #     qb_client = client.QuickBooks()
+    #     session = qb_client.()
+    #
+    #     self.assertTrue(auth_Session.called)
+    #     self.assertFalse(session is None)
 
     def test_create_session_missing_auth_info_exception(self):
         qb_client = client.QuickBooks()
@@ -242,23 +242,18 @@ class ClientTest(unittest.TestCase):
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1/"
         make_req.assert_called_with("GET", url, {})
 
-    @patch('quickbooks.client.QuickBooks.session')
-    def test_make_request(self, qb_session):
-        qb_session.request.return_value = MockResponse()
+    @patch('quickbooks.client.QuickBooks.process_request')
+    def test_make_request(self, process_request):
+        process_request.return_value = MockResponse()
 
         qb_client = client.QuickBooks()
         qb_client.company_id = "1234"
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1/"
         qb_client.make_request("GET", url, request_body=None, content_type='application/json')
 
-        qb_session.request.assert_called_with(
-                "GET", url, True, "1234", data={},
+        process_request.assert_called_with(
+                "GET", url, data={},
                 headers={'Content-Type': 'application/json', 'Accept': 'application/json', 'User-Agent': 'python-quickbooks V3 library'}, params={})
-
-    def test_make_request_create_session(self):
-        receipt = SalesReceipt()
-        receipt.Id = 1
-        self.assertRaises(QuickbooksException, receipt.save)
 
     def test_handle_exceptions(self):
         qb_client = client.QuickBooks()
@@ -286,22 +281,20 @@ class ClientTest(unittest.TestCase):
 
         self.assertRaises(SevereException, qb_client.handle_exceptions, error_data)
 
-    @patch('quickbooks.client.QuickBooks.session')
-    def test_download_pdf(self, qb_session):
+    @patch('quickbooks.client.QuickBooks.process_request')
+    def test_download_pdf(self, process_request):
         qb_client = client.QuickBooks(sandbox=True)
         qb_client.company_id = "1234"
         receipt = SalesReceipt()
         receipt.Id = 1
 
-        receipt.download_pdf(qb_client)
+        process_request.return_value = MockPdfResponse()
+
+        response = receipt.download_pdf(qb_client)
 
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/salesreceipt/1/pdf"
-        qb_session.request.assert_called_with(
-            "GET", url, True, "1234",
-            headers={'Content-Type': 'application/pdf', 'Accept': 'application/pdf, application/json', 'User-Agent': 'python-quickbooks V3 library'})
-
-        qb_session.request.return_value = MockPdfResponse()
-        response = receipt.download_pdf(qb_client)
+        process_request.assert_called_with(
+            "GET", url, headers={'Content-Type': 'application/pdf', 'Accept': 'application/pdf, application/json', 'User-Agent': 'python-quickbooks V3 library'})
 
         self.assertEqual(response, 'sample pdf content')
 
@@ -327,6 +320,9 @@ class MockResponse(object):
     def json(self):
         return "{}"
 
+    def content(self):
+        return ''
+
 
 class MockPdfResponse(object):
     @property
@@ -340,3 +336,13 @@ class MockPdfResponse(object):
     @property
     def content(self):
         return "sample pdf content"
+
+
+class MockSessionManager(object):
+    def get_session(self):
+        return MockSession()
+
+
+class MockSession(object):
+    def request(self, request_type, url, no_idea, company_id, **kwargs):
+        return MockResponse()

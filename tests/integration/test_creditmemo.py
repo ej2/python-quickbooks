@@ -1,6 +1,7 @@
 import os
 import unittest
 
+from quickbooks.auth import Oauth1SessionManager
 from quickbooks.objects.customer import Customer
 from quickbooks.objects.detailline import SalesItemLine
 from quickbooks.objects.item import Item
@@ -11,12 +12,17 @@ from quickbooks.objects.detailline import SalesItemLineDetail
 
 class CreditMemoTest(unittest.TestCase):
     def setUp(self):
-        self.qb_client = QuickBooks(
+        self.session_manager = Oauth1SessionManager(
             sandbox=True,
             consumer_key=os.environ.get('CONSUMER_KEY'),
             consumer_secret=os.environ.get('CONSUMER_SECRET'),
             access_token=os.environ.get('ACCESS_TOKEN'),
             access_token_secret=os.environ.get('ACCESS_TOKEN_SECRET'),
+        )
+
+        self.qb_client = QuickBooks(
+            session_manager=self.session_manager,
+            sandbox=True,
             company_id=os.environ.get('COMPANY_ID')
         )
 
