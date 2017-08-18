@@ -60,7 +60,7 @@ class Oauth1SessionManagerTest(unittest.TestCase):
             self.assertEqual(error.exception.message,
                              "Consumer Key missing. Cannot create session.")
         except:
-            pass
+            self.failUnlessRaises(QuickbooksException, session_manager.start_session)
 
         self.assertEqual(session_manager.started, False)
 
@@ -80,7 +80,7 @@ class Oauth1SessionManagerTest(unittest.TestCase):
             self.assertEqual(error.exception.message,
                              "Consumer Secret missing. Cannot create session.")
         except:
-            pass
+            self.failUnlessRaises(QuickbooksException, session_manager.start_session)
 
         self.assertEqual(session_manager.started, False)
 
@@ -120,6 +120,6 @@ class Oauth1SessionManagerTest(unittest.TestCase):
             self.assertEqual(error.exception.message,
                              "Access Token Secret missing. Cannot create session.")
         except:
-            pass
+            self.failUnlessRaises(QuickbooksException, session_manager.start_session)
 
         self.assertEqual(session_manager.started, False)
