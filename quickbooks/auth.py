@@ -30,7 +30,6 @@ class AuthSessionManager(object):
     access_token_secret = ''
     consumer_key = ''
     consumer_secret = ''
-    callback_url = ''
     session = None
     started = False
     request_token = ''
@@ -65,9 +64,6 @@ class Oauth1SessionManager(AuthSessionManager):
         if 'access_token_secret' in kwargs:
             self.access_token_secret = kwargs['access_token_secret']
 
-        if 'callback_url' in kwargs:
-            self.callback_url = kwargs['callback_url']
-
         if 'sandbox' in kwargs:
             self.sandbox = kwargs['sandbox']
 
@@ -96,7 +92,7 @@ class Oauth1SessionManager(AuthSessionManager):
 
         return self.session
 
-    def get_authorize_url(self):
+    def get_authorize_url(self, callback_url):
         """
         Returns the Authorize URL as returned by QB, and specified by OAuth 1.0a.
         :return URI:
@@ -113,7 +109,7 @@ class Oauth1SessionManager(AuthSessionManager):
         )
 
         response = qb_service.get_raw_request_token(
-            params={'oauth_callback': self.callback_url})
+            params={'oauth_callback': callback_url})
 
         oauth_resp = dict(parse_qsl(response.text))
 
@@ -142,12 +138,10 @@ class Oauth2SessionManager(AuthSessionManager):
     access_token_url = "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
     authorize_url = "https://appcenter.intuit.com/connect/oauth2"
     redirect_url = "http://localhost:8000"
-
-
-    request_token_url = "https://oauth.intuit.com/oauth/v1/get_request_token"
-    current_user_url = "https://appcenter.intuit.com/api/v1/user/current"
     base_url = 'http://localhost:8000'
 
+    client_id = ''
+    client_secret = ''
     x_refresh_token_expires_in = 0
     access_token = ''
     token_type = ''
@@ -156,7 +150,6 @@ class Oauth2SessionManager(AuthSessionManager):
     id_token = 0
 
     def __init__(self, **kwargs):
-
         if 'client_id' in kwargs:
             self.client_id = kwargs['client_id']
 
@@ -166,11 +159,8 @@ class Oauth2SessionManager(AuthSessionManager):
         if 'access_token' in kwargs:
             self.access_token = kwargs['access_token']
 
-        if 'access_token_secret' in kwargs:
-            self.access_token_secret = kwargs['access_token_secret']
-
-        if 'callback_url' in kwargs:
-            self.callback_url = kwargs['callback_url']
+        if 'base_url' in kwargs:
+            self.base_url = kwargs['base_url']
 
         if 'sandbox' in kwargs:
             self.sandbox = kwargs['sandbox']
@@ -202,7 +192,7 @@ class Oauth2SessionManager(AuthSessionManager):
 
         return self.session
 
-    def get_authorize_url(self):
+    def get_authorize_url(self, callback_url):
         """
         Returns the Authorize URL as returned by QB, and specified by OAuth 1.0a.
         :return URI:
@@ -220,7 +210,7 @@ class Oauth2SessionManager(AuthSessionManager):
             'client_id': self.client_id,
             'response_type': 'code',
             'scope': 'com.intuit.quickbooks.accounting',
-            'redirect_uri': self.callback_url,
+            'redirect_uri': callback_url,
             'state': 'quickbooksisdumb',
         }
 
