@@ -149,7 +149,7 @@ class QuickBooks(object):
             self.session = session
         else:
             raise QuickbooksException(
-                "Quickbooks authenication fields not set. Cannot create session.")
+                "Quickbooks authentication fields not set. Cannot create session.")
 
         return self.session
 
