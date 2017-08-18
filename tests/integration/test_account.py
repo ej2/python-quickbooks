@@ -50,31 +50,31 @@ class AccountTest(unittest.TestCase):
     #
     #     self.assertEquals(query_account.Name, "Updated Name {0}".format(self.account_number))
 
-    def test_temp(self):
-        session_manager = Oauth2SessionManager(
-            sandbox=True,
-            client_id=os.environ.get('CLIENT_ID'),
-            client_secret=os.environ.get('CLIENT_SECRET'),
-            callback_url='http://localhost:8000'
-        )
-
-        b = False
-
-        if b:
-            authorize_url = session_manager.get_authorize_url()
-
-            print "\nAUTHORIZE URL:"
-            print authorize_url
-            print "\n"
-        else:
-
-            session_manager.get_access_tokens('L011503082534zdKZc41pYqe8sBiORkd8gWW2JZwSwtmRJWWCV')
-            print session_manager.x_refresh_token_expires_in
-            print session_manager.access_token
-            print session_manager.token_type
-            print session_manager.refresh_token
-            print session_manager.expires_in
-            print session_manager.idToken
+    # def test_temp(self):
+    #     session_manager = Oauth2SessionManager(
+    #         sandbox=True,
+    #         client_id=os.environ.get('CLIENT_ID'),
+    #         client_secret=os.environ.get('CLIENT_SECRET'),
+    #         callback_url='http://localhost:8000'
+    #     )
+    #
+    #     b = False
+    #
+    #     if b:
+    #         authorize_url = session_manager.get_authorize_url()
+    #
+    #         print "\nAUTHORIZE URL:"
+    #         print authorize_url
+    #         print "\n"
+    #     else:
+    #
+    #         session_manager.get_access_tokens('L011503082534zdKZc41pYqe8sBiORkd8gWW2JZwSwtmRJWWCV')
+    #         print session_manager.x_refresh_token_expires_in
+    #         print session_manager.access_token
+    #         print session_manager.token_type
+    #         print session_manager.refresh_token
+    #         print session_manager.expires_in
+    #         print session_manager.idToken
 
         # print session_manager.request_token
         # print session_manager.request_token_secret
