@@ -20,7 +20,7 @@ With quickbooks-cli
 -------------------
 
    ::
-       quickbooks-cli [-h] [-s] [-p PORT] consumer_key consumer_secret
+       quickbooks-cli [-h] [-s] [-p PORT] consumer_key consumer_secret oauth_version
 
 Manually
 --------

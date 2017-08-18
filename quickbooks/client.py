@@ -1,5 +1,3 @@
-from quickbooks.auth import Oauth1SessionManager
-
 try:  # Python 3
     import http.client as httplib
     from urllib.parse import parse_qsl
@@ -9,7 +7,7 @@ except ImportError:  # Python 2
 
 import textwrap
 import json
-import os
+
 from .exceptions import QuickbooksException, SevereException, AuthorizationException
 import base64
 
@@ -22,36 +20,18 @@ except ImportError:
 
 
 class QuickBooks(object):
-    """A wrapper class around Python's Rauth module for Quickbooks the API"""
-
-    access_token = ''  # TODO REMOVE
-    access_token_secret = ''  # TODO REMOVE
-    consumer_key = ''  # TODO REMOVE
-    consumer_secret = ''  # TODO REMOVE
     company_id = 0
-    callback_url = ''  # TODO REMOVE
     session = None
     session_manager = None
     sandbox = False
     minorversion = None
 
-    qbService = None  # TODO REMOVE
-
     sandbox_api_url_v3 = "https://sandbox-quickbooks.api.intuit.com/v3"
     api_url_v3 = "https://quickbooks.api.intuit.com/v3"
 
-    request_token_url = "https://oauth.intuit.com/oauth/v1/get_request_token"
-    access_token_url = "https://oauth.intuit.com/oauth/v1/get_access_token"
-
-    authorize_url = "https://appcenter.intuit.com/Connect/Begin"
-
     current_user_url = "https://appcenter.intuit.com/api/v1/user/current"
-
     disconnect_url = "https://appcenter.intuit.com/api/v1/connection/disconnect"
     reconnect_url = "https://appcenter.intuit.com/api/v1/connection/reconnect"
-
-    request_token = ''
-    request_token_secret = ''
 
     _BUSINESS_OBJECTS = [
         "Account", "Attachable", "Bill", "BillPayment",
@@ -76,22 +56,6 @@ class QuickBooks(object):
             instance = QuickBooks.__instance
         else:
             instance = object.__new__(cls)
-
-        # TODO REMOVE
-        if 'consumer_key' in kwargs:
-            instance.consumer_key = kwargs['consumer_key']
-        # TODO REMOVE
-        if 'consumer_secret' in kwargs:
-            instance.consumer_secret = kwargs['consumer_secret']
-        # TODO REMOVE
-        if 'access_token' in kwargs:
-            instance.access_token = kwargs['access_token']
-        # TODO REMOVE
-        if 'access_token_secret' in kwargs:
-            instance.access_token_secret = kwargs['access_token_secret']
-        # TODO REMOVE
-        if 'callback_url' in kwargs:
-            instance.callback_url = kwargs['callback_url']
 
         if 'company_id' in kwargs:
             instance.company_id = kwargs['company_id']
@@ -136,43 +100,6 @@ class QuickBooks(object):
         else:
             return self.api_url_v3
 
-    # TODO REMOVE
-    def create_session(self):
-        if self.consumer_secret and self.consumer_key \
-                and self.access_token_secret and self.access_token:
-            session = OAuth1Session(
-                self.consumer_key,
-                self.consumer_secret,
-                self.access_token,
-                self.access_tokcreate_sessionen_secret,
-            )
-            self.session = session
-        else:
-            raise QuickbooksException(
-                "Quickbooks authentication fields not set. Cannot create session.")
-
-        return self.session
-
-    # TODO REMOVE
-    def get_authorize_url(self):
-        """
-        Returns the Authorize URL as returned by QB, and specified by OAuth 1.0a.
-        :return URI:
-        """
-        self.authorize_url = self.authorize_url[:self.authorize_url.find('?')] \
-            if '?' in self.authorize_url else self.authorize_url
-        if self.qbService is None:
-            self.set_up_service()
-
-        response = self.qbService.get_raw_request_token(
-            params={'oauth_callback': self.callback_url})
-
-        oauth_resp = dict(parse_qsl(response.text))
-
-        self.request_token = oauth_resp['oauth_token']
-        self.request_token_secret = oauth_resp['oauth_token_secret']
-        return self.qbService.get_authorize_url(self.request_token)
-
     def get_current_user(self):
         """Get data from the current user endpoint"""
         url = self.current_user_url
@@ -187,34 +114,6 @@ class QuickBooks(object):
         url = self.api_url + "/company/{0}/reports/{1}".format(self.company_id, report_type)
         result = self.make_request("GET", url, params=qs)
         return result
-
-    # TODO: REMOVE
-    def set_up_service(self):
-        self.qbService = OAuth1Service(
-            name=None,
-            consumer_key=self.consumer_key,
-            consumer_secret=self.consumer_secret,
-            request_token_url=self.request_token_url,
-            access_token_url=self.access_token_url,
-            authorize_url=self.authorize_url,
-            base_url=None
-        )
-
-    # TODO: REMOVE
-    def get_access_tokens(self, oauth_verifier):
-        """
-        Wrapper around get_auth_session, returns session, and sets access_token and
-        access_token_secret on the QB Object.
-        :param oauth_verifier: the oauth_verifier as specified by OAuth 1.0a
-        """
-        session = self.qbService.get_auth_session(
-            self.request_token,
-            self.request_token_secret,
-            data={'oauth_verifier': oauth_verifier})
-
-        self.access_token = session.access_token
-        self.access_token_secret = session.access_token_secret
-        return session
 
     # TODO: is disconnect url the same for OAuth 1 and OAuth 2?
     def disconnect_account(self):
