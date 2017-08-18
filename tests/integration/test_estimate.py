@@ -107,11 +107,13 @@ class BillTest(unittest.TestCase):
         self.assertEqual(query_estimate.EmailStatus, estimate.EmailStatus)
         self.assertEqual(query_estimate.BillAddr.Line1, estimate.BillAddr.Line1)
         self.assertEqual(query_estimate.BillAddr.City, estimate.BillAddr.City)
-        self.assertEqual(query_estimate.BillAddr.CountrySubDivisionCode, estimate.BillAddr.CountrySubDivisionCode)
+        self.assertEqual(query_estimate.BillAddr.CountrySubDivisionCode,
+                         estimate.BillAddr.CountrySubDivisionCode)
         self.assertEqual(query_estimate.BillAddr.PostalCode, estimate.BillAddr.PostalCode)
         self.assertEqual(query_estimate.ShipAddr.Line1, estimate.ShipAddr.Line1)
         self.assertEqual(query_estimate.ShipAddr.City, estimate.ShipAddr.City)
-        self.assertEqual(query_estimate.ShipAddr.CountrySubDivisionCode, estimate.ShipAddr.CountrySubDivisionCode)
+        self.assertEqual(query_estimate.ShipAddr.CountrySubDivisionCode,
+                         estimate.ShipAddr.CountrySubDivisionCode)
         self.assertEqual(query_estimate.ShipAddr.PostalCode, estimate.ShipAddr.PostalCode)
         self.assertEqual(query_estimate.BillEmail.Address, estimate.BillEmail.Address)
         self.assertEqual(query_estimate.CustomerMemo.value, estimate.CustomerMemo.value)
@@ -123,7 +125,8 @@ class BillTest(unittest.TestCase):
         self.assertEqual(query_estimate.Line[0].Amount, estimate.Line[0].Amount)
         self.assertEqual(query_estimate.Line[0].SalesItemLineDetail.UnitPrice,
                          estimate.Line[0].SalesItemLineDetail.UnitPrice)
-        self.assertEqual(query_estimate.Line[0].SalesItemLineDetail.Qty, estimate.Line[0].SalesItemLineDetail.Qty)
+        self.assertEqual(query_estimate.Line[0].SalesItemLineDetail.Qty,
+                         estimate.Line[0].SalesItemLineDetail.Qty)
         self.assertEqual(query_estimate.Line[2].Amount, estimate.Line[1].Amount)
         self.assertEqual(query_estimate.Line[2].DiscountLineDetail.PercentBased,
                          estimate.Line[1].DiscountLineDetail.PercentBased)
