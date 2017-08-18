@@ -14,13 +14,18 @@ You can find additional examples of usage in `Integration tests folder`_.
 Connecting your application to Quickbooks Online
 ------------------------------------------------
 
+QuickBooks Online supports both OAuth 1.0 and OAuth 2.0 (See `OAuth 1.0 vs. OAuth 2.0`_ for details).
 Theres two ways to connect your application to Quickbooks Online:
 
 With quickbooks-cli
 -------------------
 
+From the commandline call quickbooks-cli tool passing in either your consumer_key and consumer_secret (OAuth 1.0)
+or your client_id and client_secret (OAuth 2.0), plus the OAuth version number:
+
    ::
        quickbooks-cli [-h] [-s] [-p PORT] consumer_key consumer_secret oauth_version
+
 
 Manually OAuth version 1.0
 --------
@@ -29,11 +34,7 @@ Manually OAuth version 1.0
 
    ::
 
-       from quickbooks import QuickBooks, Oauth1SessionManager
-
-       session_manager = Oauth1SessionManager(
-
-       )
+       from quickbooks import Oauth1SessionManager
 
        session_manager = Oauth1SessionManager(
            sandbox=True,
@@ -79,7 +80,7 @@ Manually OAuth version 2.0
 
    ::
 
-       from quickbooks import QuickBooks, Oauth2SessionManager
+       from quickbooks import Oauth2SessionManager
 
        session_manager = Oauth2SessionManager(
            sandbox=True,
@@ -446,3 +447,5 @@ on Python 2.
    :target: https://travis-ci.org/sidecars/python-quickbooks
 .. |Coverage Status| image:: https://coveralls.io/repos/sidecars/python-quickbooks/badge.svg?branch=master&service=github
    :target: https://coveralls.io/github/sidecars/python-quickbooks?branch=master
+
+.. _OAuth 1.0 vs. OAuth 2.0: https://developer.intuit.com/docs/0100_quickbooks_online/0100_essentials/000500_authentication_and_authorization/0010_oauth_1.0a_vs_oauth_2.0_apps
