@@ -5,13 +5,9 @@ from datetime import datetime
 from quickbooks.auth import Oauth1SessionManager
 from quickbooks.objects.detailline import DetailLine, SalesItemLineDetail, \
     DiscountLineDetail, SalesItemLine
-
 from quickbooks.objects.tax import TxnTaxDetail
-
 from quickbooks.objects.customer import Customer
-
 from quickbooks.objects.base import Address, EmailAddress, CustomerMemo, Ref
-
 from quickbooks.objects.estimate import Estimate
 
 from quickbooks import QuickBooks
@@ -42,7 +38,6 @@ class BillTest(unittest.TestCase):
         estimate.EmailStatus = "NotSet"
 
         estimate.BillAddr = Address()
-        # estimate.BillAddr.Id = "1" + datetime.now().strftime('%d%H%M')
         estimate.BillAddr.Line1 = "65 Ocean Dr."
         estimate.BillAddr.City = "Half Moon Bay"
         estimate.BillAddr.CountrySubDivisionCode = "CA"
@@ -95,17 +90,16 @@ class BillTest(unittest.TestCase):
         line2 = DetailLine()
         line2.Amount = 3.5
 
-        discount_line_detail = DiscountLineDetail()
-        discount_line_detail.PercentBased = True
-        discount_line_detail.DiscountPercent = 10
+        line2.DiscountLineDetail = DiscountLineDetail()
+        line2.DiscountLineDetail.PercentBased = True
+        line2.DiscountLineDetail.DiscountPercent = 10
 
-        discount_account_ref = Ref()
-        discount_account_ref.value = "86"
-        discount_account_ref.name = "Discounts given"
-        discount_line_detail.DiscountAccountRef = discount_account_ref
+        line2.DiscountLineDetail.DiscountAccountRef = Ref()
+        line2.DiscountLineDetail.DiscountAccountRef.value = "86"
+        line2.DiscountLineDetail.DiscountAccountRef.name = "Discounts given"
 
         line2.DetailType = "DiscountLineDetail"
-        line2.DiscountLineDetail = discount_line_detail
+
         estimate.Line.append(line2)
 
         estimate.save(qb=self.qb_client)
@@ -119,11 +113,13 @@ class BillTest(unittest.TestCase):
         self.assertEqual(query_estimate.EmailStatus, estimate.EmailStatus)
         self.assertEqual(query_estimate.BillAddr.Line1, estimate.BillAddr.Line1)
         self.assertEqual(query_estimate.BillAddr.City, estimate.BillAddr.City)
-        self.assertEqual(query_estimate.BillAddr.CountrySubDivisionCode, estimate.BillAddr.CountrySubDivisionCode)
+        self.assertEqual(query_estimate.BillAddr.CountrySubDivisionCode,
+                         estimate.BillAddr.CountrySubDivisionCode)
         self.assertEqual(query_estimate.BillAddr.PostalCode, estimate.BillAddr.PostalCode)
         self.assertEqual(query_estimate.ShipAddr.Line1, estimate.ShipAddr.Line1)
         self.assertEqual(query_estimate.ShipAddr.City, estimate.ShipAddr.City)
-        self.assertEqual(query_estimate.ShipAddr.CountrySubDivisionCode, estimate.ShipAddr.CountrySubDivisionCode)
+        self.assertEqual(query_estimate.ShipAddr.CountrySubDivisionCode,
+                         estimate.ShipAddr.CountrySubDivisionCode)
         self.assertEqual(query_estimate.ShipAddr.PostalCode, estimate.ShipAddr.PostalCode)
         self.assertEqual(query_estimate.BillEmail.Address, estimate.BillEmail.Address)
         self.assertEqual(query_estimate.CustomerMemo.value, estimate.CustomerMemo.value)
@@ -133,3 +129,16 @@ class BillTest(unittest.TestCase):
         self.assertEqual(query_estimate.Line[0].LineNum, estimate.Line[0].LineNum)
         self.assertEqual(query_estimate.Line[0].Description, estimate.Line[0].Description)
         self.assertEqual(query_estimate.Line[0].Amount, estimate.Line[0].Amount)
+        self.assertEqual(query_estimate.Line[0].SalesItemLineDetail.UnitPrice,
+                         estimate.Line[0].SalesItemLineDetail.UnitPrice)
+        self.assertEqual(query_estimate.Line[0].SalesItemLineDetail.Qty,
+                         estimate.Line[0].SalesItemLineDetail.Qty)
+        self.assertEqual(query_estimate.Line[2].Amount, estimate.Line[1].Amount)
+        self.assertEqual(query_estimate.Line[2].DiscountLineDetail.PercentBased,
+                         estimate.Line[1].DiscountLineDetail.PercentBased)
+        self.assertEqual(query_estimate.Line[2].DiscountLineDetail.DiscountPercent,
+                         estimate.Line[1].DiscountLineDetail.DiscountPercent)
+        self.assertEqual(query_estimate.Line[2].DiscountLineDetail.DiscountAccountRef.value,
+                         estimate.Line[1].DiscountLineDetail.DiscountAccountRef.value)
+        self.assertEqual(query_estimate.Line[2].DiscountLineDetail.DiscountAccountRef.name,
+                         estimate.Line[1].DiscountLineDetail.DiscountAccountRef.name)
