@@ -77,7 +77,7 @@ class QuickBooksAuthHandler(BaseHTTPRequestHandler):
         qb_data = self.server.qb_data
 
         GET = parse_qs(urlparse(self.path).query)
-
+        print "GET.get('code'): " + GET.get('code')
         auth_code = GET.get('code')
 
         if auth_code:
@@ -97,9 +97,7 @@ class QuickBooksAuthHandler(BaseHTTPRequestHandler):
             self.wfile.write(
                 bytes('<p><b>Sandbox:</b> {0}</p>'.format(qb_data['sandbox']),
                       'UTF-8'))
-            self.wfile.write(
-                bytes('<p><b>Realm Id:</b> {0}</p>'.format(realm_id), 'UTF-8'))
-
+            
             self.wfile.write(
                 bytes('<p><b>Access Token:</b> {0}</p>'.format(
                     client.access_token), 'UTF-8'))
