@@ -1,4 +1,5 @@
 import os
+import tempfile
 import unittest
 from datetime import datetime
 
@@ -49,6 +50,7 @@ class AttachableTest(unittest.TestCase):
 
     def test_create_file(self):
         attachable = Attachable()
+        test_file = tempfile.NamedTemporaryFile(suffix=".txt")
 
         vendor = Vendor.all(max_results=1, qb=self.qb_client)[0]
 
@@ -56,9 +58,9 @@ class AttachableTest(unittest.TestCase):
         attachable_ref.EntityRef = vendor.to_ref()
         attachable.AttachableRef.append(attachable_ref)
 
-        attachable.FileName = 'TestFileName'
-        attachable._FilePath = __file__
-        attachable.ContentType = 'application/txt'
+        attachable.FileName = os.path.basename(test_file.name)
+        attachable._FilePath = test_file.name
+        attachable.ContentType = 'text/plain'
 
         attachable.save(qb=self.qb_client)
         query_attachable = Attachable.get(attachable.Id, qb=self.qb_client)
