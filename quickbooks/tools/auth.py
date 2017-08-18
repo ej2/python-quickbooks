@@ -49,8 +49,6 @@ class QuickBooksAuthHandler(BaseHTTPRequestHandler):
             client.authorize_url = qb_data['authorize_url']
             client.request_token = qb_data['request_token']
             client.request_token_secret = qb_data['request_token_secret']
-            client.set_up_service()
-
             client.get_access_tokens(oauth_verifier)
 
             self.wfile.write(
@@ -77,7 +75,6 @@ class QuickBooksAuthHandler(BaseHTTPRequestHandler):
         qb_data = self.server.qb_data
 
         GET = parse_qs(urlparse(self.path).query)
-        print "GET.get('code'): " + GET.get('code')
         auth_code = GET.get('code')
 
         if auth_code:
@@ -97,7 +94,6 @@ class QuickBooksAuthHandler(BaseHTTPRequestHandler):
             self.wfile.write(
                 bytes('<p><b>Sandbox:</b> {0}</p>'.format(qb_data['sandbox']),
                       'UTF-8'))
-            
             self.wfile.write(
                 bytes('<p><b>Access Token:</b> {0}</p>'.format(
                     client.access_token), 'UTF-8'))
@@ -113,8 +109,6 @@ class QuickBooksAuthHandler(BaseHTTPRequestHandler):
 
 
 class QuickBooksAuthServer(HTTPServer):
-    #qb_client_class = Oauth1SessionManager
-
     @classmethod
     def build_server(cls, consumer_key, consumer_secret, sandbox, port, oauth_version):
         callback_url = 'http://localhost:{0}'.format(port)
