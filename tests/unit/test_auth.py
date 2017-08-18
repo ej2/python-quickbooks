@@ -100,7 +100,7 @@ class Oauth1SessionManagerTest(unittest.TestCase):
             self.assertEqual(error.exception.message,
                              "Access Token missing. Cannot create session.")
         except:
-            self.failUnlessRaises(QuickbooksException, session_manager.start_session())
+            self.failUnlessRaises(QuickbooksException, session_manager.start_session)
 
         self.assertEqual(session_manager.started, False)
 
