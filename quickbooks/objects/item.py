@@ -39,12 +39,12 @@ class Item(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.SubItem = False
         self.FullyQualifiedName = ""  # Readonly
         self.Taxable = False
-        self.SalesTaxInclusive = None
+        self.SalesTaxIncluded = None
         self.UnitPrice = 0
         self.Type = ""
         self.Level = None  # Readonly
         self.PurchaseDesc = None
-        self.PurchaseTaxInclusive = None
+        self.PurchaseTaxIncluded = None
         self.PurchaseCost = None
         self.TrackQtyOnHand = False
         self.QtyOnHand = None
