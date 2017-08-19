@@ -20,6 +20,7 @@ With quickbooks-cli
 -------------------
 
    ::
+
        quickbooks-cli [-h] [-s] [-p PORT] consumer_key consumer_secret
 
 Manually
@@ -27,46 +28,46 @@ Manually
 
 1. Create the Authorization URL for your application:
 
-   ::
+.. code-block:: python
 
-       from quickbooks import QuickBooks
+     from quickbooks import QuickBooks
 
-       client = QuickBooks(
-           sandbox=True,
-           consumer_key=QUICKBOOKS_CLIENT_KEY,
-           consumer_secret=QUICKBOOKS_CLIENT_SECRET,
-           callback_url=CALLBACK_URL
-       )
+     client = QuickBooks(
+         sandbox=True,
+         consumer_key=QUICKBOOKS_CLIENT_KEY,
+         consumer_secret=QUICKBOOKS_CLIENT_SECRET,
+         callback_url=CALLBACK_URL
+     )
 
-       authorize_url = client.get_authorize_url()
-       request_token = client.request_token
-       request_token_secret = client.request_token_secret
+     authorize_url = client.get_authorize_url()
+     request_token = client.request_token
+     request_token_secret = client.request_token_secret
 
-   Store the ``authorize_url``, ``request_token``, and ``request_token_secret``
-   for use in the Callback method.
+Store the ``authorize_url``, ``request_token``, and ``request_token_secret``
+for use in the Callback method.
 
 2. Handle the callback:
 
-   ::
+.. code-block:: python
 
-       client = QuickBooks(
-           sandbox=True,
-           consumer_key=QUICKBOOKS_CLIENT_KEY,
-           consumer_secret=QUICKBOOKS_CLIENT_SECRET
-       )
+     client = QuickBooks(
+         sandbox=True,
+         consumer_key=QUICKBOOKS_CLIENT_KEY,
+         consumer_secret=QUICKBOOKS_CLIENT_SECRET
+     )
 
-       client.authorize_url = authorize_url
-       client.request_token = request_token
-       client.request_token_secret = request_token_secret
-       client.set_up_service()
+     client.authorize_url = authorize_url
+     client.request_token = request_token
+     client.request_token_secret = request_token_secret
+     client.set_up_service()
 
-       client.get_access_tokens(request.GET['oauth_verifier'])
+     client.get_access_tokens(request.GET['oauth_verifier'])
 
-       realm_id = request.GET['realmId']
-       access_token = client.access_token
-       access_token_secret = client.access_token_secret
+     realm_id = request.GET['realmId']
+     access_token = client.access_token
+     access_token_secret = client.access_token_secret
 
-   Store ``realm_id``, ``access_token``, and ``access_token_secret`` for later use.
+Store ``realm_id``, ``access_token``, and ``access_token_secret`` for later use.
 
 Accessing the API
 -----------------
@@ -75,9 +76,9 @@ Create the QuickBooks client object before you make any calls to QBO. Setup the 
 connection using the stored ``access_token`` and the
 ``access_token_secret`` and ``realm_id``:
 
-::
+.. code-block:: python
 
-    from quickbooks import QuickBooks
+   from quickbooks import QuickBooks
 
     client = QuickBooks(
         sandbox=True,
@@ -91,7 +92,7 @@ connection using the stored ``access_token`` and the
 If you need to access a minor version (See `Minor versions`_ for
 details) pass in minorversion when setting up the client:
 
-::
+.. code-block:: python
 
     client = QuickBooks(
         sandbox=True,
@@ -105,30 +106,29 @@ details) pass in minorversion when setting up the client:
 
 You can disconnect the current Quickbooks Account like so (See `Disconnect documentation`_ for full details):
 
-::
+.. code-block:: python
 
-   client.disconnect_account()
+    client.disconnect_account()
 
 If your consumer_key never changes you can enable the client to stay running:
 
-::
+.. code-block:: python
 
-   QuickBooks.enable_global()
+    QuickBooks.enable_global()
 
 You can disable the global client like so:
 
-::
+.. code-block:: python
 
-   QuickBooks.disable_global()
+    QuickBooks.disable_global()
 
 
 List of objects:
 
-::
-
+.. code-block:: python
     
-    from quickbooks.objects.customer
-    import Customer customers = Customer.all(qb=client)
+    from quickbooks.objects.customer import Customer
+    customers = Customer.all(qb=client)
 
 **Note:** The maximum number of entities that can be returned in a
 response is 1000. If the result size is not specified, the default
@@ -136,51 +136,51 @@ number is 100. (See `Intuit developer guide`_ for details)
 
 Filtered list of objects:
 
-::
+.. code-block:: python
 
     customers = Customer.filter(Active=True, FamilyName="Smith", qb=client)
 
 Filtered list of objects with paging:
 
-::
+.. code-block:: python
 
     customers = Customer.filter(start_position=1, max_results=25, Active=True, FamilyName="Smith", qb=client)
 
 List Filtered by values in list:
 
-::
+.. code-block:: python
 
     customer_names = ['Customer1', 'Customer2', 'Customer3']
     customers = Customer.choose(customer_names, field="DisplayName", qb=client)
 
-List with custom Where Clause (do not include the “WHERE”):
+List with custom Where Clause (do not include the ``"WHERE"``):
 
-::
+.. code-block:: python
 
     customers = Customer.where("Active = True AND CompanyName LIKE 'S%'", qb=client)
 
 List with custom Where Clause and paging:
 
-::
+.. code-block:: python
 
     customers = Customer.where("CompanyName LIKE 'S%'", start_position=1, max_results=25, qb=client)
 
 Filtering a list with a custom query (See `Intuit developer guide`_ for
 supported SQL statements):
 
-::
+.. code-block:: python
 
-    customer = Customer.query("SELECT * FROM Customer WHERE Active = True", qb=client)
+    customers = Customer.query("SELECT * FROM Customer WHERE Active = True", qb=client)
 
 Filtering a list with a custom query with paging:
 
-::
+.. code-block:: python
 
-    customer = Customer.query("SELECT * FROM Customer WHERE Active = True STARTPOSITION 1 MAXRESULTS 25", qb=client)
+    customers = Customer.query("SELECT * FROM Customer WHERE Active = True STARTPOSITION 1 MAXRESULTS 25", qb=client)
 
 Get single object by Id and update:
 
-::
+.. code-block:: python
 
     customer = Customer.get(1, qb=client)
     customer.CompanyName = "New Test Company Name"
@@ -188,7 +188,7 @@ Get single object by Id and update:
 
 Create new object:
 
-::
+.. code-block:: python
 
     customer = Customer()
     customer.CompanyName = "Test Company"
@@ -203,7 +203,7 @@ full details).
 
 Batch create a list of objects:
 
-::
+.. code-block:: python
 
     from quickbooks.batch import batch_create
 
@@ -221,58 +221,57 @@ Batch create a list of objects:
 
 Batch update a list of objects:
 
-::
+.. code-block:: python
 
-    from quickbooks.batch import batch_update
+   from quickbooks.batch import batch_update
 
-    customers = Customer.filter(Active=True)
+   customers = Customer.filter(Active=True)
 
-    # Update customer records
+   # Update customer records
 
-    results = batch_update(customers, qb=client)
+   results = batch_update(customers, qb=client)
 
 Batch delete a list of objects:
 
-::
+.. code-block:: python
 
-    from quickbooks.batch import batch_delete
+   from quickbooks.batch import batch_delete
 
-    customers = Customer.filter(Active=False)
-    results = batch_delete(customers, qb=client)
-
+   customers = Customer.filter(Active=False)
+   results = batch_delete(customers, qb=client)
 
 Review results for batch operation:
 
-::
+.. code-block:: python
 
-    # successes is a list of objects that were successfully updated 
-    for obj in results.successes:
-        print "Updated " + obj.DisplayName
+   # successes is a list of objects that were successfully updated 
+   for obj in results.successes:
+       print "Updated " + obj.DisplayName
 
-    # faults contains list of failed operations and associated errors
-    for fault in results.faults:
-        print "Operation failed on " + fault.original_object.DisplayName 
-        
-        for error in fault.Error:
-            print "Error " + error.Message 
+   # faults contains list of failed operations and associated errors
+   for fault in results.faults:
+       print "Operation failed on " + fault.original_object.DisplayName 
+
+       for error in fault.Error:
+           print "Error " + error.Message 
 
 Change Data Capture
 -----------------------
 Change Data Capture returns a list of objects that have changed since a given time (see `Change data capture`_ for more
 details):
 
-::
+.. code-block:: python
 
    from quickbooks.cdc import change_data_capture
    from quickbooks.objects import Invoice
 
    cdc_response = change_data_capture([Invoice], "2017-01-01T00:00:00", qb=client)
    for invoice in cdc_response.Invoice:
-      # Do something with the invoice
+       # Do something with the invoice
 
 Querying muliple entity types at the same time:
 
-::
+.. code-block:: python
 
    from quickbooks.objects import Invoice, Customer
 
@@ -281,12 +280,11 @@ Querying muliple entity types at the same time:
 
 If you use a ``datetime`` object for the timestamp, it is automatically converted to a string:
 
-::
+.. code-block:: python
 
    from datetime import datetime
 
    cdc_response = change_data_capture([Invoice, Customer], datetime(2017, 1, 1, 0, 0, 0), qb=client)
-
 
 Attachments
 ----------------
@@ -294,35 +292,33 @@ See `Attachable documentation`_ for list of valid file types, file size limits a
 
 Attaching a note to a customer:
 
-::
+.. code-block:: python
 
-     attachment = Attachable()
+    attachment = Attachable()
 
-     attachable_ref = AttachableRef()
-     attachable_ref.EntityRef = customer.to_ref()
+    attachable_ref = AttachableRef()
+    attachable_ref.EntityRef = customer.to_ref()
 
-     attachment.AttachableRef.append(attachable_ref)
+    attachment.AttachableRef.append(attachable_ref)
 
-     attachment.Note = 'This is a note'
-     attachment.save(qb=client)
+    attachment.Note = 'This is a note'
+    attachment.save(qb=client)
 
 Attaching a file to customer:
 
-::
+.. code-block:: python
 
-     attachment = Attachable()
+    attachment = Attachable()
 
-     attachable_ref = AttachableRef()
-     attachable_ref.EntityRef = customer.to_ref()
+    attachable_ref = AttachableRef()
+    attachable_ref.EntityRef = customer.to_ref()
 
-     attachment.AttachableRef.append(attachable_ref)
+    attachment.AttachableRef.append(attachable_ref)
 
-     attachment.FileName = 'Filename'
-     attachment._FilePath = '/folder/filename'  # full path to file
-     attachment.ContentType = 'application/pdf'
-     attachment.save(qb=client)
-
-
+    attachment.FileName = 'Filename'
+    attachment._FilePath = '/folder/filename'  # full path to file
+    attachment.ContentType = 'application/pdf'
+    attachment.save(qb=client)
 
 Working with JSON data
 ----------------
@@ -330,14 +326,14 @@ All objects include ``to_json`` and ``from_json`` methods.
 
 Converting an object to JSON data:
 
-::
+.. code-block:: python
 
    account = Account.get(1, qb=client)
    json_data = account.to_json()
 
 Loading JSON data into a quickbooks object:
 
-::
+.. code-block:: python
 
    account = Account()
    account.from_json(
@@ -353,7 +349,7 @@ Date formatting
 When setting date or datetime fields, Quickbooks requires a specific format.
 Formating helpers are available in helpers.py. Example usage:
 
-::
+.. code-block:: python
 
    date_string = qb_date_format(date(2016, 7, 22))
    date_time_string = qb_datetime_format(datetime(2016, 7, 22, 10, 35, 00))
