@@ -11,23 +11,25 @@ These instructions were written for a Django application. Make sure to
 change it to whatever framework/method you’re using.
 You can find additional examples of usage in `Integration tests folder`_.
 
-Connecting your application to Quickbooks Online
+QuickBooks OAuth
 ------------------------------------------------
 
-QuickBooks Online supports both OAuth 1.0 and OAuth 2.0 (See `OAuth 1.0 vs. OAuth 2.0`_ for details).
-Theres two ways to connect your application to Quickbooks Online:
+As of July 17, 2017, all new applications connecting to QuickBook Online must use OAuth 2.0.
+Existing applications can continue to use OAuth 1.0 (See `OAuth 1.0 vs. OAuth 2.0`_ for details)
 
-With quickbooks-cli
+
+Connecting your application with quickbooks-cli
 -------------------
 
 From the commandline call quickbooks-cli tool passing in either your consumer_key and consumer_secret (OAuth 1.0)
 or your client_id and client_secret (OAuth 2.0), plus the OAuth version number:
 
    ::
+
        quickbooks-cli [-h] [-s] [-p PORT] consumer_key consumer_secret oauth_version
 
 
-Manually OAuth version 1.0
+Manually connecting with OAuth version 1.0
 --------
 
 1. Create the Authorization URL for your application:
@@ -73,7 +75,7 @@ Manually OAuth version 1.0
    Store ``realm_id``, ``access_token``, and ``access_token_secret`` for later use.
 
 
-Manually OAuth version 2.0
+Manually connecting with OAuth version 2.0
 --------
 
 1. Create the Authorization URL for your application:
