@@ -1,19 +1,25 @@
 from datetime import datetime
 import os
 import unittest
+
+from quickbooks.auth import Oauth2SessionManager
 from quickbooks.client import QuickBooks
 from quickbooks.objects.account import Account
 
 
 class AccountTest(unittest.TestCase):
     def setUp(self):
-        self.qb_client = QuickBooks(
+        self.session_manager = Oauth2SessionManager(
             sandbox=True,
-            consumer_key=os.environ.get('CONSUMER_KEY'),
-            consumer_secret=os.environ.get('CONSUMER_SECRET'),
-            access_token=os.environ.get('ACCESS_TOKEN'),
-            access_token_secret=os.environ.get('ACCESS_TOKEN_SECRET'),
-            company_id=os.environ.get('COMPANY_ID')
+            client_id=os.environ.get('CLIENT_ID'),
+            client_secret=os.environ.get('CLIENT_SECRET'),
+            access_token=os.environ.get('AUTH2_ACCESS_TOKEN'),
+        )
+
+        self.qb_client = QuickBooks(
+            session_manager=self.session_manager,
+            sandbox=True,
+            company_id=os.environ.get('COMPANY_ID2')
         )
 
         self.account_number = datetime.now().strftime('%d%H%M')
