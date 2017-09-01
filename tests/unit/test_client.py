@@ -32,73 +32,38 @@ class ClientTest(unittest.TestCase):
     def test_client_new(self):
         self.qb_client = client.QuickBooks(
             sandbox=False,
-            consumer_key="consumer_key",
-            consumer_secret="consumer_secret",
-            access_token="access_token",
-            access_token_secret="access_token_secret",
             company_id="company_id",
-            callback_url="callback_url",
             verbose=True,
             minorversion=4
         )
 
         self.assertEquals(self.qb_client.sandbox, False)
-        self.assertEquals(self.qb_client.consumer_key, "consumer_key")
-        self.assertEquals(self.qb_client.consumer_secret, "consumer_secret")
-        self.assertEquals(self.qb_client.access_token, "access_token")
-        self.assertEquals(self.qb_client.access_token_secret, "access_token_secret")
         self.assertEquals(self.qb_client.company_id, "company_id")
-        self.assertEquals(self.qb_client.callback_url, "callback_url")
         self.assertEquals(self.qb_client.minorversion, 4)
 
     def test_client_updated(self):
         self.qb_client = client.QuickBooks(
             sandbox=False,
-            consumer_key="consumer_key",
-            consumer_secret="consumer_secret",
-            access_token="access_token",
-            access_token_secret="access_token_secret",
             company_id="company_id",
-            callback_url="callback_url",
         )
 
         self.qb_client2 = client.QuickBooks(
             sandbox=True,
-            consumer_key="update_consumer_key",
-            consumer_secret="update_consumer_secret",
-            access_token="update_access_token",
-            access_token_secret="update_access_token_secret",
             company_id="update_company_id",
-            callback_url="update_callback_url",
         )
 
         self.assertEquals(self.qb_client.sandbox, True)
-        self.assertEquals(self.qb_client.consumer_key, "update_consumer_key")
-        self.assertEquals(self.qb_client.consumer_secret, "update_consumer_secret")
-        self.assertEquals(self.qb_client.access_token, "update_access_token")
-        self.assertEquals(self.qb_client.access_token_secret, "update_access_token_secret")
         self.assertEquals(self.qb_client.company_id, "update_company_id")
-        self.assertEquals(self.qb_client.callback_url, "update_callback_url")
 
         self.assertEquals(self.qb_client2.sandbox, True)
-        self.assertEquals(self.qb_client2.consumer_key, "update_consumer_key")
-        self.assertEquals(self.qb_client2.consumer_secret, "update_consumer_secret")
-        self.assertEquals(self.qb_client2.access_token, "update_access_token")
-        self.assertEquals(self.qb_client2.access_token_secret, "update_access_token_secret")
         self.assertEquals(self.qb_client2.company_id, "update_company_id")
-        self.assertEquals(self.qb_client2.callback_url, "update_callback_url")
 
     def test_disable_global(self):
         client.QuickBooks.disable_global()
         self.qb_client = client.QuickBooks()
 
         self.assertFalse(self.qb_client.sandbox)
-        self.assertFalse(self.qb_client.consumer_key)
-        self.assertFalse(self.qb_client.consumer_secret)
-        self.assertFalse(self.qb_client.access_token)
-        self.assertFalse(self.qb_client.access_token_secret)
         self.assertFalse(self.qb_client.company_id)
-        self.assertFalse(self.qb_client.callback_url)
         self.assertFalse(self.qb_client.minorversion)
 
     def test_api_url(self):
@@ -152,20 +117,6 @@ class ClientTest(unittest.TestCase):
 
         self.assertTrue(make_req.called)
 
-    def test_get_authorize_url(self):
-        qb_client = client.QuickBooks()
-        qb_client.set_up_service()
-
-        with patch.object(qb_client.qbService, "get_raw_request_token",
-                          return_value=MockResponse()):
-
-            results = qb_client.get_authorize_url()
-
-            self.assertTrue('https://appcenter.intuit.com/Connect/Begin' in results)
-            self.assertTrue('oauth_token' in results)
-            self.assertEqual(qb_client.request_token, 'tokenvalue')
-            self.assertTrue(qb_client.request_token_secret, 'secretvalue')
-
     @patch('quickbooks.client.QuickBooks.make_request')
     def test_get_current_user(self, make_req):
         qb_client = client.QuickBooks()
@@ -174,16 +125,6 @@ class ClientTest(unittest.TestCase):
         qb_client.get_current_user()
         url = "https://appcenter.intuit.com/api/v1/user/current"
         make_req.assert_called_with("GET", url)
-
-    @patch('quickbooks.client.QuickBooks.qbService')
-    def test_get_access_tokens(self, qbService):
-        qb_client = client.QuickBooks()
-        qb_client.request_token = "token"
-        qb_client.request_token_secret = "secret"
-        session = qb_client.get_access_tokens("oauth_verifier")
-
-        qbService.get_auth_session.assert_called_with('token', 'secret', data={'oauth_verifier': 'oauth_verifier'})
-        self.assertFalse(session is None)
 
     @patch('quickbooks.client.QuickBooks.make_request')
     def test_disconnect_account(self, make_req):
@@ -217,20 +158,6 @@ class ClientTest(unittest.TestCase):
 
         instance = qb_client.get_instance()
         self.assertEquals(qb_client, instance)
-
-    # @patch('quickbooks.client.OAuth1Session')
-    # def test_create_session(self, auth_Session):
-    #     qb_client = client.QuickBooks()
-    #     session = qb_client.()
-    #
-    #     self.assertTrue(auth_Session.called)
-    #     self.assertFalse(session is None)
-
-    def test_create_session_missing_auth_info_exception(self):
-        qb_client = client.QuickBooks()
-        qb_client.consumer_secret = None
-
-        self.assertRaises(QuickbooksException, qb_client.create_session)
 
     @patch('quickbooks.client.QuickBooks.make_request')
     def test_get_single_object(self, make_req):
