@@ -24,7 +24,7 @@ Connecting your application with quickbooks-cli
 From the command line, call quickbooks-cli tool passing in either your consumer_key and consumer_secret (OAuth 1.0)
 or your client_id and client_secret (OAuth 2.0), plus the OAuth version number:
 
-.. code-block:: python
+.. code-block:: console
 
     quickbooks-cli [-h] [-s] [-p PORT] consumer_key consumer_secret oauth_version
 
