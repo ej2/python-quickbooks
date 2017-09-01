@@ -1,6 +1,15 @@
 Changelog
 ========
 
+* 0.7.0 (August 31st, 2017)
+    * Added support for OAuth 2.0
+    * Added command line interface for connecting to QBO.
+    * Fixed unicode issue in 'build_where_clause' and 'where' methods.
+    * Fixed incorrectly named field 'PurchaseTaxIncluded' on Item object.
+    * Fixed issue with to_ref method on TaxCode.
+    * Added DeleteMixin to JournalEntry.
+    * Updated User-Agent.
+
 * 0.6.1 (May 9th, 2017)
     * Fixed issue with to_ref method on Bill object.
     * Added DefinitionId to CustomField
