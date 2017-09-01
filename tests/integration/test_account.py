@@ -46,5 +46,4 @@ class AccountTest(unittest.TestCase):
         account.save(qb=self.qb_client)
 
         query_account = Account.get(account.Id, qb=self.qb_client)
-
         self.assertEquals(query_account.Name, "Updated Name {0}".format(self.account_number))
