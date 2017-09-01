@@ -21,12 +21,12 @@ Existing applications can continue to use OAuth 1.0 (See `OAuth 1.0 vs. OAuth 2.
 Connecting your application with quickbooks-cli
 -------------------
 
-From the commandline call quickbooks-cli tool passing in either your consumer_key and consumer_secret (OAuth 1.0)
+From the command line call quickbooks-cli tool passing in either your consumer_key and consumer_secret (OAuth 1.0)
 or your client_id and client_secret (OAuth 2.0), plus the OAuth version number:
 
    ::
 
-       quickbooks-cli [-h] [-s] [-p PORT] consumer_key consumer_secret oauth_version
+    quickbooks-cli [-h] [-s] [-p PORT] consumer_key consumer_secret oauth_version
 
 
 Manually connecting with OAuth version 1.0
@@ -34,7 +34,7 @@ Manually connecting with OAuth version 1.0
 
 1. Create the Authorization URL for your application:
 
-   ::
+.. code-block:: python
 
        from quickbooks import Oauth1SessionManager
 
@@ -54,7 +54,7 @@ Manually connecting with OAuth version 1.0
 
 2. Handle the callback:
 
-   ::
+.. code-block:: python
 
        session_manager = Oauth1SessionManager(
            sandbox=True,
@@ -80,7 +80,7 @@ Manually connecting with OAuth version 2.0
 
 1. Create the Authorization URL for your application:
 
-   ::
+.. code-block:: python
 
        from quickbooks import Oauth2SessionManager
 
@@ -101,7 +101,7 @@ Manually connecting with OAuth version 2.0
 
 2. Handle the callback:
 
-   ::
+.. code-block:: python
 
        session_manager = Oauth2SessionManager(
            sandbox=True,
@@ -122,7 +122,7 @@ Set up an OAuth session manager to pass to the QuickBooks client.
 OAuth version 1.0 - Setup the session manager using the stored ``access_token`` and the
 ``access_token_secret`` and ``realm_id``:
 
-    ::
+.. code-block:: python
 
         session_manager = Oauth1SessionManager(
             sandbox=True,
@@ -134,7 +134,7 @@ OAuth version 1.0 - Setup the session manager using the stored ``access_token`` 
 
 OAuth version 2.0 - Setup the session manager using the stored ``access_token`` and ``realm_id``:
 
-    ::
+.. code-block:: python
 
         self.session_manager = Oauth2SessionManager(
             sandbox=True,
@@ -145,7 +145,7 @@ OAuth version 2.0 - Setup the session manager using the stored ``access_token`` 
 
 Then create the QuickBooks client object passing in the session manager:
 
-::
+.. code-block:: python
 
     from quickbooks import QuickBooks
 
@@ -158,7 +158,7 @@ Then create the QuickBooks client object passing in the session manager:
 If you need to access a minor version (See `Minor versions`_ for
 details) pass in minorversion when setting up the client:
 
-::
+.. code-block:: python
 
     client = QuickBooks(
         sandbox=True,
@@ -172,26 +172,26 @@ details) pass in minorversion when setting up the client:
 
 You can disconnect the current Quickbooks Account like so (See `Disconnect documentation`_ for full details):
 
-::
+.. code-block:: python
 
    client.disconnect_account()
 
 If your consumer_key never changes you can enable the client to stay running:
 
-::
+.. code-block:: python
 
    QuickBooks.enable_global()
 
 You can disable the global client like so:
 
-::
+.. code-block:: python
 
    QuickBooks.disable_global()
 
 
 List of objects:
 
-::
+.. code-block:: python
 
     
     from quickbooks.objects.customer
@@ -203,51 +203,51 @@ number is 100. (See `Intuit developer guide`_ for details)
 
 Filtered list of objects:
 
-::
+.. code-block:: python
 
     customers = Customer.filter(Active=True, FamilyName="Smith", qb=client)
 
 Filtered list of objects with paging:
 
-::
+.. code-block:: python
 
     customers = Customer.filter(start_position=1, max_results=25, Active=True, FamilyName="Smith", qb=client)
 
 List Filtered by values in list:
 
-::
+.. code-block:: python
 
     customer_names = ['Customer1', 'Customer2', 'Customer3']
     customers = Customer.choose(customer_names, field="DisplayName", qb=client)
 
 List with custom Where Clause (do not include the “WHERE”):
 
-::
+.. code-block:: python
 
     customers = Customer.where("Active = True AND CompanyName LIKE 'S%'", qb=client)
 
 List with custom Where Clause and paging:
 
-::
+.. code-block:: python
 
     customers = Customer.where("CompanyName LIKE 'S%'", start_position=1, max_results=25, qb=client)
 
 Filtering a list with a custom query (See `Intuit developer guide`_ for
 supported SQL statements):
 
-::
+.. code-block:: python
 
     customer = Customer.query("SELECT * FROM Customer WHERE Active = True", qb=client)
 
 Filtering a list with a custom query with paging:
 
-::
+.. code-block:: python
 
     customer = Customer.query("SELECT * FROM Customer WHERE Active = True STARTPOSITION 1 MAXRESULTS 25", qb=client)
 
 Get single object by Id and update:
 
-::
+.. code-block:: python
 
     customer = Customer.get(1, qb=client)
     customer.CompanyName = "New Test Company Name"
@@ -255,7 +255,7 @@ Get single object by Id and update:
 
 Create new object:
 
-::
+.. code-block:: python
 
     customer = Customer()
     customer.CompanyName = "Test Company"
@@ -270,7 +270,7 @@ full details).
 
 Batch create a list of objects:
 
-::
+.. code-block:: python
 
     from quickbooks.batch import batch_create
 
@@ -288,7 +288,7 @@ Batch create a list of objects:
 
 Batch update a list of objects:
 
-::
+.. code-block:: python
 
     from quickbooks.batch import batch_update
 
@@ -300,7 +300,7 @@ Batch update a list of objects:
 
 Batch delete a list of objects:
 
-::
+.. code-block:: python
 
     from quickbooks.batch import batch_delete
 
@@ -310,7 +310,7 @@ Batch delete a list of objects:
 
 Review results for batch operation:
 
-::
+.. code-block:: python
 
     # successes is a list of objects that were successfully updated 
     for obj in results.successes:
@@ -328,7 +328,7 @@ Change Data Capture
 Change Data Capture returns a list of objects that have changed since a given time (see `Change data capture`_ for more
 details):
 
-::
+.. code-block:: python
 
    from quickbooks.cdc import change_data_capture
    from quickbooks.objects import Invoice
@@ -339,7 +339,7 @@ details):
 
 Querying muliple entity types at the same time:
 
-::
+.. code-block:: python
 
    from quickbooks.objects import Invoice, Customer
 
@@ -348,7 +348,7 @@ Querying muliple entity types at the same time:
 
 If you use a ``datetime`` object for the timestamp, it is automatically converted to a string:
 
-::
+.. code-block:: python
 
    from datetime import datetime
 
@@ -361,7 +361,7 @@ See `Attachable documentation`_ for list of valid file types, file size limits a
 
 Attaching a note to a customer:
 
-::
+.. code-block:: python
 
      attachment = Attachable()
 
@@ -375,7 +375,7 @@ Attaching a note to a customer:
 
 Attaching a file to customer:
 
-::
+.. code-block:: python
 
      attachment = Attachable()
 
@@ -397,14 +397,14 @@ All objects include ``to_json`` and ``from_json`` methods.
 
 Converting an object to JSON data:
 
-::
+.. code-block:: python
 
    account = Account.get(1, qb=client)
    json_data = account.to_json()
 
 Loading JSON data into a quickbooks object:
 
-::
+.. code-block:: python
 
    account = Account()
    account.from_json(
@@ -420,7 +420,7 @@ Date formatting
 When setting date or datetime fields, Quickbooks requires a specific format.
 Formating helpers are available in helpers.py. Example usage:
 
-::
+.. code-block:: python
 
    date_string = qb_date_format(date(2016, 7, 22))
    date_time_string = qb_datetime_format(datetime(2016, 7, 22, 10, 35, 00))
