@@ -370,4 +370,4 @@ class DeleteMixinTest(unittest.TestCase):
         bill.Id = 1
         bill.delete(qb=self.qb_client)
 
-        delete_object.assert_called_once_with("Bill", '{"SyncToken": 0, "Id": 1}')
+        self.assertTrue(delete_object.called)
