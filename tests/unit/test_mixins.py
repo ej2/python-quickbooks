@@ -1,4 +1,7 @@
 import unittest
+
+from quickbooks.objects import Bill
+
 try:
     from mock import patch
 except ImportError:
@@ -341,3 +344,30 @@ class ObjectListTest(unittest.TestCase):
         self.assertEquals([pn2, pn4], test_subclass_object_obj[:])
 
         self.assertEquals([pn4, pn2], list(reversed(test_subclass_object_obj)))
+
+
+class DeleteMixinTest(unittest.TestCase):
+    def setUp(self):
+        self.qb_client = client.QuickBooks(
+            sandbox=True,
+            consumer_key="update_consumer_key",
+            consumer_secret="update_consumer_secret",
+            access_token="update_access_token",
+            access_token_secret="update_access_token_secret",
+            company_id="update_company_id",
+            callback_url="update_callback_url"
+        )
+
+    def test_delete_unsaved_exception(self):
+        from quickbooks.exceptions import QuickbooksException
+
+        bill = Bill()
+        self.assertRaises(QuickbooksException, bill.delete, qb=self.qb_client)
+
+    @patch('quickbooks.mixins.QuickBooks.delete_object')
+    def test_delete(self, delete_object):
+        bill = Bill()
+        bill.Id = 1
+        bill.delete(qb=self.qb_client)
+
+        delete_object.assert_called_once_with("Bill", '{"SyncToken": 0, "Id": 1}')
