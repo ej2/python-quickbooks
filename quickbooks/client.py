@@ -195,6 +195,9 @@ class QuickBooks(object):
                 """
             ) % (boundary, request_body, boundary, content_type, binary_data, boundary)
 
+            # make sure request_body is not unicode (python 2 case)
+            request_body = str(request_body)
+
         req = self.process_request(request_type, url, headers=headers, params=params, data=request_body)
 
         if req.status_code == httplib.UNAUTHORIZED:
