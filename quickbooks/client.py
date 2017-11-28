@@ -290,6 +290,12 @@ class QuickBooks(object):
 
         return results
 
+    def misc_operation(self, end_point, request_body):
+        url = self.api_url + "/company/{0}/{1}".format(self.company_id, end_point)
+        results = self.make_request("POST", url, request_body)
+
+        return results
+
     def download_pdf(self, qbbo, item_id):
         if self.session_manager is None:
             raise QuickbooksException('No session manager')

@@ -1,6 +1,9 @@
 Changelog
 ========
 
+* 0.7.1 (November 28th, 2017)
+    * Added support for sending invoices.
+
 * 0.7.0 (August 31st, 2017)
     * Added support for OAuth 2.0
     * Added command line interface for connecting to QBO.
