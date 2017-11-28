@@ -3,6 +3,9 @@ Changelog
 
 * 0.7.1 (November 28th, 2017)
     * Added support for sending invoices.
+    * Added count to ListMixin.
+    * Fixed issue with PDF file attachments in Python 2.
+    * Removed duplicate coverage depnedency.
 
 * 0.7.0 (August 31st, 2017)
     * Added support for OAuth 2.0

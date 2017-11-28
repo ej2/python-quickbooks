@@ -244,6 +244,12 @@ Filtering a list with a custom query with paging:
 
     customers = Customer.query("SELECT * FROM Customer WHERE Active = True STARTPOSITION 1 MAXRESULTS 25", qb=client)
 
+Get record count (do not include the ``"WHERE"``):
+
+.. code-block:: python
+
+    customer_count = Customer.count("Active = True AND CompanyName LIKE 'S%'", qb=client)
+
 Get single object by Id and update:
 
 .. code-block:: python
