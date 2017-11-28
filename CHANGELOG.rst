@@ -1,7 +1,7 @@
 Changelog
 ========
 
-* 0.7.2 (November 28th, 2017)
+* 0.7.3 (November 28th, 2017)
     * Fixed bug in ListMixin count method.
 
 * 0.7.1 (November 28th, 2017)
