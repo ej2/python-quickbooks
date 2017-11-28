@@ -45,9 +45,9 @@ Manually connecting with OAuth version 1.0
        )
 
        callback_url = 'http://localhost:8000'  # Quickbooks will send the response to this url
-       authorize_url = client.get_authorize_url(callback_url)
-       request_token = client.request_token
-       request_token_secret = client.request_token_secret
+       authorize_url = session_manager.get_authorize_url(callback_url)
+       request_token = session_manager.request_token
+       request_token_secret = session_manager.request_token_secret
 
 Store the ``authorize_url``, ``request_token``, and ``request_token_secret``
 for use in the Callback method.

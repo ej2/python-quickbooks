@@ -1,6 +1,9 @@
 Changelog
 ========
 
+* 0.7.2 (November 28th, 2017)
+    * Fixed bug in ListMixin count method.
+
 * 0.7.1 (November 28th, 2017)
     * Added support for sending invoices.
     * Added count to ListMixin.
