@@ -212,6 +212,29 @@ class ListMixin(object):
 
         return obj_list
 
+    @classmethod
+    def count(cls, where_clause="", qb=None):
+        """
+        :param where_clause: QBO SQL where clause (DO NOT include 'WHERE')
+        :param qb:
+        :return: Returns database record count
+        """
+        if not qb:
+            qb = QuickBooks()
+
+        if where_clause:
+            where_clause = "WHERE " + where_clause
+
+        select = "SELECT COUNT(*) FROM {0} {1}".format(
+            cls.qbo_object_name, where_clause, qb=qb)
+
+        json_data = cls.query(select)
+
+        if "totalCount" in json_data["QueryResponse"]:
+            return json_data["QueryResponse"]["totalCount"]
+        else:
+            return None
+
 
 class QuickbooksPdfDownloadable(object):
     qbo_object_name = ""

@@ -191,6 +191,11 @@ class ListMixinTest(unittest.TestCase):
             Department.choose(['name1', 'name2'], field="Name", qb=self.qb_client)
             self.assertTrue(query.called)
 
+    @patch('quickbooks.mixins.ListMixin.query')
+    def test_count(self, query):
+        count = Department.count(where_clause="Active=True", qb=self.qb_client)
+        query.assert_called_once_with("SELECT COUNT(*) FROM Department WHERE Active=True")
+
 
 class ReadMixinTest(unittest.TestCase):
     def setUp(self):
