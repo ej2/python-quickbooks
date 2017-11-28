@@ -99,6 +99,17 @@ class ReadMixin(object):
         return cls.from_json(json_data[cls.qbo_object_name])
 
 
+class SendMixin(object):
+    def send(self, qb=None):
+        if not qb:
+            qb = QuickBooks()
+
+        end_point = "{0}/{1}/send".format(self.qbo_object_name, self.Id)
+        results = qb.misc_operation(end_point)
+
+        return results
+
+
 class UpdateMixin(object):
     qbo_object_name = ""
 

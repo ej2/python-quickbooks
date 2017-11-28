@@ -1,6 +1,6 @@
 import unittest
 
-from quickbooks.objects import Bill
+from quickbooks.objects import Bill, Invoice
 
 try:
     from mock import patch
@@ -376,3 +376,24 @@ class DeleteMixinTest(unittest.TestCase):
         bill.delete(qb=self.qb_client)
 
         self.assertTrue(delete_object.called)
+
+
+class SendMixinTest(unittest.TestCase):
+    def setUp(self):
+        self.qb_client = client.QuickBooks(
+            sandbox=True,
+            consumer_key="update_consumer_key",
+            consumer_secret="update_consumer_secret",
+            access_token="update_access_token",
+            access_token_secret="update_access_token_secret",
+            company_id="update_company_id",
+            callback_url="update_callback_url"
+        )
+
+    @patch('quickbooks.mixins.QuickBooks.misc_operation')
+    def test_send(self, mock_misc_op):
+        invoice = Invoice()
+        invoice.Id = 2
+        invoice.send(qb=self.qb_client)
+
+        mock_misc_op.assert_called_with("Invoice/2/send")

@@ -97,6 +97,14 @@ class ClientTest(unittest.TestCase):
         self.assertTrue(make_req.called)
 
     @patch('quickbooks.client.QuickBooks.make_request')
+    def test_misc_operation(self, make_req):
+        qb_client = client.QuickBooks()
+        qb_client.misc_operation("end_point", "request_body")
+
+        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/update_company_id/end_point"
+        make_req.assert_called_with("POST", url, "request_body")
+
+    @patch('quickbooks.client.QuickBooks.make_request')
     def test_create_object(self, make_req):
         qb_client = client.QuickBooks()
         qb_client.create_object("Customer", "request_body")

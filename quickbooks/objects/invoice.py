@@ -3,7 +3,7 @@ from .base import QuickbooksBaseObject, Ref, CustomField, Address, EmailAddress,
     QuickbooksTransactionEntity, LinkedTxn, LinkedTxnMixin
 from .tax import TxnTaxDetail
 from .detailline import DetailLine, SalesItemLine, SubtotalLine, DiscountLine, GroupLine, DescriptionOnlyLine
-from ..mixins import QuickbooksPdfDownloadable, DeleteMixin
+from ..mixins import QuickbooksPdfDownloadable, DeleteMixin, SendMixin
 
 
 class DeliveryInfo(QuickbooksBaseObject):
@@ -14,7 +14,8 @@ class DeliveryInfo(QuickbooksBaseObject):
 
 
 @python_2_unicode_compatible
-class Invoice(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
+class Invoice(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject, QuickbooksTransactionEntity,
+              LinkedTxnMixin, SendMixin):
     """
     QBO definition: An Invoice represents a sales form where the customer pays for a product or service later.
 
@@ -102,3 +103,9 @@ class Invoice(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject, Q
             return True
 
         return False
+
+    def send_invoice(self, send_to=None):
+        url = self.api_url + "/company/{0}/invoice/{1}/send".format(self.company_id, self.Id)
+        results = self.make_request("POST", url)
+
+        return results
