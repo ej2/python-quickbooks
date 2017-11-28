@@ -1,6 +1,8 @@
+import os
 import unittest
 
 from quickbooks.objects import Bill, Invoice
+from quickbooks.auth import Oauth1SessionManager
 
 try:
     from mock import patch
@@ -128,14 +130,18 @@ class ToDictMixinTest(unittest.TestCase):
 
 class ListMixinTest(unittest.TestCase):
     def setUp(self):
-        self.qb_client = client.QuickBooks(
+        self.session_manager = Oauth1SessionManager(
             sandbox=True,
             consumer_key="update_consumer_key",
             consumer_secret="update_consumer_secret",
             access_token="update_access_token",
             access_token_secret="update_access_token_secret",
-            company_id="update_company_id",
-            callback_url="update_callback_url"
+        )
+
+        self.qb_client = client.QuickBooks(
+            session_manager=self.session_manager,
+            sandbox=True,
+            company_id="COMPANY_ID"
         )
 
     @patch('quickbooks.mixins.ListMixin.where')
@@ -191,7 +197,7 @@ class ListMixinTest(unittest.TestCase):
             Department.choose(['name1', 'name2'], field="Name", qb=self.qb_client)
             self.assertTrue(query.called)
 
-    @patch('quickbooks.mixins.ListMixin.query')
+    @patch('quickbooks.mixins.QuickBooks.query')
     def test_count(self, query):
         count = Department.count(where_clause="Active=True", qb=self.qb_client)
         query.assert_called_once_with("SELECT COUNT(*) FROM Department WHERE Active=True")

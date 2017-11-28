@@ -239,7 +239,7 @@ class ListMixin(object):
         select = "SELECT COUNT(*) FROM {0} {1}".format(
             cls.qbo_object_name, where_clause)
 
-        json_data = cls.query(select, qb=qb)
+        json_data = qb.query(select)
 
         if "totalCount" in json_data["QueryResponse"]:
             return json_data["QueryResponse"]["totalCount"]
