@@ -52,7 +52,8 @@ Manually connecting with OAuth version 1.0
 Store the ``authorize_url``, ``request_token``, and ``request_token_secret``
 for use in the Callback method.
 
-2. Handle the callback:
+2. Redirect to the ``authorize_url``. Quickbooks will redirect back to your callback_url.
+3. Handle the callback:
 
 .. code-block:: python
 
@@ -92,14 +93,11 @@ Manually connecting with OAuth version 2.0
        )
 
        callback_url = 'http://localhost:8000'  # Quickbooks will send the response to this url
-       authorize_url = client.get_authorize_url(callback_url)
-       request_token = client.request_token
-       request_token_secret = client.request_token_secret
+       authorize_url = session_manager.get_authorize_url(callback_url)
 
-Store the ``authorize_url``, ``request_token``, and ``request_token_secret``
-for use in the Callback method.
 
-2. Handle the callback:
+2. Redirect to the ``authorize_url``. Quickbooks will redirect back to your callback_url.
+3. Handle the callback:
 
 .. code-block:: python
 
