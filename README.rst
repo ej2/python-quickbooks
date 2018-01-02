@@ -109,7 +109,7 @@ Manually connecting with OAuth version 2.0
        )
 
        session_manager.get_access_tokens(request.GET['code'])
-       access_token = client.access_token
+       access_token = session_manager.access_token
 
 Store ``access_token`` for later use.
 
