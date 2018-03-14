@@ -261,3 +261,30 @@ class Oauth2SessionManager(AuthSessionManager):
             auth_header = base64.b64encode(bytes(self.client_id + ':' + self.client_secret, 'utf-8')).decode()
 
         return 'Basic ' + auth_header
+
+    def get_new_access_tokens(self, refresh_token):
+
+        headers = {
+            'Accept': 'application/json',
+            'content-type': 'application/x-www-form-urlencoded',
+            'Authorization': self.get_auth_header()
+        }
+
+        payload = {
+            'refresh_token': refresh_token,
+            'grant_type': 'refresh_token'
+        }
+
+        response = requests.post(self.access_token_url, data=payload, headers=headers)
+        if response.status_code != 200:
+            return response.text
+
+        bearer_raw = json.loads(response.text)
+        self.x_refresh_token_expires_in = bearer_raw['x_refresh_token_expires_in']
+        self.access_token = bearer_raw['access_token']
+        self.token_type = bearer_raw['token_type']
+        self.refresh_token = bearer_raw['refresh_token']
+        self.expires_in = bearer_raw['expires_in']
+         
+        if 'id_token' in bearer_raw:
+            self.id_token = bearer_raw['id_token']
