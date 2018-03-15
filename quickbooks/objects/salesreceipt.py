@@ -2,7 +2,7 @@ from six import python_2_unicode_compatible
 from .base import Ref, CustomField, QuickbooksManagedObject, LinkedTxnMixin, Address, \
     EmailAddress, QuickbooksTransactionEntity, LinkedTxn
 from .tax import TxnTaxDetail
-from .detailline import DetailLine
+from .detailline import DetailLine, SalesItemLine
 from ..mixins import QuickbooksPdfDownloadable, DeleteMixin
 
 
@@ -37,7 +37,7 @@ class SalesReceipt(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObje
     }
 
     detail_dict = {
-
+        "SalesItemLineDetail": SalesItemLine
     }
 
     qbo_object_name = "SalesReceipt"
