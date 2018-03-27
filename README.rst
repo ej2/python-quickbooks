@@ -39,7 +39,6 @@ Manually connecting with OAuth version 1.0
        from quickbooks import Oauth1SessionManager
 
        session_manager = Oauth1SessionManager(
-           sandbox=True,
            consumer_key=QUICKBOOKS_CLIENT_KEY,
            consumer_secret=QUICKBOOKS_CLIENT_SECRET,
        )
@@ -58,7 +57,6 @@ for use in the Callback method.
 .. code-block:: python
 
        session_manager = Oauth1SessionManager(
-           sandbox=True,
            consumer_key=QUICKBOOKS_CLIENT_KEY,
            consumer_secret=QUICKBOOKS_CLIENT_SECRET
        )
@@ -86,7 +84,6 @@ Manually connecting with OAuth version 2.0
        from quickbooks import Oauth2SessionManager
 
        session_manager = Oauth2SessionManager(
-           sandbox=True,
            client_id=QUICKBOOKS_CLIENT_ID,
            client_secret=QUICKBOOKS_CLIENT_SECRET,
            base_url='http://localhost:8000',
@@ -102,7 +99,6 @@ Manually connecting with OAuth version 2.0
 .. code-block:: python
 
        session_manager = Oauth2SessionManager(
-           sandbox=True,
            client_id=QUICKBOOKS_CLIENT_ID,
            client_secret=QUICKBOOKS_CLIENT_SECRET,
            base_url='http://localhost:8000',
@@ -123,7 +119,6 @@ OAuth version 1.0 - Setup the session manager using the stored ``access_token`` 
 .. code-block:: python
 
         session_manager = Oauth1SessionManager(
-            sandbox=True,
             consumer_key=CONSUMER_KEY,
             consumer_secret=CONSUMER_SECRET,
             access_token=ACCESS_TOKEN,
@@ -134,8 +129,7 @@ OAuth version 2.0 - Setup the session manager using the stored ``access_token`` 
 
 .. code-block:: python
 
-        self.session_manager = Oauth2SessionManager(
-            sandbox=True,
+        session_manager = Oauth2SessionManager(
             client_id=realm_id,
             client_secret=CLIENT_SECRET,
             access_token=AUTH2_ACCESS_TOKEN,

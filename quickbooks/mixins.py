@@ -100,12 +100,16 @@ class ReadMixin(object):
 
 
 class SendMixin(object):
-    def send(self, qb=None):
+    def send(self, qb=None, send_to=None):
         if not qb:
             qb = QuickBooks()
 
         end_point = "{0}/{1}/send".format(self.qbo_object_name, self.Id)
-        results = qb.misc_operation(end_point)
+
+        if send_to:
+            end_point = "{0}?sendTo={1}".format(end_point, send_to)
+
+        results = qb.misc_operation(end_point, None)
 
         return results
 

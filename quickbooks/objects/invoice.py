@@ -103,9 +103,3 @@ class Invoice(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject, Q
             return True
 
         return False
-
-    def send_invoice(self, send_to=None):
-        url = self.api_url + "/company/{0}/invoice/{1}/send".format(self.company_id, self.Id)
-        results = self.make_request("POST", url)
-
-        return results

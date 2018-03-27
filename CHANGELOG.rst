@@ -1,6 +1,12 @@
 Changelog
 ========
 
+* 0.7.4 (March 26th, 2018)
+    * Fixed bug in SendMixin send method.
+    * Added support for send_to email to SendMixin.
+    * Removed send_invoice from Invoice object.
+    * Removed sandbox from Session Managers.
+
 * 0.7.3 (November 28th, 2017)
     * Fixed bug in ListMixin count method.
 

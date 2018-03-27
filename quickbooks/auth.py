@@ -28,7 +28,6 @@ SCOPE = (
 
 class AuthSessionManager(object):
     oauth_version = None
-    sandbox = False
     session = None
     started = False
 
@@ -69,9 +68,6 @@ class Oauth1SessionManager(AuthSessionManager):
 
         if 'access_token_secret' in kwargs:
             self.access_token_secret = kwargs['access_token_secret']
-
-        if 'sandbox' in kwargs:
-            self.sandbox = kwargs['sandbox']
 
     def start_session(self):
         if not self.started:
@@ -175,9 +171,6 @@ class Oauth2SessionManager(AuthSessionManager):
 
         if 'base_url' in kwargs:
             self.base_url = kwargs['base_url']
-
-        if 'sandbox' in kwargs:
-            self.sandbox = kwargs['sandbox']
 
     def start_session(self):
         if not self.started:

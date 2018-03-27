@@ -402,4 +402,12 @@ class SendMixinTest(unittest.TestCase):
         invoice.Id = 2
         invoice.send(qb=self.qb_client)
 
-        mock_misc_op.assert_called_with("Invoice/2/send")
+        mock_misc_op.assert_called_with("Invoice/2/send", None)
+
+    @patch('quickbooks.mixins.QuickBooks.misc_operation')
+    def test_send_with_send_to_email(self, mock_misc_op):
+        invoice = Invoice()
+        invoice.Id = 2
+        invoice.send(qb=self.qb_client, send_to="test@email.com")
+
+        mock_misc_op.assert_called_with("Invoice/2/send?sendTo=test@email.com", None)
