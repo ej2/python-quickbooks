@@ -20,14 +20,12 @@ class Oauth1SessionManagerTest(unittest.TestCase):
             consumer_secret='secret',
             access_token='token',
             access_token_secret='tokensecret',
-            sandbox=True
         )
 
         self.assertEquals(session_manager.consumer_key, 'key')
         self.assertEquals(session_manager.consumer_secret, 'secret')
         self.assertEquals(session_manager.access_token, 'token')
         self.assertEquals(session_manager.access_token_secret, 'tokensecret')
-        self.assertEquals(session_manager.sandbox, True)
 
     def test_start_session(self):
         session_manager = Oauth1SessionManager(
@@ -35,7 +33,6 @@ class Oauth1SessionManagerTest(unittest.TestCase):
             consumer_secret='secret',
             access_token='token',
             access_token_secret='tokensecret',
-            sandbox=True
         )
 
         session = session_manager.start_session()
@@ -50,7 +47,6 @@ class Oauth1SessionManagerTest(unittest.TestCase):
             consumer_secret='secret',
             access_token='token',
             access_token_secret='tokensecret',
-            sandbox=True
         )
 
         try:
@@ -70,7 +66,6 @@ class Oauth1SessionManagerTest(unittest.TestCase):
             consumer_secret='',
             access_token='token',
             access_token_secret='tokensecret',
-            sandbox=True
         )
 
         try:
@@ -90,7 +85,6 @@ class Oauth1SessionManagerTest(unittest.TestCase):
             consumer_secret='secret',
             access_token='',
             access_token_secret='tokensecret',
-            sandbox=True
         )
 
         try:
@@ -110,7 +104,6 @@ class Oauth1SessionManagerTest(unittest.TestCase):
             consumer_secret='secret',
             access_token='token',
             access_token_secret='',
-            sandbox=True
         )
 
         try:
