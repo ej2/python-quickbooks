@@ -87,6 +87,9 @@ class Invoice(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject, Q
         self.Line = []
         self.LinkedTxn = []
 
+        self.TaxApplicableOn = ""
+        self.TaxCodeRef = None
+
     def __str__(self):
         return str(self.TotalAmt)
 
