@@ -1,6 +1,9 @@
 Changelog
 ========
 
+* 0.7.5 (May 11th, 2018)
+    * Fixed bug with reporting authentication failure when attempting to download PDF (previously the error details were "lost")
+
 * 0.7.4 (March 26th, 2018)
     * Fixed bug in SendMixin send method.
     * Added support for send_to email to SendMixin.
