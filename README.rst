@@ -82,14 +82,17 @@ Manually connecting with OAuth version 2.0
 .. code-block:: python
 
        from quickbooks import Oauth2SessionManager
+       
+       # the callback_url has to be the same as base_url
+       # https://help.developer.intuit.com/s/question/0D50f00004zqs0ACAQ/unable-to-get-access-tokens
+       callback_url = 'http://localhost:8000' # Quickbooks will send the response to this url
 
        session_manager = Oauth2SessionManager(
            client_id=QUICKBOOKS_CLIENT_ID,
            client_secret=QUICKBOOKS_CLIENT_SECRET,
-           base_url='http://localhost:8000',
+           base_url=callback_url,
        )
 
-       callback_url = 'http://localhost:8000'  # Quickbooks will send the response to this url
        authorize_url = session_manager.get_authorize_url(callback_url)
 
 
@@ -97,13 +100,15 @@ Manually connecting with OAuth version 2.0
 3. Handle the callback:
 
 .. code-block:: python
-
+ 
        session_manager = Oauth2SessionManager(
            client_id=QUICKBOOKS_CLIENT_ID,
            client_secret=QUICKBOOKS_CLIENT_SECRET,
+           # the base_url has to be the same as the one used in authorization
            base_url='http://localhost:8000',
        )
 
+       # caution! invalid requests return {"error":"invalid_grant"} quietly
        session_manager.get_access_tokens(request.GET['code'])
        access_token = session_manager.access_token
 
