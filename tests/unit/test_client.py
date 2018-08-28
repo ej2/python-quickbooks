@@ -96,52 +96,52 @@ class ClientTest(unittest.TestCase):
 
         self.assertTrue(make_req.called)
 
-    @patch('quickbooks.client.QuickBooks.make_request')
-    def test_misc_operation(self, make_req):
+    @patch('quickbooks.client.QuickBooks.post')
+    def test_misc_operation(self, post):
         qb_client = client.QuickBooks()
         qb_client.misc_operation("end_point", "request_body")
 
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/update_company_id/end_point"
-        make_req.assert_called_with("POST", url, "request_body")
+        post.assert_called_with(url, "request_body")
 
-    @patch('quickbooks.client.QuickBooks.make_request')
-    def test_create_object(self, make_req):
+    @patch('quickbooks.client.QuickBooks.post')
+    def test_create_object(self, post):
         qb_client = client.QuickBooks()
         qb_client.create_object("Customer", "request_body")
 
-        self.assertTrue(make_req.called)
+        self.assertTrue(post.called)
 
-    @patch('quickbooks.client.QuickBooks.make_request')
-    def test_query(self, make_req):
+    @patch('quickbooks.client.QuickBooks.post')
+    def test_query(self, post):
         qb_client = client.QuickBooks()
         qb_client.query("select")
 
-        self.assertTrue(make_req.called)
+        self.assertTrue(post.called)
 
-    @patch('quickbooks.client.QuickBooks.make_request')
-    def test_update_object(self, make_req):
+    @patch('quickbooks.client.QuickBooks.post')
+    def test_update_object(self, post):
         qb_client = client.QuickBooks()
         qb_client.update_object("Customer", "request_body")
 
-        self.assertTrue(make_req.called)
+        self.assertTrue(post.called)
 
-    @patch('quickbooks.client.QuickBooks.make_request')
-    def test_get_current_user(self, make_req):
+    @patch('quickbooks.client.QuickBooks.get')
+    def test_get_current_user(self, get):
         qb_client = client.QuickBooks()
         qb_client.company_id = "1234"
 
         qb_client.get_current_user()
         url = "https://appcenter.intuit.com/api/v1/user/current"
-        make_req.assert_called_with("GET", url)
+        get.assert_called_with(url)
 
-    @patch('quickbooks.client.QuickBooks.make_request')
-    def test_disconnect_account(self, make_req):
+    @patch('quickbooks.client.QuickBooks.get')
+    def test_disconnect_account(self, get):
         qb_client = client.QuickBooks()
         qb_client.company_id = "1234"
 
         qb_client.disconnect_account()
         url = "https://appcenter.intuit.com/api/v1/connection/disconnect"
-        make_req.assert_called_with("GET", url)
+        get.assert_called_with(url)
 
     @patch('quickbooks.client.QuickBooks.make_request')
     def test_reconnect_account(self, make_req):
