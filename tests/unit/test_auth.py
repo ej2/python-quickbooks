@@ -139,6 +139,15 @@ class Oauth2SessionManagerTest(unittest.TestCase):
             'grant_type': 'authorization_code'
         }
         token_request.assert_called_with(payload, return_result=False)
+
+    @patch('quickbooks.auth.Oauth2SessionManager.token_request')
+    def test_refresh_tokens(self, token_request):
+        result = self.session_manager.refresh_access_tokens()
+        payload = {
+            'refresh_token':'refresh_token',                                    
+            'grant_type': 'refresh_token'
+        }
+        token_request.assert_called_with(payload, return_result=False)
         
 
     def test_init(self):
