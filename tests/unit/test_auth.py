@@ -2,7 +2,7 @@ import unittest
 
 from quickbooks.exceptions import QuickbooksException
 
-from quickbooks.auth import Oauth1SessionManager
+from quickbooks.auth import Oauth1SessionManager, Oauth2SessionManager
 
 try:
     from mock import patch
@@ -116,3 +116,80 @@ class Oauth1SessionManagerTest(unittest.TestCase):
             self.failUnlessRaises(QuickbooksException, session_manager.start_session)
 
         self.assertEqual(session_manager.started, False)
+
+
+class Oauth2SessionManagerTest(unittest.TestCase):
+    def load_session_manager(self, client_id='client_id', client_secret='client_secret', access_token='token', refresh_token='refresh_token'):
+        self.session_manager = Oauth2SessionManager(
+            client_id=client_id,
+            client_secret=client_secret,
+            access_token=access_token,
+            refresh_token=refresh_token,
+        )
+
+    def setUp(self):
+        self.load_session_manager()
+
+    def test_init(self):
+        self.assertEqual(self.session_manager.client_id, 'client_id')
+        self.assertEqual(self.session_manager.access_token, 'token')
+        self.assertEqual(self.session_manager.client_secret, 'client_secret')
+        self.assertEqual(self.session_manager.refresh_token, 'refresh_token')
+
+    def test_start_session(self):
+        session = self.session_manager.start_session()
+
+        self.assertEqual(session.access_token, 'token')
+        self.assertEqual(session.client_secret, 'client_secret')
+        self.assertEqual(self.session_manager.started, True)
+
+    def test_start_session_no_client_id(self):
+        self.load_session_manager(
+            client_id=''
+        )
+
+        try:
+            with self.assertRaises(QuickbooksException) as error:
+                self.session_manager.start_session()
+
+            self.assertEqual(error.exception.message,
+                             "Client Id missing. Cannot create session.")
+        except:
+            self.failUnlessRaises(QuickbooksException,
+                                  self.session_manager.start_session)
+
+        self.assertEqual(self.session_manager.started, False)
+
+    def test_start_session_no_client_secret(self):
+        self.load_session_manager(
+            client_secret='',
+        )
+
+        try:
+            with self.assertRaises(QuickbooksException) as error:
+                self.session_manager.start_session()
+
+            self.assertEqual(error.exception.message,
+                             "Client Secret missing. Cannot create session.")
+        except:
+            self.failUnlessRaises(QuickbooksException,
+                                  self.session_manager.start_session)
+
+        self.assertEqual(self.session_manager.started, False)
+
+    def test_start_session_no_access_token(self):
+        self.load_session_manager(
+            access_token='',
+        )
+
+        try:
+            with self.assertRaises(QuickbooksException) as error:
+                self.session_manager.start_session()
+
+            self.assertEqual(error.exception.message,
+                             "Access Token missing. Cannot create session.")
+        except:
+            self.failUnlessRaises(QuickbooksException,
+                                  self.session_manager.start_session)
+
+        self.assertEqual(self.session_manager.started, False)
