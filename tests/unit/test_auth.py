@@ -130,6 +130,17 @@ class Oauth2SessionManagerTest(unittest.TestCase):
     def setUp(self):
         self.load_session_manager()
 
+    @patch('quickbooks.auth.Oauth2SessionManager.token_request')
+    def test_get_tokens_from_code(self, token_request):
+        result = self.session_manager.get_access_tokens('code')
+        payload = {
+            'code': 'code',
+            'redirect_uri': self.session_manager.base_url,
+            'grant_type': 'authorization_code'
+        }
+        token_request.assert_called_with(payload, return_result=False)
+        
+
     def test_init(self):
         self.assertEqual(self.session_manager.client_id, 'client_id')
         self.assertEqual(self.session_manager.access_token, 'token')
