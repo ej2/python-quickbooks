@@ -9,6 +9,7 @@ import textwrap
 import json
 
 from .exceptions import QuickbooksException, SevereException, AuthorizationException
+from builtins import bytes
 import base64
 import hashlib
 import hmac
@@ -108,7 +109,7 @@ class QuickBooks(object):
 
     def validate_webhook_signature(self, request_body, signature, verifier_token=None):
         hmac_verifier_token_hash = hmac.new(
-            verifier_token or self.verifier_token,
+            bytes(verifier_token or self.verifier_token),
             request_body,
             hashlib.sha256
         ).hexdigest()
