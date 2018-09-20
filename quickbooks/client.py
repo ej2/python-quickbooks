@@ -1,15 +1,16 @@
 try:  # Python 3
     import http.client as httplib
     from urllib.parse import parse_qsl
+    bytes = bytes
 except ImportError:  # Python 2
     import httplib
     from urlparse import parse_qsl
+    bytes = str
 
 import textwrap
 import json
 
 from .exceptions import QuickbooksException, SevereException, AuthorizationException
-from builtins import bytes
 import base64
 import hashlib
 import hmac
