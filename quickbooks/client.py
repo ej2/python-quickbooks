@@ -1,7 +1,8 @@
 try:  # Python 3
     import http.client as httplib
     from urllib.parse import parse_qsl
-    bytes = bytes
+    from functools import partial
+    bytes = lambda value: bytes(value, "utf-8")
 except ImportError:  # Python 2
     import httplib
     from urlparse import parse_qsl
