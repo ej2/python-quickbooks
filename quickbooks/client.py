@@ -115,7 +115,7 @@ class QuickBooks(object):
             to_bytes(request_body),
             hashlib.sha256
         ).hexdigest()
-        decoded_hex_signature = base64.b64decode(signature).encode('hex')
+        decoded_hex_signature = str(base64.b64decode(signature)).encode('hex')
         return hmac_verifier_token_hash == decoded_hex_signature
 
 
