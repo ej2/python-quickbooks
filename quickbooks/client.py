@@ -9,6 +9,7 @@ except ImportError:  # Python 2
     to_bytes = str
 
 import textwrap
+import codecs
 import json
 
 from .exceptions import QuickbooksException, SevereException, AuthorizationException
@@ -112,10 +113,10 @@ class QuickBooks(object):
     def validate_webhook_signature(self, request_body, signature, verifier_token=None):
         hmac_verifier_token_hash = hmac.new(
             to_bytes(verifier_token or self.verifier_token),
-            to_bytes(request_body),
+            request_body.encode('utf-8'),
             hashlib.sha256
-        ).hexdigest()
-        decoded_hex_signature = str(base64.b64decode(signature)).encode('hex')
+        ).digest()
+        decoded_hex_signature = base64.b64decode(signature)
         return hmac_verifier_token_hash == decoded_hex_signature
 
 
