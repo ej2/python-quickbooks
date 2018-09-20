@@ -2,11 +2,11 @@ try:  # Python 3
     import http.client as httplib
     from urllib.parse import parse_qsl
     from functools import partial
-    bytes = lambda value: bytes(value, "utf-8")
+    to_bytes = lambda value, *args, **kwargs: bytes(value, "utf-8", *args, **kwargs)
 except ImportError:  # Python 2
     import httplib
     from urlparse import parse_qsl
-    bytes = str
+    to_bytes = str
 
 import textwrap
 import json
@@ -111,7 +111,7 @@ class QuickBooks(object):
 
     def validate_webhook_signature(self, request_body, signature, verifier_token=None):
         hmac_verifier_token_hash = hmac.new(
-            bytes(verifier_token or self.verifier_token),
+            to_bytes(verifier_token or self.verifier_token),
             request_body,
             hashlib.sha256
         ).hexdigest()
