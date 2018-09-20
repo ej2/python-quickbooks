@@ -112,7 +112,7 @@ class QuickBooks(object):
     def validate_webhook_signature(self, request_body, signature, verifier_token=None):
         hmac_verifier_token_hash = hmac.new(
             to_bytes(verifier_token or self.verifier_token),
-            request_body,
+            to_bytes(request_body),
             hashlib.sha256
         ).hexdigest()
         decoded_hex_signature = base64.b64decode(signature).encode('hex')
