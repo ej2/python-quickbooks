@@ -106,8 +106,32 @@ Manually connecting with OAuth version 2.0
 
        session_manager.get_access_tokens(request.GET['code'])
        access_token = session_manager.access_token
+       refresh_token = session_manager.refresh_token
 
-Store ``access_token`` for later use.
+Store ``access_token`` and ``refresh_token`` for later use.
+
+
+Refreshing Access Token
+-----------------------
+
+at some point your access token will expire, that is why you  were given
+a ``refresh_token``, once your requests get an ``AuthorizationException``
+you need to use your client to refresh the access token, do this by calling
+its ``refresh_access_token`` method, it takes no arguments, and sets the new
+refresh token and access tokens on itself as instance attributes, so youll need
+to replace the tokens you were using, ie:
+
+.. code-block:: python
+        try:
+            Bill.all(qb=client)
+        except exceptions.AuthorizationException:
+            client.refresh_access_token()
+            MODEL_TO_STORE_TOKENS.access_token = client.access_token
+            MODEL_TO_STORE_TOKENS.refresh_token = client.refresh_token
+            Bill.all(qb=client)
+
+now you can make authorized requests again.
+
 
 Accessing the API
 -----------------
