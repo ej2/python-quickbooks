@@ -256,7 +256,7 @@ class QuickBooks(object):
                 raise exceptions.UnsupportedException(message, code, detail)
             elif code >= 600 and code <= 1999:
                 if code == 610:
-                    raise exceptions.NotFoundException(message, code, detail)
+                    raise exceptions.ObjectNotFoundException(message, code, detail)
                 raise exceptions.GeneralException(message, code, detail)
             elif code >= 2000 and code <= 4999:
                 raise exceptions.ValidationException(message, code, detail)
