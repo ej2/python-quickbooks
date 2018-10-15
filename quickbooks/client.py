@@ -8,7 +8,7 @@ except ImportError:  # Python 2
 import textwrap
 import json
 
-from .exceptions import QuickbooksException, SevereException, AuthorizationException
+from . import exceptions
 import base64
 
 try:
@@ -201,24 +201,24 @@ class QuickBooks(object):
         req = self.process_request(request_type, url, headers=headers, params=params, data=request_body)
 
         if req.status_code == httplib.UNAUTHORIZED:
-            raise AuthorizationException("Application authentication failed", detail=req.text)
+            raise exceptions.AuthorizationException("Application authentication failed", detail=req.text)
 
         try:
             result = req.json()
         except:
-            raise QuickbooksException("Error reading json response: {0}".format(req.text), 10000)
+            raise exceptions.QuickbooksException("Error reading json response: {0}".format(req.text), 10000)
 
         if "Fault" in result:
             self.handle_exceptions(result["Fault"])
         elif not req.status_code == httplib.OK:
-            raise QuickbooksException("Error returned with status code '{0}': {1}".format(
+            raise exceptions.QuickbooksException("Error returned with status code '{0}': {1}".format(
                 req.status_code, req.text), 10000)
         else:
             return result
 
     def process_request(self, request_type, url, headers="", params="", data=""):
         if self.session_manager is None:
-            raise QuickbooksException('No session manager')
+            raise exceptions.QuickbooksException('No session manager')
 
         if self.session_manager.oauth_version == 2.0:
             headers.update({'Authorization': 'Bearer ' + self.session_manager.access_token})
@@ -250,10 +250,20 @@ class QuickBooks(object):
             if "code" in error:
                 code = int(error["code"])
 
-            if code >= 10000:
-                raise SevereException(message, code, detail)
+            if code > 0 and code <= 499:
+                raise exceptions.AuthorizationException(message, code, detail)
+            elif code >= 500 and code <= 599:
+                raise exceptions.UnsupportedException(message, code, detail)
+            elif code >= 600 and code <= 1999:
+                if code == 610:
+                    raise exceptions.NotFoundException(message, code, detail)
+                raise exceptions.GeneralException(message, code, detail)
+            elif code >= 2000 and code <= 4999:
+                raise exceptions.ValidationException(message, code, detail)
+            elif code >= 10000:
+                raise exceptions.SevereException(message, code, detail)
             else:
-                raise QuickbooksException(message, code, detail)
+                raise exceptions.QuickbooksException(message, code, detail)
 
     def create_object(self, qbbo, request_body, _file_path=None):
         self.isvalid_object_name(qbbo)
@@ -301,7 +311,7 @@ class QuickBooks(object):
 
     def download_pdf(self, qbbo, item_id):
         if self.session_manager is None:
-            raise QuickbooksException('No session manager')
+            raise exceptions.QuickbooksException('No session manager')
 
         url = self.api_url + "/company/{0}/{1}/{2}/pdf".format(
             self.company_id, qbbo.lower(), item_id)
@@ -318,7 +328,7 @@ class QuickBooks(object):
             try:
                 result = response.json()
             except:
-                raise QuickbooksException("Error reading json response: {0}".format(response.text), 10000)
+                raise exceptions.QuickbooksException("Error reading json response: {0}".format(response.text), 10000)
 
             self.handle_exceptions(result["Fault"])
         else:
