@@ -11,17 +11,22 @@ from quickbooks import client
 from quickbooks.objects.salesreceipt import SalesReceipt
 
 
+TEST_SIGNATURE = 'nfPLN16u3vMvv08ghDs+dOkLuirEVDy5wAeG/lmM2OA='
+TEST_PAYLOAD  = '{"stuff":"5"}'
+TEST_VERIFIER_TOKEN = 'verify_me'
+
 class ClientTest(unittest.TestCase):
     def setUp(self):
         """
         Use a consistent set of defaults.
         """
 
-        client.QuickBooks(
+        self.qb_client = client.QuickBooks(
             session_manager=MockSessionManager(),
             sandbox=True,
             company_id="update_company_id",
-            callback_url="update_callback_url"
+            callback_url="update_callback_url",
+            verifier_token=TEST_VERIFIER_TOKEN,
         )
 
     def tearDown(self):
@@ -34,7 +39,8 @@ class ClientTest(unittest.TestCase):
             sandbox=False,
             company_id="company_id",
             verbose=True,
-            minorversion=4
+            minorversion=4,
+            verifier_token=TEST_VERIFIER_TOKEN,
         )
 
         self.assertEquals(self.qb_client.sandbox, False)
@@ -236,6 +242,12 @@ class ClientTest(unittest.TestCase):
         receipt = SalesReceipt()
         receipt.Id = 666
         self.assertRaises(QuickbooksException, receipt.download_pdf)
+
+    def test_validate_webhook_signature(self):
+        self.assertTrue(self.qb_client.validate_webhook_signature(TEST_PAYLOAD, TEST_SIGNATURE, TEST_VERIFIER_TOKEN))
+
+    def test_fail_webhook(self):
+        self.assertFalse(self.qb_client.validate_webhook_signature("", TEST_SIGNATURE))
 
     @patch('quickbooks.client.QuickBooks.process_request')
     def test_download_pdf_not_authorized(self, process_request):

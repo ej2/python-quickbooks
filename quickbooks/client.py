@@ -1,15 +1,21 @@
 try:  # Python 3
     import http.client as httplib
     from urllib.parse import parse_qsl
+    from functools import partial
+    to_bytes = lambda value, *args, **kwargs: bytes(value, "utf-8", *args, **kwargs)
 except ImportError:  # Python 2
     import httplib
     from urlparse import parse_qsl
+    to_bytes = str
 
 import textwrap
+import codecs
 import json
 
 from .exceptions import QuickbooksException, SevereException, AuthorizationException
 import base64
+import hashlib
+import hmac
 
 try:
     from rauth import OAuth1Session, OAuth1Service
@@ -25,6 +31,7 @@ class QuickBooks(object):
     session_manager = None
     sandbox = False
     minorversion = None
+    verifier_token = None
 
     sandbox_api_url_v3 = "https://sandbox-quickbooks.api.intuit.com/v3"
     api_url_v3 = "https://quickbooks.api.intuit.com/v3"
@@ -69,6 +76,9 @@ class QuickBooks(object):
         if 'session_manager' in kwargs:
             instance.session_manager = kwargs['session_manager']
 
+        if 'verifier_token' in kwargs:
+            instance.verifier_token = kwargs.get('verifier_token')
+
         return instance
 
     @classmethod
@@ -99,6 +109,16 @@ class QuickBooks(object):
             return self.sandbox_api_url_v3
         else:
             return self.api_url_v3
+
+    def validate_webhook_signature(self, request_body, signature, verifier_token=None):
+        hmac_verifier_token_hash = hmac.new(
+            to_bytes(verifier_token or self.verifier_token),
+            request_body.encode('utf-8'),
+            hashlib.sha256
+        ).digest()
+        decoded_hex_signature = base64.b64decode(signature)
+        return hmac_verifier_token_hash == decoded_hex_signature
+
 
     def get_current_user(self):
         """Get data from the current user endpoint"""

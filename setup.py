@@ -24,6 +24,7 @@ setup(
     keywords=['quickbooks', 'qbo', 'accounting'],
     long_description=read('README.rst'),
 
+    test_runner='nosetests',
     entry_points={
         'console_scripts': ['quickbooks-cli=quickbooks.tools.cli:cli_execute']
     },
@@ -35,6 +36,7 @@ setup(
         'simplejson>=2.2.0',
         'six>=1.4.0',
         'python-dateutil',
+        'pycparser==2.18'
     ],
 
     classifiers=[
