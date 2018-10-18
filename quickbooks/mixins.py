@@ -104,12 +104,12 @@ class SendMixin(object):
         if not qb:
             qb = QuickBooks()
 
-        end_point = "{0}/{1}/send".format(self.qbo_object_name, self.Id)
+        end_point = "{0}/{1}/send".format(self.qbo_object_name.lower(), self.Id)
 
         if send_to:
             end_point = "{0}?sendTo={1}".format(end_point, send_to)
 
-        results = qb.misc_operation(end_point, None)
+        results = qb.misc_operation(end_point, None, 'application/octet-stream')
 
         return results
 

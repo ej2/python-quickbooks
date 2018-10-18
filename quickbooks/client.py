@@ -329,9 +329,9 @@ class QuickBooks(object):
 
         return results
 
-    def misc_operation(self, end_point, request_body):
+    def misc_operation(self, end_point, request_body, content_type='application/json'):
         url = "{0}/company/{1}/{2}".format(self.api_url, self.company_id, end_point)
-        results = self.post(url, request_body)
+        results = self.post(url, request_body, content_type)
 
         return results
 

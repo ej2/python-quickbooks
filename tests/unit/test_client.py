@@ -108,7 +108,7 @@ class ClientTest(unittest.TestCase):
         qb_client.misc_operation("end_point", "request_body")
 
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/update_company_id/end_point"
-        post.assert_called_with(url, "request_body")
+        post.assert_called_with(url, "request_body", 'application/json')
 
     @patch('quickbooks.client.QuickBooks.post')
     def test_create_object(self, post):
