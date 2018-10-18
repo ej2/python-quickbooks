@@ -6,7 +6,7 @@ except ImportError:
     from unittest.mock import patch
 
 from quickbooks.auth import Oauth1SessionManager
-from quickbooks.exceptions import QuickbooksException, SevereException
+from quickbooks.exceptions import QuickbooksException, SevereException, AuthorizationException
 from quickbooks import client
 from quickbooks.objects.salesreceipt import SalesReceipt
 
@@ -237,6 +237,17 @@ class ClientTest(unittest.TestCase):
         receipt.Id = 666
         self.assertRaises(QuickbooksException, receipt.download_pdf)
 
+    @patch('quickbooks.client.QuickBooks.process_request')
+    def test_download_pdf_not_authorized(self, process_request):
+        qb_client = client.QuickBooks(sandbox=True)
+        qb_client.company_id = "1234"
+        receipt = SalesReceipt()
+        receipt.Id = 1
+
+        process_request.return_value = MockUnauthorizedResponse()
+
+        self.assertRaises(AuthorizationException, receipt.download_pdf, qb_client)
+
 
 class MockResponse(object):
     @property
@@ -256,6 +267,20 @@ class MockResponse(object):
 
     def content(self):
         return ''
+
+
+class MockUnauthorizedResponse(object):
+    @property
+    def text(self):
+        return "UNAUTHORIZED"
+
+    @property
+    def status_code(self):
+        try:
+            import httplib  # python 2
+        except ImportError:
+            import http.client as httplib  # python 3
+        return httplib.UNAUTHORIZED
 
 
 class MockPdfResponse(object):
