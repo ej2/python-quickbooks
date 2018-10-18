@@ -19,7 +19,7 @@ Existing applications can continue to use OAuth 1.0 (See `OAuth 1.0 vs. OAuth 2.
 
 
 Connecting your application with quickbooks-cli
--------------------
+------------------------------------------------
 
 From the command line, call quickbooks-cli tool passing in either your consumer_key and consumer_secret (OAuth 1.0)
 or your client_id and client_secret (OAuth 2.0), plus the OAuth version number:
@@ -30,7 +30,7 @@ or your client_id and client_secret (OAuth 2.0), plus the OAuth version number:
 
 
 Manually connecting with OAuth version 1.0
---------
+--------------------------------------------
 
 1. Create the Authorization URL for your application:
 
@@ -75,7 +75,7 @@ Store ``realm_id``, ``access_token``, and ``access_token_secret`` for later use.
 
 
 Manually connecting with OAuth version 2.0
---------
+--------------------------------------------
 
 1. Create the Authorization URL for your application:
 
@@ -111,31 +111,24 @@ Manually connecting with OAuth version 2.0
        refresh_token = session_manager.refresh_token
 
 Store ``access_token`` and ``refresh_token`` for later use.
-
+See `Unable to get Access tokens`_ for issues getting access tokens.
 
 Refreshing Access Token
 -----------------------
 
-at some point your access token will expire, that is why you  were given
-a ``refresh_token``, once your requests get an ``AuthorizationException``
-you need to use your client to refresh the access token, do this by calling
-its ``refresh_access_token`` method, it takes no arguments, and sets the new
-refresh token and access tokens on itself as instance attributes, so youll need
-to replace the tokens you were using, ie:
+When your access token expires, you can refresh it with the following code:
 
 .. code-block:: python
-        try:
-            Bill.all(qb=client)
-        except exceptions.AuthorizationException:
-            client.refresh_access_token()
-            MODEL_TO_STORE_TOKENS.access_token = client.access_token
-            MODEL_TO_STORE_TOKENS.refresh_token = client.refresh_token
-            Bill.all(qb=client)
 
-now you can make authorized requests again.
+    session_manager = Oauth2SessionManager(
+           client_id=QUICKBOOKS_CLIENT_ID,
+           client_secret=QUICKBOOKS_CLIENT_SECRET,
+           base_url=callback_url,
+       )
 
-Store ``access_token`` for later use.
-See `Unable to get Access tokens`_ for issues getting access tokens. 
+    session_manager.refresh_access_token()
+
+Be sure to update your stored ``access_token`` and ``refresh_token``.
 
 Accessing the API
 -----------------
