@@ -117,48 +117,99 @@ class Oauth1SessionManagerTest(unittest.TestCase):
 
         self.assertEqual(session_manager.started, False)
 
-    @patch('quickbooks.auth.requests.post')
-    def test_get_new_access_tokens_success(self, request_post):
 
-        request_post.return_value = SuccessResponse()
-
-        session_manager = Oauth2SessionManager(
-            sandbox=True,
-            client_id='CLIENT_ID',
-            client_secret='CLIENT_SECRET',
-            access_token='AUTH2_ACCESS_TOKEN',
+class Oauth2SessionManagerTest(unittest.TestCase):
+    def load_session_manager(self, client_id='client_id', client_secret='client_secret', access_token='token', refresh_token='refresh_token'):
+        self.session_manager = Oauth2SessionManager(
+            client_id=client_id,
+            client_secret=client_secret,
+            access_token=access_token,
+            refresh_token=refresh_token,
         )
 
-        session_manager.get_new_access_tokens()
+    def setUp(self):
+        self.load_session_manager()
 
-        self.assertEqual(session_manager.x_refresh_token_expires_in, 'expires')
-        self.assertEqual(session_manager.access_token, 'access')
-        self.assertEqual(session_manager.token_type, 'type')
-        self.assertEqual(session_manager.refresh_token, 'refresh')
-        self.assertEqual(session_manager.expires_in, 'expires')
-        self.assertEqual(session_manager.id_token, 'id')
+    @patch('quickbooks.auth.Oauth2SessionManager.token_request')
+    def test_get_tokens_from_code(self, token_request):
+        result = self.session_manager.get_access_tokens('code')
+        payload = {
+            'code': 'code',
+            'redirect_uri': self.session_manager.base_url,
+            'grant_type': 'authorization_code'
+        }
+        token_request.assert_called_with(payload, return_result=False)
 
-    @patch('quickbooks.auth.requests.post')
-    def test_get_new_access_tokens_failure(self, request_post):
-        request_post.return_value = FailureResponse()
+    @patch('quickbooks.auth.Oauth2SessionManager.token_request')
+    def test_refresh_tokens(self, token_request):
+        result = self.session_manager.refresh_access_tokens()
+        payload = {
+            'refresh_token':'refresh_token',                                    
+            'grant_type': 'refresh_token'
+        }
+        token_request.assert_called_with(payload, return_result=False)
 
-        session_manager = Oauth2SessionManager(
-            sandbox=True,
-            client_id='CLIENT_ID',
-            client_secret='CLIENT_SECRET',
-            access_token='AUTH2_ACCESS_TOKEN',
+    def test_init(self):
+        self.assertEqual(self.session_manager.client_id, 'client_id')
+        self.assertEqual(self.session_manager.access_token, 'token')
+        self.assertEqual(self.session_manager.client_secret, 'client_secret')
+        self.assertEqual(self.session_manager.refresh_token, 'refresh_token')
+
+    def test_start_session(self):
+        session = self.session_manager.start_session()
+
+        self.assertEqual(session.access_token, 'token')
+        self.assertEqual(session.client_secret, 'client_secret')
+        self.assertEqual(self.session_manager.started, True)
+
+    def test_start_session_no_client_id(self):
+        self.load_session_manager(
+            client_id=''
         )
 
-        result = session_manager.get_new_access_tokens()
-        self.assertEqual(result, 'error')
+        try:
+            with self.assertRaises(QuickbooksException) as error:
+                self.session_manager.start_session()
 
+            self.assertEqual(error.exception.message,
+                             "Client Id missing. Cannot create session.")
+        except:
+            self.failUnlessRaises(QuickbooksException,
+                                  self.session_manager.start_session)
 
-class SuccessResponse(object):
-    status_code = 200
-    text = '{"x_refresh_token_expires_in": "expires", "access_token": "access", "token_type": "type", ' \
-           '"refresh_token": "refresh", "expires_in": "expires", "id_token": "id"}'
+        self.assertEqual(self.session_manager.started, False)
 
+    def test_start_session_no_client_secret(self):
+        self.load_session_manager(
+            client_secret='',
+        )
 
-class FailureResponse(object):
-    status_code = 403
-    text = 'error'
+        try:
+            with self.assertRaises(QuickbooksException) as error:
+                self.session_manager.start_session()
+
+            self.assertEqual(error.exception.message,
+                             "Client Secret missing. Cannot create session.")
+        except:
+            self.failUnlessRaises(QuickbooksException,
+                                  self.session_manager.start_session)
+
+        self.assertEqual(self.session_manager.started, False)
+
+    def test_start_session_no_access_token(self):
+        self.load_session_manager(
+            access_token='',
+        )
+
+        try:
+            with self.assertRaises(QuickbooksException) as error:
+                self.session_manager.start_session()
+
+            self.assertEqual(error.exception.message,
+                             "Access Token missing. Cannot create session.")
+        except:
+            self.failUnlessRaises(QuickbooksException,
+                                  self.session_manager.start_session)
+
+        self.assertEqual(self.session_manager.started, False)
+

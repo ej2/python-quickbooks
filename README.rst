@@ -108,6 +108,31 @@ Manually connecting with OAuth version 2.0
        # caution! invalid requests return {"error":"invalid_grant"} quietly
        session_manager.get_access_tokens(request.GET['code'])
        access_token = session_manager.access_token
+       refresh_token = session_manager.refresh_token
+
+Store ``access_token`` and ``refresh_token`` for later use.
+
+
+Refreshing Access Token
+-----------------------
+
+at some point your access token will expire, that is why you  were given
+a ``refresh_token``, once your requests get an ``AuthorizationException``
+you need to use your client to refresh the access token, do this by calling
+its ``refresh_access_token`` method, it takes no arguments, and sets the new
+refresh token and access tokens on itself as instance attributes, so youll need
+to replace the tokens you were using, ie:
+
+.. code-block:: python
+        try:
+            Bill.all(qb=client)
+        except exceptions.AuthorizationException:
+            client.refresh_access_token()
+            MODEL_TO_STORE_TOKENS.access_token = client.access_token
+            MODEL_TO_STORE_TOKENS.refresh_token = client.refresh_token
+            Bill.all(qb=client)
+
+now you can make authorized requests again.
 
 Store ``access_token`` for later use.
 See `Unable to get Access tokens`_ for issues getting access tokens. 
@@ -447,5 +472,4 @@ on Python 2.
    :target: https://coveralls.io/github/sidecars/python-quickbooks?branch=master
 
 .. _OAuth 1.0 vs. OAuth 2.0: https://developer.intuit.com/docs/0100_quickbooks_online/0100_essentials/000500_authentication_and_authorization/0010_oauth_1.0a_vs_oauth_2.0_apps
-
 .. _Unable to get Access tokens: https://help.developer.intuit.com/s/question/0D50f00004zqs0ACAQ/unable-to-get-access-tokens
