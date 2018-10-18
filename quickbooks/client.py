@@ -315,6 +315,11 @@ class QuickBooks(object):
         response = self.process_request("GET", url, headers=headers)
 
         if response.status_code != httplib.OK:
+
+            if response.status_code == httplib.UNAUTHORIZED:
+                # Note that auth errors have different result structure which can't be parsed by handle_exceptions()
+                raise AuthorizationException("Application authentication failed", detail=response.text)
+
             try:
                 result = response.json()
             except:
