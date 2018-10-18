@@ -466,7 +466,7 @@ on Python 2.
 .. |Coverage Status| image:: https://coveralls.io/repos/sidecars/python-quickbooks/badge.svg?branch=master&service=github
    :target: https://coveralls.io/github/sidecars/python-quickbooks?branch=master
 .. |License| image:: https://img.shields.io/badge/License-MIT-yellow.svg
-   :target: https://opensource.org/licenses/MIT
+   :target: https://github.com/sidecars/python-quickbooks/blob/master/LICENSE
 
 
 .. _OAuth 1.0 vs. OAuth 2.0: https://developer.intuit.com/docs/0100_quickbooks_online/0100_essentials/000500_authentication_and_authorization/0010_oauth_1.0a_vs_oauth_2.0_apps
