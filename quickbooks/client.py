@@ -354,7 +354,7 @@ class QuickBooks(object):
 
             if response.status_code == httplib.UNAUTHORIZED:
                 # Note that auth errors have different result structure which can't be parsed by handle_exceptions()
-                raise AuthorizationException("Application authentication failed", detail=response.text)
+                raise exceptions.AuthorizationException("Application authentication failed", detail=response.text)
 
             try:
                 result = response.json()
