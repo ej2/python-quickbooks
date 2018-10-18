@@ -110,7 +110,7 @@ Manually connecting with OAuth version 2.0
        access_token = session_manager.access_token
 
 Store ``access_token`` for later use.
-See `Unable to get Access tokens` if you have issues getting access tokens. 
+See `Unable to get Access tokens`_ for issues getting access tokens. 
 
 Accessing the API
 -----------------
