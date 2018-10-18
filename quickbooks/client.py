@@ -103,7 +103,7 @@ class QuickBooks(object):
     def get_current_user(self):
         """Get data from the current user endpoint"""
         url = self.current_user_url
-        result = self.make_request("GET", url)
+        result = self.get(url)
         return result
 
     def get_report(self, report_type, qs=None):
@@ -112,7 +112,7 @@ class QuickBooks(object):
             qs = {}
 
         url = self.api_url + "/company/{0}/reports/{1}".format(self.company_id, report_type)
-        result = self.make_request("GET", url, params=qs)
+        result = self.get(url, params=qs)
         return result
 
     # TODO: is disconnect url the same for OAuth 1 and OAuth 2?
@@ -122,15 +122,15 @@ class QuickBooks(object):
         :return:
         """
         url = self.disconnect_url
-        result = self.make_request("GET", url)
+        result = self.get(url)
         return result
 
     def change_data_capture(self, entity_string, changed_since):
-        url = self.api_url + "/company/{0}/cdc".format(self.company_id)
+        url = "{0}/company/{1}/cdc".format(self.api_url, self.company_id)
 
         params = {"entities": entity_string, "changedSince": changed_since}
 
-        result = self.make_request("GET", url, params=params)
+        result = self.get(url, params=params)
         return result
 
     # TODO: is reconnect url the same for OAuth 1 and OAuth 2?
@@ -140,7 +140,7 @@ class QuickBooks(object):
         :return:
         """
         url = self.reconnect_url
-        result = self.make_request("GET", url)
+        result = self.get(url)
         return result
 
     def make_request(self, request_type, url, request_body=None, content_type='application/json',
@@ -216,6 +216,12 @@ class QuickBooks(object):
         else:
             return result
 
+    def get(self, *args, **kwargs):
+        return self.make_request("GET", *args, **kwargs)
+
+    def post(self, *args, **kwargs):
+        return self.make_request("POST", *args, **kwargs)
+
     def process_request(self, request_type, url, headers="", params="", data=""):
         if self.session_manager is None:
             raise QuickbooksException('No session manager')
@@ -231,8 +237,8 @@ class QuickBooks(object):
                 headers=headers, params=params, data=data)
 
     def get_single_object(self, qbbo, pk):
-        url = self.api_url + "/company/{0}/{1}/{2}/".format(self.company_id, qbbo.lower(), pk)
-        result = self.make_request("GET", url, {})
+        url = "{0}/company/{1}/{2}/{3}/".format(self.api_url, self.company_id, qbbo.lower(), pk)
+        result = self.get(url, {})
 
         return result
 
@@ -258,14 +264,14 @@ class QuickBooks(object):
     def create_object(self, qbbo, request_body, _file_path=None):
         self.isvalid_object_name(qbbo)
 
-        url = self.api_url + "/company/{0}/{1}".format(self.company_id, qbbo.lower())
-        results = self.make_request("POST", url, request_body, file_path=_file_path)
+        url = "{0}/company/{1}/{2}".format(self.api_url, self.company_id, qbbo.lower())
+        results = self.post(url, request_body, file_path=_file_path)
 
         return results
 
     def query(self, select):
-        url = self.api_url + "/company/{0}/query".format(self.company_id)
-        result = self.make_request("POST", url, select, content_type='application/text')
+        url = "{0}/company/{1}/query".format(self.api_url, self.company_id)
+        result = self.post(url, select, content_type='application/text')
 
         return result
 
@@ -276,26 +282,26 @@ class QuickBooks(object):
         return True
 
     def update_object(self, qbbo, request_body, _file_path=None):
-        url = self.api_url + "/company/{0}/{1}".format(self.company_id, qbbo.lower())
-        result = self.make_request("POST", url, request_body, file_path=_file_path)
+        url = "{0}/company/{1}/{2}".format(self.api_url, self.company_id,  qbbo.lower())
+        result = self.post(url, request_body, file_path=_file_path)
 
         return result
 
     def delete_object(self, qbbo, request_body, _file_path=None):
-        url = self.api_url + "/company/{0}/{1}".format(self.company_id, qbbo.lower())
-        result = self.make_request("POST", url, request_body, params={'operation': 'delete'}, file_path=_file_path)
+        url = "{0}/company/{1}/{2}".format(self.api_url, self.company_id, qbbo.lower())
+        result = self.post(url, request_body, params={'operation': 'delete'}, file_path=_file_path)
 
         return result
 
     def batch_operation(self, request_body):
-        url = self.api_url + "/company/{0}/batch".format(self.company_id)
-        results = self.make_request("POST", url, request_body)
+        url = "{0}/company/{1}/batch".format(self.api_url, self.company_id)
+        results = self.post(url, request_body)
 
         return results
 
     def misc_operation(self, end_point, request_body):
-        url = self.api_url + "/company/{0}/{1}".format(self.company_id, end_point)
-        results = self.make_request("POST", url, request_body)
+        url = "{0}/company/{1}/{2}".format(self.api_url, self.company_id, end_point)
+        results = self.post(url, request_body)
 
         return results
 
@@ -303,8 +309,8 @@ class QuickBooks(object):
         if self.session_manager is None:
             raise QuickbooksException('No session manager')
 
-        url = self.api_url + "/company/{0}/{1}/{2}/pdf".format(
-            self.company_id, qbbo.lower(), item_id)
+        url = "{0}/company/{1}/{2}/{3}/pdf".format(
+            self.api_url, self.company_id, qbbo.lower(), item_id)
 
         headers = {
             'Content-Type': 'application/pdf',
