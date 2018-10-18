@@ -172,6 +172,9 @@ class Oauth2SessionManager(AuthSessionManager):
         if 'base_url' in kwargs:
             self.base_url = kwargs['base_url']
 
+        if 'refresh_token' in kwargs:
+            self.refresh_token = kwargs['refresh_token']
+
     def start_session(self):
         if not self.started:
             if self.client_id == '':
@@ -219,25 +222,7 @@ class Oauth2SessionManager(AuthSessionManager):
 
         return url
 
-    def get_access_tokens(self, auth_code):
-        headers = {
-            'Accept': 'application/json',
-            'content-type': 'application/x-www-form-urlencoded',
-            'Authorization': self.get_auth_header()
-        }
-
-        payload = {
-            'code': auth_code,
-            'redirect_uri': self.base_url,
-            'grant_type': 'authorization_code'
-        }
-
-        r = requests.post(self.access_token_url, data=payload, headers=headers)
-        if r.status_code != 200:
-            return r.text
-
-        bearer_raw = json.loads(r.text)
-
+    def update_tokens(self, bearer_raw):
         self.x_refresh_token_expires_in = bearer_raw['x_refresh_token_expires_in']
         self.access_token = bearer_raw['access_token']
         self.token_type = bearer_raw['token_type']
@@ -254,3 +239,35 @@ class Oauth2SessionManager(AuthSessionManager):
             auth_header = base64.b64encode(bytes(self.client_id + ':' + self.client_secret, 'utf-8')).decode()
 
         return 'Basic ' + auth_header
+
+    def token_request(self, payload, return_result=False):
+        headers = {
+            'Accept': 'application/json',
+            'content-type': 'application/x-www-form-urlencoded',
+            'Authorization': self.get_auth_header()
+        }
+        r = requests.post(self.access_token_url, data=payload, headers=headers)
+        if r.status_code != 200:
+            return r.text
+
+        bearer_raw = json.loads(r.text)
+
+        self.update_tokens(bearer_raw)
+
+        return bearer_raw if return_result else None
+
+    def get_access_tokens(self, auth_code, return_result=False):
+        payload = {
+            'code': auth_code,
+            'redirect_uri': self.base_url,
+            'grant_type': 'authorization_code'
+        }
+        return self.token_request(payload, return_result=return_result)
+
+    def refresh_access_tokens(self, refresh_token=None, return_result=False):
+        payload = {
+            'refresh_token': refresh_token or self.refresh_token,
+            'grant_type': 'refresh_token'
+        }
+        return self.token_request(payload, return_result=return_result)
+
