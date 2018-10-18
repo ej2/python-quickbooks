@@ -255,8 +255,7 @@ class Oauth2SessionManager(AuthSessionManager):
 
         return 'Basic ' + auth_header
 
-    def get_new_access_tokens(self, refresh_token):
-
+    def get_new_access_tokens(self):
         headers = {
             'Accept': 'application/json',
             'content-type': 'application/x-www-form-urlencoded',
@@ -264,7 +263,7 @@ class Oauth2SessionManager(AuthSessionManager):
         }
 
         payload = {
-            'refresh_token': refresh_token,
+            'refresh_token': self.refresh_token,
             'grant_type': 'refresh_token'
         }
 

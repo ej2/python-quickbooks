@@ -2,7 +2,7 @@ import unittest
 
 from quickbooks.exceptions import QuickbooksException
 
-from quickbooks.auth import Oauth1SessionManager
+from quickbooks.auth import Oauth1SessionManager, Oauth2SessionManager
 
 try:
     from mock import patch
@@ -116,3 +116,49 @@ class Oauth1SessionManagerTest(unittest.TestCase):
             self.failUnlessRaises(QuickbooksException, session_manager.start_session)
 
         self.assertEqual(session_manager.started, False)
+
+    @patch('quickbooks.auth.requests.post')
+    def test_get_new_access_tokens_success(self, request_post):
+
+        request_post.return_value = SuccessResponse()
+
+        session_manager = Oauth2SessionManager(
+            sandbox=True,
+            client_id='CLIENT_ID',
+            client_secret='CLIENT_SECRET',
+            access_token='AUTH2_ACCESS_TOKEN',
+        )
+
+        session_manager.get_new_access_tokens()
+
+        self.assertEqual(session_manager.x_refresh_token_expires_in, 'expires')
+        self.assertEqual(session_manager.access_token, 'access')
+        self.assertEqual(session_manager.token_type, 'type')
+        self.assertEqual(session_manager.refresh_token, 'refresh')
+        self.assertEqual(session_manager.expires_in, 'expires')
+        self.assertEqual(session_manager.id_token, 'id')
+
+    @patch('quickbooks.auth.requests.post')
+    def test_get_new_access_tokens_failure(self, request_post):
+        request_post.return_value = FailureResponse()
+
+        session_manager = Oauth2SessionManager(
+            sandbox=True,
+            client_id='CLIENT_ID',
+            client_secret='CLIENT_SECRET',
+            access_token='AUTH2_ACCESS_TOKEN',
+        )
+
+        result = session_manager.get_new_access_tokens()
+        self.assertEqual(result, 'error')
+
+
+class SuccessResponse(object):
+    status_code = 200
+    text = '{"x_refresh_token_expires_in": "expires", "access_token": "access", "token_type": "type", ' \
+           '"refresh_token": "refresh", "expires_in": "expires", "id_token": "id"}'
+
+
+class FailureResponse(object):
+    status_code = 403
+    text = 'error'
