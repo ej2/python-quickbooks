@@ -270,3 +270,4 @@ class Oauth2SessionManager(AuthSessionManager):
             'grant_type': 'refresh_token'
         }
         return self.token_request(payload, return_result=return_result)
+

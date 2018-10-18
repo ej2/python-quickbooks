@@ -1,5 +1,10 @@
 Changelog
-========
+=========
+
+* 0.7.5 (October 18th, 2018)
+    * Fixed bug with reporting authentication failure when attempting to download PDF (previously the error details were "lost")
+    * Added get_new_access_tokens to Oauth2SessionManager
+    *
 
 * 0.7.4 (March 26th, 2018)
     * Fixed bug in SendMixin send method.

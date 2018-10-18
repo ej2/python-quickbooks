@@ -148,7 +148,6 @@ class Oauth2SessionManagerTest(unittest.TestCase):
             'grant_type': 'refresh_token'
         }
         token_request.assert_called_with(payload, return_result=False)
-        
 
     def test_init(self):
         self.assertEqual(self.session_manager.client_id, 'client_id')
@@ -213,3 +212,4 @@ class Oauth2SessionManagerTest(unittest.TestCase):
                                   self.session_manager.start_session)
 
         self.assertEqual(self.session_manager.started, False)
+
