@@ -11,6 +11,8 @@ These instructions were written for a Django application. Make sure to
 change it to whatever framework/method you’re using.
 You can find additional examples of usage in `Integration tests folder`_.
 
+For information about contributing, see the `Contributing Page`_.
+
 QuickBooks OAuth
 ------------------------------------------------
 
@@ -466,3 +468,4 @@ on Python 2.
 
 .. _OAuth 1.0 vs. OAuth 2.0: https://developer.intuit.com/docs/0100_quickbooks_online/0100_essentials/000500_authentication_and_authorization/0010_oauth_1.0a_vs_oauth_2.0_apps
 .. _Unable to get Access tokens: https://help.developer.intuit.com/s/question/0D50f00004zqs0ACAQ/unable-to-get-access-tokens
+.. _Contributing Page: https://github.com/sidecars/python-quickbooks/wiki/Contributing

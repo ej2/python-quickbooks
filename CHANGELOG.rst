@@ -7,6 +7,8 @@ Changelog
     * Added missing LinkedTxn to Bill object.
     * Added validate_webhook_signature method on client to validate incoming webhooks.
     * Improved exception handling.
+    * Updated SendMixin to use 'application/octet-stream' context type.
+    * Removed support for Python 2.6.
 
 * 0.7.4 (March 26th, 2018)
     * Fixed bug in SendMixin send method.
