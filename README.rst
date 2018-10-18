@@ -1,7 +1,7 @@
 python-quickbooks
 =================
 
-|Build Status| |Coverage Status|
+|Build Status| |Coverage Status| |License|
 
 
 A Python library for accessing the Quickbooks API. Complete rework of
@@ -465,6 +465,9 @@ on Python 2.
    :target: https://travis-ci.org/sidecars/python-quickbooks
 .. |Coverage Status| image:: https://coveralls.io/repos/sidecars/python-quickbooks/badge.svg?branch=master&service=github
    :target: https://coveralls.io/github/sidecars/python-quickbooks?branch=master
+.. |License| image:: https://img.shields.io/badge/License-MIT-yellow.svg
+   :target: https://opensource.org/licenses/MIT
+
 
 .. _OAuth 1.0 vs. OAuth 2.0: https://developer.intuit.com/docs/0100_quickbooks_online/0100_essentials/000500_authentication_and_authorization/0010_oauth_1.0a_vs_oauth_2.0_apps
 .. _Unable to get Access tokens: https://help.developer.intuit.com/s/question/0D50f00004zqs0ACAQ/unable-to-get-access-tokens
