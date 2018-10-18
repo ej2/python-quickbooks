@@ -26,6 +26,7 @@ class Bill(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, Li
 
     list_dict = {
         "Line": DetailLine,
+        "LinkedTxn": LinkedTxn,
     }
 
     detail_dict = {
