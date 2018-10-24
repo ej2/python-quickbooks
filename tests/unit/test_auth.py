@@ -147,6 +147,7 @@ class Oauth2SessionManagerTest(unittest.TestCase):
             'refresh_token':'refresh_token',                                    
             'grant_type': 'refresh_token'
         }
+        self.assertEqual(self.session_manager.started, False)
         token_request.assert_called_with(payload, return_result=False)
 
     def test_init(self):

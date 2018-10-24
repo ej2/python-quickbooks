@@ -269,5 +269,6 @@ class Oauth2SessionManager(AuthSessionManager):
             'refresh_token': refresh_token or self.refresh_token,
             'grant_type': 'refresh_token'
         }
+        self.started = False
         return self.token_request(payload, return_result=return_result)
 
