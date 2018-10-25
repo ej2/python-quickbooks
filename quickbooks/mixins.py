@@ -163,8 +163,9 @@ class ListMixin(object):
         return cls.where("", start_position=start_position, max_results=max_results, qb=qb)
 
     @classmethod
-    def filter(cls, start_position="", max_results="", qb=None, **kwargs):
+    def filter(cls, order_by="", start_position="", max_results="", qb=None, **kwargs):
         """
+        :param order_by:
         :param start_position:
         :param max_results:
         :param qb:
@@ -172,7 +173,8 @@ class ListMixin(object):
         :return: Filtered list
         """
         return cls.where(build_where_clause(**kwargs),
-                         start_position=start_position, max_results=max_results, qb=qb)
+                         start_position=start_position, max_results=max_results, order_by=order_by,
+                         qb=qb)
 
     @classmethod
     def choose(cls, choices, field="Id", qb=None):
@@ -185,9 +187,10 @@ class ListMixin(object):
         return cls.where(build_choose_clause(choices, field), qb=qb)
 
     @classmethod
-    def where(cls, where_clause="", start_position="", max_results="", qb=None):
+    def where(cls, where_clause="", order_by="", start_position="", max_results="", qb=None):
         """
         :param where_clause: QBO SQL where clause (DO NOT include 'WHERE')
+        :param order_by:
         :param start_position:
         :param max_results:
         :param qb:
@@ -196,14 +199,17 @@ class ListMixin(object):
         if where_clause:
             where_clause = "WHERE " + where_clause
 
+        if order_by:
+            order_by = " ORDERBY " + order_by
+
         if start_position:
             start_position = " STARTPOSITION " + str(start_position)
 
         if max_results:
             max_results = " MAXRESULTS " + str(max_results)
 
-        select = "SELECT * FROM {0} {1}{2}{3}".format(
-            cls.qbo_object_name, where_clause, start_position, max_results)
+        select = "SELECT * FROM {0} {1}{2}{3}{4}".format(
+            cls.qbo_object_name, where_clause, order_by, start_position, max_results)
 
         return cls.query(select, qb=qb)
 
