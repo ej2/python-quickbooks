@@ -407,6 +407,16 @@ Attaching a file to customer:
     attachment.ContentType = 'application/pdf'
     attachment.save(qb=client)
 
+Other operations
+----------------
+Void an invoice:
+
+.. code-block:: python
+
+   invoice = Invoice()
+   invoice.Id = 7
+   invoice.void(qb=client)
+
 Working with JSON data
 ----------------
 All objects include ``to_json`` and ``from_json`` methods.
