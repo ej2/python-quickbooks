@@ -411,3 +411,29 @@ class SendMixinTest(unittest.TestCase):
         invoice.send(qb=self.qb_client, send_to="test@email.com")
 
         mock_misc_op.assert_called_with("invoice/2/send?sendTo=test@email.com", None, 'application/octet-stream')
+
+
+class VoidMixinTest(unittest.TestCase):
+    def setUp(self):
+        self.qb_client = client.QuickBooks(
+            sandbox=True,
+            consumer_key="update_consumer_key",
+            consumer_secret="update_consumer_secret",
+            access_token="update_access_token",
+            access_token_secret="update_access_token_secret",
+            company_id="update_company_id",
+            callback_url="update_callback_url"
+        )
+
+    @patch('quickbooks.mixins.QuickBooks.post')
+    def test_void(self, post):
+        invoice = Invoice()
+        invoice.Id = 2
+        invoice.void(qb=self.qb_client)
+        self.assertTrue(post.called)
+
+    def test_delete_unsaved_exception(self):
+        from quickbooks.exceptions import QuickbooksException
+
+        invoice = Invoice()
+        self.assertRaises(QuickbooksException, invoice.void, qb=self.qb_client)
