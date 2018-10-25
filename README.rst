@@ -198,6 +198,19 @@ Filtered list of objects:
 
     customers = Customer.filter(Active=True, FamilyName="Smith", qb=client)
 
+Filtered list of objects with ordering:
+
+.. code-block:: python
+
+    # Get customer invoices ordered by TxnDate
+    invoices = Invoice.filter(CustomerRef='100', order_by='TxnDate', qb=client)
+    
+    # Same, but in reverse order
+    invoices = Invoice.filter(CustomerRef='100', order_by='TxnDate DESC', qb=client)
+    
+    # Order customers by FamilyName then by GivenName
+    customers = Customer.all(order_by='FamilyName, GivenName', qb=client)
+
 Filtered list of objects with paging:
 
 .. code-block:: python
@@ -216,6 +229,12 @@ List with custom Where Clause (do not include the ``"WHERE"``):
 .. code-block:: python
 
     customers = Customer.where("Active = True AND CompanyName LIKE 'S%'", qb=client)
+
+List with custom Where and ordering:
+
+.. code-block:: python
+
+    customers = Customer.where("Active = True AND CompanyName LIKE 'S%'", order_by='DisplayName', qb=client)
 
 List with custom Where Clause and paging:
 

@@ -148,7 +148,7 @@ class ListMixinTest(unittest.TestCase):
     @patch('quickbooks.mixins.ListMixin.where')
     def test_all(self, where):
         Department.all()
-        where.assert_called_once_with('', max_results=100, start_position='', qb=None)
+        where.assert_called_once_with('', order_by='', max_results=100, start_position='', qb=None)
 
     def test_all_with_qb(self):
         with patch.object(self.qb_client, 'query') as query:

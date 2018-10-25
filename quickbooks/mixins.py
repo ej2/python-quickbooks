@@ -153,14 +153,15 @@ class ListMixin(object):
     qbo_object_name = ""
 
     @classmethod
-    def all(cls, start_position="", max_results=100, qb=None):
+    def all(cls, order_by="", start_position="", max_results=100, qb=None):
         """
         :param start_position:
         :param max_results: The max number of entities that can be returned in a response is 1000.
         :param qb:
         :return: Returns list
         """
-        return cls.where("", start_position=start_position, max_results=max_results, qb=qb)
+        return cls.where("", order_by=order_by, start_position=start_position,
+                         max_results=max_results, qb=qb)
 
     @classmethod
     def filter(cls, order_by="", start_position="", max_results="", qb=None, **kwargs):
