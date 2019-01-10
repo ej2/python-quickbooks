@@ -128,7 +128,7 @@ When your access token expires, you can refresh it with the following code:
            base_url=callback_url,
        )
 
-    session_manager.refresh_access_token()
+    session_manager.refresh_access_tokens()
 
 Be sure to update your stored ``access_token`` and ``refresh_token``.
 
