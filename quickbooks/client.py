@@ -181,7 +181,11 @@ class QuickBooks(object):
         }
 
         if file_path:
-            attachment = open(file_path, 'rb')
+            if not hasattr(file_path, 'read'):
+                attachment = open(file_path, 'rb')
+            else:
+                attachment = file_path
+
             url = url.replace('attachable', 'upload')
             boundary = '-------------PythonMultipartPost'
             headers.update({
