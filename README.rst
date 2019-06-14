@@ -125,10 +125,10 @@ When your access token expires, you can refresh it with the following code:
     session_manager = Oauth2SessionManager(
            client_id=QUICKBOOKS_CLIENT_ID,
            client_secret=QUICKBOOKS_CLIENT_SECRET,
-           base_url=callback_url,
+           refresh_token=refresh_token,
        )
 
-    session_manager.refresh_access_token()
+    session_manager.refresh_access_tokens()
 
 Be sure to update your stored ``access_token`` and ``refresh_token``.
 
