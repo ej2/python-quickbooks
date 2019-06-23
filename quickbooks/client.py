@@ -301,7 +301,7 @@ class QuickBooks(object):
 
     def query(self, select):
         url = "{0}/company/{1}/query".format(self.api_url, self.company_id)
-        result = self.post(url, select, content_type='application/text')
+        result = self.get(url, params={'query': select}, content_type='application/text')
 
         return result
 
