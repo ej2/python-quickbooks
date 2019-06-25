@@ -221,6 +221,19 @@ Filtered list of objects:
 
     customers = Customer.filter(Active=True, FamilyName="Smith", qb=client)
 
+Filtered list of objects with ordering:
+
+.. code-block:: python
+
+    # Get customer invoices ordered by TxnDate
+    invoices = Invoice.filter(CustomerRef='100', order_by='TxnDate', qb=client)
+    
+    # Same, but in reverse order
+    invoices = Invoice.filter(CustomerRef='100', order_by='TxnDate DESC', qb=client)
+    
+    # Order customers by FamilyName then by GivenName
+    customers = Customer.all(order_by='FamilyName, GivenName', qb=client)
+
 Filtered list of objects with paging:
 
 .. code-block:: python
@@ -239,6 +252,12 @@ List with custom Where Clause (do not include the ``"WHERE"``):
 .. code-block:: python
 
     customers = Customer.where("Active = True AND CompanyName LIKE 'S%'", qb=client)
+
+List with custom Where and ordering:
+
+.. code-block:: python
+
+    customers = Customer.where("Active = True AND CompanyName LIKE 'S%'", order_by='DisplayName', qb=client)
 
 List with custom Where Clause and paging:
 
@@ -470,5 +489,6 @@ on Python 2.
 
 
 .. _OAuth 1.0 vs. OAuth 2.0: https://developer.intuit.com/docs/0100_quickbooks_online/0100_essentials/000500_authentication_and_authorization/0010_oauth_1.0a_vs_oauth_2.0_apps
+
 .. _Unable to get Access tokens: https://help.developer.intuit.com/s/question/0D50f00004zqs0ACAQ/unable-to-get-access-tokens
 .. _Contributing Page: https://github.com/sidecars/python-quickbooks/wiki/Contributing

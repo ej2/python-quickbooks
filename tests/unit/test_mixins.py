@@ -15,6 +15,7 @@ from quickbooks import client
 
 from quickbooks.objects.base import PhoneNumber, QuickbooksBaseObject
 from quickbooks.objects.department import Department
+from quickbooks.objects.customer import Customer
 from quickbooks.objects.journalentry import JournalEntry, JournalEntryLine
 from quickbooks.objects.salesreceipt import SalesReceipt
 from quickbooks.mixins import ObjectListMixin
@@ -149,7 +150,7 @@ class ListMixinTest(unittest.TestCase):
     @patch('quickbooks.mixins.ListMixin.where')
     def test_all(self, where):
         Department.all()
-        where.assert_called_once_with('', max_results=100, start_position='', qb=None)
+        where.assert_called_once_with('', order_by='', max_results=100, start_position='', qb=None)
 
     def test_all_with_qb(self):
         with patch.object(self.qb_client, 'query') as query:
@@ -159,7 +160,8 @@ class ListMixinTest(unittest.TestCase):
     @patch('quickbooks.mixins.ListMixin.where')
     def test_filter(self, where):
         Department.filter(max_results=25, start_position='1', Active=True)
-        where.assert_called_once_with("Active = True", max_results=25, start_position='1', qb=None)
+        where.assert_called_once_with("Active = True", max_results=25, start_position='1',
+                                      order_by='', qb=None)
 
     def test_filter_with_qb(self):
         with patch.object(self.qb_client, 'query') as query:
@@ -168,13 +170,13 @@ class ListMixinTest(unittest.TestCase):
 
     @patch('quickbooks.mixins.ListMixin.query')
     def test_where(self, query):
-        Department.where("Active=True", 1, 10)
+        Department.where("Active=True", start_position=1, max_results=10)
         query.assert_called_once_with("SELECT * FROM Department WHERE Active=True STARTPOSITION 1 MAXRESULTS 10",
                                       qb=None)
 
     def test_where_with_qb(self):
         with patch.object(self.qb_client, 'query') as query:
-            Department.where("Active=True", 1, 10, qb=self.qb_client)
+            Department.where("Active=True", start_position=1, max_results=10, qb=self.qb_client)
             self.assertTrue(query.called)
 
     @patch('quickbooks.mixins.QuickBooks.query')
@@ -203,6 +205,16 @@ class ListMixinTest(unittest.TestCase):
     def test_count(self, query):
         count = Department.count(where_clause="Active=True", qb=self.qb_client)
         query.assert_called_once_with("SELECT COUNT(*) FROM Department WHERE Active=True")
+
+    @patch('quickbooks.mixins.ListMixin.query')
+    def test_order_by(self, query):
+        Customer.filter(Active=True, order_by='DisplayName')
+        query.assert_called_once_with("SELECT * FROM Customer WHERE Active = True ORDERBY DisplayName", qb=None)
+
+    def test_order_by_with_qb(self):
+        with patch.object(self.qb_client, 'query') as query:
+            Customer.filter(Active=True, order_by='DisplayName', qb=self.qb_client)
+            self.assertTrue(query.called)
 
 
 class ReadMixinTest(unittest.TestCase):
