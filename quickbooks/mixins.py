@@ -114,6 +114,26 @@ class SendMixin(object):
         return results
 
 
+class VoidMixin(object):
+    def void(self, qb=None):
+        if not qb:
+            qb = QuickBooks()
+
+        if not self.Id:
+            raise QuickbooksException('Cannot void unsaved object')
+
+        data = {
+            'Id': self.Id,
+            'SyncToken': self.SyncToken,
+        }
+
+        endpoint = self.qbo_object_name.lower()
+        url = "{0}/company/{1}/{2}".format(qb.api_url, qb.company_id, endpoint)
+        results = qb.post(url, json.dumps(data), params={'operation': 'void'})
+
+        return results
+
+
 class UpdateMixin(object):
     qbo_object_name = ""
 
