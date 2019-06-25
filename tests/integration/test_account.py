@@ -1,26 +1,11 @@
 from datetime import datetime
-import os
-import unittest
-
-from quickbooks.auth import Oauth2SessionManager
-from quickbooks.client import QuickBooks
 from quickbooks.objects.account import Account
+from tests.integration.test_base import QuickbooksTestCase
 
 
-class AccountTest(unittest.TestCase):
+class AccountTest(QuickbooksTestCase):
     def setUp(self):
-        self.session_manager = Oauth2SessionManager(
-            sandbox=True,
-            client_id=os.environ.get('CLIENT_ID'),
-            client_secret=os.environ.get('CLIENT_SECRET'),
-            access_token=os.environ.get('AUTH2_ACCESS_TOKEN'),
-        )
-
-        self.qb_client = QuickBooks(
-            session_manager=self.session_manager,
-            sandbox=True,
-            company_id=os.environ.get('COMPANY_ID2')
-        )
+        super(AccountTest, self).setUp()
 
         self.account_number = datetime.now().strftime('%d%H%M')
         self.name = "Test Account {0}".format(self.account_number)

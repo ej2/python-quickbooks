@@ -2,7 +2,9 @@ import os
 import unittest
 
 from quickbooks.objects import Bill, Invoice
-from quickbooks.auth import Oauth1SessionManager
+
+from intuitlib.client import AuthClient
+from quickbooks.client import QuickBooks
 
 try:
     from mock import patch
@@ -131,18 +133,18 @@ class ToDictMixinTest(unittest.TestCase):
 
 class ListMixinTest(unittest.TestCase):
     def setUp(self):
-        self.session_manager = Oauth1SessionManager(
-            sandbox=True,
-            consumer_key="update_consumer_key",
-            consumer_secret="update_consumer_secret",
-            access_token="update_access_token",
-            access_token_secret="update_access_token_secret",
+        self.auth_client = AuthClient(
+            client_id=os.environ.get('CLIENT_ID'),
+            client_secret=os.environ.get('CLIENT_SECRET'),
+            environment='sandbox',
+            redirect_uri='http://localhost:8000/callback',
         )
 
-        self.qb_client = client.QuickBooks(
-            session_manager=self.session_manager,
+        self.qb_client = QuickBooks(
+            auth_client=self.auth_client,
+            refresh_token=os.environ.get('REFRESH_TOKEN'),
+            company_id=os.environ.get('COMPANY_ID'),
             sandbox=True,
-            company_id="COMPANY_ID"
         )
 
     @patch('quickbooks.mixins.ListMixin.where')
@@ -414,7 +416,7 @@ class SendMixinTest(unittest.TestCase):
         invoice.Id = 2
         invoice.send(qb=self.qb_client)
 
-        mock_misc_op.assert_called_with("Invoice/2/send", None)
+        mock_misc_op.assert_called_with("invoice/2/send", None, 'application/octet-stream')
 
     @patch('quickbooks.mixins.QuickBooks.misc_operation')
     def test_send_with_send_to_email(self, mock_misc_op):
@@ -422,4 +424,4 @@ class SendMixinTest(unittest.TestCase):
         invoice.Id = 2
         invoice.send(qb=self.qb_client, send_to="test@email.com")
 
-        mock_misc_op.assert_called_with("Invoice/2/send?sendTo=test@email.com", None)
+        mock_misc_op.assert_called_with("invoice/2/send?sendTo=test@email.com", None, 'application/octet-stream')

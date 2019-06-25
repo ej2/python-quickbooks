@@ -43,3 +43,11 @@ class SevereException(QuickbooksException):
     Quickbooks Error Codes greater than 10000
     """
     pass
+
+
+class ObjectNotFoundException(QuickbooksException):
+    """
+    Quickbooks Error Code 610
+    """
+    pass
+

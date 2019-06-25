@@ -58,7 +58,7 @@ class Invoice(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject, Q
         self.Deposit = 0
         self.Balance = 0
         self.AllowIPNPayment = True
-        self.DocNumber = ""
+        self.DocNumber = None
         self.PrivateNote = ""
         self.DueDate = ""
         self.ShipDate = ""

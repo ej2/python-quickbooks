@@ -1,14 +1,22 @@
+import os
 import unittest
+
+from intuitlib.client import AuthClient
 
 try:
     from mock import patch
 except ImportError:
     from unittest.mock import patch
 
-from quickbooks.auth import Oauth1SessionManager
-from quickbooks.exceptions import QuickbooksException, SevereException
+from quickbooks.exceptions import QuickbooksException, SevereException, AuthorizationException
 from quickbooks import client
 from quickbooks.objects.salesreceipt import SalesReceipt
+
+
+TEST_SIGNATURE = 'nfPLN16u3vMvv08ghDs+dOkLuirEVDy5wAeG/lmM2OA='
+TEST_PAYLOAD = '{"stuff":"5"}'
+TEST_VERIFIER_TOKEN = 'verify_me'
+TEST_REFRESH_TOKEN = 'refresh'
 
 
 class ClientTest(unittest.TestCase):
@@ -16,12 +24,20 @@ class ClientTest(unittest.TestCase):
         """
         Use a consistent set of defaults.
         """
+        self.auth_client = AuthClient(
+            client_id=os.environ.get('CLIENT_ID'),
+            client_secret=os.environ.get('CLIENT_SECRET'),
+            environment='sandbox',
+            redirect_uri='http://localhost:8000/callback',
+        )
 
-        client.QuickBooks(
-            session_manager=MockSessionManager(),
+        self.qb_client = client.QuickBooks(
+            auth_client=self.auth_client,
             sandbox=True,
             company_id="update_company_id",
-            callback_url="update_callback_url"
+            callback_url="update_callback_url",
+            verifier_token=TEST_VERIFIER_TOKEN,
+            refresh_token=os.environ.get('REFRESH_TOKEN'),
         )
 
     def tearDown(self):
@@ -34,7 +50,8 @@ class ClientTest(unittest.TestCase):
             sandbox=False,
             company_id="company_id",
             verbose=True,
-            minorversion=4
+            minorversion=4,
+            verifier_token=TEST_VERIFIER_TOKEN,
         )
 
         self.assertEquals(self.qb_client.sandbox, False)
@@ -96,52 +113,52 @@ class ClientTest(unittest.TestCase):
 
         self.assertTrue(make_req.called)
 
-    @patch('quickbooks.client.QuickBooks.make_request')
-    def test_misc_operation(self, make_req):
+    @patch('quickbooks.client.QuickBooks.post')
+    def test_misc_operation(self, post):
         qb_client = client.QuickBooks()
         qb_client.misc_operation("end_point", "request_body")
 
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/update_company_id/end_point"
-        make_req.assert_called_with("POST", url, "request_body")
+        post.assert_called_with(url, "request_body", 'application/json')
 
-    @patch('quickbooks.client.QuickBooks.make_request')
-    def test_create_object(self, make_req):
+    @patch('quickbooks.client.QuickBooks.post')
+    def test_create_object(self, post):
         qb_client = client.QuickBooks()
         qb_client.create_object("Customer", "request_body")
 
-        self.assertTrue(make_req.called)
+        self.assertTrue(post.called)
 
-    @patch('quickbooks.client.QuickBooks.make_request')
-    def test_query(self, make_req):
+    @patch('quickbooks.client.QuickBooks.post')
+    def test_query(self, post):
         qb_client = client.QuickBooks()
         qb_client.query("select")
 
-        self.assertTrue(make_req.called)
+        self.assertTrue(post.called)
 
-    @patch('quickbooks.client.QuickBooks.make_request')
-    def test_update_object(self, make_req):
+    @patch('quickbooks.client.QuickBooks.post')
+    def test_update_object(self, post):
         qb_client = client.QuickBooks()
         qb_client.update_object("Customer", "request_body")
 
-        self.assertTrue(make_req.called)
+        self.assertTrue(post.called)
 
-    @patch('quickbooks.client.QuickBooks.make_request')
-    def test_get_current_user(self, make_req):
+    @patch('quickbooks.client.QuickBooks.get')
+    def test_get_current_user(self, get):
         qb_client = client.QuickBooks()
         qb_client.company_id = "1234"
 
         qb_client.get_current_user()
         url = "https://appcenter.intuit.com/api/v1/user/current"
-        make_req.assert_called_with("GET", url)
+        get.assert_called_with(url)
 
-    @patch('quickbooks.client.QuickBooks.make_request')
-    def test_disconnect_account(self, make_req):
+    @patch('quickbooks.client.QuickBooks.get')
+    def test_disconnect_account(self, get):
         qb_client = client.QuickBooks()
         qb_client.company_id = "1234"
 
         qb_client.disconnect_account()
         url = "https://appcenter.intuit.com/api/v1/connection/disconnect"
-        make_req.assert_called_with("GET", url)
+        get.assert_called_with(url)
 
     @patch('quickbooks.client.QuickBooks.make_request')
     def test_reconnect_account(self, make_req):
@@ -237,6 +254,23 @@ class ClientTest(unittest.TestCase):
         receipt.Id = 666
         self.assertRaises(QuickbooksException, receipt.download_pdf)
 
+    def test_validate_webhook_signature(self):
+        self.assertTrue(self.qb_client.validate_webhook_signature(TEST_PAYLOAD, TEST_SIGNATURE, TEST_VERIFIER_TOKEN))
+
+    def test_fail_webhook(self):
+        self.assertFalse(self.qb_client.validate_webhook_signature("", TEST_SIGNATURE))
+
+    @patch('quickbooks.client.QuickBooks.process_request')
+    def test_download_pdf_not_authorized(self, process_request):
+        qb_client = client.QuickBooks(sandbox=True)
+        qb_client.company_id = "1234"
+        receipt = SalesReceipt()
+        receipt.Id = 1
+
+        process_request.return_value = MockUnauthorizedResponse()
+
+        self.assertRaises(AuthorizationException, receipt.download_pdf, qb_client)
+
 
 class MockResponse(object):
     @property
@@ -256,6 +290,20 @@ class MockResponse(object):
 
     def content(self):
         return ''
+
+
+class MockUnauthorizedResponse(object):
+    @property
+    def text(self):
+        return "UNAUTHORIZED"
+
+    @property
+    def status_code(self):
+        try:
+            import httplib  # python 2
+        except ImportError:
+            import http.client as httplib  # python 3
+        return httplib.UNAUTHORIZED
 
 
 class MockPdfResponse(object):

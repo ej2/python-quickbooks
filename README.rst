@@ -1,7 +1,7 @@
 python-quickbooks
 =================
 
-|Build Status| |Coverage Status|
+|Build Status| |Coverage Status| |License|
 
 
 A Python library for accessing the Quickbooks API. Complete rework of
@@ -11,6 +11,8 @@ These instructions were written for a Django application. Make sure to
 change it to whatever framework/method you’re using.
 You can find additional examples of usage in `Integration tests folder`_.
 
+For information about contributing, see the `Contributing Page`_.
+
 QuickBooks OAuth
 ------------------------------------------------
 
@@ -19,7 +21,7 @@ Existing applications can continue to use OAuth 1.0 (See `OAuth 1.0 vs. OAuth 2.
 
 
 Connecting your application with quickbooks-cli
--------------------
+------------------------------------------------
 
 From the command line, call quickbooks-cli tool passing in either your consumer_key and consumer_secret (OAuth 1.0)
 or your client_id and client_secret (OAuth 2.0), plus the OAuth version number:
@@ -30,7 +32,7 @@ or your client_id and client_secret (OAuth 2.0), plus the OAuth version number:
 
 
 Manually connecting with OAuth version 1.0
---------
+--------------------------------------------
 
 1. Create the Authorization URL for your application:
 
@@ -75,21 +77,22 @@ Store ``realm_id``, ``access_token``, and ``access_token_secret`` for later use.
 
 
 Manually connecting with OAuth version 2.0
---------
+--------------------------------------------
 
 1. Create the Authorization URL for your application:
 
 .. code-block:: python
 
        from quickbooks import Oauth2SessionManager
+       
+       callback_url = 'http://localhost:8000' # Quickbooks will send the response to this url
 
        session_manager = Oauth2SessionManager(
            client_id=QUICKBOOKS_CLIENT_ID,
            client_secret=QUICKBOOKS_CLIENT_SECRET,
-           base_url='http://localhost:8000',
+           base_url=callback_url,
        )
 
-       callback_url = 'http://localhost:8000'  # Quickbooks will send the response to this url
        authorize_url = session_manager.get_authorize_url(callback_url)
 
 
@@ -97,17 +100,37 @@ Manually connecting with OAuth version 2.0
 3. Handle the callback:
 
 .. code-block:: python
-
+ 
        session_manager = Oauth2SessionManager(
            client_id=QUICKBOOKS_CLIENT_ID,
            client_secret=QUICKBOOKS_CLIENT_SECRET,
-           base_url='http://localhost:8000',
+           base_url=callback_url, # the base_url has to be the same as the one used in authorization
        )
 
+       # caution! invalid requests return {"error":"invalid_grant"} quietly
        session_manager.get_access_tokens(request.GET['code'])
        access_token = session_manager.access_token
+       refresh_token = session_manager.refresh_token
 
-Store ``access_token`` for later use.
+Store ``access_token`` and ``refresh_token`` for later use.
+See `Unable to get Access tokens`_ for issues getting access tokens.
+
+Refreshing Access Token
+-----------------------
+
+When your access token expires, you can refresh it with the following code:
+
+.. code-block:: python
+
+    session_manager = Oauth2SessionManager(
+           client_id=QUICKBOOKS_CLIENT_ID,
+           client_secret=QUICKBOOKS_CLIENT_SECRET,
+           base_url=callback_url,
+       )
+
+    session_manager.refresh_access_token()
+
+Be sure to update your stored ``access_token`` and ``refresh_token``.
 
 Accessing the API
 -----------------
@@ -461,5 +484,11 @@ on Python 2.
    :target: https://travis-ci.org/sidecars/python-quickbooks
 .. |Coverage Status| image:: https://coveralls.io/repos/sidecars/python-quickbooks/badge.svg?branch=master&service=github
    :target: https://coveralls.io/github/sidecars/python-quickbooks?branch=master
+.. |License| image:: https://img.shields.io/badge/License-MIT-yellow.svg
+   :target: https://github.com/sidecars/python-quickbooks/blob/master/LICENSE
+
 
 .. _OAuth 1.0 vs. OAuth 2.0: https://developer.intuit.com/docs/0100_quickbooks_online/0100_essentials/000500_authentication_and_authorization/0010_oauth_1.0a_vs_oauth_2.0_apps
+
+.. _Unable to get Access tokens: https://help.developer.intuit.com/s/question/0D50f00004zqs0ACAQ/unable-to-get-access-tokens
+.. _Contributing Page: https://github.com/sidecars/python-quickbooks/wiki/Contributing
