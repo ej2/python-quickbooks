@@ -16,64 +16,10 @@ For information about contributing, see the `Contributing Page`_.
 QuickBooks OAuth
 ------------------------------------------------
 
+
 As of July 17, 2017, all new applications connecting to QuickBook Online must use OAuth 2.0.
 Existing applications can continue to use OAuth 1.0 (See `OAuth 1.0 vs. OAuth 2.0`_ for details)
 
-
-Connecting your application with quickbooks-cli
-------------------------------------------------
-
-From the command line, call quickbooks-cli tool passing in either your consumer_key and consumer_secret (OAuth 1.0)
-or your client_id and client_secret (OAuth 2.0), plus the OAuth version number:
-
-.. code-block:: console
-
-    quickbooks-cli [-h] [-s] [-p PORT] consumer_key consumer_secret oauth_version
-
-
-Manually connecting with OAuth version 1.0
---------------------------------------------
-
-1. Create the Authorization URL for your application:
-
-.. code-block:: python
-
-       from quickbooks import Oauth1SessionManager
-
-       session_manager = Oauth1SessionManager(
-           consumer_key=QUICKBOOKS_CLIENT_KEY,
-           consumer_secret=QUICKBOOKS_CLIENT_SECRET,
-       )
-
-       callback_url = 'http://localhost:8000'  # Quickbooks will send the response to this url
-       authorize_url = session_manager.get_authorize_url(callback_url)
-       request_token = session_manager.request_token
-       request_token_secret = session_manager.request_token_secret
-
-Store the ``authorize_url``, ``request_token``, and ``request_token_secret``
-for use in the Callback method.
-
-2. Redirect to the ``authorize_url``. Quickbooks will redirect back to your callback_url.
-3. Handle the callback:
-
-.. code-block:: python
-
-       session_manager = Oauth1SessionManager(
-           consumer_key=QUICKBOOKS_CLIENT_KEY,
-           consumer_secret=QUICKBOOKS_CLIENT_SECRET
-       )
-
-       session_manager.authorize_url = authorize_url
-       session_manager.request_token = request_token
-       session_manager.request_token_secret = request_token_secret
-
-       session_manager.get_access_tokens(request.GET['oauth_verifier'])
-
-       realm_id = request.GET['realmId']
-       access_token = session_manager.access_token
-       access_token_secret = session_manager.access_token_secret
-
-Store ``realm_id``, ``access_token``, and ``access_token_secret`` for later use.
 
 
 Manually connecting with OAuth version 2.0

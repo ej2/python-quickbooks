@@ -31,6 +31,7 @@ setup(
 
     install_requires=[
         'setuptools',
+        'intuit-oauth==1.2.2',
         'rauth>=0.7.1',
         'requests>=2.7.0',
         'simplejson>=2.2.0',
