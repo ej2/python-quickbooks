@@ -1,10 +1,10 @@
 from datetime import datetime
 
 from quickbooks.objects.companycurrency import CompanyCurrency
-from tests.integration.test_base import QuickbooksTestCase
+from tests.integration.test_base import QuickbooksUnitTestCase
 
 
-class CompanyCurrencyTest(QuickbooksTestCase):
+class CompanyCurrencyTest(QuickbooksUnitTestCase):
     def test_unicode(self):
         company_currency = CompanyCurrency()
         company_currency.Name = "test"

@@ -5,6 +5,7 @@ from quickbooks.objects import Bill, Invoice
 
 from intuitlib.client import AuthClient
 from quickbooks.client import QuickBooks
+from tests.integration.test_base import QuickbooksUnitTestCase
 
 try:
     from mock import patch
@@ -131,22 +132,7 @@ class ToDictMixinTest(unittest.TestCase):
         self.assertEquals(expected, entry.to_dict())
 
 
-class ListMixinTest(unittest.TestCase):
-    def setUp(self):
-        self.auth_client = AuthClient(
-            client_id=os.environ.get('CLIENT_ID'),
-            client_secret=os.environ.get('CLIENT_SECRET'),
-            environment='sandbox',
-            redirect_uri='http://localhost:8000/callback',
-        )
-
-        self.qb_client = QuickBooks(
-            auth_client=self.auth_client,
-            refresh_token=os.environ.get('REFRESH_TOKEN'),
-            company_id=os.environ.get('COMPANY_ID'),
-            sandbox=True,
-        )
-
+class ListMixinTest(QuickbooksUnitTestCase):
     @patch('quickbooks.mixins.ListMixin.where')
     def test_all(self, where):
         Department.all()
@@ -217,18 +203,7 @@ class ListMixinTest(unittest.TestCase):
             self.assertTrue(query.called)
 
 
-class ReadMixinTest(unittest.TestCase):
-    def setUp(self):
-        self.qb_client = client.QuickBooks(
-            sandbox=True,
-            consumer_key="update_consumer_key",
-            consumer_secret="update_consumer_secret",
-            access_token="update_access_token",
-            access_token_secret="update_access_token_secret",
-            company_id="update_company_id",
-            callback_url="update_callback_url"
-        )
-
+class ReadMixinTest(QuickbooksUnitTestCase):
     @patch('quickbooks.mixins.QuickBooks.get_single_object')
     def test_get(self, get_single_object):
         Department.get(1)
@@ -240,18 +215,7 @@ class ReadMixinTest(unittest.TestCase):
             self.assertTrue(get_single_object.called)
 
 
-class UpdateMixinTest(unittest.TestCase):
-    def setUp(self):
-        self.qb_client = client.QuickBooks(
-            sandbox=True,
-            consumer_key="update_consumer_key",
-            consumer_secret="update_consumer_secret",
-            access_token="update_access_token",
-            access_token_secret="update_access_token_secret",
-            company_id="update_company_id",
-            callback_url="update_callback_url"
-        )
-
+class UpdateMixinTest(QuickbooksUnitTestCase):
     @patch('quickbooks.mixins.QuickBooks.create_object')
     def test_save_create(self, create_object):
         department = Department()
@@ -283,18 +247,7 @@ class UpdateMixinTest(unittest.TestCase):
             self.assertTrue(update_object.called)
 
 
-class DownloadPdfTest(unittest.TestCase):
-    def setUp(self):
-        self.qb_client = client.QuickBooks(
-            sandbox=True,
-            consumer_key="update_consumer_key",
-            consumer_secret="update_consumer_secret",
-            access_token="update_access_token",
-            access_token_secret="update_access_token_secret",
-            company_id="update_company_id",
-            callback_url="update_callback_url"
-        )
-
+class DownloadPdfTest(QuickbooksUnitTestCase):
     @patch('quickbooks.client.QuickBooks.download_pdf')
     def test_download_invoice(self, download_pdf):
         receipt = SalesReceipt()
@@ -371,18 +324,7 @@ class ObjectListTest(unittest.TestCase):
         self.assertEquals([pn4, pn2], list(reversed(test_subclass_object_obj)))
 
 
-class DeleteMixinTest(unittest.TestCase):
-    def setUp(self):
-        self.qb_client = client.QuickBooks(
-            sandbox=True,
-            consumer_key="update_consumer_key",
-            consumer_secret="update_consumer_secret",
-            access_token="update_access_token",
-            access_token_secret="update_access_token_secret",
-            company_id="update_company_id",
-            callback_url="update_callback_url"
-        )
-
+class DeleteMixinTest(QuickbooksUnitTestCase):
     def test_delete_unsaved_exception(self):
         from quickbooks.exceptions import QuickbooksException
 
@@ -398,18 +340,7 @@ class DeleteMixinTest(unittest.TestCase):
         self.assertTrue(delete_object.called)
 
 
-class SendMixinTest(unittest.TestCase):
-    def setUp(self):
-        self.qb_client = client.QuickBooks(
-            sandbox=True,
-            consumer_key="update_consumer_key",
-            consumer_secret="update_consumer_secret",
-            access_token="update_access_token",
-            access_token_secret="update_access_token_secret",
-            company_id="update_company_id",
-            callback_url="update_callback_url"
-        )
-
+class SendMixinTest(QuickbooksUnitTestCase):
     @patch('quickbooks.mixins.QuickBooks.misc_operation')
     def test_send(self, mock_misc_op):
         invoice = Invoice()
@@ -427,18 +358,7 @@ class SendMixinTest(unittest.TestCase):
         mock_misc_op.assert_called_with("invoice/2/send?sendTo=test@email.com", None, 'application/octet-stream')
 
 
-class VoidMixinTest(unittest.TestCase):
-    def setUp(self):
-        self.qb_client = client.QuickBooks(
-            sandbox=True,
-            consumer_key="update_consumer_key",
-            consumer_secret="update_consumer_secret",
-            access_token="update_access_token",
-            access_token_secret="update_access_token_secret",
-            company_id="update_company_id",
-            callback_url="update_callback_url"
-        )
-
+class VoidMixinTest(QuickbooksUnitTestCase):
     @patch('quickbooks.mixins.QuickBooks.post')
     def test_void(self, post):
         invoice = Invoice()

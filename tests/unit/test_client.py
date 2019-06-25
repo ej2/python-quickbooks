@@ -1,7 +1,4 @@
-import os
-import unittest
-
-from intuitlib.client import AuthClient
+from tests.integration.test_base import QuickbooksUnitTestCase
 
 try:
     from mock import patch
@@ -19,27 +16,7 @@ TEST_VERIFIER_TOKEN = 'verify_me'
 TEST_REFRESH_TOKEN = 'refresh'
 
 
-class ClientTest(unittest.TestCase):
-    def setUp(self):
-        """
-        Use a consistent set of defaults.
-        """
-        self.auth_client = AuthClient(
-            client_id=os.environ.get('CLIENT_ID'),
-            client_secret=os.environ.get('CLIENT_SECRET'),
-            environment='sandbox',
-            redirect_uri='http://localhost:8000/callback',
-        )
-
-        self.qb_client = client.QuickBooks(
-            auth_client=self.auth_client,
-            sandbox=True,
-            company_id="update_company_id",
-            callback_url="update_callback_url",
-            verifier_token=TEST_VERIFIER_TOKEN,
-            refresh_token=os.environ.get('REFRESH_TOKEN'),
-        )
-
+class ClientTest(QuickbooksUnitTestCase):
     def tearDown(self):
         client.QuickBooks.enable_global()
         self.qb_client = client.QuickBooks()
@@ -118,7 +95,7 @@ class ClientTest(unittest.TestCase):
         qb_client = client.QuickBooks()
         qb_client.misc_operation("end_point", "request_body")
 
-        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/update_company_id/end_point"
+        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/COMPANY_ID/end_point"
         post.assert_called_with(url, "request_body", 'application/json')
 
     @patch('quickbooks.client.QuickBooks.post')
@@ -234,16 +211,15 @@ class ClientTest(unittest.TestCase):
 
     @patch('quickbooks.client.QuickBooks.process_request')
     def test_download_pdf(self, process_request):
-        qb_client = client.QuickBooks(sandbox=True)
-        qb_client.company_id = "1234"
+        self.qb_client.session = MockSession()
         receipt = SalesReceipt()
         receipt.Id = 1
 
         process_request.return_value = MockPdfResponse()
 
-        response = receipt.download_pdf(qb_client)
+        response = receipt.download_pdf(qb=self.qb_client)
 
-        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/salesreceipt/1/pdf"
+        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/COMPANY_ID/salesreceipt/1/pdf"
         process_request.assert_called_with(
             "GET", url, headers={'Content-Type': 'application/pdf', 'Accept': 'application/pdf, application/json', 'User-Agent': 'python-quickbooks V3 library'})
 
@@ -262,14 +238,13 @@ class ClientTest(unittest.TestCase):
 
     @patch('quickbooks.client.QuickBooks.process_request')
     def test_download_pdf_not_authorized(self, process_request):
-        qb_client = client.QuickBooks(sandbox=True)
-        qb_client.company_id = "1234"
+        self.qb_client.session = MockSession()
         receipt = SalesReceipt()
         receipt.Id = 1
 
         process_request.return_value = MockUnauthorizedResponse()
 
-        self.assertRaises(AuthorizationException, receipt.download_pdf, qb_client)
+        self.assertRaises(AuthorizationException, receipt.download_pdf, self.qb_client)
 
 
 class MockResponse(object):
