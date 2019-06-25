@@ -18,7 +18,7 @@ import hashlib
 import hmac
 
 try:
-    from rauth import OAuth1Session, OAuth1Service
+    from rauth import OAuth1Session, OAuth1Service, OAuth2Session
 except ImportError:
     print("Please import Rauth:\n\n")
     print("http://rauth.readthedocs.org/en/latest/\n")
@@ -28,7 +28,7 @@ except ImportError:
 class QuickBooks(object):
     company_id = 0
     session = None
-    session_manager = None
+    auth_client = None
     sandbox = False
     minorversion = None
     verifier_token = None
@@ -42,11 +42,11 @@ class QuickBooks(object):
 
     _BUSINESS_OBJECTS = [
         "Account", "Attachable", "Bill", "BillPayment",
-        "Class", "CreditMemo", "Customer",
+        "Class", "CreditMemo", "Customer", "CompanyCurrency",
         "Department", "Deposit", "Employee", "Estimate", "Invoice",
         "Item", "JournalEntry", "Payment", "PaymentMethod",
         "Purchase", "PurchaseOrder", "RefundReceipt",
-        "SalesReceipt", "TaxCode", "TaxService/Taxcode", "TaxRate", "Term",
+        "SalesReceipt", "TaxAgency", "TaxCode", "TaxService/Taxcode", "TaxRate", "Term",
         "TimeActivity", "Transfer", "Vendor", "VendorCredit"
     ]
 
@@ -64,6 +64,13 @@ class QuickBooks(object):
         else:
             instance = object.__new__(cls)
 
+        if 'refresh_token' in kwargs:
+            instance.refresh_token = kwargs['refresh_token']
+
+        if 'auth_client' in kwargs:
+            instance.auth_client = kwargs['auth_client']
+            instance._start_session()
+
         if 'company_id' in kwargs:
             instance.company_id = kwargs['company_id']
 
@@ -73,13 +80,20 @@ class QuickBooks(object):
         if 'minorversion' in kwargs:
             instance.minorversion = kwargs['minorversion']
 
-        if 'session_manager' in kwargs:
-            instance.session_manager = kwargs['session_manager']
-
         if 'verifier_token' in kwargs:
             instance.verifier_token = kwargs.get('verifier_token')
 
         return instance
+
+    def _start_session(self):
+        if self.auth_client.access_token is None:
+            self.auth_client.refresh(refresh_token=self.refresh_token)
+
+        self.session = OAuth2Session(
+            client_id=self.auth_client.client_id,
+            client_secret=self.auth_client.client_secret,
+            access_token=self.auth_client.access_token,
+        )
 
     @classmethod
     def get_instance(cls):
@@ -119,7 +133,6 @@ class QuickBooks(object):
         decoded_hex_signature = base64.b64decode(signature)
         return hmac_verifier_token_hash == decoded_hex_signature
 
-
     def get_current_user(self):
         """Get data from the current user endpoint"""
         url = self.current_user_url
@@ -135,7 +148,6 @@ class QuickBooks(object):
         result = self.get(url, params=qs)
         return result
 
-    # TODO: is disconnect url the same for OAuth 1 and OAuth 2?
     def disconnect_account(self):
         """
         Disconnect current account from the application
@@ -153,7 +165,6 @@ class QuickBooks(object):
         result = self.get(url, params=params)
         return result
 
-    # TODO: is reconnect url the same for OAuth 1 and OAuth 2?
     def reconnect_account(self):
         """
         Reconnect current account by refreshing OAuth access tokens
@@ -243,18 +254,13 @@ class QuickBooks(object):
         return self.make_request("POST", *args, **kwargs)
 
     def process_request(self, request_type, url, headers="", params="", data=""):
-        if self.session_manager is None:
+        if self.session is None:
             raise exceptions.QuickbooksException('No session manager')
 
-        if self.session_manager.oauth_version == 2.0:
-            headers.update({'Authorization': 'Bearer ' + self.session_manager.access_token})
-            return self.session_manager.get_session().request(
-                request_type, url, headers=headers, params=params, data=data)
+        headers.update({'Authorization': 'Bearer ' + self.session.access_token})
 
-        else:
-            return self.session_manager.get_session().request(
-                request_type, url, True, self.company_id,
-                headers=headers, params=params, data=data)
+        return self.session.request(
+            request_type, url, headers=headers, params=params, data=data)
 
     def get_single_object(self, qbbo, pk):
         url = "{0}/company/{1}/{2}/{3}/".format(self.api_url, self.company_id, qbbo.lower(), pk)
@@ -336,8 +342,8 @@ class QuickBooks(object):
         return results
 
     def download_pdf(self, qbbo, item_id):
-        if self.session_manager is None:
-            raise exceptions.QuickbooksException('No session manager')
+        if self.session is None:
+            raise exceptions.QuickbooksException('No session')
 
         url = "{0}/company/{1}/{2}/{3}/pdf".format(
             self.api_url, self.company_id, qbbo.lower(), item_id)

@@ -1,32 +1,43 @@
+import os
 import unittest
+
+from intuitlib.client import AuthClient
 
 try:
     from mock import patch
 except ImportError:
     from unittest.mock import patch
 
-from quickbooks.auth import Oauth1SessionManager
 from quickbooks.exceptions import QuickbooksException, SevereException, AuthorizationException
 from quickbooks import client
 from quickbooks.objects.salesreceipt import SalesReceipt
 
 
 TEST_SIGNATURE = 'nfPLN16u3vMvv08ghDs+dOkLuirEVDy5wAeG/lmM2OA='
-TEST_PAYLOAD  = '{"stuff":"5"}'
+TEST_PAYLOAD = '{"stuff":"5"}'
 TEST_VERIFIER_TOKEN = 'verify_me'
+TEST_REFRESH_TOKEN = 'refresh'
+
 
 class ClientTest(unittest.TestCase):
     def setUp(self):
         """
         Use a consistent set of defaults.
         """
+        self.auth_client = AuthClient(
+            client_id=os.environ.get('CLIENT_ID'),
+            client_secret=os.environ.get('CLIENT_SECRET'),
+            environment='sandbox',
+            redirect_uri='http://localhost:8000/callback',
+        )
 
         self.qb_client = client.QuickBooks(
-            session_manager=MockSessionManager(),
+            auth_client=self.auth_client,
             sandbox=True,
             company_id="update_company_id",
             callback_url="update_callback_url",
             verifier_token=TEST_VERIFIER_TOKEN,
+            refresh_token=os.environ.get('REFRESH_TOKEN'),
         )
 
     def tearDown(self):

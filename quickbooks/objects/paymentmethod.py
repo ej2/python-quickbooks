@@ -1,5 +1,5 @@
 from six import python_2_unicode_compatible
-from .base import QuickbooksManagedObject, QuickbooksTransactionEntity
+from .base import QuickbooksManagedObject, QuickbooksTransactionEntity, Ref
 
 
 @python_2_unicode_compatible
@@ -24,3 +24,8 @@ class PaymentMethod(QuickbooksManagedObject, QuickbooksTransactionEntity):
     def __str__(self):
         return self.Name
 
+    def to_ref(self):
+        ref = Ref()
+        ref.name = self.Name
+        ref.type = self.qbo_object_name
+        ref.value = self.Id

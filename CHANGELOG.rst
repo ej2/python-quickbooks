@@ -1,6 +1,14 @@
 Changelog
 =========
 
+* 0.8 (June 25th, 2019)
+    * Removed support for OAuth 1.0
+    * Replace OAuth Session Manager and CLI with intuit-oauth client.
+    * Fixed on Invoice object that caused the DocNumber to be set to an empty string.
+    * Added to_ref method to PaymentMethod object.
+    * Added CompanyCurrency object
+    * Fixed issue that prevented creation of TaxAgencies.
+
 * 0.7.5 (October 18th, 2018)
     * Fixed bug with reporting authentication failure when attempting to download PDF (previously the error details were "lost").
     * Added refresh_access_tokens to Oauth2SessionManager.

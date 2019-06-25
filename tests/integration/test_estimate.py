@@ -1,36 +1,28 @@
-import os
-import unittest
+from tests.integration.test_base import QuickbooksTestCase
 from datetime import datetime
 
-from quickbooks.auth import Oauth1SessionManager
-from quickbooks.objects.detailline import DetailLine, SalesItemLineDetail, \
-    DiscountLineDetail, SalesItemLine
+from quickbooks.objects.detailline import SalesItemLineDetail, \
+    DiscountLineDetail, SalesItemLine, DiscountLine
 from quickbooks.objects.tax import TxnTaxDetail
 from quickbooks.objects.customer import Customer
 from quickbooks.objects.base import Address, EmailAddress, CustomerMemo, Ref
 from quickbooks.objects.estimate import Estimate
 
-from quickbooks import QuickBooks
+from datetime import datetime
+
+from quickbooks.objects.base import Address, EmailAddress, CustomerMemo, Ref
+from quickbooks.objects.customer import Customer
+from quickbooks.objects.detailline import SalesItemLineDetail, \
+    DiscountLineDetail, SalesItemLine, DiscountLine
+from quickbooks.objects.estimate import Estimate
+from quickbooks.objects.tax import TxnTaxDetail
+from tests.integration.test_base import QuickbooksTestCase
 
 
-class BillTest(unittest.TestCase):
-    def setUp(self):
-        self.session_manager = Oauth1SessionManager(
-            sandbox=True,
-            consumer_key=os.environ.get('CONSUMER_KEY'),
-            consumer_secret=os.environ.get('CONSUMER_SECRET'),
-            access_token=os.environ.get('ACCESS_TOKEN'),
-            access_token_secret=os.environ.get('ACCESS_TOKEN_SECRET'),
-        )
-
-        self.qb_client = QuickBooks(
-            session_manager=self.session_manager,
-            sandbox=True,
-            company_id=os.environ.get('COMPANY_ID')
-        )
+class EstimateTest(QuickbooksTestCase):
+    def test_create(self):
         self.customer = Customer.all(max_results=1, qb=self.qb_client)[0]
 
-    def test_create(self):
         estimate = Estimate()
         estimate.TotalAmt = 31.5
         estimate.ApplyTaxAfterDiscount = False
@@ -87,7 +79,7 @@ class BillTest(unittest.TestCase):
 
         estimate.Line.append(line)
 
-        line2 = DetailLine()
+        line2 = DiscountLine()
         line2.Amount = 3.5
 
         line2.DiscountLineDetail = DiscountLineDetail()

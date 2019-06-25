@@ -100,7 +100,7 @@ class ItemBasedExpenseLineDetailTest(unittest.TestCase):
     def test_init(self):
         detail = ItemBasedExpenseLineDetail()
 
-        self.assertEquals(detail.BillableStatus, "")
+        self.assertEquals(detail.BillableStatus, None)
         self.assertEquals(detail.UnitPrice, 0)
         self.assertEquals(detail.TaxInclusiveAmt, 0)
         self.assertEquals(detail.Qty, 0)
