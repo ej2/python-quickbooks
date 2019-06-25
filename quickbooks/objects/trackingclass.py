@@ -24,6 +24,7 @@ class Class(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.SubClass = False
         self.FullyQualifiedName = ""
         self.Active = True
+        self.ParentRef = None
 
     def __str__(self):
         return self.Name
