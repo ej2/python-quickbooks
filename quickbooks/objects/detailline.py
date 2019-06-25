@@ -85,7 +85,7 @@ class SubtotalLine(DetailLine):
 
     def __init__(self):
         super(SubtotalLine, self).__init__()
-        self.DetailType = "SubtotalLineDetail"
+        self.DetailType = "SubTotalLineDetail"
         self.SubtotalLineDetail = None
 
 
@@ -160,8 +160,8 @@ class GroupLine(DetailLine):
 
     def __init__(self):
         super(GroupLine, self).__init__()
-        self.DetailType = "SalesItemLineDetail"
-        self.SalesItemLineDetail = None
+        self.DetailType = "GroupLineDetail"
+        self.GroupLineDetail = None
 
 
 class DescriptionOnlyLine(DetailLine):
@@ -171,7 +171,7 @@ class DescriptionOnlyLine(DetailLine):
 
     def __init__(self):
         super(DescriptionOnlyLine, self).__init__()
-        self.DetailType = "DescriptionLineDetail"
+        self.DetailType = "DescriptionOnly"
         self.DescriptionLineDetail = None
 
 
