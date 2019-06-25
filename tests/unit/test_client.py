@@ -24,14 +24,12 @@ class ClientTest(QuickbooksUnitTestCase):
 
     def test_client_new(self):
         self.qb_client = client.QuickBooks(
-            sandbox=False,
             company_id="company_id",
             verbose=True,
             minorversion=4,
             verifier_token=TEST_VERIFIER_TOKEN,
         )
 
-        self.assertEquals(self.qb_client.sandbox, False)
         self.assertEquals(self.qb_client.company_id, "company_id")
         self.assertEquals(self.qb_client.minorversion, 4)
 
@@ -128,24 +126,6 @@ class ClientTest(QuickbooksUnitTestCase):
         url = "https://appcenter.intuit.com/api/v1/user/current"
         get.assert_called_with(url)
 
-    @patch('quickbooks.client.QuickBooks.get')
-    def test_disconnect_account(self, get):
-        qb_client = client.QuickBooks()
-        qb_client.company_id = "1234"
-
-        qb_client.disconnect_account()
-        url = "https://appcenter.intuit.com/api/v1/connection/disconnect"
-        get.assert_called_with(url)
-
-    @patch('quickbooks.client.QuickBooks.make_request')
-    def test_reconnect_account(self, make_req):
-        qb_client = client.QuickBooks()
-        qb_client.company_id = "1234"
-
-        qb_client.reconnect_account()
-        url = "https://appcenter.intuit.com/api/v1/connection/reconnect"
-        make_req.assert_called_with("GET", url)
-
     @patch('quickbooks.client.QuickBooks.make_request')
     def test_get_report(self, make_req):
         qb_client = client.QuickBooks()
@@ -231,6 +211,7 @@ class ClientTest(QuickbooksUnitTestCase):
         self.assertRaises(QuickbooksException, receipt.download_pdf)
 
     def test_validate_webhook_signature(self):
+        self.qb_client.verifier_token = TEST_VERIFIER_TOKEN
         self.assertTrue(self.qb_client.validate_webhook_signature(TEST_PAYLOAD, TEST_SIGNATURE, TEST_VERIFIER_TOKEN))
 
     def test_fail_webhook(self):

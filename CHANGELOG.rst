@@ -9,6 +9,7 @@ Changelog
     * Added CompanyCurrency object
     * Fixed issue that prevented creation of TaxAgencies.
     * Fixed issues with GroupLine, SubtotalLine, and DescriptionOnlyLine objects.
+    * Removed disconnect_account and reconnect_account from client.
 
 * 0.7.5 (October 18th, 2018)
     * Fixed bug with reporting authentication failure when attempting to download PDF (previously the error details were "lost").

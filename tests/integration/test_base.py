@@ -2,7 +2,7 @@ import os
 from unittest import TestCase
 
 from intuitlib.client import AuthClient
-from quickbooks.client import QuickBooks
+from quickbooks.client import QuickBooks, Environments
 
 
 class QuickbooksTestCase(TestCase):
@@ -12,7 +12,7 @@ class QuickbooksTestCase(TestCase):
         self.auth_client = AuthClient(
             client_id=os.environ.get('CLIENT_ID'),
             client_secret=os.environ.get('CLIENT_SECRET'),
-            environment='sandbox',
+            environment=Environments.SANDBOX,
             redirect_uri='http://localhost:8000/callback',
         )
 
@@ -20,8 +20,9 @@ class QuickbooksTestCase(TestCase):
             auth_client=self.auth_client,
             refresh_token=os.environ.get('REFRESH_TOKEN'),
             company_id=os.environ.get('COMPANY_ID'),
-            sandbox=True,
         )
+
+        self.qb_client.sandbox = True
 
 
 class QuickbooksUnitTestCase(TestCase):
@@ -31,7 +32,7 @@ class QuickbooksUnitTestCase(TestCase):
         self.auth_client = AuthClient(
             client_id='CLIENTID',
             client_secret='CLIENT_SECRET',
-            environment='sandbox',
+            environment=Environments.SANDBOX,
             redirect_uri='http://localhost:8000/callback',
         )
 
@@ -39,5 +40,6 @@ class QuickbooksUnitTestCase(TestCase):
             #auth_client=self.auth_client,
             refresh_token='REFRESH_TOKEN',
             company_id='COMPANY_ID',
-            sandbox=True,
         )
+
+        self.qb_client.sandbox = True

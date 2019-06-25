@@ -16,105 +16,39 @@ For information about contributing, see the `Contributing Page`_.
 QuickBooks OAuth
 ------------------------------------------------
 
+Follow the `OAuth 2.0 Guide`_ to get connected to QuickBooks API.
 
-As of July 17, 2017, all new applications connecting to QuickBook Online must use OAuth 2.0.
-Existing applications can continue to use OAuth 1.0 (See `OAuth 1.0 vs. OAuth 2.0`_ for details)
-
-
-
-Manually connecting with OAuth version 2.0
---------------------------------------------
-
-1. Create the Authorization URL for your application:
-
-.. code-block:: python
-
-       from quickbooks import Oauth2SessionManager
-       
-       callback_url = 'http://localhost:8000' # Quickbooks will send the response to this url
-
-       session_manager = Oauth2SessionManager(
-           client_id=QUICKBOOKS_CLIENT_ID,
-           client_secret=QUICKBOOKS_CLIENT_SECRET,
-           base_url=callback_url,
-       )
-
-       authorize_url = session_manager.get_authorize_url(callback_url)
-
-
-2. Redirect to the ``authorize_url``. Quickbooks will redirect back to your callback_url.
-3. Handle the callback:
-
-.. code-block:: python
- 
-       session_manager = Oauth2SessionManager(
-           client_id=QUICKBOOKS_CLIENT_ID,
-           client_secret=QUICKBOOKS_CLIENT_SECRET,
-           base_url=callback_url, # the base_url has to be the same as the one used in authorization
-       )
-
-       # caution! invalid requests return {"error":"invalid_grant"} quietly
-       session_manager.get_access_tokens(request.GET['code'])
-       access_token = session_manager.access_token
-       refresh_token = session_manager.refresh_token
-
-Store ``access_token`` and ``refresh_token`` for later use.
-See `Unable to get Access tokens`_ for issues getting access tokens.
-
-Refreshing Access Token
------------------------
-
-When your access token expires, you can refresh it with the following code:
-
-.. code-block:: python
-
-    session_manager = Oauth2SessionManager(
-           client_id=QUICKBOOKS_CLIENT_ID,
-           client_secret=QUICKBOOKS_CLIENT_SECRET,
-           base_url=callback_url,
-       )
-
-    session_manager.refresh_access_tokens(return_result=True)
-
-Be sure to update your stored ``access_token`` and ``refresh_token``.
 
 Accessing the API
 -----------------
 
-Set up an OAuth session manager to pass to the QuickBooks client.
+Set up an AuthClient passing in your CLIENT_ID and CLIENT_SECRET.
 OAuth version 1.0 - Setup the session manager using the stored ``access_token`` and the
 ``access_token_secret`` and ``realm_id``:
 
 .. code-block:: python
 
-        session_manager = Oauth1SessionManager(
-            consumer_key=CONSUMER_KEY,
-            consumer_secret=CONSUMER_SECRET,
-            access_token=ACCESS_TOKEN,
-            access_token_secret=ACCESS_TOKEN_SECRET,
+
+    auth_client = AuthClient(
+            client_id='CLIENT_ID',
+            client_secret='CLIENT_SECRET',
+            environment='sandbox',
+            redirect_uri='http://localhost:8000/callback',
         )
 
-OAuth version 2.0 - Setup the session manager using the stored ``access_token`` and ``realm_id``:
 
-.. code-block:: python
 
-        session_manager = Oauth2SessionManager(
-            client_id=realm_id,
-            client_secret=CLIENT_SECRET,
-            access_token=AUTH2_ACCESS_TOKEN,
-        )
-
-Then create the QuickBooks client object passing in the session manager:
+Then create the QuickBooks client object passing in the AuthClient, refresh token, and company id:
 
 .. code-block:: python
 
    from quickbooks import QuickBooks
 
     client = QuickBooks(
-        sandbox=True,
-        session_manager=session_manager,
-        company_id=realm_id
-    )
+            auth_client=auth_client,
+            refresh_token='REFRESH_TOKEN',
+            company_id='COMPANY_ID',
+        )
 
 If you need to access a minor version (See `Minor versions`_ for
 details) pass in minorversion when setting up the client:
@@ -122,20 +56,12 @@ details) pass in minorversion when setting up the client:
 .. code-block:: python
 
     client = QuickBooks(
-        sandbox=True,
-        consumer_key=QUICKBOOKS_CLIENT_KEY,
-        consumer_secret=QUICKBOOKS_CLIENT_SECRET,
-        access_token=access_token,
-        access_token_secret=access_token_secret,
-        company_id=realm_id,
+        auth_client=auth_client,
+        refresh_token='REFRESH_TOKEN',
+        company_id='COMPANY_ID',
         minorversion=4
     )
 
-You can disconnect the current Quickbooks Account like so (See `Disconnect documentation`_ for full details):
-
-.. code-block:: python
-
-    client.disconnect_account()
 
 If your consumer_key never changes you can enable the client to stay running:
 
@@ -448,3 +374,5 @@ on Python 2.
 
 .. _Unable to get Access tokens: https://help.developer.intuit.com/s/question/0D50f00004zqs0ACAQ/unable-to-get-access-tokens
 .. _Contributing Page: https://github.com/sidecars/python-quickbooks/wiki/Contributing
+
+.. _OAuth 2.0 Guide: https://developer.intuit.com/app/developer/qbo/docs/develop/authentication-and-authorization/oauth-2.0

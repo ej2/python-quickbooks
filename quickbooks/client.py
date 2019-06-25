@@ -25,6 +25,11 @@ except ImportError:
     raise
 
 
+class Environments(object):
+    SANDBOX = 'sandbox'
+    PRODUCTION = 'production'
+
+
 class QuickBooks(object):
     company_id = 0
     session = None
@@ -35,10 +40,7 @@ class QuickBooks(object):
 
     sandbox_api_url_v3 = "https://sandbox-quickbooks.api.intuit.com/v3"
     api_url_v3 = "https://quickbooks.api.intuit.com/v3"
-
     current_user_url = "https://appcenter.intuit.com/api/v1/user/current"
-    disconnect_url = "https://appcenter.intuit.com/api/v1/connection/disconnect"
-    reconnect_url = "https://appcenter.intuit.com/api/v1/connection/reconnect"
 
     _BUSINESS_OBJECTS = [
         "Account", "Attachable", "Bill", "BillPayment",
@@ -69,13 +71,16 @@ class QuickBooks(object):
 
         if 'auth_client' in kwargs:
             instance.auth_client = kwargs['auth_client']
+
+            if instance.auth_client.environment == Environments.SANDBOX:
+                instance.sandbox = True
+            else:
+                instance.sandbox = False
+
             instance._start_session()
 
         if 'company_id' in kwargs:
             instance.company_id = kwargs['company_id']
-
-        if 'sandbox' in kwargs:
-            instance.sandbox = kwargs['sandbox']
 
         if 'minorversion' in kwargs:
             instance.minorversion = kwargs['minorversion']
@@ -148,30 +153,12 @@ class QuickBooks(object):
         result = self.get(url, params=qs)
         return result
 
-    def disconnect_account(self):
-        """
-        Disconnect current account from the application
-        :return:
-        """
-        url = self.disconnect_url
-        result = self.get(url)
-        return result
-
     def change_data_capture(self, entity_string, changed_since):
         url = "{0}/company/{1}/cdc".format(self.api_url, self.company_id)
 
         params = {"entities": entity_string, "changedSince": changed_since}
 
         result = self.get(url, params=params)
-        return result
-
-    def reconnect_account(self):
-        """
-        Reconnect current account by refreshing OAuth access tokens
-        :return:
-        """
-        url = self.reconnect_url
-        result = self.get(url)
         return result
 
     def make_request(self, request_type, url, request_body=None, content_type='application/json',
