@@ -22,9 +22,7 @@ Follow the `OAuth 2.0 Guide`_ to get connected to QuickBooks API.
 Accessing the API
 -----------------
 
-Set up an AuthClient passing in your CLIENT_ID and CLIENT_SECRET.
-OAuth version 1.0 - Setup the session manager using the stored ``access_token`` and the
-``access_token_secret`` and ``realm_id``:
+Set up an AuthClient passing in your ``CLIENT_ID`` and ``CLIENT_SECRET``.
 
 .. code-block:: python
 
@@ -36,9 +34,7 @@ OAuth version 1.0 - Setup the session manager using the stored ``access_token`` 
             redirect_uri='http://localhost:8000/callback',
         )
 
-
-
-Then create the QuickBooks client object passing in the AuthClient, refresh token, and company id:
+Then create a QuickBooks client object passing in the AuthClient, refresh token, and company id:
 
 .. code-block:: python
 
@@ -62,19 +58,8 @@ details) pass in minorversion when setting up the client:
         minorversion=4
     )
 
-
-If your consumer_key never changes you can enable the client to stay running:
-
-.. code-block:: python
-
-    QuickBooks.enable_global()
-
-You can disable the global client like so:
-
-.. code-block:: python
-
-    QuickBooks.disable_global()
-
+Object Operations
+-----------------
 
 List of objects:
 
@@ -307,6 +292,20 @@ Void an invoice:
    invoice = Invoice()
    invoice.Id = 7
    invoice.void(qb=client)
+
+
+If your consumer_key never changes you can enable the client to stay running:
+
+.. code-block:: python
+
+    QuickBooks.enable_global()
+
+You can disable the global client like so:
+
+.. code-block:: python
+
+    QuickBooks.disable_global()
+
 
 Working with JSON data
 ----------------

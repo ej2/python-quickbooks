@@ -215,7 +215,8 @@ class ClientTest(QuickbooksUnitTestCase):
         self.assertTrue(self.qb_client.validate_webhook_signature(TEST_PAYLOAD, TEST_SIGNATURE, TEST_VERIFIER_TOKEN))
 
     def test_fail_webhook(self):
-        self.assertFalse(self.qb_client.validate_webhook_signature("", TEST_SIGNATURE))
+        self.qb_client.verifier_token = TEST_VERIFIER_TOKEN
+        self.assertFalse(self.qb_client.validate_webhook_signature("", TEST_SIGNATURE, TEST_VERIFIER_TOKEN))
 
     @patch('quickbooks.client.QuickBooks.process_request')
     def test_download_pdf_not_authorized(self, process_request):
