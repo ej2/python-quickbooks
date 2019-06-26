@@ -7,7 +7,7 @@ from ..mixins import QuickbooksPdfDownloadable, DeleteMixin
 
 
 @python_2_unicode_compatible
-class Estimate(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
+class Estimate(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin, SendMixin):
     """
     QBO definition: The Estimate represents a proposal for a financial transaction from a business to a customer
     for goods or services proposed to be sold, including proposed pricing.
