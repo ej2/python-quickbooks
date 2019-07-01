@@ -16,7 +16,7 @@ For information about contributing, see the `Contributing Page`_.
 QuickBooks OAuth
 ------------------------------------------------
 
-This library requires intuit-oauth. Follow the `OAuth 2.0 Guide`_ for installation and to get connected to QuickBooks API.
+This library requires _intuit-oauth. Follow the `OAuth 2.0 Guide`_ for installation and to get connected to QuickBooks API.
 
 
 Accessing the API
@@ -376,3 +376,4 @@ on Python 2.
 .. _Contributing Page: https://github.com/sidecars/python-quickbooks/wiki/Contributing
 
 .. _OAuth 2.0 Guide: https://developer.intuit.com/app/developer/qbo/docs/develop/authentication-and-authorization/oauth-2.0
+.. _intuit-oauth: https://pypi.org/project/intuit-oauth/
