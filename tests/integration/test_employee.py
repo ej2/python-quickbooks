@@ -1,31 +1,11 @@
-import os
-import unittest
 from datetime import datetime
 
-from quickbooks.auth import Oauth1SessionManager
 from quickbooks.objects.base import Address, PhoneNumber
-
 from quickbooks.objects.employee import Employee
+from tests.integration.test_base import QuickbooksTestCase
 
-from quickbooks import QuickBooks
 
-
-class EmployeeTest(unittest.TestCase):
-    def setUp(self):
-        self.session_manager = Oauth1SessionManager(
-            sandbox=True,
-            consumer_key=os.environ.get('CONSUMER_KEY'),
-            consumer_secret=os.environ.get('CONSUMER_SECRET'),
-            access_token=os.environ.get('ACCESS_TOKEN'),
-            access_token_secret=os.environ.get('ACCESS_TOKEN_SECRET'),
-        )
-
-        self.qb_client = QuickBooks(
-            session_manager=self.session_manager,
-            sandbox=True,
-            company_id=os.environ.get('COMPANY_ID')
-        )
-
+class EmployeeTest(QuickbooksTestCase):
     def test_create(self):
         employee = Employee()
         employee.SSN = "444-55-6666"

@@ -1,27 +1,8 @@
-import os
-import unittest
-
-from quickbooks.auth import Oauth1SessionManager
-from quickbooks.client import QuickBooks
 from quickbooks.objects.taxcode import TaxCode
+from tests.integration.test_base import QuickbooksTestCase
 
 
-class TaxCodeTest(unittest.TestCase):
-    def setUp(self):
-        self.session_manager = Oauth1SessionManager(
-            sandbox=True,
-            consumer_key=os.environ.get('CONSUMER_KEY'),
-            consumer_secret=os.environ.get('CONSUMER_SECRET'),
-            access_token=os.environ.get('ACCESS_TOKEN'),
-            access_token_secret=os.environ.get('ACCESS_TOKEN_SECRET'),
-        )
-
-        self.qb_client = QuickBooks(
-            session_manager=self.session_manager,
-            sandbox=True,
-            company_id=os.environ.get('COMPANY_ID')
-        )
-
+class TaxCodeTest(QuickbooksTestCase):
     def test_get_all(self):
         tax_codes = TaxCode.all(max_results=1, qb=self.qb_client)
 

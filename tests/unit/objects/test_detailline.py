@@ -52,7 +52,7 @@ class SubtotalLineTest(unittest.TestCase):
     def test_init(self):
         subtotal_line = SubtotalLine()
 
-        self.assertEquals(subtotal_line.DetailType, "SubtotalLineDetail")
+        self.assertEquals(subtotal_line.DetailType, "SubTotalLineDetail")
         self.assertEquals(subtotal_line.SubtotalLineDetail, None)
 
 
@@ -92,15 +92,15 @@ class GroupLineTest(unittest.TestCase):
     def test_init(self):
         line = GroupLine()
 
-        self.assertEquals(line.DetailType, "SalesItemLineDetail")
-        self.assertEquals(line.SalesItemLineDetail, None)
+        self.assertEquals(line.DetailType, "GroupLineDetail")
+        self.assertEquals(line.GroupLineDetail, None)
 
 
 class ItemBasedExpenseLineDetailTest(unittest.TestCase):
     def test_init(self):
         detail = ItemBasedExpenseLineDetail()
 
-        self.assertEquals(detail.BillableStatus, "")
+        self.assertEquals(detail.BillableStatus, None)
         self.assertEquals(detail.UnitPrice, 0)
         self.assertEquals(detail.TaxInclusiveAmt, 0)
         self.assertEquals(detail.Qty, 0)
@@ -132,5 +132,5 @@ class DescriptionOnlyLineTests(unittest.TestCase):
     def test_unicode(self):
         line = DescriptionOnlyLine()
 
-        self.assertEquals(line.DetailType, "DescriptionLineDetail")
+        self.assertEquals(line.DetailType, "DescriptionOnly")
         self.assertEquals(line.DescriptionLineDetail, None)

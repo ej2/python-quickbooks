@@ -10,7 +10,7 @@ def read(*parts):
         return fp.read()
 
 
-VERSION = (0, 7, 5)
+VERSION = (0, 8, 0)
 version = '.'.join(map(str, VERSION))
 
 setup(
@@ -23,7 +23,7 @@ setup(
     license='MIT',
     keywords=['quickbooks', 'qbo', 'accounting'],
     long_description=read('README.rst'),
-
+    long_description_content_type='text/markdown',
     test_runner='nosetests',
     entry_points={
         'console_scripts': ['quickbooks-cli=quickbooks.tools.cli:cli_execute']
@@ -31,6 +31,7 @@ setup(
 
     install_requires=[
         'setuptools',
+        'intuit-oauth==1.2.2',
         'rauth>=0.7.1',
         'requests>=2.7.0',
         'simplejson>=2.2.0',
