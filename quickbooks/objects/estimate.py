@@ -3,7 +3,7 @@ from .base import CustomField, Ref, CustomerMemo, Address, EmailAddress, Quickbo
     LinkedTxnMixin, QuickbooksTransactionEntity, LinkedTxn
 from .tax import TxnTaxDetail
 from .detailline import DetailLine, SalesItemLine, GroupLine, DescriptionLine, DiscountLine, SubtotalLine
-from ..mixins import QuickbooksPdfDownloadable, DeleteMixin
+from ..mixins import QuickbooksPdfDownloadable, DeleteMixin, SendMixin
 
 
 @python_2_unicode_compatible
