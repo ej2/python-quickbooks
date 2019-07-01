@@ -16,7 +16,7 @@ For information about contributing, see the `Contributing Page`_.
 QuickBooks OAuth
 ------------------------------------------------
 
-Follow the `OAuth 2.0 Guide`_ to get connected to QuickBooks API.
+This library requires intuit-oauth. Follow the `OAuth 2.0 Guide`_ for installation and to get connected to QuickBooks API.
 
 
 Accessing the API
@@ -26,6 +26,7 @@ Set up an AuthClient passing in your ``CLIENT_ID`` and ``CLIENT_SECRET``.
 
 .. code-block:: python
 
+    from intuitlib.client import AuthClient
 
     auth_client = AuthClient(
             client_id='CLIENT_ID',
