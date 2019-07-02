@@ -57,7 +57,7 @@ class Invoice(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject, Q
         super(Invoice, self).__init__()
         self.Deposit = 0
         self.Balance = 0
-        self.AllowIPNPayment = True
+        self.AllowIPNPayment = True # Deprecated
         self.DocNumber = None
         self.PrivateNote = ""
         self.DueDate = ""
@@ -69,6 +69,7 @@ class Invoice(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject, Q
         self.EmailStatus = "NotSet"
         self.ExchangeRate = 1
         self.GlobalTaxCalculation = "TaxExcluded"
+        self.AllowOnlineCreditCardPayment = False
 
         self.EInvoiceStatus = None
 
