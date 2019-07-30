@@ -36,7 +36,7 @@ setup(
         'simplejson>=2.2.0',
         'six>=1.4.0',
         'python-dateutil',
-        'pycparser=>2.18'
+        'pycparser>=2.18'
     ],
 
     classifiers=[
