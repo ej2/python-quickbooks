@@ -112,7 +112,7 @@ class ToDictMixinTest(unittest.TestCase):
                     'Entity': None,
                     'DepartmentRef': None,
                     'TaxCodeRef': None,
-                    'BillableStatus': '',
+                    'BillableStatus': None,
                     'TaxApplicableOn': 'Sales',
                     'PostingType': 'Debit',
                     'AccountRef': None,
