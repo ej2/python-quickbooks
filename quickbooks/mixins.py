@@ -1,3 +1,5 @@
+import urllib
+
 import simplejson as json
 import six
 from .utils import build_where_clause, build_choose_clause
@@ -107,6 +109,7 @@ class SendMixin(object):
         end_point = "{0}/{1}/send".format(self.qbo_object_name.lower(), self.Id)
 
         if send_to:
+            send_to = urllib.quote(send_to)
             end_point = "{0}?sendTo={1}".format(end_point, send_to)
 
         results = qb.misc_operation(end_point, None, 'application/octet-stream')
