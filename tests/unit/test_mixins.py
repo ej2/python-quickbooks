@@ -1,6 +1,6 @@
 import os
 import unittest
-import urllib
+import urllib.parse
 
 from quickbooks.objects import Bill, Invoice
 
