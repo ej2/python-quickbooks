@@ -1,5 +1,6 @@
 import os
 import unittest
+import urllib
 
 from quickbooks.objects import Bill, Invoice
 
@@ -353,9 +354,11 @@ class SendMixinTest(QuickbooksUnitTestCase):
     def test_send_with_send_to_email(self, mock_misc_op):
         invoice = Invoice()
         invoice.Id = 2
-        invoice.send(qb=self.qb_client, send_to="test@email.com")
+        send_to_email = urllib.parse.quote("test@email.com", safe='')
 
-        mock_misc_op.assert_called_with("invoice/2/send?sendTo=test@email.com", None, 'application/octet-stream')
+        invoice.send(qb=self.qb_client, send_to=send_to_email)
+
+        mock_misc_op.assert_called_with("invoice/2/send?sendTo={}".format(send_to_email), None, 'application/octet-stream')
 
 
 class VoidMixinTest(QuickbooksUnitTestCase):
