@@ -356,7 +356,7 @@ class SendMixinTest(QuickbooksUnitTestCase):
         invoice.Id = 2
         send_to_email = urllib.parse.quote("test@email.com", safe='')
 
-        invoice.send(qb=self.qb_client, send_to=send_to_email)
+        invoice.send(qb=self.qb_client, send_to="test@email.com")
 
         mock_misc_op.assert_called_with("invoice/2/send?sendTo={}".format(send_to_email), None, 'application/octet-stream')
 
