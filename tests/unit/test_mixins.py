@@ -1,9 +1,8 @@
-from future.moves.urllib.parse import quote
 
 import os
 
 import unittest
-import urllib.parse
+from future.moves.urllib.parse import quote
 
 from quickbooks.objects import Bill, Invoice
 
