@@ -1,4 +1,7 @@
+from future.moves.urllib.parse import quote
+
 import os
+
 import unittest
 import urllib.parse
 
@@ -355,7 +358,7 @@ class SendMixinTest(QuickbooksUnitTestCase):
         invoice = Invoice()
         invoice.Id = 2
         email = "test@email.com"
-        send_to_email = urllib.parse.quote(email, safe='')
+        send_to_email = quote(email, safe='')
 
         invoice.send(qb=self.qb_client, send_to=email)
 

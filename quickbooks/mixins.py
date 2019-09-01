@@ -1,4 +1,4 @@
-import urllib.parse
+from future.moves.urllib.parse import quote
 
 import simplejson as json
 import six
@@ -109,7 +109,7 @@ class SendMixin(object):
         end_point = "{0}/{1}/send".format(self.qbo_object_name.lower(), self.Id)
 
         if send_to:
-            send_to = urllib.parse.quote(send_to, safe='')
+            send_to = quote(send_to, safe='')
             end_point = "{0}?sendTo={1}".format(end_point, send_to)
 
         results = qb.misc_operation(end_point, None, 'application/octet-stream')
