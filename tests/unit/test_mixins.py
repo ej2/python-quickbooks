@@ -354,9 +354,10 @@ class SendMixinTest(QuickbooksUnitTestCase):
     def test_send_with_send_to_email(self, mock_misc_op):
         invoice = Invoice()
         invoice.Id = 2
-        send_to_email = urllib.parse.quote("test@email.com", safe='')
+        email = "test@email.com"
+        send_to_email = urllib.parse.quote(email, safe='')
 
-        invoice.send(qb=self.qb_client, send_to="test@email.com")
+        invoice.send(qb=self.qb_client, send_to=email)
 
         mock_misc_op.assert_called_with("invoice/2/send?sendTo={}".format(send_to_email), None, 'application/octet-stream')
 
