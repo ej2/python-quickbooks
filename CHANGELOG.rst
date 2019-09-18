@@ -3,6 +3,8 @@ Changelog
 
 * 0.8.1 (September 18th, 2019)
     * Dropped support for Python 2.7 and 3.3
+    * Updated the Invoice to include an AllowOnlineCreditCardPayment attribute.
+    * Updated the SendMixin class to url encode input emails.
 
 * 0.8 (June 25th, 2019)
     * Removed support for OAuth 1.0
