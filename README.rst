@@ -4,7 +4,7 @@ python-quickbooks
 |Build Status| |Coverage Status| |License|
 
 
-A Python 3 library for accessing the Quickbooks API. Complete rework of
+A Python library for accessing the Quickbooks API. Complete rework of
 `quickbooks-python`_.
 
 These instructions were written for a Django application. Make sure to
@@ -85,10 +85,10 @@ Filtered list of objects with ordering:
 
     # Get customer invoices ordered by TxnDate
     invoices = Invoice.filter(CustomerRef='100', order_by='TxnDate', qb=client)
-    
+
     # Same, but in reverse order
     invoices = Invoice.filter(CustomerRef='100', order_by='TxnDate DESC', qb=client)
-    
+
     # Order customers by FamilyName then by GivenName
     customers = Customer.all(order_by='FamilyName, GivenName', qb=client)
 
@@ -208,16 +208,16 @@ Review results for batch operation:
 
 .. code-block:: python
 
-   # successes is a list of objects that were successfully updated 
+   # successes is a list of objects that were successfully updated
    for obj in results.successes:
        print "Updated " + obj.DisplayName
 
    # faults contains list of failed operations and associated errors
    for fault in results.faults:
-       print "Operation failed on " + fault.original_object.DisplayName 
+       print "Operation failed on " + fault.original_object.DisplayName
 
        for error in fault.Error:
-           print "Error " + error.Message 
+           print "Error " + error.Message
 
 Change Data Capture
 -----------------------
@@ -348,12 +348,12 @@ Formating helpers are available in helpers.py. Example usage:
 counterparts and do not follow PEP8.
 
 **Note:** This is a work-in-progress made public to help other
-developers access the QuickBooks API. Built for a Django project.
-
+developers access the QuickBooks API. Built for a Django project running
+on Python 2.
 
 .. _Intuit developer guide: https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/querying_data
 .. _Intuit Batch Operations Guide: https://developer.intuit.com/docs/api/accounting/batch
-    
+
 .. _Disconnect documentation: https://developer.intuit.com/docs/0050_quickbooks_api/0020_authentication_and_authorization/oauth_management_api#/Disconnect
 .. _quickbooks-python: https://github.com/troolee/quickbooks-python
 .. _Minor versions: https://developer.intuit.com/docs/0100_quickbooks_online/0200_dev_guides/accounting/minor_versions
@@ -377,4 +377,3 @@ developers access the QuickBooks API. Built for a Django project.
 
 .. _OAuth 2.0 Guide: https://developer.intuit.com/app/developer/qbo/docs/develop/authentication-and-authorization/oauth-2.0
 .. _intuit-oauth: https://pypi.org/project/intuit-oauth/
-

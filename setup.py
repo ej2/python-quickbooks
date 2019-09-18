@@ -23,7 +23,7 @@ setup(
     license='MIT',
     keywords=['quickbooks', 'qbo', 'accounting'],
     long_description=read('README.rst'),
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     test_runner='nosetests',
     entry_points={
         'console_scripts': ['quickbooks-cli=quickbooks.tools.cli:cli_execute']
