@@ -348,7 +348,8 @@ Formating helpers are available in helpers.py. Example usage:
 counterparts and do not follow PEP8.
 
 **Note:** This is a work-in-progress made public to help other
-developers access the QuickBooks API.
+developers access the QuickBooks API. Built for a Django project.
+
 
 .. _Intuit developer guide: https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/querying_data
 .. _Intuit Batch Operations Guide: https://developer.intuit.com/docs/api/accounting/batch
