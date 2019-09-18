@@ -22,7 +22,7 @@ setup(
     url='https://github.com/sidecars/python-quickbooks',
     license='MIT',
     keywords=['quickbooks', 'qbo', 'accounting'],
-    long_description=read('README.rst'),
+    long_description=read('README.md'),
     long_description_content_type="text/markdown",
     test_runner='nosetests',
     entry_points={
