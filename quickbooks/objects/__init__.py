@@ -38,6 +38,7 @@ from .payment import PaymentLine, Payment
 from .paymentmethod import PaymentMethod
 from .purchase import Purchase
 from .purchaseorder import PurchaseOrder
+from .preferences import Preferences
 from .refundreceipt import RefundReceipt
 from .salesreceipt import SalesReceipt
 from .tax import TaxLineDetail, TaxLine, TxnTaxDetail
