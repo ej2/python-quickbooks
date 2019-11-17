@@ -1,9 +1,9 @@
 from six import python_2_unicode_compatible
-from .base import QuickbooksBaseObject
+from .base import QuickbooksBaseObject, ListMixin
 
 
 @python_2_unicode_compatible
-class Preferences(QuickbooksBaseObject):
+class Preferences(QuickbooksBaseObject, ListMixin):
     """
     NOTE: This is currently a read-only object.  It simply hasn't been fully implemented yet into the library.
 
