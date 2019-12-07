@@ -229,7 +229,7 @@ Attaching a file to customer:
 
     attachment.AttachableRef.append(attachable_ref)
 
-    attachment.FileName = 'Filename'
+    attachment.FileName = 'Filename.pdf'
     attachment._FilePath = '/folder/filename'  # full path to file
     attachment.ContentType = 'application/pdf'
     attachment.save(qb=client)
