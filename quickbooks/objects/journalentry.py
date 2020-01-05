@@ -31,8 +31,8 @@ class JournalEntryLineDetail(QuickbooksBaseObject):
         self.PostingType = ""
         self.TaxApplicableOn = "Sales"
         self.TaxAmount = 0
-        self.BillableStatus = ""
 
+        self.BillableStatus = None
         self.Entity = None
         self.AccountRef = None
         self.ClassRef = None

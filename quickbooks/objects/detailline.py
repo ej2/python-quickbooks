@@ -44,6 +44,7 @@ class DiscountLineDetail(QuickbooksBaseObject):
         "Discount": DiscountOverride,
         "ClassRef": Ref,
         "TaxCodeRef": Ref,
+        "DiscountAccountRef": Ref
     }
 
     def __init__(self):
@@ -52,6 +53,8 @@ class DiscountLineDetail(QuickbooksBaseObject):
         self.Discount = None
         self.ClassRef = None
         self.TaxCodeRef = None
+        self.PercentBased = False
+        self.DiscountPercent = 0
 
 
 class DiscountLine(DetailLine):
@@ -82,7 +85,7 @@ class SubtotalLine(DetailLine):
 
     def __init__(self):
         super(SubtotalLine, self).__init__()
-        self.DetailType = "SubtotalLineDetail"
+        self.DetailType = "SubTotalLineDetail"
         self.SubtotalLineDetail = None
 
 
@@ -157,8 +160,8 @@ class GroupLine(DetailLine):
 
     def __init__(self):
         super(GroupLine, self).__init__()
-        self.DetailType = "SalesItemLineDetail"
-        self.SalesItemLineDetail = None
+        self.DetailType = "GroupLineDetail"
+        self.GroupLineDetail = None
 
 
 class DescriptionOnlyLine(DetailLine):
@@ -168,7 +171,7 @@ class DescriptionOnlyLine(DetailLine):
 
     def __init__(self):
         super(DescriptionOnlyLine, self).__init__()
-        self.DetailType = "DescriptionLineDetail"
+        self.DetailType = "DescriptionOnly"
         self.DescriptionLineDetail = None
 
 
@@ -220,7 +223,7 @@ class ItemBasedExpenseLineDetail(QuickbooksBaseObject):
 
     def __init__(self):
         super(ItemBasedExpenseLineDetail, self).__init__()
-        self.BillableStatus = ""
+        self.BillableStatus = None
         self.UnitPrice = 0
         self.TaxInclusiveAmt = 0
         self.Qty = 0

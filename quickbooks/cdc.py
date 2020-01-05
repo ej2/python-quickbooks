@@ -25,13 +25,16 @@ def change_data_capture(qbo_class_list, timestamp, qb=None):
 
     query_response_list = cdc_response_dict[0]['QueryResponse']
     for query_response_dict in query_response_list:
-        qb_object_name = [x for x in query_response_dict if x in cdc_class_names][0]
-        qb_object_list = query_response_dict.pop(qb_object_name)
-        qb_object_cls = cdc_class_dict[qb_object_name]
+        qb_object_names = [x for x in query_response_dict if x in cdc_class_names]
 
-        query_response = QueryResponse.from_json(query_response_dict)
-        query_response._object_list = [qb_object_cls.from_json(obj) for obj in qb_object_list]
+        if len(qb_object_names) == 1:
+            qb_object_name = qb_object_names[0]
+            qb_object_list = query_response_dict.pop(qb_object_name)
+            qb_object_cls = cdc_class_dict[qb_object_name]
 
-        setattr(cdc_response, qb_object_name, query_response)
+            query_response = QueryResponse.from_json(query_response_dict)
+            query_response._object_list = [qb_object_cls.from_json(obj) for obj in qb_object_list]
+
+            setattr(cdc_response, qb_object_name, query_response)
 
     return cdc_response

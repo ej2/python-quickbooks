@@ -1,3 +1,5 @@
+from future.moves.urllib.parse import quote
+
 import simplejson as json
 import six
 from .utils import build_where_clause, build_choose_clause
@@ -107,9 +109,30 @@ class SendMixin(object):
         end_point = "{0}/{1}/send".format(self.qbo_object_name.lower(), self.Id)
 
         if send_to:
+            send_to = quote(send_to, safe='')
             end_point = "{0}?sendTo={1}".format(end_point, send_to)
 
         results = qb.misc_operation(end_point, None, 'application/octet-stream')
+
+        return results
+
+
+class VoidMixin(object):
+    def void(self, qb=None):
+        if not qb:
+            qb = QuickBooks()
+
+        if not self.Id:
+            raise QuickbooksException('Cannot void unsaved object')
+
+        data = {
+            'Id': self.Id,
+            'SyncToken': self.SyncToken,
+        }
+
+        endpoint = self.qbo_object_name.lower()
+        url = "{0}/company/{1}/{2}".format(qb.api_url, qb.company_id, endpoint)
+        results = qb.post(url, json.dumps(data), params={'operation': 'void'})
 
         return results
 
@@ -153,18 +176,20 @@ class ListMixin(object):
     qbo_object_name = ""
 
     @classmethod
-    def all(cls, start_position="", max_results=100, qb=None):
+    def all(cls, order_by="", start_position="", max_results=100, qb=None):
         """
         :param start_position:
         :param max_results: The max number of entities that can be returned in a response is 1000.
         :param qb:
         :return: Returns list
         """
-        return cls.where("", start_position=start_position, max_results=max_results, qb=qb)
+        return cls.where("", order_by=order_by, start_position=start_position,
+                         max_results=max_results, qb=qb)
 
     @classmethod
-    def filter(cls, start_position="", max_results="", qb=None, **kwargs):
+    def filter(cls, order_by="", start_position="", max_results="", qb=None, **kwargs):
         """
+        :param order_by:
         :param start_position:
         :param max_results:
         :param qb:
@@ -172,7 +197,8 @@ class ListMixin(object):
         :return: Filtered list
         """
         return cls.where(build_where_clause(**kwargs),
-                         start_position=start_position, max_results=max_results, qb=qb)
+                         start_position=start_position, max_results=max_results, order_by=order_by,
+                         qb=qb)
 
     @classmethod
     def choose(cls, choices, field="Id", qb=None):
@@ -185,9 +211,10 @@ class ListMixin(object):
         return cls.where(build_choose_clause(choices, field), qb=qb)
 
     @classmethod
-    def where(cls, where_clause="", start_position="", max_results="", qb=None):
+    def where(cls, where_clause="", order_by="", start_position="", max_results="", qb=None):
         """
         :param where_clause: QBO SQL where clause (DO NOT include 'WHERE')
+        :param order_by:
         :param start_position:
         :param max_results:
         :param qb:
@@ -196,14 +223,17 @@ class ListMixin(object):
         if where_clause:
             where_clause = "WHERE " + where_clause
 
+        if order_by:
+            order_by = " ORDERBY " + order_by
+
         if start_position:
             start_position = " STARTPOSITION " + str(start_position)
 
         if max_results:
             max_results = " MAXRESULTS " + str(max_results)
 
-        select = "SELECT * FROM {0} {1}{2}{3}".format(
-            cls.qbo_object_name, where_clause, start_position, max_results)
+        select = "SELECT * FROM {0} {1}{2}{3}{4}".format(
+            cls.qbo_object_name, where_clause, order_by, start_position, max_results)
 
         return cls.query(select, qb=qb)
 

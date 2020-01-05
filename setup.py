@@ -10,7 +10,7 @@ def read(*parts):
         return fp.read()
 
 
-VERSION = (0, 7, 6)
+VERSION = (0, 8, 1)
 version = '.'.join(map(str, VERSION))
 
 setup(
@@ -22,8 +22,8 @@ setup(
     url='https://github.com/sidecars/python-quickbooks',
     license='MIT',
     keywords=['quickbooks', 'qbo', 'accounting'],
-    long_description=read('README.rst'),
-
+    long_description=read('README.md'),
+    long_description_content_type="text/markdown",
     test_runner='nosetests',
     entry_points={
         'console_scripts': ['quickbooks-cli=quickbooks.tools.cli:cli_execute']
@@ -31,6 +31,7 @@ setup(
 
     install_requires=[
         'setuptools',
+        'intuit-oauth==1.2.2',
         'rauth>=0.7.1',
         'requests>=2.7.0',
         'simplejson>=2.2.0',
@@ -45,10 +46,10 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
     ],
     packages=find_packages(),
 )

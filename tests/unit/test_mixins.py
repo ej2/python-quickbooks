@@ -1,8 +1,14 @@
+
 import os
+
 import unittest
+from future.moves.urllib.parse import quote
 
 from quickbooks.objects import Bill, Invoice
-from quickbooks.auth import Oauth1SessionManager
+
+from intuitlib.client import AuthClient
+from quickbooks.client import QuickBooks
+from tests.integration.test_base import QuickbooksUnitTestCase
 
 try:
     from mock import patch
@@ -13,6 +19,7 @@ from quickbooks import client
 
 from quickbooks.objects.base import PhoneNumber, QuickbooksBaseObject
 from quickbooks.objects.department import Department
+from quickbooks.objects.customer import Customer
 from quickbooks.objects.journalentry import JournalEntry, JournalEntryLine
 from quickbooks.objects.salesreceipt import SalesReceipt
 from quickbooks.mixins import ObjectListMixin
@@ -108,7 +115,7 @@ class ToDictMixinTest(unittest.TestCase):
                     'Entity': None,
                     'DepartmentRef': None,
                     'TaxCodeRef': None,
-                    'BillableStatus': '',
+                    'BillableStatus': None,
                     'TaxApplicableOn': 'Sales',
                     'PostingType': 'Debit',
                     'AccountRef': None,
@@ -128,26 +135,11 @@ class ToDictMixinTest(unittest.TestCase):
         self.assertEquals(expected, entry.to_dict())
 
 
-class ListMixinTest(unittest.TestCase):
-    def setUp(self):
-        self.session_manager = Oauth1SessionManager(
-            sandbox=True,
-            consumer_key="update_consumer_key",
-            consumer_secret="update_consumer_secret",
-            access_token="update_access_token",
-            access_token_secret="update_access_token_secret",
-        )
-
-        self.qb_client = client.QuickBooks(
-            session_manager=self.session_manager,
-            sandbox=True,
-            company_id="COMPANY_ID"
-        )
-
+class ListMixinTest(QuickbooksUnitTestCase):
     @patch('quickbooks.mixins.ListMixin.where')
     def test_all(self, where):
         Department.all()
-        where.assert_called_once_with('', max_results=100, start_position='', qb=None)
+        where.assert_called_once_with('', order_by='', max_results=100, start_position='', qb=None)
 
     def test_all_with_qb(self):
         with patch.object(self.qb_client, 'query') as query:
@@ -157,7 +149,8 @@ class ListMixinTest(unittest.TestCase):
     @patch('quickbooks.mixins.ListMixin.where')
     def test_filter(self, where):
         Department.filter(max_results=25, start_position='1', Active=True)
-        where.assert_called_once_with("Active = True", max_results=25, start_position='1', qb=None)
+        where.assert_called_once_with("Active = True", max_results=25, start_position='1',
+                                      order_by='', qb=None)
 
     def test_filter_with_qb(self):
         with patch.object(self.qb_client, 'query') as query:
@@ -166,13 +159,13 @@ class ListMixinTest(unittest.TestCase):
 
     @patch('quickbooks.mixins.ListMixin.query')
     def test_where(self, query):
-        Department.where("Active=True", 1, 10)
+        Department.where("Active=True", start_position=1, max_results=10)
         query.assert_called_once_with("SELECT * FROM Department WHERE Active=True STARTPOSITION 1 MAXRESULTS 10",
                                       qb=None)
 
     def test_where_with_qb(self):
         with patch.object(self.qb_client, 'query') as query:
-            Department.where("Active=True", 1, 10, qb=self.qb_client)
+            Department.where("Active=True", start_position=1, max_results=10, qb=self.qb_client)
             self.assertTrue(query.called)
 
     @patch('quickbooks.mixins.QuickBooks.query')
@@ -202,19 +195,18 @@ class ListMixinTest(unittest.TestCase):
         count = Department.count(where_clause="Active=True", qb=self.qb_client)
         query.assert_called_once_with("SELECT COUNT(*) FROM Department WHERE Active=True")
 
+    @patch('quickbooks.mixins.ListMixin.query')
+    def test_order_by(self, query):
+        Customer.filter(Active=True, order_by='DisplayName')
+        query.assert_called_once_with("SELECT * FROM Customer WHERE Active = True ORDERBY DisplayName", qb=None)
 
-class ReadMixinTest(unittest.TestCase):
-    def setUp(self):
-        self.qb_client = client.QuickBooks(
-            sandbox=True,
-            consumer_key="update_consumer_key",
-            consumer_secret="update_consumer_secret",
-            access_token="update_access_token",
-            access_token_secret="update_access_token_secret",
-            company_id="update_company_id",
-            callback_url="update_callback_url"
-        )
+    def test_order_by_with_qb(self):
+        with patch.object(self.qb_client, 'query') as query:
+            Customer.filter(Active=True, order_by='DisplayName', qb=self.qb_client)
+            self.assertTrue(query.called)
 
+
+class ReadMixinTest(QuickbooksUnitTestCase):
     @patch('quickbooks.mixins.QuickBooks.get_single_object')
     def test_get(self, get_single_object):
         Department.get(1)
@@ -226,18 +218,7 @@ class ReadMixinTest(unittest.TestCase):
             self.assertTrue(get_single_object.called)
 
 
-class UpdateMixinTest(unittest.TestCase):
-    def setUp(self):
-        self.qb_client = client.QuickBooks(
-            sandbox=True,
-            consumer_key="update_consumer_key",
-            consumer_secret="update_consumer_secret",
-            access_token="update_access_token",
-            access_token_secret="update_access_token_secret",
-            company_id="update_company_id",
-            callback_url="update_callback_url"
-        )
-
+class UpdateMixinTest(QuickbooksUnitTestCase):
     @patch('quickbooks.mixins.QuickBooks.create_object')
     def test_save_create(self, create_object):
         department = Department()
@@ -269,18 +250,7 @@ class UpdateMixinTest(unittest.TestCase):
             self.assertTrue(update_object.called)
 
 
-class DownloadPdfTest(unittest.TestCase):
-    def setUp(self):
-        self.qb_client = client.QuickBooks(
-            sandbox=True,
-            consumer_key="update_consumer_key",
-            consumer_secret="update_consumer_secret",
-            access_token="update_access_token",
-            access_token_secret="update_access_token_secret",
-            company_id="update_company_id",
-            callback_url="update_callback_url"
-        )
-
+class DownloadPdfTest(QuickbooksUnitTestCase):
     @patch('quickbooks.client.QuickBooks.download_pdf')
     def test_download_invoice(self, download_pdf):
         receipt = SalesReceipt()
@@ -357,18 +327,7 @@ class ObjectListTest(unittest.TestCase):
         self.assertEquals([pn4, pn2], list(reversed(test_subclass_object_obj)))
 
 
-class DeleteMixinTest(unittest.TestCase):
-    def setUp(self):
-        self.qb_client = client.QuickBooks(
-            sandbox=True,
-            consumer_key="update_consumer_key",
-            consumer_secret="update_consumer_secret",
-            access_token="update_access_token",
-            access_token_secret="update_access_token_secret",
-            company_id="update_company_id",
-            callback_url="update_callback_url"
-        )
-
+class DeleteMixinTest(QuickbooksUnitTestCase):
     def test_delete_unsaved_exception(self):
         from quickbooks.exceptions import QuickbooksException
 
@@ -384,18 +343,7 @@ class DeleteMixinTest(unittest.TestCase):
         self.assertTrue(delete_object.called)
 
 
-class SendMixinTest(unittest.TestCase):
-    def setUp(self):
-        self.qb_client = client.QuickBooks(
-            sandbox=True,
-            consumer_key="update_consumer_key",
-            consumer_secret="update_consumer_secret",
-            access_token="update_access_token",
-            access_token_secret="update_access_token_secret",
-            company_id="update_company_id",
-            callback_url="update_callback_url"
-        )
-
+class SendMixinTest(QuickbooksUnitTestCase):
     @patch('quickbooks.mixins.QuickBooks.misc_operation')
     def test_send(self, mock_misc_op):
         invoice = Invoice()
@@ -408,6 +356,24 @@ class SendMixinTest(unittest.TestCase):
     def test_send_with_send_to_email(self, mock_misc_op):
         invoice = Invoice()
         invoice.Id = 2
-        invoice.send(qb=self.qb_client, send_to="test@email.com")
+        email = "test@email.com"
+        send_to_email = quote(email, safe='')
 
-        mock_misc_op.assert_called_with("invoice/2/send?sendTo=test@email.com", None, 'application/octet-stream')
+        invoice.send(qb=self.qb_client, send_to=email)
+
+        mock_misc_op.assert_called_with("invoice/2/send?sendTo={}".format(send_to_email), None, 'application/octet-stream')
+
+
+class VoidMixinTest(QuickbooksUnitTestCase):
+    @patch('quickbooks.mixins.QuickBooks.post')
+    def test_void(self, post):
+        invoice = Invoice()
+        invoice.Id = 2
+        invoice.void(qb=self.qb_client)
+        self.assertTrue(post.called)
+
+    def test_delete_unsaved_exception(self):
+        from quickbooks.exceptions import QuickbooksException
+
+        invoice = Invoice()
+        self.assertRaises(QuickbooksException, invoice.void, qb=self.qb_client)
