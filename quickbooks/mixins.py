@@ -226,7 +226,7 @@ class ListMixin(object):
         if order_by:
             order_by = " ORDERBY " + order_by
 
-        if start_position:
+        if start_position != "":
             start_position = " STARTPOSITION " + str(start_position)
 
         if max_results:
