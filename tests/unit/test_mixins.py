@@ -163,6 +163,12 @@ class ListMixinTest(QuickbooksUnitTestCase):
         query.assert_called_once_with("SELECT * FROM Department WHERE Active=True STARTPOSITION 1 MAXRESULTS 10",
                                       qb=None)
 
+    @patch('quickbooks.mixins.ListMixin.query')
+    def test_where_start_position_0(self, query):
+        Department.where("Active=True", start_position=0, max_results=10)
+        query.assert_called_once_with("SELECT * FROM Department WHERE Active=True STARTPOSITION 0 MAXRESULTS 10",
+                                      qb=None)
+
     def test_where_with_qb(self):
         with patch.object(self.qb_client, 'query') as query:
             Department.where("Active=True", start_position=1, max_results=10, qb=self.qb_client)
