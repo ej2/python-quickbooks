@@ -62,7 +62,7 @@ class Purchase(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity
         self.TxnTaxDetail = None
         self.DepartmentRef = None
         self.AccountRef = None
-        self.EnitityRef = None
+        self.EntityRef = None
         self.CurrencyRef = None
         self.PaymentMethodRef = None
         self.RemitToAddr = None
