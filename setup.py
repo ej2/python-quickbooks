@@ -18,7 +18,7 @@ setup(
     version=version,
     author='Edward Emanuel Jr.',
     author_email='edward.emanuel@gmail.com',
-    description='A Python library for accessing the Quickbooks API.',
+    description='A Python library for accessing the QuickBooks API.',
     url='https://github.com/ej2/python-quickbooks',
     license='MIT',
     keywords=['quickbooks', 'qbo', 'accounting'],

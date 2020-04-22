@@ -1,10 +1,11 @@
 Changelog
 =========
 
-* 0.8.1 (September 18th, 2019)
+* 0.8.2 (April 22nd, 2020)
     * Added PrimaryTaxIdentifier to Customer object
     * Fixed issue with PaymentMethod to_ref
     * Fixed typo in EntityRef on purchase object
+    * Updated readme
     * Updated requirements
 
 * 0.8.1 (September 18th, 2019)
@@ -12,7 +13,7 @@ Changelog
     * Updated the Invoice to include an AllowOnlineCreditCardPayment attribute.
     * Updated the SendMixin class to url encode input emails.
 
-* 0.8 (June 25th, 2019)
+* 0.8.0 (June 25th, 2019)
     * Removed support for OAuth 1.0
     * Replace OAuth Session Manager and CLI with intuit-oauth client.
     * Removed disconnect_account and reconnect_account from client.
@@ -45,7 +46,7 @@ Changelog
     * Added support for sending invoices.
     * Added count to ListMixin.
     * Fixed issue with PDF file attachments in Python 2.
-    * Removed duplicate coverage depnedency.
+    * Removed duplicate coverage dependency.
 
 * 0.7.0 (August 31st, 2017)
     * Added support for OAuth 2.0
