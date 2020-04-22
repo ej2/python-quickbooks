@@ -57,6 +57,7 @@ class Customer(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.ResaleNum = ""
         self.Level = 0
         self.OpenBalanceDate = ""
+        self.PrimaryTaxIdentifier = ""
 
         self.BillAddr = None
         self.ShipAddr = None
