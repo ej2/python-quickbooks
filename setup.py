@@ -33,7 +33,7 @@ setup(
         'setuptools',
         'intuit-oauth==1.2.3',
         'rauth>=0.7.1',
-        'requests>=2.23.0',
+        'requests>=2.19.1',
         'simplejson>=3.17.0',
         'six>=1.14.0',
         'python-dateutil',

@@ -282,7 +282,8 @@ Formating helpers are available in helpers.py. Example usage:
 
 Exception Handling
 ----------------
-The QuickbooksException object contains additional information from QBO.  
+The QuickbooksException object contains additional [QBO error code](https://developer.intuit.com/app/developer/qbo/docs/develop/troubleshooting/error-codes#id1) information. 
+
 
     from quickbooks.exceptions import QuickbooksException
 
@@ -290,7 +291,7 @@ The QuickbooksException object contains additional information from QBO.
         # perform a Quickbooks operation
     except QuickbooksException as e:
         e.message # contains the error message returned from QBO
-        e.error_code # contains the [QBO error code](https://developer.intuit.com/app/developer/qbo/docs/develop/troubleshooting/error-codes#id1) 
+        e.error_code # contains the  
         e.detail # contains additional information when available  
 
 
