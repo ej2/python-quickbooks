@@ -17,3 +17,14 @@ class PaymentMethodTests(unittest.TestCase):
         result = client.isvalid_object_name(obj.qbo_object_name)
 
         self.assertTrue(result)
+
+    def test_to_ref(self):
+        obj = PaymentMethod()
+        obj.Name = "test"
+        obj.Id = 12
+
+        ref = obj.to_ref()
+
+        self.assertEquals(ref.name, "test")
+        self.assertEquals(ref.type, "PaymentMethod")
+        self.assertEquals(ref.value, 12)

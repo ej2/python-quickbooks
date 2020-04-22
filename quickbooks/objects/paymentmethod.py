@@ -29,3 +29,6 @@ class PaymentMethod(QuickbooksManagedObject, QuickbooksTransactionEntity):
         ref.name = self.Name
         ref.type = self.qbo_object_name
         ref.value = self.Id
+
+        return ref
+
