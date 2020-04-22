@@ -10,16 +10,16 @@ def read(*parts):
         return fp.read()
 
 
-VERSION = (0, 8, 1)
+VERSION = (0, 8, 2)
 version = '.'.join(map(str, VERSION))
 
 setup(
     name='python-quickbooks',
     version=version,
     author='Edward Emanuel Jr.',
-    author_email='edward@sidecarsinc.com',
+    author_email='edward.emanuel@gmail.com',
     description='A Python library for accessing the Quickbooks API.',
-    url='https://github.com/sidecars/python-quickbooks',
+    url='https://github.com/ej2/python-quickbooks',
     license='MIT',
     keywords=['quickbooks', 'qbo', 'accounting'],
     long_description=read('README.md'),
@@ -31,11 +31,11 @@ setup(
 
     install_requires=[
         'setuptools',
-        'intuit-oauth==1.2.2',
+        'intuit-oauth==1.2.3',
         'rauth>=0.7.1',
-        'requests>=2.7.0',
-        'simplejson>=2.2.0',
-        'six>=1.4.0',
+        'requests>=2.23.0',
+        'simplejson>=3.17.0',
+        'six>=1.14.0',
         'python-dateutil',
         'pycparser==2.18'
     ],

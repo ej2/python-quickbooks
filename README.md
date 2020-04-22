@@ -1,18 +1,18 @@
 python-quickbooks
 =================
 
-[![](https://travis-ci.org/sidecars/python-quickbooks.svg?branch=master)](https://travis-ci.org/sidecars/python-quickbooks)
-[![](https://coveralls.io/repos/sidecars/python-quickbooks/badge.svg?branch=master&service=github)](https://coveralls.io/github/sidecars/python-quickbooks?branch=master)
-[![](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/sidecars/python-quickbooks/blob/master/LICENSE)
+[![](https://travis-ci.org/ej2/python-quickbooks.svg?branch=master)](https://travis-ci.org/ej2/python-quickbooks)
+[![Coverage Status](https://coveralls.io/repos/github/ej2/python-quickbooks/badge.svg?branch=master)](https://coveralls.io/github/ej2/python-quickbooks?branch=master)
+[![](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/ej2/python-quickbooks/blob/master/LICENSE)
  
 A Python 3 library for accessing the Quickbooks API. Complete rework of
 [quickbooks-python](https://github.com/troolee/quickbooks-python).
 
 These instructions were written for a Django application. Make sure to
 change it to whatever framework/method you’re using.
-You can find additional examples of usage in [Integration tests folder](https://github.com/sidecars/python-quickbooks/tree/master/tests/integration).
+You can find additional examples of usage in [Integration tests folder](https://github.com/ej2/python-quickbooks/tree/master/tests/integration).
 
-For information about contributing, see the [Contributing Page](https://github.com/sidecars/python-quickbooks/wiki/Contributing).
+For information about contributing, see the [Contributing Page](https://github.com/ej2/python-quickbooks/wiki/Contributing).
 
 QuickBooks OAuth
 ------------------------------------------------
@@ -279,6 +279,20 @@ Formating helpers are available in helpers.py. Example usage:
     date_string = qb_date_format(date(2016, 7, 22))
     date_time_string = qb_datetime_format(datetime(2016, 7, 22, 10, 35, 00))
     date_time_with_utc_string = qb_datetime_utc_offset_format(datetime(2016, 7, 22, 10, 35, 00), '-06:00')
+
+Exception Handling
+----------------
+The QuickbooksException object contains additional information from QBO.  
+
+    from quickbooks.exceptions import QuickbooksException
+
+    try:
+        # perform a Quickbooks operation
+    except QuickbooksException as e:
+        e.message # contains the error message returned from QBO
+        e.error_code # contains the [QBO error code](https://developer.intuit.com/app/developer/qbo/docs/develop/troubleshooting/error-codes#id1) 
+        e.detail # contains additional information when available  
+
 
 **Note:** Objects and object property names match their Quickbooks
 counterparts and do not follow PEP8.
