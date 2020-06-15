@@ -1,6 +1,7 @@
 from six import python_2_unicode_compatible
 
-from quickbooks.objects.detailline import DetailLine, AccountBasedExpenseLine, ItemBasedExpenseLine
+from quickbooks.objects.detailline import DetailLine, AccountBasedExpenseLine, ItemBasedExpenseLine, \
+    TDSLine
 from .base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin, \
     LinkedTxn, Address
 from .tax import TxnTaxDetail
@@ -41,6 +42,7 @@ class Purchase(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity
     detail_dict = {
         "AccountBasedExpenseLineDetail": AccountBasedExpenseLine,
         "ItemBasedExpenseLineDetail": ItemBasedExpenseLine,
+        "TDSLineDetail": TDSLine,
     }
 
     qbo_object_name = "Purchase"
