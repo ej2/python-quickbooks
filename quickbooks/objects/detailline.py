@@ -211,6 +211,28 @@ class AccountBasedExpenseLine(DetailLine):
         self.AccountBasedExpenseLineDetail = None
 
 
+@python_2_unicode_compatible
+class TDSLineDetail(QuickbooksBaseObject):
+    def __init__(self):
+        super(TDSLineDetail, self).__init__()
+        self.TDSSectionTypeId = None
+
+    def __str__(self):
+        return self.TDSSectionTypeId
+
+
+class TDSLine(DetailLine):
+    class_dict = {
+        "TDSLineDetail": TDSLineDetail
+    }
+
+    def __init__(self):
+        super(TDSLine, self).__init__()
+
+        self.DetailType = "TDSLineDetail"
+        self.TDSLineDetail = None
+
+
 class ItemBasedExpenseLineDetail(QuickbooksBaseObject):
     class_dict = {
         "ItemRef": Ref,
