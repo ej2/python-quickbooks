@@ -50,6 +50,7 @@ class PurchaseOrder(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionE
         self.DueDate = None
         self.ExchangeRate = 1
         self.GlobalTaxCalculation = "TaxExcluded"
+        self.Memo = None
 
         self.TxnTaxDetail = None
         self.VendorAddr = None
