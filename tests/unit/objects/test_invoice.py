@@ -39,6 +39,17 @@ class InvoiceTests(unittest.TestCase):
 
         self.assertTrue(result)
 
+    def test_to_ref(self):
+        invoice = Invoice()
+        invoice.DocNumber = 1
+        invoice.Id = 2
+
+        ref = invoice.to_ref()
+        self.assertIsInstance(ref, Ref)
+        self.assertEquals(ref.type, "Invoice")
+        self.assertEquals(ref.name, 1)  # should be DocNumber
+        self.assertEquals(ref.value, 2)  # should be Id
+
 
 class DeliveryInfoTests(unittest.TestCase):
     def test_init(self):
