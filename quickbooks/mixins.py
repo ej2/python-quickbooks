@@ -1,6 +1,8 @@
 from future.moves.urllib.parse import quote
 
-import simplejson as json
+try: import simplejson as json
+except ImportError: import json
+
 import six
 from .utils import build_where_clause, build_choose_clause
 from .client import QuickBooks

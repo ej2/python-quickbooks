@@ -1,6 +1,13 @@
 Changelog
 =========
 
+* 0.8.3 (August 24, 2020)
+    * Fixed issue with CompanyCurrency object
+    * Added to_ref method to the Term object
+    * Fixed issues with RefundReceipt
+    * Added RefundReceiptCheckPayment object to RefundReceipt object
+    * Added from_json to MetaData
+
 * 0.8.2 (April 22nd, 2020)
     * Added PrimaryTaxIdentifier to Customer object
     * Fixed issue with PaymentMethod to_ref

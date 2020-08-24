@@ -26,6 +26,7 @@ class ItemTest(QuickbooksTestCase):
         item.Type = "Inventory"
         item.TrackQtyOnHand = True
         item.QtyOnHand = 10
+        item.Sku = "SKU123123"
         item.InvStartDate = "2015-01-01"
 
         item.IncomeAccountRef = self.income_account.to_ref()
@@ -38,6 +39,7 @@ class ItemTest(QuickbooksTestCase):
         self.assertEquals(query_item.Id, item.Id)
         self.assertEquals(query_item.Name, self.name)
         self.assertEquals(query_item.Type, "Inventory")
+        self.assertEquals(query_item.Sku, "SKU123123")
         self.assertEquals(query_item.TrackQtyOnHand, True)
         self.assertEquals(query_item.QtyOnHand, 10)
         self.assertEquals(query_item.IncomeAccountRef.value, self.income_account.Id)
