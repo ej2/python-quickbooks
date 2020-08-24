@@ -4,9 +4,14 @@ Changelog
 * 0.8.3 (August 24, 2020)
     * Fixed issue with CompanyCurrency object
     * Added to_ref method to the Term object
+    * Added to_ref method to the Invoice object
     * Fixed issues with RefundReceipt
     * Added RefundReceiptCheckPayment object to RefundReceipt object
-    * Added from_json to MetaData
+    * Added from_json method to MetaData
+    * Added SendMixin to Estimate object
+    * Added SendMixin to PurchaseOrder object
+    * Added Memo field to PurchaseOrder
+    * Added support for TDS (special type of tax applied to Indian companies)
 
 * 0.8.2 (April 22nd, 2020)
     * Added PrimaryTaxIdentifier to Customer object
