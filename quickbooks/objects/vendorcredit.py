@@ -2,7 +2,7 @@ from six import python_2_unicode_compatible
 
 from .base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, \
     LinkedTxnMixin
-from .detailline import DetailLine, AccountBasedExpenseLine, ItemBasedExpenseLine
+from .detailline import DetailLine, AccountBasedExpenseLine, ItemBasedExpenseLine, TDSLine
 from ..mixins import DeleteMixin
 
 
@@ -27,7 +27,7 @@ class VendorCredit(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEn
     detail_dict = {
         "AccountBasedExpenseLineDetail": AccountBasedExpenseLine,
         "ItemBasedExpenseLineDetail": ItemBasedExpenseLine,
-
+        "TDSLineDetail": TDSLine,
     }
 
     qbo_object_name = "VendorCredit"

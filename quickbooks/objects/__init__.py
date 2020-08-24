@@ -24,7 +24,7 @@ from .detailline import (
     SubtotalLineDetail, SubtotalLine, DescriptionLineDetail, DescriptionLine,
     SalesItemLineDetail, SalesItemLine, GroupLineDetail, GroupLine,
     DescriptionOnlyLine, AccountBasedExpenseLineDetail, AccountBasedExpenseLine,
-    ItemBasedExpenseLineDetail, ItemBasedExpenseLine,
+    TDSLineDetail, TDSLine, ItemBasedExpenseLineDetail, ItemBasedExpenseLine,
 
 )
 from .employee import Employee
