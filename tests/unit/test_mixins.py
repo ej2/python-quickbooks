@@ -6,8 +6,6 @@ from future.moves.urllib.parse import quote
 
 from quickbooks.objects import Bill, Invoice
 
-from intuitlib.client import AuthClient
-from quickbooks.client import QuickBooks
 from tests.integration.test_base import QuickbooksUnitTestCase
 
 try:

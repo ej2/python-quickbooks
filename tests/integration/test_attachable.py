@@ -54,6 +54,7 @@ class AttachableTest(QuickbooksTestCase):
         attachable.ContentType = 'text/plain'
 
         attachable.save(qb=self.qb_client)
+
         query_attachable = Attachable.get(attachable.Id, qb=self.qb_client)
 
         self.assertEquals(query_attachable.AttachableRef[0].EntityRef.value, vendor.Id)

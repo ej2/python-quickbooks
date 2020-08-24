@@ -25,7 +25,7 @@ class QuickbooksReadOnlyObject(QuickbooksBaseObject, ReadMixin, ListMixin):
 
 
 @python_2_unicode_compatible
-class MetaData:
+class MetaData(FromJsonMixin):
     def __init__(self):
         self.CreateTime = ""
         self.LastUpdatedTime = ""

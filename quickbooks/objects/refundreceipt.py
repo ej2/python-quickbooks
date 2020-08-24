@@ -1,9 +1,27 @@
 from six import python_2_unicode_compatible
+
+from quickbooks.objects import CreditCardPayment
 from .base import Ref, CustomField, QuickbooksManagedObject, \
-    LinkedTxnMixin, QuickbooksTransactionEntity, LinkedTxn, Address, EmailAddress
+    LinkedTxnMixin, QuickbooksTransactionEntity, LinkedTxn, Address, EmailAddress, QuickbooksBaseObject, CustomerMemo
 from .tax import TxnTaxDetail
 from .detailline import DetailLine
 from ..mixins import DeleteMixin
+
+
+@python_2_unicode_compatible
+class RefundReceiptCheckPayment(QuickbooksBaseObject):
+    qbo_object_name = "CheckPayment"
+
+    def __init__(self):
+        super(RefundReceiptCheckPayment, self).__init__()
+        self.CheckNum = ""
+        self.Status = ""
+        self.NameOnAcct = ""
+        self.AcctNum = ""
+        self.BankName = ""
+
+    def __str__(self):
+        return self.CheckNum
 
 
 @python_2_unicode_compatible
@@ -22,6 +40,9 @@ class RefundReceipt(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionE
         "ClassRef": Ref,
         "BillEmail": EmailAddress,
         "PaymentMethodRef": Ref,
+        "CheckPayment": RefundReceiptCheckPayment,
+        "CreditCardPayment": CreditCardPayment,
+        "CustomerMemo": CustomerMemo,
     }
 
     list_dict = {
@@ -41,17 +62,16 @@ class RefundReceipt(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionE
         self.DocNumber = ""
         self.TotalAmt = 0
         self.ApplyTaxAfterDiscount = False
-        self.PrintStatus = ""
+        self.PrintStatus = "NotSet"
         self.Balance = 0
         self.PaymentRefNum = ""
         self.TxnDate = ""
         self.ExchangeRate = 1
         self.PrivateNote = ""
-        self.CustomerMemo = ""
+
         self.PaymentRefNum = ""
         self.PaymentType = ""
-        self.CheckPayment = ""
-        self.CreditCardPayment = ""
+
         self.TxnSource = None
         self.GlobalTaxCalculation = "TaxExcluded"
 
@@ -65,6 +85,9 @@ class RefundReceipt(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionE
         self.ClassRef = None
         self.BillEmail = None
         self.PaymentMethodRef = None
+        self.CheckPayment = None
+        self.CreditCardPayment = None
+        self.CustomerMemo = None
 
         self.CustomField = []
         self.Line = []
