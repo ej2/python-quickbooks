@@ -12,7 +12,7 @@ These instructions were written for a Django application. Make sure to
 change it to whatever framework/method you’re using.
 You can find additional examples of usage in [Integration tests folder](https://github.com/ej2/python-quickbooks/tree/master/tests/integration).
 
-For information about contributing, see the [Contributing Page](https://github.com/ej2/python-quickbooks/wiki/Contributing).
+For information about contributing, see the [Contributing Page](https://github.com/ej2/python-quickbooks/blob/master/contributing.md).
 
 QuickBooks OAuth
 ------------------------------------------------

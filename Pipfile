@@ -14,6 +14,7 @@ six = ">=1.14.0"
 nose = "*"
 authclient = "*"
 coverage = "*"
+twine = "*"
 
 [requires]
 python_version = "3.8"
