@@ -104,3 +104,12 @@ class Invoice(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject, Q
             return True
 
         return False
+
+    def to_ref(self):
+        ref = Ref()
+
+        ref.name = self.DocNumber
+        ref.type = self.qbo_object_name
+        ref.value = self.Id
+
+        return ref
