@@ -171,14 +171,14 @@ Review results for batch operation:
 
     # successes is a list of objects that were successfully updated
     for obj in results.successes:
-       print "Updated " + obj.DisplayName
+       print("Updated " + obj.DisplayName)
 
     # faults contains list of failed operations and associated errors
     for fault in results.faults:
-       print "Operation failed on " + fault.original_object.DisplayName
+       print("Operation failed on " + fault.original_object.DisplayName)
 
        for error in fault.Error:
-           print "Error " + error.Message
+           print("Error " + error.Message)
 
 Change Data Capture
 -----------------------
