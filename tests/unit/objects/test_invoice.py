@@ -1,6 +1,7 @@
 import unittest
 
 from quickbooks import QuickBooks
+from quickbooks.objects import Ref
 from quickbooks.objects.invoice import Invoice, DeliveryInfo
 
 
