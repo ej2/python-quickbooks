@@ -145,9 +145,7 @@ Batch create a list of objects:
     customer2 = Customer()
     customer2.CompanyName = "Test Company 2"
 
-    customers = []
-    customers.append(customer1)
-    customers.append(customer2)
+    customers = [customer1, customer2]
 
     results = batch_create(customers, qb=client)
 
