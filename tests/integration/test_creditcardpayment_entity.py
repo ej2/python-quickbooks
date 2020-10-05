@@ -57,6 +57,6 @@ class CreditCardPaymentEntityTest(QuickbooksTestCase):
         credit_card_payment.Amount += 1
         credit_card_payment.save(qb=self.qb_client)
 
-        query_transfer = Transfer.get(credit_card_payment.Id, qb=self.qb_client)
+        query_credit_card_payment = CreditCardPayment.get(credit_card_payment.Id, qb=self.qb_client)
 
-        self.assertEquals(query_transfer.Amount, credit_card_payment.Amount)
+        self.assertEquals(query_credit_card_payment.Amount, credit_card_payment.Amount)
