@@ -59,7 +59,9 @@ class Invoice(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject, Q
         self.Balance = 0
         self.AllowIPNPayment = True
         self.AllowOnlineCreditCardPayment = False
+        self.AllowOnlineACHPayment = False
         self.DocNumber = None
+
         self.PrivateNote = ""
         self.DueDate = ""
         self.ShipDate = ""
@@ -70,6 +72,7 @@ class Invoice(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject, Q
         self.EmailStatus = "NotSet"
         self.ExchangeRate = 1
         self.GlobalTaxCalculation = "TaxExcluded"
+        self.InvoiceLink = ""
 
         self.EInvoiceStatus = None
 

@@ -20,6 +20,7 @@ class CreditCardPayment(DeleteMixin, QuickbooksManagedObject, QuickbooksTransact
     }
 
     qbo_object_name = "CreditCardPayment"
+    qbo_json_object_name = "CreditCardPaymentTxn"  # JSON object name doesn't match the endpoint name - Thanks Intuit!
 
     def __init__(self):
         super(CreditCardPayment, self).__init__()

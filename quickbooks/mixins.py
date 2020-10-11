@@ -93,6 +93,7 @@ class ToDictMixin(object):
 
 class ReadMixin(object):
     qbo_object_name = ""
+    qbo_json_object_name = ""
 
     @classmethod
     def get(cls, id, qb=None):
@@ -100,7 +101,11 @@ class ReadMixin(object):
             qb = QuickBooks()
 
         json_data = qb.get_single_object(cls.qbo_object_name, pk=id)
-        return cls.from_json(json_data[cls.qbo_object_name])
+
+        if cls.qbo_json_object_name != '':
+            return cls.from_json(json_data[cls.qbo_json_object_name])
+        else:
+            return cls.from_json(json_data[cls.qbo_object_name])
 
 
 class SendMixin(object):
@@ -141,6 +146,7 @@ class VoidMixin(object):
 
 class UpdateMixin(object):
     qbo_object_name = ""
+    qbo_json_object_name = ""
 
     def save(self, qb=None):
         if not qb:
@@ -151,9 +157,12 @@ class UpdateMixin(object):
         else:
             json_data = qb.create_object(self.qbo_object_name, self.to_json())
 
-        obj = type(self).from_json(json_data[self.qbo_object_name])
-        self.Id = obj.Id
+        if self.qbo_json_object_name != '':
+            obj = type(self).from_json(json_data[self.qbo_json_object_name])
+        else:
+            obj = type(self).from_json(json_data[self.qbo_object_name])
 
+        self.Id = obj.Id
         return obj
 
 
@@ -176,6 +185,7 @@ class DeleteMixin(object):
 
 class ListMixin(object):
     qbo_object_name = ""
+    qbo_json_object_name = ""
 
     @classmethod
     def all(cls, order_by="", start_position="", max_results=100, qb=None):
@@ -253,8 +263,13 @@ class ListMixin(object):
 
         obj_list = []
 
-        if cls.qbo_object_name in json_data["QueryResponse"]:
-            for item_json in json_data["QueryResponse"][cls.qbo_object_name]:
+        if cls.qbo_json_object_name != '':
+            object_name = cls.qbo_json_object_name
+        else:
+            object_name = cls.qbo_object_name
+
+        if object_name in json_data["QueryResponse"]:
+            for item_json in json_data["QueryResponse"][object_name]:
                 obj_list.append(cls.from_json(item_json))
 
         return obj_list

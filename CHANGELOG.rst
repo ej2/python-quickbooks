@@ -1,6 +1,11 @@
 Changelog
 =========
 
+* 0.8.4 (October 11, 2020)
+    * Added support for the CreditCardPayment entity
+    * Updated readme
+    * Added missing property InvoiceLink and AllowOnlineACHPayment to Invoice object
+
 * 0.8.3 (August 24, 2020)
     * Fixed issue with CompanyCurrency object
     * Added to_ref method to the Term object
