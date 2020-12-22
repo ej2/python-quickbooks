@@ -1,5 +1,5 @@
 from six import python_2_unicode_compatible
-from .base import QuickbooksBaseObject, QuickbooksTransactionEntity, QuickbooksUpdateOnlyObject, Ref
+from .base import QuickbooksBaseObject, QuickbooksTransactionEntity, QuickbooksUpdateOnlyObject  # CustomField, Ref
 
 
 class EmailMessageType(QuickbooksBaseObject):
@@ -69,12 +69,91 @@ class ClassTrackingPerTxnLine(QuickbooksBaseObject):
         self.CalcAgingReportFromTxnDate = False  # read only
 
 
-# class SalesFormsPrefs(QuickbooksBaseObject):  # FIXME
-# class VendorAndPurchasesPrefs(QuickbooksBaseObject):  # FIXME
-# class TaxPrefs(QuickbooksBaseObject):  # FIXME
-# class OtherPrefs(QuickbooksBaseObject):  # FIXME
-# class TimeTrackingPrefs(QuickbooksBaseObject):  # FIXME
-# class CurrencyPrefs(QuickbooksBaseObject):  # FIXME
+class SalesFormsPrefs(QuickbooksBaseObject):
+    class_dict = {
+        # 'DefaultTerms': Ref,  # FIXME: serialize field properly, not as JSON
+    }
+    list_dict = {
+        # 'CustomField': CustomField,  # FIXME: serialize field properly, not as JSON
+    }
+    detail_dict = {
+        # 'CustomField': CustomField,  # FIXME: serialize field properly, not as JSON
+    }
+
+    def __init__(self):
+        super().__init__()
+        self.ETransactionPaymentEnabled = False
+        self.CustomTxnNumbers = False
+        self.AllowShipping = False
+        self.AllowServiceDate = False
+        self.ETransactionEnabledStatus = ""  # e.g. "NotApplicable"
+        self.DefaultCustomerMessage = ""  # e.g. "Thank you for your business and have a great day!"
+        self.EmailCopyToCompany = False
+        self.AllowEstimates = True
+        self.DefaultTerms = None
+        self.AllowDiscount = True
+        self.DefaultDiscountAccount = ""
+        self.AllowDeposit = True
+        self.AutoApplyPayments = True
+        self.IPNSupportEnabled = False
+        self.AutoApplyCredit = True
+        self.CustomField = None
+        self.UsingPriceLevels = False
+        self.ETransactionAttachPDF = False
+
+
+class VendorAndPurchasesPrefs(QuickbooksBaseObject):
+    class_dict = {}
+    list_dict = {
+        # 'POCustomField': CustomField,  # FIXME: serialize field properly, not as JSON
+    }
+    detail_dict = {
+        # 'POCustomField': CustomField,  # FIXME: serialize field properly, not as JSON
+    }
+
+    def __init__(self):
+        super().__init__()
+        self.BillableExpenseTracking = True
+        self.TrackingByCustomer = True
+        self.POCustomField = None
+
+
+class TaxPrefs(QuickbooksBaseObject):
+    class_dict = {
+        # 'TaxGroupCodeRef': Ref,  # FIXME: serialize field properly, not as JSON
+    }
+
+    def __init__(self):
+        super().__init__()
+        self.TaxGroupCodeRef = None
+        self.UsingSalesTax = True
+
+
+class OtherPrefs(QuickbooksBaseObject):
+
+    def __init__(self):
+        super().__init__()
+
+
+class TimeTrackingPrefs(QuickbooksBaseObject):
+
+    def __init__(self):
+        super().__init__()
+        self.WorkWeekStartDate = ""  # e.g. "Monday"
+        self.MarkTimeEntriesBillable = True
+        self.ShowBillRateToAll = False
+        self.UseServices = True
+        self.BillCustomers = True
+
+
+class CurrencyPrefs(QuickbooksBaseObject):
+    class_dict = {
+        # 'HomeCurrency': Ref,  # FIXME: serialize field properly, not as JSON
+    }
+
+    def __init__(self):
+        super().__init__()
+        self.HomeCurrency = None
 
 
 @python_2_unicode_compatible
@@ -92,14 +171,12 @@ class Preferences(QuickbooksUpdateOnlyObject, QuickbooksTransactionEntity):
         'ProductAndServicesPrefs': ProductAndServicesPrefs,
         'ReportPrefs': ReportPrefs,
         'AccountingInfoPrefs': AccountingInfoPrefs,
-
-        # FIXME: add remaining fields to be serializable, otherwise they will remain as dicts
-        # 'SalesFormsPrefs': SalesFormsPrefs,
-        # 'VendorAndPurchasesPrefs': VendorAndPurchasesPrefs,
-        # 'TaxPrefs': TaxPrefs,
-        # 'OtherPrefs': OtherPrefs,
-        # 'TimeTrackingPrefs': TimeTrackingPrefs,
-        # 'CurrencyPrefs': CurrencyPrefs,
+        'SalesFormsPrefs': SalesFormsPrefs,
+        'VendorAndPurchasesPrefs': VendorAndPurchasesPrefs,
+        'TaxPrefs': TaxPrefs,
+        'OtherPrefs': OtherPrefs,
+        'TimeTrackingPrefs': TimeTrackingPrefs,
+        'CurrencyPrefs': CurrencyPrefs,
     }
 
     qbo_object_name = "Preferences"
