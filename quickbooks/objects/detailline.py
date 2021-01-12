@@ -100,17 +100,6 @@ class DescriptionLineDetail(QuickbooksBaseObject):
         self.TaxCodeRef = None
 
 
-class DescriptionLine(DetailLine):
-    class_dict = {
-        "DescriptionLineDetail": DescriptionLineDetail
-    }
-
-    def __init__(self):
-        super(DescriptionLine, self).__init__()
-        self.DetailType = "DescriptionOnly"
-        self.DescriptionLineDetail = None
-
-
 @python_2_unicode_compatible
 class SalesItemLineDetail(QuickbooksBaseObject):
     class_dict = {

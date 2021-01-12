@@ -1,6 +1,6 @@
 from six import python_2_unicode_compatible
 
-from quickbooks.objects.detailline import SalesItemLine, SubtotalLine, DiscountLine, DescriptionLine, DetailLine
+from quickbooks.objects.detailline import SalesItemLine, SubtotalLine, DiscountLine, DescriptionOnlyLine, DetailLine
 from .base import Address, EmailAddress, Ref, CustomField, CustomerMemo, QuickbooksManagedObject, \
     LinkedTxnMixin, QuickbooksTransactionEntity
 from .tax import TxnTaxDetail
@@ -38,7 +38,7 @@ class CreditMemo(DeleteMixin, QuickbooksTransactionEntity, QuickbooksManagedObje
         "SalesItemLineDetail": SalesItemLine,
         "SubTotalLineDetail": SubtotalLine,
         "DiscountLineDetail": DiscountLine,
-        "DescriptionLineDetail": DescriptionLine
+        "DescriptionLineDetail": DescriptionOnlyLine
     }
 
     qbo_object_name = "CreditMemo"

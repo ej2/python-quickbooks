@@ -253,9 +253,12 @@ class QuickBooks(object):
         url = "{0}/company/{1}/{2}/{3}/".format(self.api_url, self.company_id, qbbo.lower(), pk)
         result = self.get(url, {})
 
-        return result
-
-    def handle_exceptions(self, results):
+    @staticmethod
+    def handle_exceptions(results):
+        """
+        Error codes with description in documentation:
+        https://developer.intuit.com/app/developer/qbo/docs/develop/troubleshooting/error-codes#id1
+        """
         # Needs to handle multiple errors
         for error in results["Error"]:
 
@@ -269,17 +272,17 @@ class QuickBooks(object):
             if "code" in error:
                 code = int(error["code"])
 
-            if code > 0 and code <= 499:
+            if 0 < code <= 499:
                 raise exceptions.AuthorizationException(message, code, detail)
-            elif code >= 500 and code <= 599:
+            elif 500 <= code <= 599:
                 raise exceptions.UnsupportedException(message, code, detail)
-            elif code >= 600 and code <= 1999:
+            elif 600 <= code <= 1999:
                 if code == 610:
                     raise exceptions.ObjectNotFoundException(message, code, detail)
                 raise exceptions.GeneralException(message, code, detail)
-            elif code >= 2000 and code <= 4999:
+            elif 2000 <= code <= 4999:
                 raise exceptions.ValidationException(message, code, detail)
-            elif code >= 10000:
+            elif 10000 <= code:
                 raise exceptions.SevereException(message, code, detail)
             else:
                 raise exceptions.QuickbooksException(message, code, detail)
