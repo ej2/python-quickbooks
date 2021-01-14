@@ -253,6 +253,8 @@ class QuickBooks(object):
         url = "{0}/company/{1}/{2}/{3}/".format(self.api_url, self.company_id, qbbo.lower(), pk)
         result = self.get(url, {})
 
+        return result
+
     @staticmethod
     def handle_exceptions(results):
         """
