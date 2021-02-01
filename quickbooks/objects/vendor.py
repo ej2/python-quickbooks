@@ -49,6 +49,7 @@ class Vendor(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.Active = True
         self.TaxIdentifier = ""
         self.Balance = 0
+        self.BillRate = 0
         self.AcctNum = ""
         self.Vendor1099 = True
         self.TaxReportingBasis = ""
