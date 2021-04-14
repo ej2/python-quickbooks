@@ -77,7 +77,8 @@ class QuickBooks(object):
             else:
                 instance.sandbox = False
 
-            instance._start_session()
+            refresh_token = instance._start_session()
+            instance.refresh_token = refresh_token
 
         if 'company_id' in kwargs:
             instance.company_id = kwargs['company_id']
@@ -99,6 +100,7 @@ class QuickBooks(object):
             client_secret=self.auth_client.client_secret,
             access_token=self.auth_client.access_token,
         )
+        return self.auth_client.refresh_token
 
     @classmethod
     def get_instance(cls):
