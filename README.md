@@ -257,7 +257,7 @@ QuickBooks.disable_global()
 
 Working with JSON data
 ----------------
-All objects include `to_json` and `from_json` methods.
+All objects include `to_json` and `from_json` methods. JSON stands for JavaScript Object Notation
 
 Converting an object to JSON data:
 ```python
