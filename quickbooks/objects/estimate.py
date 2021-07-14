@@ -2,7 +2,7 @@ from six import python_2_unicode_compatible
 from .base import CustomField, Ref, CustomerMemo, Address, EmailAddress, QuickbooksManagedObject, \
     LinkedTxnMixin, QuickbooksTransactionEntity, LinkedTxn
 from .tax import TxnTaxDetail
-from .detailline import DetailLine, SalesItemLine, GroupLine, DescriptionLine, DiscountLine, SubtotalLine
+from .detailline import DetailLine, SalesItemLine, GroupLine, DescriptionOnlyLine, DiscountLine, SubtotalLine
 from ..mixins import QuickbooksPdfDownloadable, DeleteMixin, SendMixin
 
 
@@ -41,7 +41,7 @@ class Estimate(DeleteMixin,
     detail_dict = {
         "SalesItemLineDetail": SalesItemLine,
         "GroupLineDetail": GroupLine,
-        "DescriptionOnly": DescriptionLine,
+        "DescriptionOnly": DescriptionOnlyLine,
         "DiscountLineDetail": DiscountLine,
         "SubTotalLineDetail": SubtotalLine,
     }

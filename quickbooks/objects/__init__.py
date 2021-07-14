@@ -21,9 +21,9 @@ from .deposit import (
 )
 from .detailline import (
     DetailLine, DiscountOverride, DiscountLineDetail, DiscountLine,
-    SubtotalLineDetail, SubtotalLine, DescriptionLineDetail, DescriptionLine,
+    SubtotalLineDetail, SubtotalLine, DescriptionLineDetail, DescriptionOnlyLine,
     SalesItemLineDetail, SalesItemLine, GroupLineDetail, GroupLine,
-    DescriptionOnlyLine, AccountBasedExpenseLineDetail, AccountBasedExpenseLine,
+    AccountBasedExpenseLineDetail, AccountBasedExpenseLine,
     TDSLineDetail, TDSLine, ItemBasedExpenseLineDetail, ItemBasedExpenseLine,
 
 )

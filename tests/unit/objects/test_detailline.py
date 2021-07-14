@@ -1,7 +1,7 @@
 import unittest
 
 from quickbooks.objects.detailline import SalesItemLineDetail, DiscountOverride, DetailLine, SubtotalLineDetail, \
-    DiscountLineDetail, SubtotalLine, DescriptionLineDetail, DescriptionLine, SalesItemLine, DiscountLine, GroupLine, \
+    DiscountLineDetail, SubtotalLine, DescriptionLineDetail, SalesItemLine, DiscountLine, GroupLine, \
     AccountBasedExpenseLineDetail, ItemBasedExpenseLineDetail, DescriptionOnlyLine, ItemBasedExpenseLine
 
 
@@ -62,14 +62,6 @@ class DescriptionLineDetailTest(unittest.TestCase):
 
         self.assertEquals(description_detail.ServiceDate, "")
         self.assertEquals(description_detail.TaxCodeRef, None)
-
-
-class DescriptionLineTest(unittest.TestCase):
-    def test_init(self):
-        line = DescriptionLine()
-
-        self.assertEquals(line.DetailType, "DescriptionOnly")
-        self.assertEquals(line.DescriptionLineDetail, None)
 
 
 class SalesItemLineTest(unittest.TestCase):
