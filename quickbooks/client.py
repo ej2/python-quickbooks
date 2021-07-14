@@ -46,7 +46,7 @@ class QuickBooks(object):
         "Account", "Attachable", "Bill", "BillPayment",
         "Class", "CreditMemo", "Customer", "CompanyCurrency",
         "Department", "Deposit", "Employee", "Estimate", "Invoice",
-        "Item", "JournalEntry", "Payment", "PaymentMethod",
+        "Item", "JournalEntry", "Payment", "PaymentMethod", "Preferences",
         "Purchase", "PurchaseOrder", "RefundReceipt",
         "SalesReceipt", "TaxAgency", "TaxCode", "TaxService/Taxcode", "TaxRate", "Term",
         "TimeActivity", "Transfer", "Vendor", "VendorCredit", "CreditCardPayment",

@@ -144,6 +144,28 @@ class VoidMixin(object):
         return results
 
 
+class UpdateNoCreateMixin(object):
+    qbo_object_name = ""
+    qbo_json_object_name = ""
+
+    def save(self, qb=None):
+        if not qb:
+            qb = QuickBooks()
+
+        if self.Id and int(self.Id) > 0:
+            json_data = qb.update_object(self.qbo_object_name, self.to_json())
+        else:
+            raise QuickbooksException("Update is not allowed for {0} unsaved object".format(self.qbo_object_name))
+
+        if self.qbo_json_object_name != '':
+            obj = type(self).from_json(json_data[self.qbo_json_object_name])
+        else:
+            obj = type(self).from_json(json_data[self.qbo_object_name])
+
+        self.Id = obj.Id
+        return obj
+
+
 class UpdateMixin(object):
     qbo_object_name = ""
     qbo_json_object_name = ""
