@@ -6,6 +6,7 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+bleach = ">=3.3.0"
 intuit-oauth = "==1.2.3"
 rauth = ">=0.7.1"
 requests = ">=2.19.1"
