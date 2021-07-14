@@ -48,6 +48,7 @@ class Customer(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.PrintOnCheckName = ""
         self.Notes = ""
         self.Active = True
+        self.IsProject = False
         self.Job = False
         self.BillWithParent = False
         self.Taxable = True
