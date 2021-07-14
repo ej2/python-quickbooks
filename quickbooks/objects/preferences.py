@@ -1,5 +1,26 @@
 from six import python_2_unicode_compatible
-from .base import QuickbooksBaseObject, QuickbooksTransactionEntity, QuickbooksUpdateOnlyObject  # CustomField, Ref
+from .base import QuickbooksBaseObject, QuickbooksTransactionEntity, QuickbooksUpdateOnlyObject, Ref
+
+
+@python_2_unicode_compatible
+class PreferencesCustomField(QuickbooksBaseObject):
+    def __init__(self):
+        self.Type = ""
+        self.Name = ""
+        self.StringValue = ""
+        self.BooleanValue = ""
+
+    def __str__(self):
+        return self.Name
+
+
+class PreferencesCustomFieldGroup(QuickbooksBaseObject):
+    list_dict = {
+        "CustomField": PreferencesCustomField
+    }
+
+    def __init__(self):
+        super().__init__()
 
 
 class EmailMessageType(QuickbooksBaseObject):
@@ -44,7 +65,6 @@ class ReportPrefs(QuickbooksBaseObject):
 
 
 class AccountingInfoPrefs(QuickbooksBaseObject):
-
     def __init__(self):
         super().__init__()
         self.FirstMonthOfFiscalYear = "January"  # read only
@@ -62,7 +82,6 @@ class AccountingInfoPrefs(QuickbooksBaseObject):
 
 
 class ClassTrackingPerTxnLine(QuickbooksBaseObject):
-
     def __init__(self):
         super().__init__()
         self.ReportBasis = "Accrual"  # or "Cash"
@@ -71,13 +90,10 @@ class ClassTrackingPerTxnLine(QuickbooksBaseObject):
 
 class SalesFormsPrefs(QuickbooksBaseObject):
     class_dict = {
-        # 'DefaultTerms': Ref,  # FIXME: serialize field properly, not as JSON
-    }
-    list_dict = {
-        # 'CustomField': CustomField,  # FIXME: serialize field properly, not as JSON
+        "DefaultTerms": Ref,
     }
     detail_dict = {
-        # 'CustomField': CustomField,  # FIXME: serialize field properly, not as JSON
+        "CustomField": PreferencesCustomFieldGroup
     }
 
     def __init__(self):
@@ -101,14 +117,13 @@ class SalesFormsPrefs(QuickbooksBaseObject):
         self.UsingPriceLevels = False
         self.ETransactionAttachPDF = False
 
+        self.DefaultTerms = None
+        self.CustomField = None
+
 
 class VendorAndPurchasesPrefs(QuickbooksBaseObject):
-    class_dict = {}
-    list_dict = {
-        # 'POCustomField': CustomField,  # FIXME: serialize field properly, not as JSON
-    }
     detail_dict = {
-        # 'POCustomField': CustomField,  # FIXME: serialize field properly, not as JSON
+        "POCustomField": PreferencesCustomFieldGroup
     }
 
     def __init__(self):
@@ -120,7 +135,7 @@ class VendorAndPurchasesPrefs(QuickbooksBaseObject):
 
 class TaxPrefs(QuickbooksBaseObject):
     class_dict = {
-        # 'TaxGroupCodeRef': Ref,  # FIXME: serialize field properly, not as JSON
+        "TaxGroupCodeRef": Ref
     }
 
     def __init__(self):
@@ -130,13 +145,16 @@ class TaxPrefs(QuickbooksBaseObject):
 
 
 class OtherPrefs(QuickbooksBaseObject):
+    list_dict = {
+        "NameValue": Ref
+    }
 
     def __init__(self):
         super().__init__()
+        self.NameValue = None
 
 
 class TimeTrackingPrefs(QuickbooksBaseObject):
-
     def __init__(self):
         super().__init__()
         self.WorkWeekStartDate = ""  # e.g. "Monday"
@@ -148,7 +166,7 @@ class TimeTrackingPrefs(QuickbooksBaseObject):
 
 class CurrencyPrefs(QuickbooksBaseObject):
     class_dict = {
-        # 'HomeCurrency': Ref,  # FIXME: serialize field properly, not as JSON
+        "HomeCurrency": Ref
     }
 
     def __init__(self):
