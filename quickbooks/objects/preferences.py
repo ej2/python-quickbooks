@@ -1,6 +1,6 @@
 from six import python_2_unicode_compatible
 
-from quickbooks.mixins import PrefMixin
+from quickbooks.mixins import PrefMixin, UpdateNoIdMixin
 from .base import QuickbooksBaseObject, QuickbooksTransactionEntity, Ref
 
 
@@ -184,7 +184,7 @@ class CurrencyPrefs(QuickbooksBaseObject):
 
 
 @python_2_unicode_compatible
-class Preferences(PrefMixin, QuickbooksTransactionEntity):
+class Preferences(PrefMixin, UpdateNoIdMixin, QuickbooksTransactionEntity):
     """
     QBO definition: The Preferences resource represents a set of company preferences that
     control application behavior in QuickBooks Online.

@@ -13,7 +13,6 @@ class PreferencesTest(QuickbooksTestCase):
     def test_get(self):
         preferences = Preferences.get(qb=self.qb_client)
 
-        print(preferences.to_json())
         self.assertEquals(preferences.Id, "1")
         self.assertEquals(preferences.AccountingInfoPrefs.TaxYearMonth, "January")
         self.assertEquals(preferences.ProductAndServicesPrefs.ForPurchase, True)

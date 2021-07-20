@@ -1,7 +1,7 @@
 Changelog
 =========
 
-* 0.9.0 (February 2, 2021)
+* 0.9.0 (July 20, 2021)
     * Added missing TxnDate to Invoice
     * Updated requirements
     * Added BillRate to Vendor
@@ -9,6 +9,8 @@ Changelog
     * Added Refresh Token to Client Instance
     * Updated Estimate and CreditMemo to use DescriptionOnlyLine
     * Removed unused DescriptionLine object
+    * Added support for Preferences entity
+    * Added support for ExchangeRate entity
 
 * 0.8.4 (October 11, 2020)
     * Added support for the CreditCardPayment entity
