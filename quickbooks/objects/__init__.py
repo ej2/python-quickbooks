@@ -36,6 +36,12 @@ from .journalentry import (
 )
 from .payment import PaymentLine, Payment
 from .paymentmethod import PaymentMethod
+from .preferences import (
+    AccountingInfoPrefs, ClassTrackingPerTxnLine, CurrencyPrefs,
+    EmailMessageType, EmailMessagesPrefs, OtherPrefs, Preferences,
+    ProductAndServicesPrefs, ReportPrefs, SalesFormsPrefs,
+    VendorAndPurchasesPrefs, TaxPrefs, TimeTrackingPrefs,
+)
 from .purchase import Purchase
 from .purchaseorder import PurchaseOrder
 from .refundreceipt import RefundReceipt

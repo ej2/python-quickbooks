@@ -1,5 +1,5 @@
 from six import python_2_unicode_compatible
-from ..mixins import ToJsonMixin, FromJsonMixin, ReadMixin, ListMixin, UpdateMixin, ToDictMixin
+from ..mixins import ToDictMixin, ToJsonMixin, FromJsonMixin, ListMixin, ReadMixin, UpdateMixin
 
 
 class QuickbooksBaseObject(ToJsonMixin, FromJsonMixin, ToDictMixin):

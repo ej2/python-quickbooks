@@ -166,6 +166,19 @@ class UpdateMixin(object):
         return obj
 
 
+class UpdateNoIdMixin(object):
+    qbo_object_name = ""
+    qbo_json_object_name = ""
+
+    def save(self, qb=None):
+        if not qb:
+            qb = QuickBooks()
+
+        json_data = qb.update_object(self.qbo_object_name, self.to_json())
+        obj = type(self).from_json(json_data[self.qbo_object_name])
+        return obj
+
+
 class DeleteMixin(object):
     qbo_object_name = ""
 
@@ -341,3 +354,17 @@ class ObjectListMixin(object):
 
     def pop(self, *args, **kwargs):
         return self._object_list.pop(*args, **kwargs)
+
+
+class PrefMixin(object):
+    qbo_object_name = ""
+    qbo_json_object_name = ""
+
+    @classmethod
+    def get(cls, qb=None):
+        if not qb:
+            qb = QuickBooks()
+
+        end_point = "{0}/company/{1}/preferences".format(qb.api_url, qb.company_id)
+        json_data = qb.get(end_point, {})
+        return cls.from_json(json_data[cls.qbo_object_name])
