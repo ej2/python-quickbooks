@@ -1,5 +1,7 @@
 from six import python_2_unicode_compatible
-from .base import QuickbooksBaseObject, QuickbooksTransactionEntity, QuickbooksUpdateOnlyObject, Ref
+
+from quickbooks.mixins import PrefMixin
+from .base import QuickbooksBaseObject, QuickbooksTransactionEntity, Ref
 
 
 @python_2_unicode_compatible
@@ -144,9 +146,16 @@ class TaxPrefs(QuickbooksBaseObject):
         self.UsingSalesTax = True
 
 
+class NameValue(QuickbooksBaseObject):
+    def __init__(self):
+        super().__init__()
+        self.Name = ""
+        self.Value = ""
+
+
 class OtherPrefs(QuickbooksBaseObject):
     list_dict = {
-        "NameValue": Ref
+        "NameValue": NameValue
     }
 
     def __init__(self):
@@ -175,7 +184,7 @@ class CurrencyPrefs(QuickbooksBaseObject):
 
 
 @python_2_unicode_compatible
-class Preferences(QuickbooksUpdateOnlyObject, QuickbooksTransactionEntity):
+class Preferences(PrefMixin, QuickbooksTransactionEntity):
     """
     QBO definition: The Preferences resource represents a set of company preferences that
     control application behavior in QuickBooks Online.

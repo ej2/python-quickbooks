@@ -1,5 +1,5 @@
 from six import python_2_unicode_compatible
-from ..mixins import ToDictMixin, ToJsonMixin, FromJsonMixin, ListMixin, ReadMixin, UpdateMixin, UpdateNoCreateMixin
+from ..mixins import ToDictMixin, ToJsonMixin, FromJsonMixin, ListMixin, ReadMixin, UpdateMixin
 
 
 class QuickbooksBaseObject(ToJsonMixin, FromJsonMixin, ToDictMixin):
@@ -21,10 +21,6 @@ class QuickbooksManagedObject(QuickbooksBaseObject, ReadMixin, ListMixin, Update
 
 
 class QuickbooksReadOnlyObject(QuickbooksBaseObject, ReadMixin, ListMixin):
-    pass
-
-
-class QuickbooksUpdateOnlyObject(QuickbooksBaseObject, ReadMixin, ListMixin, UpdateNoCreateMixin):
     pass
 
 
