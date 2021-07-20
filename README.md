@@ -31,6 +31,7 @@ Set up an AuthClient passing in your `CLIENT_ID` and `CLIENT_SECRET`.
     auth_client = AuthClient(
             client_id='CLIENT_ID',
             client_secret='CLIENT_SECRET',
+            access_token='ACCESS_TOKEN',  # If you do not pass this in, the Quickbooks client will call refresh and get a new access token. 
             environment='sandbox',
             redirect_uri='http://localhost:8000/callback',
         )
