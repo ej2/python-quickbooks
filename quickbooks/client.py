@@ -1,3 +1,5 @@
+import warnings
+
 try:  # Python 3
     import http.client as httplib
     from urllib.parse import parse_qsl
@@ -111,6 +113,7 @@ class QuickBooks(object):
         """
         Disable use of singleton pattern.
         """
+        warnings.warn("disable_global deprecated", PendingDeprecationWarning)
         QuickBooks.__use_global = False
         QuickBooks.__instance = None
 
@@ -119,6 +122,7 @@ class QuickBooks(object):
         """
         Allow use of singleton pattern.
         """
+        warnings.warn("enable_global deprecated", PendingDeprecationWarning)
         QuickBooks.__use_global = True
 
     def _drop(self):

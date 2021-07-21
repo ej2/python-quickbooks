@@ -241,11 +241,11 @@ Void an invoice:
     invoice.Id = 7
     invoice.void(qb=client)
 
-If your consumer_key never changes you can enable the client to stay running:
+If your company_id never changes you can enable the client to stay running (deprecation warning: will be removed in next release):
 
     QuickBooks.enable_global()
 
-You can disable the global client like so:
+You can disable the global client like so (deprecation warning: will be removed in next release):
 
     QuickBooks.disable_global()
 

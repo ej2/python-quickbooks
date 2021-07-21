@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* 0.9.1 (July ??, 2021)
+    * Added response status code when raising unauthorized exceptions
+    * Added pending deprecation warnings to enable_global and disable_global
+
 * 0.9.0 (July 20, 2021)
     * Added missing TxnDate to Invoice
     * Updated requirements
