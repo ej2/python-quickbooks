@@ -164,12 +164,15 @@ class QuickBooks(object):
         return result
 
     def make_request(self, request_type, url, request_body=None, content_type='application/json',
-                     params=None, file_path=None):
+                     params=None, file_path=None, request_id=None):
         if not params:
             params = {}
 
         if self.minorversion:
             params['minorversion'] = self.minorversion
+        
+        if request_id:
+            params['requestid'] = request_id
 
         if not request_body:
             request_body = {}
@@ -291,11 +294,11 @@ class QuickBooks(object):
             else:
                 raise exceptions.QuickbooksException(message, code, detail)
 
-    def create_object(self, qbbo, request_body, _file_path=None):
+    def create_object(self, qbbo, request_body, _file_path=None, request_id=None):
         self.isvalid_object_name(qbbo)
 
         url = "{0}/company/{1}/{2}".format(self.api_url, self.company_id, qbbo.lower())
-        results = self.post(url, request_body, file_path=_file_path)
+        results = self.post(url, request_body, file_path=_file_path, request_id=request_id)
 
         return results
 
@@ -311,15 +314,15 @@ class QuickBooks(object):
 
         return True
 
-    def update_object(self, qbbo, request_body, _file_path=None):
+    def update_object(self, qbbo, request_body, _file_path=None, request_id=None):
         url = "{0}/company/{1}/{2}".format(self.api_url, self.company_id,  qbbo.lower())
-        result = self.post(url, request_body, file_path=_file_path)
+        result = self.post(url, request_body, file_path=_file_path, request_id=request_id)
 
         return result
 
-    def delete_object(self, qbbo, request_body, _file_path=None):
+    def delete_object(self, qbbo, request_body, _file_path=None, request_id=None):
         url = "{0}/company/{1}/{2}".format(self.api_url, self.company_id, qbbo.lower())
-        result = self.post(url, request_body, params={'operation': 'delete'}, file_path=_file_path)
+        result = self.post(url, request_body, params={'operation': 'delete'}, file_path=_file_path, request_id=request_id)
 
         return result
 
