@@ -227,7 +227,7 @@ class UpdateMixinTest(QuickbooksUnitTestCase):
     def test_save_create(self, create_object):
         department = Department()
         department.save(qb=self.qb_client)
-        create_object.assert_called_once_with("Department", department.to_json())
+        create_object.assert_called_once_with("Department", department.to_json(), request_id=None)
 
     def test_save_create_with_qb(self):
         with patch.object(self.qb_client, 'create_object') as create_object:
@@ -242,7 +242,7 @@ class UpdateMixinTest(QuickbooksUnitTestCase):
         json = department.to_json()
 
         department.save(qb=self.qb_client)
-        update_object.assert_called_once_with("Department", json)
+        update_object.assert_called_once_with("Department", json, request_id=None)
 
     def test_save_update_with_qb(self):
         with patch.object(self.qb_client, 'update_object') as update_object:
