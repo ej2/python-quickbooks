@@ -183,6 +183,7 @@ class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
         self.CustomerRef = None
         self.AccountRef = None
         self.TaxCodeRef = None
+        self.ClassRef = None
 
     def __str__(self):
         return self.BillableStatus
