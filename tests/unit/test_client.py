@@ -117,6 +117,15 @@ class ClientTest(QuickbooksUnitTestCase):
 
         self.assertTrue(post.called)
 
+    @patch('quickbooks.client.QuickBooks.make_request')
+    def test_update_object_with_request_id(self, make_req):
+        qb_client = client.QuickBooks()
+        qb_client.company_id = "1234"
+        qb_client.update_object("Customer", "request_body", request_id="123")
+
+        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/customer"
+        make_req.assert_called_with("POST", url, "request_body", file_path = None, request_id="123")
+
     @patch('quickbooks.client.QuickBooks.get')
     def test_get_current_user(self, get):
         qb_client = client.QuickBooks()
@@ -162,6 +171,7 @@ class ClientTest(QuickbooksUnitTestCase):
         process_request.assert_called_with(
                 "GET", url, data={},
                 headers={'Content-Type': 'application/json', 'Accept': 'application/json', 'User-Agent': 'python-quickbooks V3 library'}, params={})
+
 
     def test_handle_exceptions(self):
         qb_client = client.QuickBooks()
