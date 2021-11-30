@@ -14,7 +14,6 @@ requests = ">=2.26.0"
 simplejson = ">=3.17.0"
 six = ">=1.14.0"
 nose = "*"
-authclient = "*"
 coverage = "*"
 twine = "*"
 

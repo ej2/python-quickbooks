@@ -7,7 +7,6 @@ from tests.integration.test_base import QuickbooksTestCase
 import uuid
 
 class InvoiceTest(QuickbooksTestCase):
-
     def create_invoice(self, customer, request_id=None):
         invoice = Invoice()
 
@@ -27,6 +26,24 @@ class InvoiceTest(QuickbooksTestCase):
         invoice.CustomerMemo.value = "Customer Memo"
         invoice.save(qb=self.qb_client, request_id=request_id)
         return invoice
+      
+    def test_query_by_customer_ref(self):
+        customer = Customer.all(max_results=1, qb=self.qb_client)[0]
+        invoice = Invoice.query(
+            "select * from Invoice where CustomerRef = '{0}'".format(customer.Id), qb=self.qb_client)
+
+        print(invoice[0].Line[0].LineNum)
+        print(invoice[0].Line[0].Amount)
+        self.assertEquals(invoice[0].CustomerRef.name, customer.DisplayName)
+
+    def test_where(self):
+        customer = Customer.all(max_results=1, qb=self.qb_client)[0]
+
+        invoice = Invoice.where(
+            "CustomerRef = '{0}'".format(customer.Id), qb=self.qb_client)
+
+        print(invoice[0])
+        self.assertEquals(invoice[0].CustomerRef.name, customer.DisplayName)
 
     def test_create(self):
         customer = Customer.all(max_results=1, qb=self.qb_client)[0]
