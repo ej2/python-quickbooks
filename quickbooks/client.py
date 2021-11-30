@@ -37,6 +37,7 @@ class QuickBooks(object):
     sandbox = False
     minorversion = None
     verifier_token = None
+    invoice_link = False
 
     sandbox_api_url_v3 = "https://sandbox-quickbooks.api.intuit.com/v3"
     api_url_v3 = "https://quickbooks.api.intuit.com/v3"
@@ -85,6 +86,8 @@ class QuickBooks(object):
 
         if 'minorversion' in kwargs:
             instance.minorversion = kwargs['minorversion']
+
+        instance.invoice_link = kwargs.get('invoice_link', False)
 
         if 'verifier_token' in kwargs:
             instance.verifier_token = kwargs.get('verifier_token')
@@ -170,6 +173,9 @@ class QuickBooks(object):
 
         if self.minorversion:
             params['minorversion'] = self.minorversion
+
+        if self.invoice_link:
+            params['include'] = 'invoiceLink'
 
         if not request_body:
             request_body = {}
