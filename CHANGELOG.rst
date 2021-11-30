@@ -1,9 +1,13 @@
 Changelog
 =========
 
-* 0.9.1 (July ??, 2021)
+* 0.9.1 (November 30, 2021)
     * Added response status code when raising unauthorized exceptions
     * Added pending deprecation warnings to enable_global and disable_global
+    * Added more detailed messages in raised exceptions
+    * Added void method to Payment object
+    * Added option for invoice link
+    * Added support for idempotent behavior using Request ID parameter
 
 * 0.9.0 (July 20, 2021)
     * Added missing TxnDate to Invoice
