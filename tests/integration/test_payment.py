@@ -37,3 +37,24 @@ class PaymentTest(QuickbooksTestCase):
         self.assertEqual(query_payment.CustomerRef.name, customer.DisplayName)
         self.assertEqual(query_payment.TotalAmt, 140.0)
         self.assertEqual(query_payment.PaymentMethodRef.value, payment_method.Id)
+
+    def test_void(self):
+        payment = Payment()
+        payment.TotalAmt = 100.0
+
+        customer = Customer.all(max_results=1, qb=self.qb_client)[0]
+        payment.CustomerRef = customer.to_ref()
+
+        payment_method = PaymentMethod.all(max_results=1, qb=self.qb_client)[0]
+
+        payment.PaymentMethodRef = payment_method.to_ref()
+        payment.save(qb=self.qb_client)
+
+        query_payment = Payment.get(payment.Id, qb=self.qb_client)
+        self.assertEqual(query_payment.TotalAmt, 100.0)
+
+        payment.void(qb=self.qb_client)
+        query_payment = Payment.get(payment.Id, qb=self.qb_client)
+
+        self.assertEqual(query_payment.TotalAmt, 0.0)
+        self.assertIn('Voided', query_payment.PrivateNote)
