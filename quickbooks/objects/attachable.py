@@ -29,6 +29,7 @@ class Attachable(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEnti
         self.AttachableRef = []
         self.FileName = None
         self._FilePath = ''
+        self._FileData = None
         self.Note = ""
         self.FileAccessUri = None
         self.TempDownloadUri = None
@@ -56,9 +57,9 @@ class Attachable(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEnti
             qb = QuickBooks()
 
         if self.Id and int(self.Id) > 0:
-            json_data = qb.update_object(self.qbo_object_name, self.to_json(), _file_path=self._FilePath)
+            json_data = qb.update_object(self.qbo_object_name, self.to_json(), _file_path=self._FilePath, _file_data=self._FileData)
         else:
-            json_data = qb.create_object(self.qbo_object_name, self.to_json(), _file_path=self._FilePath)
+            json_data = qb.create_object(self.qbo_object_name, self.to_json(), _file_path=self._FilePath, _file_data=self._FileData)
 
         if self.FileName:
             obj = type(self).from_json(json_data['AttachableResponse'][0]['Attachable'])

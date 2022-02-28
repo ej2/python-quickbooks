@@ -171,7 +171,7 @@ class QuickBooks(object):
         return result
 
     def make_request(self, request_type, url, request_body=None, content_type='application/json',
-                     params=None, file_path=None, request_id=None):
+                     params=None, file_path=None, request_id=None, file_data=None):
         if not params:
             params = {}
 
@@ -193,8 +193,10 @@ class QuickBooks(object):
             'User-Agent': 'python-quickbooks V3 library'
         }
 
-        if file_path:
-            attachment = open(file_path, 'rb')
+
+
+        if file_path or file_data:
+            attachment = open(file_path, 'rb') if not file_data else file_data
             url = url.replace('attachable', 'upload')
             boundary = '-------------PythonMultipartPost'
             headers.update({
@@ -325,15 +327,15 @@ class QuickBooks(object):
 
         return True
 
-    def update_object(self, qbbo, request_body, _file_path=None, request_id=None):
+    def update_object(self, qbbo, request_body, _file_path=None, request_id=None, _file_data=None):
         url = "{0}/company/{1}/{2}".format(self.api_url, self.company_id,  qbbo.lower())
-        result = self.post(url, request_body, file_path=_file_path, request_id=request_id)
+        result = self.post(url, request_body, file_path=_file_path, request_id=request_id, file_data=_file_data)
 
         return result
 
-    def delete_object(self, qbbo, request_body, _file_path=None, request_id=None):
+    def delete_object(self, qbbo, request_body, _file_path=None, request_id=None, _file_data=None):
         url = "{0}/company/{1}/{2}".format(self.api_url, self.company_id, qbbo.lower())
-        result = self.post(url, request_body, params={'operation': 'delete'}, file_path=_file_path, request_id=request_id)
+        result = self.post(url, request_body, params={'operation': 'delete'}, file_path=_file_path, request_id=request_id, file_data=_file_data)
 
         return result
 
