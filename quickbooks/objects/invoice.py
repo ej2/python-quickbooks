@@ -1,6 +1,6 @@
 from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, CustomField, Address, EmailAddress, CustomerMemo, QuickbooksManagedObject, \
-    QuickbooksTransactionEntity, LinkedTxn, LinkedTxnMixin
+    QuickbooksTransactionEntity, LinkedTxn, LinkedTxnMixin, MetaData
 from .tax import TxnTaxDetail
 from .detailline import DetailLine, SalesItemLine, SubtotalLine, DiscountLine, GroupLine, DescriptionOnlyLine
 from ..mixins import QuickbooksPdfDownloadable, DeleteMixin, SendMixin, VoidMixin
@@ -33,8 +33,13 @@ class Invoice(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject, Q
         "ShipAddr": Address,
         "TxnTaxDetail": TxnTaxDetail,
         "BillEmail": EmailAddress,
+        "BillEmailCc": EmailAddress,
+        "BillEmailBcc": EmailAddress,
         "CustomerMemo": CustomerMemo,
-        "DeliveryInfo": DeliveryInfo
+        "DeliveryInfo": DeliveryInfo,
+        "RecurDataRef": Ref,
+        "TaxExemptionRef": Ref,
+        "MetaData": MetaData
     }
 
     list_dict = {
@@ -74,18 +79,26 @@ class Invoice(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject, Q
         self.ExchangeRate = 1
         self.GlobalTaxCalculation = "TaxExcluded"
         self.InvoiceLink = ""
+        self.HomeBalance = 0
+        self.HomeTotalAmt = 0
+        self.FreeFormAddress = False
 
         self.EInvoiceStatus = None
 
         self.BillAddr = None
         self.ShipAddr = None
         self.BillEmail = None
+        self.BillEmailCc = None
+        self.BillEmailBcc = None
         self.CustomerRef = None
         self.CurrencyRef = None
         self.CustomerMemo = None
         self.DepartmentRef = None
         self.TxnTaxDetail = None
         self.DeliveryInfo = None
+        self.RecurDataRef = None
+        self.TaxExemptionRef = None
+        self.MetaData = None
 
         self.CustomField = []
         self.Line = []

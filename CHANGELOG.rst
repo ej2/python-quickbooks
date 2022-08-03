@@ -4,6 +4,7 @@ Changelog
 * 0.9.2 (August ??, 2022)
     * Removed pycparser dependency
     * Added new fields to CreditCardPayment object
+    * Added new fields to Invoice object
 
 * 0.9.1 (November 30, 2021)
     * Added response status code when raising unauthorized exceptions
