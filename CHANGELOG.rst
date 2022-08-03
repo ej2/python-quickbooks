@@ -1,6 +1,18 @@
 Changelog
 =========
 
+* 0.9.2 (August ??, 2022)
+    * Removed pycparser dependency
+    * Added new fields to CreditCardPayment object
+    * Added new fields to Invoice object
+    * Added new fields to Payment object
+    * Added to_linked_txn method to Payment object
+    * Added new object CustomerType
+    * Added MetaData to CompanyInfo
+    * Added update support to CompanyInfo
+    * Added new fields to Preferences object
+    * Improved exception object
+
 * 0.9.1 (November 30, 2021)
     * Added response status code when raising unauthorized exceptions
     * Added pending deprecation warnings to enable_global and disable_global

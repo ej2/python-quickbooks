@@ -1,10 +1,10 @@
 from six import python_2_unicode_compatible
 from .base import Address, PhoneNumber, EmailAddress, WebAddress, \
-    QuickbooksReadOnlyObject, Ref
+    QuickbooksManagedObject, Ref, MetaData
 
 
 @python_2_unicode_compatible
-class CompanyInfo(QuickbooksReadOnlyObject):
+class CompanyInfo(QuickbooksManagedObject):
     """
     QBO definition: The CompanyInfo entity contains basic company information.
     In QuickBooks Online, company info and preferences are displayed in the
@@ -21,7 +21,8 @@ class CompanyInfo(QuickbooksReadOnlyObject):
         "LegalAddr": Address,
         "PrimaryPhone": PhoneNumber,
         "Email": EmailAddress,
-        "WebAddr": WebAddress
+        "WebAddr": WebAddress,
+        "MetaData": MetaData
     }
 
     qbo_object_name = "CompanyInfo"
@@ -43,6 +44,7 @@ class CompanyInfo(QuickbooksReadOnlyObject):
         self.PrimaryPhone = None
         self.Email = None
         self.WebAddr = None
+        self.MetaData = None
 
     def __str__(self):
         return self.CompanyName

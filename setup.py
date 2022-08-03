@@ -10,7 +10,7 @@ def read(*parts):
         return fp.read()
 
 
-VERSION = (0, 9, 1)
+VERSION = (0, 9, 2)
 version = '.'.join(map(str, VERSION))
 
 setup(
@@ -37,7 +37,6 @@ setup(
         'simplejson>=3.17.0',
         'six>=1.14.0',
         'python-dateutil',
-        'pycparser==2.18'
     ],
 
     classifiers=[
@@ -50,6 +49,8 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
     ],
     packages=find_packages(),
 )
