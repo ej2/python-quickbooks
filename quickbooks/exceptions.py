@@ -7,14 +7,19 @@ class QuickbooksException(Exception):
         self.error_code = error_code
         self.detail = detail
         self.message = message
-
+    def __str__(self) -> str:
+        return f"QB Exception {self.error_code}: {self.message}\n{self.detail}"
+    def __iter__(self):
+        yield "error_code", self.error_code
+        yield "detail", self.detail
+        yield "message", self.message
 
 class AuthorizationException(QuickbooksException):
     """
     Quickbooks Error Codes from 1 to 499
     """
     def __str__(self):
-        return "QB Auth Exception: " + self.message + " \n\n" + self.detail
+        return f"QB Auth Exception {self.error_code}: {self.message}\n{self.detail}"
 
 
 class UnsupportedException(QuickbooksException):
@@ -22,7 +27,7 @@ class UnsupportedException(QuickbooksException):
     Quickbooks Error Codes from 500 to 599
     """
     def __str__(self):
-        return "QB Unsupported Exception: " + self.message + " \n\n" + self.detail
+        return f"QB Unsupported Exception {self.error_code}: {self.message}\n{self.detail}"
 
 
 class GeneralException(QuickbooksException):
@@ -30,7 +35,7 @@ class GeneralException(QuickbooksException):
     Quickbooks Error Codes from 600 to 1999
     """
     def __str__(self):
-        return "QB General Exception: " + self.message + " \n\n" + self.detail
+        return f"QB General Exception {self.error_code}: {self.message}\n{self.detail}"
 
 
 class ValidationException(QuickbooksException):
@@ -38,7 +43,7 @@ class ValidationException(QuickbooksException):
     Quickbooks Error Codes from 2000 to 4999
     """
     def __str__(self):
-        return "QB Validation Exception: " + self.message + " \n\n" + self.detail
+        return f"QB Validation Exception {self.error_code}: {self.message}\n{self.detail}"
 
 
 class SevereException(QuickbooksException):
@@ -46,7 +51,7 @@ class SevereException(QuickbooksException):
     Quickbooks Error Codes greater than 10000
     """
     def __str__(self):
-        return "QB Severe Exception: " + self.message + " \n\n" + self.detail
+        return f"QB Severe Exception {self.error_code}: {self.message}\n{self.detail}"
 
 
 class ObjectNotFoundException(QuickbooksException):
@@ -54,5 +59,5 @@ class ObjectNotFoundException(QuickbooksException):
     Quickbooks Error Code 610
     """
     def __str__(self):
-        return "QB Object Not Found Exception: " + self.message + " \n\n" + self.detail
+        return f"QB Object Not Found Exception {self.error_code}: {self.message}\n{self.detail}"
 
