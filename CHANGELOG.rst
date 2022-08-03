@@ -1,7 +1,7 @@
 Changelog
 =========
 
-* 0.9.2 (August ??, 2022)
+* 0.9.2 (August 3, 2022)
     * Removed pycparser dependency
     * Added new fields to CreditCardPayment object
     * Added new fields to Invoice object
