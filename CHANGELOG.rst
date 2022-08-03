@@ -11,6 +11,7 @@ Changelog
     * Added MetaData to CompanyInfo
     * Added update support to CompanyInfo
     * Added new fields to Preferences object
+    * Improved exception object
 
 * 0.9.1 (November 30, 2021)
     * Added response status code when raising unauthorized exceptions
