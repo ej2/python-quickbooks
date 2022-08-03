@@ -5,6 +5,8 @@ Changelog
     * Removed pycparser dependency
     * Added new fields to CreditCardPayment object
     * Added new fields to Invoice object
+    * Added new fields to Payment object
+    * Fixed issue with Paymentline LinkedTxn
 
 * 0.9.1 (November 30, 2021)
     * Added response status code when raising unauthorized exceptions

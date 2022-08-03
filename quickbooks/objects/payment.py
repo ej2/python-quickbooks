@@ -49,6 +49,8 @@ class Payment(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity)
         "DepositToAccountRef": Ref,
         "CurrencyRef": Ref,
         "CreditCardPayment": CreditCardPayment,
+        "TaxExemptionRef": Ref,
+        "MetaData": MetaData
     }
 
     list_dict = {
@@ -74,6 +76,8 @@ class Payment(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity)
         self.CurrencyRef = None  # Readonly
         self.PaymentMethodRef = None
         self.DepositToAccountRef = None
+        self.TaxExemptionRef = None
+        self.MetaData = None
         self.Line = []
 
         # These fields are for minor version 4
