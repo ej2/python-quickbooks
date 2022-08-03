@@ -56,8 +56,8 @@ class ProductAndServicesPrefs(QuickbooksBaseObject):
         self.ForPurchase = True
         self.QuantityOnHand = True
         self.ForSales = True
-        self.RevenueRecognitionEnabled = True
-        self.RecognitionFrequencyType = True
+        self.RevenueRecognition = True
+        self.RevenueRecognitionFrequency = ""
 
 
 class ReportPrefs(QuickbooksBaseObject):
@@ -187,7 +187,6 @@ class TimeTrackingPrefs(QuickbooksBaseObject):
         self.WorkWeekStartDate = ""  # e.g. "Monday"
         self.MarkTimeEntriesBillable = True
         self.ShowBillRateToAll = False
-        self.UsingSalesTax = False
         self.UseServices = True
         self.BillCustomers = True
 

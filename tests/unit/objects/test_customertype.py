@@ -1,7 +1,7 @@
 import unittest
 
 from quickbooks import QuickBooks
-from quickbooks.objects.customerType import CustomerType
+from quickbooks.objects.customertype import CustomerType
 
 
 class CustomerTypeTests(unittest.TestCase):

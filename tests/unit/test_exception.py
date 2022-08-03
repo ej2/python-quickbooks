@@ -17,4 +17,4 @@ class AuthorizationExceptionTests(unittest.TestCase):
     def test_unicode(self):
         exception = AuthorizationException("message", detail="detail")
 
-        self.assertEquals(str(exception), "QB Auth Exception: message \n\ndetail")
+        self.assertEquals(str(exception), "QB Auth Exception 0: message\ndetail")
