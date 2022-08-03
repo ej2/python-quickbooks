@@ -1,7 +1,7 @@
 from six import python_2_unicode_compatible
 
 from quickbooks.mixins import PrefMixin, UpdateNoIdMixin
-from .base import QuickbooksBaseObject, QuickbooksTransactionEntity, Ref
+from .base import QuickbooksBaseObject, QuickbooksTransactionEntity, Ref, EmailAddress
 
 
 @python_2_unicode_compatible
@@ -56,6 +56,8 @@ class ProductAndServicesPrefs(QuickbooksBaseObject):
         self.ForPurchase = True
         self.QuantityOnHand = True
         self.ForSales = True
+        self.RevenueRecognitionEnabled = True
+        self.RecognitionFrequencyType = True
 
 
 class ReportPrefs(QuickbooksBaseObject):
@@ -93,6 +95,8 @@ class ClassTrackingPerTxnLine(QuickbooksBaseObject):
 class SalesFormsPrefs(QuickbooksBaseObject):
     class_dict = {
         "DefaultTerms": Ref,
+        "SalesEmailBcc": EmailAddress,
+        "SalesEmailCc": EmailAddress
     }
     detail_dict = {
         "CustomField": PreferencesCustomFieldGroup
@@ -111,6 +115,7 @@ class SalesFormsPrefs(QuickbooksBaseObject):
         self.DefaultTerms = None
         self.AllowDiscount = True
         self.DefaultDiscountAccount = ""
+        self.DefaultShippingAccount = False
         self.AllowDeposit = True
         self.AutoApplyPayments = True
         self.IPNSupportEnabled = False
@@ -118,12 +123,20 @@ class SalesFormsPrefs(QuickbooksBaseObject):
         self.CustomField = None
         self.UsingPriceLevels = False
         self.ETransactionAttachPDF = False
+        self.UsingProgressInvoicing = False
+        self.EstimateMessage = ""
 
         self.DefaultTerms = None
         self.CustomField = None
+        self.SalesEmailBcc = None
+        self.SalesEmailCc = None
 
 
 class VendorAndPurchasesPrefs(QuickbooksBaseObject):
+    class_dict = {
+        "DefaultTerms": Ref,
+        "DefaultMarkupAccount": Ref
+    }
     detail_dict = {
         "POCustomField": PreferencesCustomFieldGroup
     }
@@ -132,7 +145,11 @@ class VendorAndPurchasesPrefs(QuickbooksBaseObject):
         super().__init__()
         self.BillableExpenseTracking = True
         self.TrackingByCustomer = True
+        self.TPAREnabled = True
+
         self.POCustomField = None
+        self.DefaultMarkupAccount = None
+        self.DefaultTerms = None
 
 
 class TaxPrefs(QuickbooksBaseObject):
@@ -144,6 +161,7 @@ class TaxPrefs(QuickbooksBaseObject):
         super().__init__()
         self.TaxGroupCodeRef = None
         self.UsingSalesTax = True
+        self.PartnerTaxEnabled = True
 
 
 class NameValue(QuickbooksBaseObject):
@@ -169,6 +187,7 @@ class TimeTrackingPrefs(QuickbooksBaseObject):
         self.WorkWeekStartDate = ""  # e.g. "Monday"
         self.MarkTimeEntriesBillable = True
         self.ShowBillRateToAll = False
+        self.UsingSalesTax = False
         self.UseServices = True
         self.BillCustomers = True
 
@@ -181,6 +200,7 @@ class CurrencyPrefs(QuickbooksBaseObject):
     def __init__(self):
         super().__init__()
         self.HomeCurrency = None
+        self.MultiCurrencyEnabled = False
 
 
 @python_2_unicode_compatible
