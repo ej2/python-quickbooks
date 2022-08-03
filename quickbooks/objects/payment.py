@@ -1,6 +1,6 @@
 from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, LinkedTxn, \
-    QuickbooksManagedObject, QuickbooksTransactionEntity \
+    QuickbooksManagedObject, QuickbooksTransactionEntity, \
     LinkedTxnMixin
 from ..client import QuickBooks
 from .creditcardpayment import CreditCardPayment
