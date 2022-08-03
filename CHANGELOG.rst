@@ -8,6 +8,8 @@ Changelog
     * Added new fields to Payment object
     * Fixed issue with Paymentline LinkedTxn
     * Added new object CustomerType
+    * Added MetaData to CompanyInfo
+    * Added update support to CompanyInfo
 
 
 * 0.9.1 (November 30, 2021)
