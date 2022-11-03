@@ -148,14 +148,14 @@ class UpdateMixin(object):
     qbo_object_name = ""
     qbo_json_object_name = ""
 
-    def save(self, qb=None, request_id=None):
+    def save(self, qb=None, request_id=None, parameter_tuple=None):
         if not qb:
             qb = QuickBooks()
 
         if self.Id and int(self.Id) > 0:
-            json_data = qb.update_object(self.qbo_object_name, self.to_json(), request_id=request_id)
+            json_data = qb.update_object(self.qbo_object_name, self.to_json(), request_id=request_id, parameter_tuple=parameter_tuple)
         else:
-            json_data = qb.create_object(self.qbo_object_name, self.to_json(), request_id=request_id)
+            json_data = qb.create_object(self.qbo_object_name, self.to_json(), request_id=request_id, parameter_tuple=parameter_tuple)
 
         if self.qbo_json_object_name != '':
             obj = type(self).from_json(json_data[self.qbo_json_object_name])
@@ -170,11 +170,11 @@ class UpdateNoIdMixin(object):
     qbo_object_name = ""
     qbo_json_object_name = ""
 
-    def save(self, qb=None, request_id=None):
+    def save(self, qb=None, request_id=None, parameter_tuple=None):
         if not qb:
             qb = QuickBooks()
 
-        json_data = qb.update_object(self.qbo_object_name, self.to_json(), request_id=request_id)
+        json_data = qb.update_object(self.qbo_object_name, self.to_json(), request_id=request_id, parameter_tuple=parameter_tuple)
         obj = type(self).from_json(json_data[self.qbo_object_name])
         return obj
 

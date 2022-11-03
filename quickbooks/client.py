@@ -305,10 +305,16 @@ class QuickBooks(object):
             else:
                 raise exceptions.QuickbooksException(message, code, detail)
 
-    def create_object(self, qbbo, request_body, _file_path=None, request_id=None):
+    def create_object(self, qbbo, request_body, _file_path=None, request_id=None, parameter_tuple=None):
         self.isvalid_object_name(qbbo)
 
-        url = "{0}/company/{1}/{2}".format(self.api_url, self.company_id, qbbo.lower())
+        if parameter_tuple is None:
+            url = "{0}/company/{1}/{2}".format(self.api_url, self.company_id, qbbo.lower())
+        else:
+            name = parameter_tuple[0]
+            value = parameter_tuple[1]
+            url = "{0}/company/{1}/{2}?{3}={4}".format(self.api_url, self.company_id, qbbo.lower(), name, value)
+
         results = self.post(url, request_body, file_path=_file_path, request_id=request_id)
 
         return results
@@ -325,8 +331,14 @@ class QuickBooks(object):
 
         return True
 
-    def update_object(self, qbbo, request_body, _file_path=None, request_id=None):
-        url = "{0}/company/{1}/{2}".format(self.api_url, self.company_id,  qbbo.lower())
+    def update_object(self, qbbo, request_body, _file_path=None, request_id=None, parameter_tuple = None):
+        if parameter_tuple is None:
+            url = "{0}/company/{1}/{2}".format(self.api_url, self.company_id, qbbo.lower())
+        else:
+            name = parameter_tuple[0]
+            value = parameter_tuple[1]
+            url = "{0}/company/{1}/{2}?{3}={4}".format(self.api_url, self.company_id, qbbo.lower(), name, value)
+
         result = self.post(url, request_body, file_path=_file_path, request_id=request_id)
 
         return result
