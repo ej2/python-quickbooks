@@ -196,6 +196,16 @@ class DeleteMixin(object):
         return qb.delete_object(self.qbo_object_name, json.dumps(data), request_id=request_id)
 
 
+class DeleteNoIdMixin(object):
+    qbo_object_name = ""
+
+    def delete(self, qb=None, request_id=None):
+        if not qb:
+            qb = QuickBooks()
+
+        return qb.delete_object(self.qbo_object_name, self.to_json(), request_id=request_id)
+
+
 class ListMixin(object):
     qbo_object_name = ""
     qbo_json_object_name = ""

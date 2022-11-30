@@ -19,6 +19,7 @@ from quickbooks.objects.base import PhoneNumber, QuickbooksBaseObject
 from quickbooks.objects.department import Department
 from quickbooks.objects.customer import Customer
 from quickbooks.objects.journalentry import JournalEntry, JournalEntryLine
+from quickbooks.objects.recurringtransaction import RecurringTransaction
 from quickbooks.objects.salesreceipt import SalesReceipt
 from quickbooks.mixins import ObjectListMixin
 
@@ -343,6 +344,16 @@ class DeleteMixinTest(QuickbooksUnitTestCase):
         bill = Bill()
         bill.Id = 1
         bill.delete(qb=self.qb_client)
+
+        self.assertTrue(delete_object.called)
+
+
+class DeleteNoIdMixinTest(QuickbooksUnitTestCase):
+    @patch('quickbooks.mixins.QuickBooks.delete_object')
+    def test_delete(self, delete_object):
+        recurring_txn = RecurringTransaction()
+        recurring_txn.Bill = Bill()
+        recurring_txn.delete(qb=self.qb_client)
 
         self.assertTrue(delete_object.called)
 
