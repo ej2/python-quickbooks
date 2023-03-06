@@ -235,19 +235,16 @@ Attaching a file to customer:
 
 Other operations
 ----------------
+Add Sharable link for an invoice sent to external customers (minorversion must be set to 36 or greater):
+
+    invoice.invoice_link = true
+
+
 Void an invoice:
 
     invoice = Invoice()
     invoice.Id = 7
     invoice.void(qb=client)
-
-If your company_id never changes you can enable the client to stay running (deprecation warning: will be removed in next release):
-
-    QuickBooks.enable_global()
-
-You can disable the global client like so (deprecation warning: will be removed in next release):
-
-    QuickBooks.disable_global()
 
 
 Working with JSON data
