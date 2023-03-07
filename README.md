@@ -233,6 +233,13 @@ Attaching a file to customer:
     attachment.ContentType = 'application/pdf'
     attachment.save(qb=client)
 
+Passing in optional params
+----------------
+Some QBO objects have options that need to be set on the query string of an API call. 
+One example is `include=allowduplicatedocnum` on the Purchase object. You can add these params when calling save:  
+
+    purchase.save(qb=self.qb_client, params={'include': 'allowduplicatedocnum'})
+
 Other operations
 ----------------
 Add Sharable link for an invoice sent to external customers (minorversion must be set to 36 or greater):
