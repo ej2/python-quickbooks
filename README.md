@@ -159,12 +159,12 @@ Batch update a list of objects:
     
     results = batch_update(customers, qb=client)
 
-Batch delete a list of objects:
+Batch delete a list of objects (only entities that support delete can use batch delete):
 
     from quickbooks.batch import batch_delete
 
-    customers = Customer.filter(Active=False)
-    results = batch_delete(customers, qb=client)
+    payments = Payment.filter(TxnDate=date.today())
+    results = batch_delete(payments, qb=client)
 
 Review results for batch operation:
 
