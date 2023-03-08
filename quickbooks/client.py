@@ -108,27 +108,6 @@ class QuickBooks(object):
         )
         return self.auth_client.refresh_token
 
-    @classmethod
-    def get_instance(cls):
-        return cls.__instance
-
-    @classmethod
-    def disable_global(cls):
-        """
-        Disable use of singleton pattern.
-        """
-        warnings.warn("disable_global deprecated", PendingDeprecationWarning)
-        QuickBooks.__use_global = False
-        QuickBooks.__instance = None
-
-    @classmethod
-    def enable_global(cls):
-        """
-        Allow use of singleton pattern.
-        """
-        warnings.warn("enable_global deprecated", PendingDeprecationWarning)
-        QuickBooks.__use_global = True
-
     def _drop(self):
         QuickBooks.__instance = None
 

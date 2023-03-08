@@ -9,7 +9,7 @@ class CustomerTests(unittest.TestCase):
         customer = Customer()
         customer.DisplayName = "test"
 
-        self.assertEquals(str(customer), "test")
+        self.assertEqual(str(customer), "test")
 
     def test_to_ref(self):
         customer = Customer()
@@ -18,9 +18,9 @@ class CustomerTests(unittest.TestCase):
 
         ref = customer.to_ref()
 
-        self.assertEquals(ref.name, "test")
-        self.assertEquals(ref.type, "Customer")
-        self.assertEquals(ref.value, 100)
+        self.assertEqual(ref.name, "test")
+        self.assertEqual(ref.type, "Customer")
+        self.assertEqual(ref.value, 100)
 
     def test_valid_object_name(self):
         obj = Customer()

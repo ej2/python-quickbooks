@@ -42,9 +42,9 @@ class BillPaymentTest(QuickbooksTestCase):
 
         query_bill_payment = BillPayment.get(bill_payment.Id, qb=self.qb_client)
 
-        self.assertEquals(query_bill_payment.PayType, "Check")
-        self.assertEquals(query_bill_payment.TotalAmt, 200.0)
-        self.assertEquals(query_bill_payment.PrivateNote, "Private Note")
+        self.assertEqual(query_bill_payment.PayType, "Check")
+        self.assertEqual(query_bill_payment.TotalAmt, 200.0)
+        self.assertEqual(query_bill_payment.PrivateNote, "Private Note")
 
-        self.assertEquals(len(query_bill_payment.Line), 1)
-        self.assertEquals(query_bill_payment.Line[0].Amount, 200.0)
+        self.assertEqual(len(query_bill_payment.Line), 1)
+        self.assertEqual(query_bill_payment.Line[0].Amount, 200.0)

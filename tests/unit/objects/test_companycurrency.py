@@ -10,7 +10,7 @@ class CompanyCurrencyTest(QuickbooksUnitTestCase):
         company_currency.Name = "test"
         company_currency.Code = "USD"
 
-        self.assertEquals(str(company_currency), "test")
+        self.assertEqual(str(company_currency), "test")
 
     def test_to_ref(self):
         company_currency = CompanyCurrency()
@@ -19,6 +19,6 @@ class CompanyCurrencyTest(QuickbooksUnitTestCase):
 
         ref = company_currency.to_ref()
 
-        self.assertEquals(ref.name, "test")
-        self.assertEquals(ref.type, "CompanyCurrency")
-        self.assertEquals(ref.value, 23)
+        self.assertEqual(ref.name, "test")
+        self.assertEqual(ref.type, "CompanyCurrency")
+        self.assertEqual(ref.value, 23)

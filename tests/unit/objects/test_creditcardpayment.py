@@ -7,29 +7,29 @@ class CreditCardPaymentTests(unittest.TestCase):
     def test_init(self):
         payment = CreditCardPayment()
 
-        self.assertEquals(payment.CreditChargeInfo, None)
-        self.assertEquals(payment.CreditChargeResponse, None)
+        self.assertEqual(payment.CreditChargeInfo, None)
+        self.assertEqual(payment.CreditChargeResponse, None)
 
 
 class CreditChargeResponseTests(unittest.TestCase):
     def test_init(self):
         response = CreditChargeResponse()
 
-        self.assertEquals(response.CCTransId, "")
-        self.assertEquals(response.AuthCode, "")
-        self.assertEquals(response.TxnAuthorizationTime, "")
-        self.assertEquals(response.Status, "")
+        self.assertEqual(response.CCTransId, "")
+        self.assertEqual(response.AuthCode, "")
+        self.assertEqual(response.TxnAuthorizationTime, "")
+        self.assertEqual(response.Status, "")
 
 
 class CreditChargeInfoTests(unittest.TestCase):
     def test_init(self):
         info = CreditChargeInfo()
 
-        self.assertEquals(info.Type, "")
-        self.assertEquals(info.NameOnAcct, "")
-        self.assertEquals(info.CcExpiryMonth, 0)
-        self.assertEquals(info.CcExpiryYear, 0)
-        self.assertEquals(info.BillAddrStreet, "")
-        self.assertEquals(info.PostalCode, "")
-        self.assertEquals(info.Amount, 0)
-        self.assertEquals(info.ProcessPayment, False)
+        self.assertEqual(info.Type, "")
+        self.assertEqual(info.NameOnAcct, "")
+        self.assertEqual(info.CcExpiryMonth, 0)
+        self.assertEqual(info.CcExpiryYear, 0)
+        self.assertEqual(info.BillAddrStreet, "")
+        self.assertEqual(info.PostalCode, "")
+        self.assertEqual(info.Amount, 0)
+        self.assertEqual(info.ProcessPayment, False)

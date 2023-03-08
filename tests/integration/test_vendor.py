@@ -46,26 +46,26 @@ class VendorTest(QuickbooksTestCase):
 
         query_vendor = Vendor.get(vendor.Id, qb=self.qb_client)
 
-        self.assertEquals(query_vendor.Id, vendor.Id)
+        self.assertEqual(query_vendor.Id, vendor.Id)
 
-        self.assertEquals(query_vendor.AcctNum, self.account_number)
-        self.assertEquals(query_vendor.Title, 'Ms.')
-        self.assertEquals(query_vendor.GivenName, 'First')
-        self.assertEquals(query_vendor.FamilyName, 'Last')
-        self.assertEquals(query_vendor.Suffix, 'Sr.')
-        self.assertEquals(query_vendor.CompanyName, self.name)
-        self.assertEquals(query_vendor.DisplayName, self.name)
-        self.assertEquals(query_vendor.PrintOnCheckName, self.name)
+        self.assertEqual(query_vendor.AcctNum, self.account_number)
+        self.assertEqual(query_vendor.Title, 'Ms.')
+        self.assertEqual(query_vendor.GivenName, 'First')
+        self.assertEqual(query_vendor.FamilyName, 'Last')
+        self.assertEqual(query_vendor.Suffix, 'Sr.')
+        self.assertEqual(query_vendor.CompanyName, self.name)
+        self.assertEqual(query_vendor.DisplayName, self.name)
+        self.assertEqual(query_vendor.PrintOnCheckName, self.name)
 
-        self.assertEquals(query_vendor.BillAddr.Line1, "123 Main")
-        self.assertEquals(query_vendor.BillAddr.Line2, "Apartment 1")
-        self.assertEquals(query_vendor.BillAddr.City, "City")
-        self.assertEquals(query_vendor.BillAddr.Country, "U.S.A")
-        self.assertEquals(query_vendor.BillAddr.CountrySubDivisionCode, "CA")
-        self.assertEquals(query_vendor.BillAddr.PostalCode, "94030")
-        self.assertEquals(query_vendor.PrimaryPhone.FreeFormNumber, '555-555-5555')
-        self.assertEquals(query_vendor.PrimaryEmailAddr.Address, 'test@email.com')
-        self.assertEquals(query_vendor.WebAddr.URI, 'http://testurl.com')
+        self.assertEqual(query_vendor.BillAddr.Line1, "123 Main")
+        self.assertEqual(query_vendor.BillAddr.Line2, "Apartment 1")
+        self.assertEqual(query_vendor.BillAddr.City, "City")
+        self.assertEqual(query_vendor.BillAddr.Country, "U.S.A")
+        self.assertEqual(query_vendor.BillAddr.CountrySubDivisionCode, "CA")
+        self.assertEqual(query_vendor.BillAddr.PostalCode, "94030")
+        self.assertEqual(query_vendor.PrimaryPhone.FreeFormNumber, '555-555-5555')
+        self.assertEqual(query_vendor.PrimaryEmailAddr.Address, 'test@email.com')
+        self.assertEqual(query_vendor.WebAddr.URI, 'http://testurl.com')
 
     def update_vendor(self):
         vendor = Vendor.all(max_results=1, qb=self.qb_client)[0]
@@ -76,5 +76,5 @@ class VendorTest(QuickbooksTestCase):
         vendor.save(qb=self.qb_client)
 
         query_vendor = Vendor.get(vendor.Id, qb=self.qb_client)
-        self.assertEquals(query_vendor.GivenName, 'Updated Name')
-        self.assertEquals(query_vendor.FamilyName, 'Updated Lastname')
+        self.assertEqual(query_vendor.GivenName, 'Updated Name')
+        self.assertEqual(query_vendor.FamilyName, 'Updated Lastname')

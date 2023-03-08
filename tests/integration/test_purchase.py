@@ -40,17 +40,17 @@ class PurchaseOrderTest(QuickbooksTestCase):
 
         query_purchase = Purchase.get(purchase.Id, qb=self.qb_client)
 
-        self.assertEquals(query_purchase.AccountRef.value, credit_account.Id)
-        self.assertEquals(query_purchase.DocNumber, "Doc123")
-        self.assertEquals(query_purchase.TotalAmt, 100)
+        self.assertEqual(query_purchase.AccountRef.value, credit_account.Id)
+        self.assertEqual(query_purchase.DocNumber, "Doc123")
+        self.assertEqual(query_purchase.TotalAmt, 100)
 
         query_detail_line = query_purchase.Line[0]
 
-        self.assertEquals(query_detail_line.Amount, 100)
-        self.assertEquals(query_detail_line.ItemBasedExpenseLineDetail.UnitPrice, 100)
-        self.assertEquals(query_detail_line.ItemBasedExpenseLineDetail.Qty, 1)
-        self.assertEquals(query_detail_line.ItemBasedExpenseLineDetail.CustomerRef.value, customer.Id)
-        self.assertEquals(query_detail_line.ItemBasedExpenseLineDetail.TaxCodeRef.value, taxcode.Name)
-        self.assertEquals(query_detail_line.ItemBasedExpenseLineDetail.ItemRef.value, item.Id)
+        self.assertEqual(query_detail_line.Amount, 100)
+        self.assertEqual(query_detail_line.ItemBasedExpenseLineDetail.UnitPrice, 100)
+        self.assertEqual(query_detail_line.ItemBasedExpenseLineDetail.Qty, 1)
+        self.assertEqual(query_detail_line.ItemBasedExpenseLineDetail.CustomerRef.value, customer.Id)
+        self.assertEqual(query_detail_line.ItemBasedExpenseLineDetail.TaxCodeRef.value, taxcode.Name)
+        self.assertEqual(query_detail_line.ItemBasedExpenseLineDetail.ItemRef.value, item.Id)
 
 

@@ -9,7 +9,7 @@ class ExchangeRateTests(unittest.TestCase):
         exchange_rate = ExchangeRate()
         exchange_rate.SourceCurrencyCode = "EUR"
 
-        self.assertEquals(str(exchange_rate), "EUR")
+        self.assertEqual(str(exchange_rate), "EUR")
 
     def test_valid_object_name(self):
         obj = ExchangeRate()

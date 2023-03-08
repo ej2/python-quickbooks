@@ -18,9 +18,9 @@ class TermTest(QuickbooksTestCase):
 
         query_term = Term.get(term.Id, qb=self.qb_client)
 
-        self.assertEquals(query_term.Id, term.Id)
-        self.assertEquals(query_term.Name, self.name)
-        self.assertEquals(query_term.DueDays, 10)
+        self.assertEqual(query_term.Id, term.Id)
+        self.assertEqual(query_term.Name, self.name)
+        self.assertEqual(query_term.DueDays, 10)
 
     def test_update(self):
         term = Term.all(max_results=1, qb=self.qb_client)[0]
@@ -29,5 +29,5 @@ class TermTest(QuickbooksTestCase):
 
         query_term = Term.get(term.Id, qb=self.qb_client)
 
-        self.assertEquals(query_term.Id, term.Id)
-        self.assertEquals(query_term.DueDays, 60)
+        self.assertEqual(query_term.Id, term.Id)
+        self.assertEqual(query_term.DueDays, 60)

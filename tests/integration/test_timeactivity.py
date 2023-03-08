@@ -26,14 +26,14 @@ class TimeActivityTest(QuickbooksTestCase):
 
         query_time_activity = TimeActivity.get(time_activity.Id, qb=self.qb_client)
 
-        self.assertEquals(query_time_activity.Id, time_activity.Id)
-        self.assertEquals(query_time_activity.NameOf, "Employee")
-        self.assertEquals(query_time_activity.Description, "Test description")
-        self.assertEquals(query_time_activity.EmployeeRef.value, employee.Id)
+        self.assertEqual(query_time_activity.Id, time_activity.Id)
+        self.assertEqual(query_time_activity.NameOf, "Employee")
+        self.assertEqual(query_time_activity.Description, "Test description")
+        self.assertEqual(query_time_activity.EmployeeRef.value, employee.Id)
 
         # Quickbooks has issues with returning the correct StartTime and EndTime
-        #self.assertEquals(query_time_activity.StartTime, '2016-07-22T10:00:00-07:00')
-        #self.assertEquals(query_time_activity.EndTime, '2016-07-22T11:00:00-07:00')
+        #self.assertEqual(query_time_activity.StartTime, '2016-07-22T10:00:00-07:00')
+        #self.assertEqual(query_time_activity.EndTime, '2016-07-22T11:00:00-07:00')
 
     def test_update(self):
         time_activity = TimeActivity.all(max_results=1, qb=self.qb_client)[0]
@@ -42,4 +42,4 @@ class TimeActivityTest(QuickbooksTestCase):
 
         query_time_activity = TimeActivity.get(time_activity.Id, qb=self.qb_client)
 
-        self.assertEquals(query_time_activity.Description, "Updated test description")
+        self.assertEqual(query_time_activity.Description, "Updated test description")

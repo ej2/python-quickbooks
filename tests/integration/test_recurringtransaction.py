@@ -54,8 +54,8 @@ class RecurringTransactionTest(QuickbooksTestCase):
         actual_rt = self.create_recurring_invoice(self.now)
 
         self.assertTrue(hasattr(actual_rt, "Invoice"))
-        self.assertEquals(actual_rt.Invoice.Line[0].Description, "description")
-        self.assertEquals(actual_rt.Invoice.Line[0].Amount, 100.0)
+        self.assertEqual(actual_rt.Invoice.Line[0].Description, "description")
+        self.assertEqual(actual_rt.Invoice.Line[0].Amount, 100.0)
         
         actual_info = actual_rt.Invoice.RecurringInfo
         self.assertEqual(actual_info.ScheduleInfo.MaxOccurrences, 6)
@@ -127,8 +127,8 @@ class RecurringTransactionTest(QuickbooksTestCase):
         recurring_txn.save(qb=self.qb_client)
 
         actual = RecurringTransaction.get(saved.Invoice.Id, qb=self.qb_client)
-        self.assertEquals(actual.Invoice.RecurringInfo.ScheduleInfo.DayOfMonth, 15)
-        self.assertEquals(actual.Invoice.Line[0].Amount, 250)
+        self.assertEqual(actual.Invoice.RecurringInfo.ScheduleInfo.DayOfMonth, 15)
+        self.assertEqual(actual.Invoice.Line[0].Amount, 250)
 
 
     def test_filter_by_type(self):

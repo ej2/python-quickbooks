@@ -34,6 +34,6 @@ class BillTest(QuickbooksTestCase):
 
         query_bill = Bill.get(bill.Id, qb=self.qb_client)
 
-        self.assertEquals(query_bill.Id, bill.Id)
-        self.assertEquals(len(query_bill.Line), 1)
-        self.assertEquals(query_bill.Line[0].Amount, 200.0)
+        self.assertEqual(query_bill.Id, bill.Id)
+        self.assertEqual(len(query_bill.Line), 1)
+        self.assertEqual(query_bill.Line[0].Amount, 200.0)

@@ -9,7 +9,7 @@ class CheckPaymentTests(unittest.TestCase):
         checkpayment = CheckPayment()
         checkpayment.PrintStatus = "test"
 
-        self.assertEquals(str(checkpayment), "test")
+        self.assertEqual(str(checkpayment), "test")
 
 
 class BillPaymentLineTests(unittest.TestCase):
@@ -17,7 +17,7 @@ class BillPaymentLineTests(unittest.TestCase):
         bill = BillPaymentLine()
         bill.Amount = 1000
 
-        self.assertEquals(str(bill), "1000")
+        self.assertEqual(str(bill), "1000")
 
 
 class BillPaymentTests(unittest.TestCase):
@@ -25,7 +25,7 @@ class BillPaymentTests(unittest.TestCase):
         bill_payment = BillPayment()
         bill_payment.TotalAmt = 1000
 
-        self.assertEquals(str(bill_payment), "1000")
+        self.assertEqual(str(bill_payment), "1000")
 
     def test_valid_object_name(self):
         obj = BillPayment()
@@ -39,4 +39,4 @@ class BillPaymentCreditCardTests(unittest.TestCase):
     def test_init(self):
         bill_payment_cc = BillPaymentCreditCard()
 
-        self.assertEquals(bill_payment_cc.CCAccountRef, None)
+        self.assertEqual(bill_payment_cc.CCAccountRef, None)

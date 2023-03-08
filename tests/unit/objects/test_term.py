@@ -9,7 +9,7 @@ class TermTests(unittest.TestCase):
         term = Term()
         term.Name = "test"
 
-        self.assertEquals(str(term), "test")
+        self.assertEqual(str(term), "test")
 
     def test_valid_object_name(self):
         obj = Term()
@@ -25,6 +25,6 @@ class TermTests(unittest.TestCase):
 
         ref = term.to_ref()
 
-        self.assertEquals(ref.name, "test")
-        self.assertEquals(ref.type, "Term")
-        self.assertEquals(ref.value, 100)
+        self.assertEqual(ref.name, "test")
+        self.assertEqual(ref.type, "Term")
+        self.assertEqual(ref.value, 100)

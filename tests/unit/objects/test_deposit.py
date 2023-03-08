@@ -9,7 +9,7 @@ class DepositTests(unittest.TestCase):
         deposit = Deposit()
         deposit.TotalAmt = 100
 
-        self.assertEquals(str(deposit), "100")
+        self.assertEqual(str(deposit), "100")
 
     def test_valid_object_name(self):
         obj = Deposit()
@@ -24,25 +24,25 @@ class DepositLineTests(unittest.TestCase):
         deposit = DepositLine()
         deposit.Amount = 100
 
-        self.assertEquals(str(deposit), "100")
+        self.assertEqual(str(deposit), "100")
 
 
 class CashBackInfoTests(unittest.TestCase):
     def test_init(self):
         cash_back_info = CashBackInfo()
 
-        self.assertEquals(cash_back_info.Amount, 0)
-        self.assertEquals(cash_back_info.Memo, "")
-        self.assertEquals(cash_back_info.AccountRef, None)
+        self.assertEqual(cash_back_info.Amount, 0)
+        self.assertEqual(cash_back_info.Memo, "")
+        self.assertEqual(cash_back_info.AccountRef, None)
 
 
 class DepositLineDetailTests(unittest.TestCase):
     def test_init(self):
         detail = DepositLineDetail()
 
-        self.assertEquals(detail.Entity, None)
-        self.assertEquals(detail.ClassRef, None)
-        self.assertEquals(detail.AccountRef, None)
-        self.assertEquals(detail.PaymentMethodRef, None)
-        self.assertEquals(detail.CheckNum, "")
-        self.assertEquals(detail.TxnType, None)
+        self.assertEqual(detail.Entity, None)
+        self.assertEqual(detail.ClassRef, None)
+        self.assertEqual(detail.AccountRef, None)
+        self.assertEqual(detail.PaymentMethodRef, None)
+        self.assertEqual(detail.CheckNum, "")
+        self.assertEqual(detail.TxnType, None)

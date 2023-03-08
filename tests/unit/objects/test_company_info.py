@@ -9,7 +9,7 @@ class CompanyInfoTests(unittest.TestCase):
         company_info = CompanyInfo()
         company_info.CompanyName = "test"
 
-        self.assertEquals(str(company_info), "test")
+        self.assertEqual(str(company_info), "test")
 
     def test_to_ref(self):
         company_info = CompanyInfo()
@@ -18,6 +18,6 @@ class CompanyInfoTests(unittest.TestCase):
 
         ref = company_info.to_ref()
 
-        self.assertEquals(ref.name, "test")
-        self.assertEquals(ref.type, "CompanyInfo")
-        self.assertEquals(ref.value, 100)
+        self.assertEqual(ref.name, "test")
+        self.assertEqual(ref.type, "CompanyInfo")
+        self.assertEqual(ref.value, 100)

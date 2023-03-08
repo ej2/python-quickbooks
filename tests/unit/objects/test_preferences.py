@@ -9,7 +9,7 @@ class PreferencesTests(unittest.TestCase):
         preferences = Preferences()
         preferences.Id = 137
 
-        self.assertEquals(str(preferences), "Preferences 137")
+        self.assertEqual(str(preferences), "Preferences 137")
 
     def test_valid_object_name(self):
         preferences = Preferences()

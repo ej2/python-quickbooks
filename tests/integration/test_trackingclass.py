@@ -17,8 +17,8 @@ class ClassTest(QuickbooksTestCase):
 
         query_tracking_class = Class.get(tracking_class.Id, qb=self.qb_client)
 
-        self.assertEquals(query_tracking_class.Id, tracking_class.Id)
-        self.assertEquals(query_tracking_class.Name, self.name)
+        self.assertEqual(query_tracking_class.Id, tracking_class.Id)
+        self.assertEqual(query_tracking_class.Name, self.name)
 
     def test_update(self):
         updated_name = "Updated {}".format(self.name)
@@ -29,5 +29,5 @@ class ClassTest(QuickbooksTestCase):
 
         query_tracking_class = Class.get(tracking_class.Id, qb=self.qb_client)
 
-        self.assertEquals(query_tracking_class.Id, tracking_class.Id)
-        self.assertEquals(query_tracking_class.Name, updated_name)
+        self.assertEqual(query_tracking_class.Id, tracking_class.Id)
+        self.assertEqual(query_tracking_class.Name, updated_name)

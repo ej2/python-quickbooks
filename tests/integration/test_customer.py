@@ -47,7 +47,7 @@ class CustomerTest(QuickbooksTestCase):
 
         query_customer = Customer.get(customer.Id, qb=self.qb_client)
 
-        self.assertEquals(customer.Id, query_customer.Id)
+        self.assertEqual(customer.Id, query_customer.Id)
         self.assertEqual(query_customer.Title, self.title)
         self.assertEqual(query_customer.GivenName, self.given_name)
         self.assertEqual(query_customer.MiddleName, self.middle_name)

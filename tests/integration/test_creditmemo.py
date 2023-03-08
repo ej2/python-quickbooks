@@ -26,15 +26,15 @@ class CreditMemoTest(QuickbooksTestCase):
 
         query_credit_memo = CreditMemo.get(credit_memo.Id, qb=self.qb_client)
 
-        self.assertEquals(credit_memo.Id, query_credit_memo.Id)
-        self.assertEquals(query_credit_memo.CustomerRef.value, customer.Id)
+        self.assertEqual(credit_memo.Id, query_credit_memo.Id)
+        self.assertEqual(query_credit_memo.CustomerRef.value, customer.Id)
 
         line = query_credit_memo.Line[0]
-        self.assertEquals(line.LineNum, 1)
-        self.assertEquals(line.Description, "Test Description")
-        self.assertEquals(line.Amount, 100)
-        self.assertEquals(line.DetailType, "SalesItemLineDetail")
-        self.assertEquals(line.SalesItemLineDetail.ItemRef.value, item.Id)
+        self.assertEqual(line.LineNum, 1)
+        self.assertEqual(line.Description, "Test Description")
+        self.assertEqual(line.Amount, 100)
+        self.assertEqual(line.DetailType, "SalesItemLineDetail")
+        self.assertEqual(line.SalesItemLineDetail.ItemRef.value, item.Id)
 
     def test_update(self):
         credit_memo = CreditMemo.all(max_results=1, qb=self.qb_client)[0]
@@ -42,6 +42,6 @@ class CreditMemoTest(QuickbooksTestCase):
         credit_memo.save(qb=self.qb_client)
 
         query_credit_memo = CreditMemo.get(credit_memo.Id, qb=self.qb_client)
-        self.assertEquals(query_credit_memo.PrivateNote, "Test")
+        self.assertEqual(query_credit_memo.PrivateNote, "Test")
 
 

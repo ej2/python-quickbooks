@@ -8,7 +8,7 @@ class TaxAgencyTest(QuickbooksTestCase):
     def test_read(self):
         tax_agencies = TaxAgency.all(max_results=1, qb=self.qb_client)
 
-        self.assertEquals(len(tax_agencies), 1)
+        self.assertEqual(len(tax_agencies), 1)
 
     def test_create(self):
         tax_agency = TaxAgency()
@@ -20,5 +20,5 @@ class TaxAgencyTest(QuickbooksTestCase):
 
         query_tax_agency = TaxAgency.get(tax_agency.Id, qb=self.qb_client)
 
-        self.assertEquals(query_tax_agency.Id, tax_agency.Id)
-        self.assertEquals(query_tax_agency.DisplayName, name)
+        self.assertEqual(query_tax_agency.Id, tax_agency.Id)
+        self.assertEqual(query_tax_agency.DisplayName, name)

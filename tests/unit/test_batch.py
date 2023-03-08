@@ -49,13 +49,13 @@ class BatchTests(unittest.TestCase):
         obj_list = [self.object1, self.object2]
         batch_request = batch_mgr.list_to_batch_request(obj_list)
 
-        self.assertEquals(len(batch_request.BatchItemRequest), 2)
+        self.assertEqual(len(batch_request.BatchItemRequest), 2)
 
         batch_item = batch_request.BatchItemRequest[0]
         self.assertTrue(batch_item.bId)
         self.assertTrue(len(batch_item.bId) < 50)
-        self.assertEquals(batch_item.operation, "create")
-        self.assertEquals(batch_item.get_object(), self.object1)
+        self.assertEqual(batch_item.operation, "create")
+        self.assertEqual(batch_item.get_object(), self.object1)
 
     def test_batch_results_to_list(self):
         batch_mgr = batch.BatchManager("create")
@@ -72,5 +72,5 @@ class BatchTests(unittest.TestCase):
 
         results = batch_mgr.batch_results_to_list(json_data, batch_request, self.obj_list)
 
-        self.assertEquals(len(results.faults), 1)
-        self.assertEquals(len(results.successes), 1)
+        self.assertEqual(len(results.faults), 1)
+        self.assertEqual(len(results.successes), 1)
