@@ -152,7 +152,7 @@ class QuickBooks(object):
 
     def make_request(self, request_type, url, request_body=None, content_type='application/json',
                      params=None, file_path=None, request_id=None):
-        
+
         if not params:
             params = {}
 
