@@ -1,7 +1,7 @@
 python-quickbooks
 =================
 
-[build](https://github.com/ej2/python-quickbooks/blob/master/.github/workflows/python-package.yml/badge.svg)
+[![Python package](https://github.com/ej2/python-quickbooks/actions/workflows/python-package.yml/badge.svg)](https://github.com/ej2/python-quickbooks/actions/workflows/python-package.yml)
 [![Coverage Status](https://coveralls.io/repos/github/ej2/python-quickbooks/badge.svg?branch=master)](https://coveralls.io/github/ej2/python-quickbooks?branch=master)
 [![](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/ej2/python-quickbooks/blob/master/LICENSE)
  
