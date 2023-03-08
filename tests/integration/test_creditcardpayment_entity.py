@@ -38,10 +38,10 @@ class CreditCardPaymentEntityTest(QuickbooksTestCase):
 
         query_credit_card_payment = CreditCardPayment.get(credit_card_payment.Id, qb=self.qb_client)
 
-        self.assertEquals(query_credit_card_payment.Id, credit_card_payment.Id)
-        self.assertEquals(query_credit_card_payment.Amount, 100)
-        self.assertEquals(query_credit_card_payment.BankAccountRef.value, from_account.Id)
-        self.assertEquals(query_credit_card_payment.CreditCardAccountRef.value, to_account.Id)
+        self.assertEqual(query_credit_card_payment.Id, credit_card_payment.Id)
+        self.assertEqual(query_credit_card_payment.Amount, 100)
+        self.assertEqual(query_credit_card_payment.BankAccountRef.value, from_account.Id)
+        self.assertEqual(query_credit_card_payment.CreditCardAccountRef.value, to_account.Id)
 
         # reset transfer (so the from_account doesn't run out of cash)
         # I wonder if we can do a transfer from credit_card_account to a bank_account
@@ -59,4 +59,4 @@ class CreditCardPaymentEntityTest(QuickbooksTestCase):
 
         query_credit_card_payment = CreditCardPayment.get(credit_card_payment.Id, qb=self.qb_client)
 
-        self.assertEquals(query_credit_card_payment.Amount, credit_card_payment.Amount)
+        self.assertEqual(query_credit_card_payment.Amount, credit_card_payment.Amount)

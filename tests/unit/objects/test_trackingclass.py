@@ -8,7 +8,7 @@ class ClassTests(unittest.TestCase):
         cls = Class()
         cls.Name = "test"
 
-        self.assertEquals(str(cls), "test")
+        self.assertEqual(str(cls), "test")
 
     def test_to_ref(self):
         cls = Class()
@@ -17,6 +17,6 @@ class ClassTests(unittest.TestCase):
 
         dept_ref = cls.to_ref()
 
-        self.assertEquals(dept_ref.name, "test")
-        self.assertEquals(dept_ref.type, "Class")
-        self.assertEquals(dept_ref.value, 100)
+        self.assertEqual(dept_ref.name, "test")
+        self.assertEqual(dept_ref.type, "Class")
+        self.assertEqual(dept_ref.value, 100)

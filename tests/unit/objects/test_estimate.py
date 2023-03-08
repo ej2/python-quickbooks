@@ -9,7 +9,7 @@ class EstimateTests(unittest.TestCase):
         estimate = Estimate()
         estimate.TotalAmt = 10
 
-        self.assertEquals(str(estimate), "10")
+        self.assertEqual(str(estimate), "10")
 
     def test_valid_object_name(self):
         obj = Estimate()

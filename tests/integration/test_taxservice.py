@@ -24,10 +24,10 @@ class TaxServiceTest(QuickbooksTestCase):
 
         created_taxservice = taxservice.save(qb=self.qb_client)
 
-        self.assertEquals(created_taxservice.TaxCode, self.name)
+        self.assertEqual(created_taxservice.TaxCode, self.name)
 
         detail = created_taxservice.TaxRateDetails[0]
-        self.assertEquals(detail.TaxRateName, self.name)
-        self.assertEquals(detail.RateValue, 10)
-        self.assertEquals(detail.TaxAgencyId, '1')
-        self.assertEquals(detail.TaxApplicableOn, "Sales")
+        self.assertEqual(detail.TaxRateName, self.name)
+        self.assertEqual(detail.RateValue, 10)
+        self.assertEqual(detail.TaxAgencyId, '1')
+        self.assertEqual(detail.TaxApplicableOn, "Sales")

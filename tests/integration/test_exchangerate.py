@@ -7,8 +7,8 @@ class ExchangeRateTest(QuickbooksTestCase):
     def test_query(self):
         exchange_rate = ExchangeRate.where("SourceCurrencyCode = 'EUR'", qb=self.qb_client)[0]
 
-        self.assertEquals(exchange_rate.SourceCurrencyCode, "EUR")
-        self.assertEquals(exchange_rate.TargetCurrencyCode, "USD")
+        self.assertEqual(exchange_rate.SourceCurrencyCode, "EUR")
+        self.assertEqual(exchange_rate.TargetCurrencyCode, "USD")
 
     def test_update(self):
         exchange_rate = ExchangeRate.where("SourceCurrencyCode = 'EUR'", qb=self.qb_client)[0]
@@ -18,4 +18,4 @@ class ExchangeRateTest(QuickbooksTestCase):
         exchange_rate.save(qb=self.qb_client)
 
         exchange_rate_updated = ExchangeRate.where("SourceCurrencyCode = 'EUR'", qb=self.qb_client)[0]
-        self.assertEquals(exchange_rate_updated.Rate, new_rate)
+        self.assertEqual(exchange_rate_updated.Rate, new_rate)

@@ -9,7 +9,7 @@ class ItemTests(unittest.TestCase):
         item = Item()
         item.Name = "test"
 
-        self.assertEquals(str(item), "test")
+        self.assertEqual(str(item), "test")
 
     def test_to_ref(self):
         item = Item()
@@ -18,9 +18,9 @@ class ItemTests(unittest.TestCase):
 
         ref = item.to_ref()
 
-        self.assertEquals(ref.name, "test")
-        self.assertEquals(ref.type, "Item")
-        self.assertEquals(ref.value, 100)
+        self.assertEqual(ref.name, "test")
+        self.assertEqual(ref.type, "Item")
+        self.assertEqual(ref.value, 100)
 
     def test_valid_object_name(self):
         obj = Item()

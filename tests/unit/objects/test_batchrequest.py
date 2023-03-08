@@ -10,7 +10,7 @@ class FaultTests(unittest.TestCase):
         fault.original_object = 100
         fault.Error.append("error")
 
-        self.assertEquals(str(fault.__repr__()), "1 Errors")
+        self.assertEqual(str(fault.__repr__()), "1 Errors")
 
 
 class FaultErrorTests(unittest.TestCase):
@@ -20,7 +20,7 @@ class FaultErrorTests(unittest.TestCase):
         fault_error.code = 100
         fault_error.Detail = "detail"
 
-        self.assertEquals(str(fault_error), "Code: 100 Message: test Detail: detail")
+        self.assertEqual(str(fault_error), "Code: 100 Message: test Detail: detail")
 
     def test__repr__(self):
         fault_error = FaultError()
@@ -28,7 +28,7 @@ class FaultErrorTests(unittest.TestCase):
         fault_error.code = 100
         fault_error.Detail = "detail"
 
-        self.assertEquals(fault_error.__repr__(), "Code: 100 Message: test Detail: detail")
+        self.assertEqual(fault_error.__repr__(), "Code: 100 Message: test Detail: detail")
 
 
 class BatchItemResponseTests(unittest.TestCase):
@@ -37,15 +37,15 @@ class BatchItemResponseTests(unittest.TestCase):
         batch_item = BatchItemResponse()
         batch_item.set_object(obj)
 
-        self.assertEquals(batch_item._original_object, obj)
-        self.assertEquals(batch_item.Error, obj)
+        self.assertEqual(batch_item._original_object, obj)
+        self.assertEqual(batch_item.Error, obj)
 
     def test_get_object(self):
         obj = Fault()
         batch_item = BatchItemResponse()
         batch_item.set_object(obj)
 
-        self.assertEquals(batch_item.get_object(), obj)
+        self.assertEqual(batch_item.get_object(), obj)
 
 
 class BatchItemRequestTests(unittest.TestCase):
@@ -54,12 +54,12 @@ class BatchItemRequestTests(unittest.TestCase):
         batch_item = BatchItemRequest()
         batch_item.set_object(obj)
 
-        self.assertEquals(batch_item._original_object, obj)
-        self.assertEquals(batch_item.Error, obj)
+        self.assertEqual(batch_item._original_object, obj)
+        self.assertEqual(batch_item.Error, obj)
 
     def test_get_object(self):
         obj = Fault()
         batch_item = BatchItemRequest()
         batch_item.set_object(obj)
 
-        self.assertEquals(batch_item.get_object(), obj)
+        self.assertEqual(batch_item.get_object(), obj)

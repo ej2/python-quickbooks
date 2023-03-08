@@ -1,5 +1,10 @@
 Changelog
 =========
+* 0.9.3 (March 7, 2023)
+    * Added support for Recurring Transaction
+    * Added support for optional query params
+    * Fixed errors in example code on the readme
+    * Removed enable_global and disable_global
 
 * 0.9.2 (August 3, 2022)
     * Removed pycparser dependency

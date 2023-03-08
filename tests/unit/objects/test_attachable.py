@@ -9,7 +9,7 @@ class AttachableTests(unittest.TestCase):
         attachable = Attachable()
         attachable.FileName = "test"
 
-        self.assertEquals(str(attachable), "test")
+        self.assertEqual(str(attachable), "test")
 
     def test_to_ref(self):
         attachable = Attachable()
@@ -18,9 +18,9 @@ class AttachableTests(unittest.TestCase):
 
         ref = attachable.to_ref()
 
-        self.assertEquals(ref.name, "test")
-        self.assertEquals(ref.type, "Attachable")
-        self.assertEquals(ref.value, 12)
+        self.assertEqual(ref.name, "test")
+        self.assertEqual(ref.type, "Attachable")
+        self.assertEqual(ref.value, 12)
 
     def test_valid_object_name(self):
         attachable = Attachable()

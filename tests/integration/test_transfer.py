@@ -31,10 +31,10 @@ class TransferTest(QuickbooksTestCase):
 
         query_transfer = Transfer.get(transfer.Id, qb=self.qb_client)
 
-        self.assertEquals(query_transfer.Id, transfer.Id)
-        self.assertEquals(query_transfer.Amount, 100)
-        self.assertEquals(query_transfer.FromAccountRef.value, from_account.Id)
-        self.assertEquals(query_transfer.ToAccountRef.value, to_account.Id)
+        self.assertEqual(query_transfer.Id, transfer.Id)
+        self.assertEqual(query_transfer.Amount, 100)
+        self.assertEqual(query_transfer.FromAccountRef.value, from_account.Id)
+        self.assertEqual(query_transfer.ToAccountRef.value, to_account.Id)
 
         # reset transfer (so the from_account doesn't run out of cash)
         transfer = Transfer()
@@ -51,4 +51,4 @@ class TransferTest(QuickbooksTestCase):
 
         query_transfer = Transfer.get(transfer.Id, qb=self.qb_client)
 
-        self.assertEquals(query_transfer.Amount, transfer.Amount)
+        self.assertEqual(query_transfer.Amount, transfer.Amount)

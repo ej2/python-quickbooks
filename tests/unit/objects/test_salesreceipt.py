@@ -9,7 +9,7 @@ class SalesReceiptTests(unittest.TestCase):
         sales_receipt = SalesReceipt()
         sales_receipt.TotalAmt = 100
 
-        self.assertEquals(str(sales_receipt), "100")
+        self.assertEqual(str(sales_receipt), "100")
 
     def test_valid_object_name(self):
         obj = SalesReceipt()

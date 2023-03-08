@@ -9,5 +9,5 @@ class TaxCodeTest(QuickbooksTestCase):
         # KNOWN Quickbooks bug - TaxCode query returns 3 extra items:
         # https://intuitdeveloper.lc.intuit.com/questions/1398164-setting-maxresults-on-taxcode-query-returns-incorrect-number-of-records
 
-        self.assertEquals(len(tax_codes), 4)
+        self.assertEqual(len(tax_codes), 4)
 

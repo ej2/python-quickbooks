@@ -9,7 +9,7 @@ class PurchaseTests(unittest.TestCase):
         purchase = Purchase()
         purchase.TotalAmt = 1000
 
-        self.assertEquals(str(purchase), "1000")
+        self.assertEqual(str(purchase), "1000")
 
     def test_valid_object_name(self):
         obj = Purchase()

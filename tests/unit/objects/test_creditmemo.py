@@ -11,7 +11,7 @@ class SalesItemLineDetailTests(unittest.TestCase):
         detail = SalesItemLineDetail()
         detail.UnitPrice = 10
 
-        self.assertEquals(str(detail), "10")
+        self.assertEqual(str(detail), "10")
 
 
 class CreditMemoTests(unittest.TestCase):
@@ -19,7 +19,7 @@ class CreditMemoTests(unittest.TestCase):
         credit_memo = CreditMemo()
         credit_memo.TotalAmt = 1000
 
-        self.assertEquals(str(credit_memo), "1000")
+        self.assertEqual(str(credit_memo), "1000")
 
     def test_valid_object_name(self):
         obj = CreditMemo()
@@ -33,31 +33,31 @@ class DiscountLineDetailTests(unittest.TestCase):
     def test_init(self):
         discount_detail = DiscountLineDetail()
 
-        self.assertEquals(discount_detail.ClassRef, None)
-        self.assertEquals(discount_detail.TaxCodeRef, None)
-        self.assertEquals(discount_detail.Discount, None)
+        self.assertEqual(discount_detail.ClassRef, None)
+        self.assertEqual(discount_detail.TaxCodeRef, None)
+        self.assertEqual(discount_detail.Discount, None)
 
 
 class SubtotalLineDetailTests(unittest.TestCase):
     def test_init(self):
         detail = SubtotalLineDetail()
 
-        self.assertEquals(detail.ItemRef, None)
+        self.assertEqual(detail.ItemRef, None)
 
 
 class DiscountOverrideTests(unittest.TestCase):
     def test_init(self):
         discount_detail = DiscountOverride()
 
-        self.assertEquals(discount_detail.PercentBased, False)
-        self.assertEquals(discount_detail.DiscountPercent, 0)
-        self.assertEquals(discount_detail.DiscountAccountRef, None)
-        self.assertEquals(discount_detail.DiscountRef, None)
+        self.assertEqual(discount_detail.PercentBased, False)
+        self.assertEqual(discount_detail.DiscountPercent, 0)
+        self.assertEqual(discount_detail.DiscountAccountRef, None)
+        self.assertEqual(discount_detail.DiscountRef, None)
 
 
 class DescriptionLineDetailTests(unittest.TestCase):
     def test_init(self):
         detail = DescriptionLineDetail()
 
-        self.assertEquals(detail.ServiceDate, "")
-        self.assertEquals(detail.TaxCodeRef, None)
+        self.assertEqual(detail.ServiceDate, "")
+        self.assertEqual(detail.TaxCodeRef, None)

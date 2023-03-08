@@ -9,7 +9,7 @@ class BillTests(unittest.TestCase):
         bill = Bill()
         bill.Balance = 1000
 
-        self.assertEquals(str(bill), "1000")
+        self.assertEqual(str(bill), "1000")
 
     def test_to_LinkedTxn(self):
         bill = Bill()
@@ -17,9 +17,9 @@ class BillTests(unittest.TestCase):
 
         linked_txn = bill.to_linked_txn()
 
-        self.assertEquals(linked_txn.TxnId, bill.Id)
-        self.assertEquals(linked_txn.TxnType, "Bill")
-        self.assertEquals(linked_txn.TxnLineId, 1)
+        self.assertEqual(linked_txn.TxnId, bill.Id)
+        self.assertEqual(linked_txn.TxnType, "Bill")
+        self.assertEqual(linked_txn.TxnLineId, 1)
 
     def test_valid_object_name(self):
         obj = Bill()
@@ -35,7 +35,7 @@ class BillTests(unittest.TestCase):
 
         ref = bill.to_ref()
 
-        self.assertEquals(ref.name, "test")
-        self.assertEquals(ref.type, "Bill")
-        self.assertEquals(ref.value, 100)
+        self.assertEqual(ref.name, "test")
+        self.assertEqual(ref.type, "Bill")
+        self.assertEqual(ref.value, 100)
 

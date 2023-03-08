@@ -34,7 +34,7 @@ class InvoiceTest(QuickbooksTestCase):
 
         print(invoice[0].Line[0].LineNum)
         print(invoice[0].Line[0].Amount)
-        self.assertEquals(invoice[0].CustomerRef.name, customer.DisplayName)
+        self.assertEqual(invoice[0].CustomerRef.name, customer.DisplayName)
 
     def test_where(self):
         customer = Customer.all(max_results=1, qb=self.qb_client)[0]
@@ -43,17 +43,17 @@ class InvoiceTest(QuickbooksTestCase):
             "CustomerRef = '{0}'".format(customer.Id), qb=self.qb_client)
 
         print(invoice[0])
-        self.assertEquals(invoice[0].CustomerRef.name, customer.DisplayName)
+        self.assertEqual(invoice[0].CustomerRef.name, customer.DisplayName)
 
     def test_create(self):
         customer = Customer.all(max_results=1, qb=self.qb_client)[0]
         invoice = self.create_invoice(customer)
         query_invoice = Invoice.get(invoice.Id, qb=self.qb_client)
 
-        self.assertEquals(query_invoice.CustomerRef.name, customer.DisplayName)
-        self.assertEquals(query_invoice.CustomerMemo.value, "Customer Memo")
-        self.assertEquals(query_invoice.Line[0].Description, "description")
-        self.assertEquals(query_invoice.Line[0].Amount, 100.0)
+        self.assertEqual(query_invoice.CustomerRef.name, customer.DisplayName)
+        self.assertEqual(query_invoice.CustomerMemo.value, "Customer Memo")
+        self.assertEqual(query_invoice.Line[0].Description, "description")
+        self.assertEqual(query_invoice.Line[0].Amount, 100.0)
     
     def test_create_idempotence(self):
         customer = Customer.all(max_results=1, qb=self.qb_client)[0]
@@ -62,7 +62,7 @@ class InvoiceTest(QuickbooksTestCase):
         duplicate_invoice = self.create_invoice(customer, request_id=sample_request_id)
 
         # Assert that both returned invoices have the same id
-        self.assertEquals(invoice.Id, duplicate_invoice.Id)
+        self.assertEqual(invoice.Id, duplicate_invoice.Id)
 
     def test_delete(self):
         customer = Customer.all(max_results=1, qb=self.qb_client)[0]

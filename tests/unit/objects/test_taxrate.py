@@ -9,7 +9,7 @@ class TaxCodeTests(unittest.TestCase):
         tax = TaxRate()
         tax.Name = "test"
 
-        self.assertEquals(str(tax), "test")
+        self.assertEqual(str(tax), "test")
 
     def test_valid_object_name(self):
         obj = TaxRate()

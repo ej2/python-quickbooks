@@ -33,12 +33,12 @@ class QuickbooksUnitTestCase(TestCase):
         self.auth_client = AuthClient(
             client_id='CLIENTID',
             client_secret='CLIENT_SECRET',
-            environment=Environments.SANDBOX,
+            environment='sandbox',
             redirect_uri='http://localhost:8000/callback',
         )
 
         self.qb_client = QuickBooks(
-            #auth_client=self.auth_client,
+            # auth_client=self.auth_client,
             refresh_token='REFRESH_TOKEN',
             company_id='COMPANY_ID',
         )

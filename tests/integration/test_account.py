@@ -20,9 +20,9 @@ class AccountTest(QuickbooksTestCase):
         self.id = account.Id
         query_account = Account.get(account.Id, qb=self.qb_client)
 
-        self.assertEquals(account.Id, query_account.Id)
-        self.assertEquals(query_account.Name, self.name)
-        self.assertEquals(query_account.AcctNum, self.account_number)
+        self.assertEqual(account.Id, query_account.Id)
+        self.assertEqual(query_account.Name, self.name)
+        self.assertEqual(query_account.AcctNum, self.account_number)
 
     def test_update(self):
         account = Account.filter(Name=self.name, qb=self.qb_client)[0]
@@ -31,4 +31,4 @@ class AccountTest(QuickbooksTestCase):
         account.save(qb=self.qb_client)
 
         query_account = Account.get(account.Id, qb=self.qb_client)
-        self.assertEquals(query_account.Name, "Updated Name {0}".format(self.account_number))
+        self.assertEqual(query_account.Name, "Updated Name {0}".format(self.account_number))

@@ -9,7 +9,7 @@ class CustomerTypeTests(unittest.TestCase):
         customer_type = CustomerType()
         customer_type.Name = "test"
 
-        self.assertEquals(str(customer_type), "test")
+        self.assertEqual(str(customer_type), "test")
 
     def test_valid_object_name(self):
         obj = CustomerType()

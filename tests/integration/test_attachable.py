@@ -27,8 +27,8 @@ class AttachableTest(QuickbooksTestCase):
         attachable.save(qb=self.qb_client)
         query_attachable = Attachable.get(attachable.Id, qb=self.qb_client)
 
-        self.assertEquals(query_attachable.AttachableRef[0].EntityRef.value, vendor.Id)
-        self.assertEquals(query_attachable.Note, "Test note added on {}".format(self.time.strftime("%Y-%m-%d %H:%M:%S")))
+        self.assertEqual(query_attachable.AttachableRef[0].EntityRef.value, vendor.Id)
+        self.assertEqual(query_attachable.Note, "Test note added on {}".format(self.time.strftime("%Y-%m-%d %H:%M:%S")))
 
     def test_update_note(self):
         attachable = Attachable.all(max_results=1, qb=self.qb_client)[0]
@@ -37,7 +37,7 @@ class AttachableTest(QuickbooksTestCase):
         attachable.save(qb=self.qb_client)
 
         query_attachable = Attachable.get(attachable.Id, qb=self.qb_client)
-        self.assertEquals(query_attachable.Note, "Note updated on {}".format(self.time.strftime("%Y-%m-%d %H:%M:%S")))
+        self.assertEqual(query_attachable.Note, "Note updated on {}".format(self.time.strftime("%Y-%m-%d %H:%M:%S")))
 
     def test_create_file(self):
         attachable = Attachable()
@@ -57,4 +57,4 @@ class AttachableTest(QuickbooksTestCase):
 
         query_attachable = Attachable.get(attachable.Id, qb=self.qb_client)
 
-        self.assertEquals(query_attachable.AttachableRef[0].EntityRef.value, vendor.Id)
+        self.assertEqual(query_attachable.AttachableRef[0].EntityRef.value, vendor.Id)

@@ -9,7 +9,7 @@ class PaymentMethodTests(unittest.TestCase):
         payment_method = PaymentMethod()
         payment_method.Name = "test"
 
-        self.assertEquals(str(payment_method), "test")
+        self.assertEqual(str(payment_method), "test")
 
     def test_valid_object_name(self):
         obj = PaymentMethod()
@@ -25,6 +25,6 @@ class PaymentMethodTests(unittest.TestCase):
 
         ref = obj.to_ref()
 
-        self.assertEquals(ref.name, "test")
-        self.assertEquals(ref.type, "PaymentMethod")
-        self.assertEquals(ref.value, 12)
+        self.assertEqual(ref.name, "test")
+        self.assertEqual(ref.type, "PaymentMethod")
+        self.assertEqual(ref.value, 12)

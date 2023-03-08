@@ -9,7 +9,7 @@ class AccountTests(unittest.TestCase):
         account = Account()
         account.FullyQualifiedName = "test"
 
-        self.assertEquals(str(account), "test")
+        self.assertEqual(str(account), "test")
 
     def test_to_ref(self):
         account = Account()
@@ -18,9 +18,9 @@ class AccountTests(unittest.TestCase):
 
         ref = account.to_ref()
 
-        self.assertEquals(ref.name, "test")
-        self.assertEquals(ref.type, "Account")
-        self.assertEquals(ref.value, 12)
+        self.assertEqual(ref.name, "test")
+        self.assertEqual(ref.type, "Account")
+        self.assertEqual(ref.value, 12)
 
     def test_valid_object_name(self):
         account = Account()

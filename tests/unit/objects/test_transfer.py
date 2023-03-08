@@ -9,7 +9,7 @@ class TaxAgencyTests(unittest.TestCase):
         transfer = Transfer()
         transfer.Amount = 100
 
-        self.assertEquals(str(transfer), "100")
+        self.assertEqual(str(transfer), "100")
 
     def test_valid_object_name(self):
         obj = Transfer()

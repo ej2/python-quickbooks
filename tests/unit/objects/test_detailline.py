@@ -12,7 +12,7 @@ class DetailLineTests(unittest.TestCase):
         detail.Description = "Product Description"
         detail.Amount = 100
 
-        self.assertEquals(str(detail), "[1] Product Description 100")
+        self.assertEqual(str(detail), "[1] Product Description 100")
 
 
 class SalesItemLineDetailTests(unittest.TestCase):
@@ -20,16 +20,16 @@ class SalesItemLineDetailTests(unittest.TestCase):
         sales_detail = SalesItemLineDetail()
         sales_detail.UnitPrice = 10
 
-        self.assertEquals(str(sales_detail), "10")
+        self.assertEqual(str(sales_detail), "10")
 
 
 class DiscountOverrideTests(unittest.TestCase):
     def test_init(self):
         discount_override = DiscountOverride()
 
-        self.assertEquals(discount_override.DiscountPercent, 0)
-        self.assertEquals(discount_override.DiscountRef, None)
-        self.assertEquals(discount_override.DiscountAccountRef, None)
+        self.assertEqual(discount_override.DiscountPercent, 0)
+        self.assertEqual(discount_override.DiscountRef, None)
+        self.assertEqual(discount_override.DiscountAccountRef, None)
         self.assertFalse(discount_override.PercentBased)
 
 
@@ -37,79 +37,79 @@ class DiscountLineDetailTesets(unittest.TestCase):
     def test_init(self):
         discount_detail = DiscountLineDetail()
 
-        self.assertEquals(discount_detail.Discount, None)
-        self.assertEquals(discount_detail.ClassRef, None)
-        self.assertEquals(discount_detail.TaxCodeRef, None)
+        self.assertEqual(discount_detail.Discount, None)
+        self.assertEqual(discount_detail.ClassRef, None)
+        self.assertEqual(discount_detail.TaxCodeRef, None)
 
 class SubtotalLineDetailTest(unittest.TestCase):
     def test_init(self):
         detail = SubtotalLineDetail()
 
-        self.assertEquals(detail.ItemRef, None)
+        self.assertEqual(detail.ItemRef, None)
 
 
 class SubtotalLineTest(unittest.TestCase):
     def test_init(self):
         subtotal_line = SubtotalLine()
 
-        self.assertEquals(subtotal_line.DetailType, "SubTotalLineDetail")
-        self.assertEquals(subtotal_line.SubtotalLineDetail, None)
+        self.assertEqual(subtotal_line.DetailType, "SubTotalLineDetail")
+        self.assertEqual(subtotal_line.SubtotalLineDetail, None)
 
 
 class DescriptionLineDetailTest(unittest.TestCase):
     def test_init(self):
         description_detail = DescriptionLineDetail()
 
-        self.assertEquals(description_detail.ServiceDate, "")
-        self.assertEquals(description_detail.TaxCodeRef, None)
+        self.assertEqual(description_detail.ServiceDate, "")
+        self.assertEqual(description_detail.TaxCodeRef, None)
 
 
 class SalesItemLineTest(unittest.TestCase):
     def test_init(self):
         line = SalesItemLine()
 
-        self.assertEquals(line.DetailType, "SalesItemLineDetail")
-        self.assertEquals(line.SalesItemLineDetail, None)
+        self.assertEqual(line.DetailType, "SalesItemLineDetail")
+        self.assertEqual(line.SalesItemLineDetail, None)
 
 
 class DiscountLineTest(unittest.TestCase):
     def test_init(self):
         line = DiscountLine()
 
-        self.assertEquals(line.DetailType, "DiscountLineDetail")
-        self.assertEquals(line.DiscountLineDetail, None)
+        self.assertEqual(line.DetailType, "DiscountLineDetail")
+        self.assertEqual(line.DiscountLineDetail, None)
 
 
 class GroupLineTest(unittest.TestCase):
     def test_init(self):
         line = GroupLine()
 
-        self.assertEquals(line.DetailType, "GroupLineDetail")
-        self.assertEquals(line.GroupLineDetail, None)
+        self.assertEqual(line.DetailType, "GroupLineDetail")
+        self.assertEqual(line.GroupLineDetail, None)
 
 
 class ItemBasedExpenseLineDetailTest(unittest.TestCase):
     def test_init(self):
         detail = ItemBasedExpenseLineDetail()
 
-        self.assertEquals(detail.BillableStatus, None)
-        self.assertEquals(detail.UnitPrice, 0)
-        self.assertEquals(detail.TaxInclusiveAmt, 0)
-        self.assertEquals(detail.Qty, 0)
-        self.assertEquals(detail.ItemRef, None)
-        self.assertEquals(detail.ClassRef, None)
-        self.assertEquals(detail.PriceLevelRef, None)
-        self.assertEquals(detail.TaxCodeRef, None)
-        self.assertEquals(detail.MarkupInfo, None)
-        self.assertEquals(detail.CustomerRef, None)
+        self.assertEqual(detail.BillableStatus, None)
+        self.assertEqual(detail.UnitPrice, 0)
+        self.assertEqual(detail.TaxInclusiveAmt, 0)
+        self.assertEqual(detail.Qty, 0)
+        self.assertEqual(detail.ItemRef, None)
+        self.assertEqual(detail.ClassRef, None)
+        self.assertEqual(detail.PriceLevelRef, None)
+        self.assertEqual(detail.TaxCodeRef, None)
+        self.assertEqual(detail.MarkupInfo, None)
+        self.assertEqual(detail.CustomerRef, None)
 
 
 class ItemBasedExpenseLineTests(unittest.TestCase):
     def test_unicode(self):
         line = ItemBasedExpenseLine()
 
-        self.assertEquals(line.DetailType, "ItemBasedExpenseLineDetail")
-        self.assertEquals(line.ItemBasedExpenseLineDetail, None)
+        self.assertEqual(line.DetailType, "ItemBasedExpenseLineDetail")
+        self.assertEqual(line.ItemBasedExpenseLineDetail, None)
 
 
 class AccountBasedExpenseLineDetailTests(unittest.TestCase):
@@ -117,12 +117,12 @@ class AccountBasedExpenseLineDetailTests(unittest.TestCase):
         acct_detail = AccountBasedExpenseLineDetail()
         acct_detail.BillableStatus = "test"
 
-        self.assertEquals(str(acct_detail), "test")
+        self.assertEqual(str(acct_detail), "test")
 
 
 class DescriptionOnlyLineTests(unittest.TestCase):
     def test_unicode(self):
         line = DescriptionOnlyLine()
 
-        self.assertEquals(line.DetailType, "DescriptionOnly")
-        self.assertEquals(line.DescriptionLineDetail, None)
+        self.assertEqual(line.DetailType, "DescriptionOnly")
+        self.assertEqual(line.DescriptionLineDetail, None)

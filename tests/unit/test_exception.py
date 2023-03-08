@@ -8,13 +8,13 @@ class QuickbooksExceptionTests(unittest.TestCase):
     def test_init(self):
         exception = QuickbooksException("message", 100, "detail")
 
-        self.assertEquals(exception.message, "message")
-        self.assertEquals(exception.error_code, 100)
-        self.assertEquals(exception.detail, "detail")
+        self.assertEqual(exception.message, "message")
+        self.assertEqual(exception.error_code, 100)
+        self.assertEqual(exception.detail, "detail")
 
 
 class AuthorizationExceptionTests(unittest.TestCase):
     def test_unicode(self):
         exception = AuthorizationException("message", detail="detail")
 
-        self.assertEquals(str(exception), "QB Auth Exception 0: message\ndetail")
+        self.assertEqual(str(exception), "QB Auth Exception 0: message\ndetail")

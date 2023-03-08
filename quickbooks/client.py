@@ -53,6 +53,7 @@ class QuickBooks(object):
         "Purchase", "PurchaseOrder", "RefundReceipt",
         "SalesReceipt", "TaxAgency", "TaxCode", "TaxService/Taxcode", "TaxRate", "Term",
         "TimeActivity", "Transfer", "Vendor", "VendorCredit", "CreditCardPayment",
+        "RecurringTransaction"
     ]
 
     __instance = None
@@ -107,27 +108,6 @@ class QuickBooks(object):
         )
         return self.auth_client.refresh_token
 
-    @classmethod
-    def get_instance(cls):
-        return cls.__instance
-
-    @classmethod
-    def disable_global(cls):
-        """
-        Disable use of singleton pattern.
-        """
-        warnings.warn("disable_global deprecated", PendingDeprecationWarning)
-        QuickBooks.__use_global = False
-        QuickBooks.__instance = None
-
-    @classmethod
-    def enable_global(cls):
-        """
-        Allow use of singleton pattern.
-        """
-        warnings.warn("enable_global deprecated", PendingDeprecationWarning)
-        QuickBooks.__use_global = True
-
     def _drop(self):
         QuickBooks.__instance = None
 
@@ -172,6 +152,7 @@ class QuickBooks(object):
 
     def make_request(self, request_type, url, request_body=None, content_type='application/json',
                      params=None, file_path=None, request_id=None):
+        print(params)
         if not params:
             params = {}
 
@@ -305,17 +286,17 @@ class QuickBooks(object):
             else:
                 raise exceptions.QuickbooksException(message, code, detail)
 
-    def create_object(self, qbbo, request_body, _file_path=None, request_id=None):
+    def create_object(self, qbbo, request_body, _file_path=None, request_id=None, params=None):
         self.isvalid_object_name(qbbo)
 
         url = "{0}/company/{1}/{2}".format(self.api_url, self.company_id, qbbo.lower())
-        results = self.post(url, request_body, file_path=_file_path, request_id=request_id)
+        results = self.post(url, request_body, file_path=_file_path, request_id=request_id, params=params)
 
         return results
 
-    def query(self, select):
+    def query(self, select, params=None):
         url = "{0}/company/{1}/query".format(self.api_url, self.company_id)
-        result = self.post(url, select, content_type='application/text')
+        result = self.post(url, select, content_type='application/text', params=params)
 
         return result
 
@@ -325,9 +306,9 @@ class QuickBooks(object):
 
         return True
 
-    def update_object(self, qbbo, request_body, _file_path=None, request_id=None):
+    def update_object(self, qbbo, request_body, _file_path=None, request_id=None, params=None):
         url = "{0}/company/{1}/{2}".format(self.api_url, self.company_id,  qbbo.lower())
-        result = self.post(url, request_body, file_path=_file_path, request_id=request_id)
+        result = self.post(url, request_body, file_path=_file_path, request_id=request_id, params=params)
 
         return result
 

@@ -148,14 +148,14 @@ class UpdateMixin(object):
     qbo_object_name = ""
     qbo_json_object_name = ""
 
-    def save(self, qb=None, request_id=None):
+    def save(self, qb=None, request_id=None, params=None):
         if not qb:
             qb = QuickBooks()
 
         if self.Id and int(self.Id) > 0:
-            json_data = qb.update_object(self.qbo_object_name, self.to_json(), request_id=request_id)
+            json_data = qb.update_object(self.qbo_object_name, self.to_json(), request_id=request_id, params=params)
         else:
-            json_data = qb.create_object(self.qbo_object_name, self.to_json(), request_id=request_id)
+            json_data = qb.create_object(self.qbo_object_name, self.to_json(), request_id=request_id, params=params)
 
         if self.qbo_json_object_name != '':
             obj = type(self).from_json(json_data[self.qbo_json_object_name])
@@ -194,6 +194,16 @@ class DeleteMixin(object):
             'SyncToken': self.SyncToken,
         }
         return qb.delete_object(self.qbo_object_name, json.dumps(data), request_id=request_id)
+
+
+class DeleteNoIdMixin(object):
+    qbo_object_name = ""
+
+    def delete(self, qb=None, request_id=None):
+        if not qb:
+            qb = QuickBooks()
+
+        return qb.delete_object(self.qbo_object_name, self.to_json(), request_id=request_id)
 
 
 class ListMixin(object):

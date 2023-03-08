@@ -14,7 +14,7 @@ class AddressTests(unittest.TestCase):
         address.CountrySubDivisionCode = "MO"
         address.PostalCode = "12345"
 
-        self.assertEquals(str(address), "123 Main Joplin, MO 12345")
+        self.assertEqual(str(address), "123 Main Joplin, MO 12345")
 
 
 class PhoneNumberTests(unittest.TestCase):
@@ -22,7 +22,7 @@ class PhoneNumberTests(unittest.TestCase):
         number = PhoneNumber()
         number.FreeFormNumber = "555-555-5555"
 
-        self.assertEquals(str(number), "555-555-5555")
+        self.assertEqual(str(number), "555-555-5555")
 
 
 class EmailAddressTests(unittest.TestCase):
@@ -30,7 +30,7 @@ class EmailAddressTests(unittest.TestCase):
         email = EmailAddress()
         email.Address = "email@gmail.com"
 
-        self.assertEquals(str(email), "email@gmail.com")
+        self.assertEqual(str(email), "email@gmail.com")
 
 
 class WebAddressTests(unittest.TestCase):
@@ -38,7 +38,7 @@ class WebAddressTests(unittest.TestCase):
         url = WebAddress()
         url.URI = "www.website.com"
 
-        self.assertEquals(str(url), "www.website.com")
+        self.assertEqual(str(url), "www.website.com")
 
 
 class RefTests(unittest.TestCase):
@@ -48,7 +48,7 @@ class RefTests(unittest.TestCase):
         ref.name = "test"
         ref.value = 1
 
-        self.assertEquals(str(ref), "test")
+        self.assertEqual(str(ref), "test")
 
 
 class CustomFieldTests(unittest.TestCase):
@@ -56,7 +56,7 @@ class CustomFieldTests(unittest.TestCase):
         custom = CustomField()
         custom.Name = "name"
 
-        self.assertEquals(str(custom), "name")
+        self.assertEqual(str(custom), "name")
 
 
 class CustomerMemoTests(unittest.TestCase):
@@ -64,7 +64,7 @@ class CustomerMemoTests(unittest.TestCase):
         memo = CustomerMemo()
         memo.value = "value"
 
-        self.assertEquals(str(memo), "value")
+        self.assertEqual(str(memo), "value")
 
 
 class LinkedTxnTests(unittest.TestCase):
@@ -72,7 +72,7 @@ class LinkedTxnTests(unittest.TestCase):
         linked = LinkedTxn()
         linked.TxnId = 1
 
-        self.assertEquals(str(linked), "1")
+        self.assertEqual(str(linked), "1")
 
 
 class MetaDataTests(unittest.TestCase):
@@ -80,17 +80,17 @@ class MetaDataTests(unittest.TestCase):
         meta = MetaData()
         meta.CreateTime = "1/1/2000"
 
-        self.assertEquals(str(meta), "Created 1/1/2000")
+        self.assertEqual(str(meta), "Created 1/1/2000")
 
 
 class MarkupInfoTests(unittest.TestCase):
     def test_init(self):
         markup = MarkupInfo()
 
-        self.assertEquals(markup.PercentBased, False)
-        self.assertEquals(markup.Value, 0)
-        self.assertEquals(markup.Percent, 0)
-        self.assertEquals(markup.PriceLevelRef, None)
+        self.assertEqual(markup.PercentBased, False)
+        self.assertEqual(markup.Value, 0)
+        self.assertEqual(markup.Percent, 0)
+        self.assertEqual(markup.PriceLevelRef, None)
 
 
 class AttachableRefTests(unittest.TestCase):
@@ -101,11 +101,11 @@ class AttachableRefTests(unittest.TestCase):
         attachable.Inactive = False
         attachable.NoRefOnly = False
 
-        self.assertEquals(attachable.LineInfo, None)
-        self.assertEquals(attachable.IncludeOnSend, False)
-        self.assertEquals(attachable.Inactive, False)
-        self.assertEquals(attachable.NoRefOnly, False)
-        self.assertEquals(attachable.EntityRef, None)
+        self.assertEqual(attachable.LineInfo, None)
+        self.assertEqual(attachable.IncludeOnSend, False)
+        self.assertEqual(attachable.Inactive, False)
+        self.assertEqual(attachable.NoRefOnly, False)
+        self.assertEqual(attachable.EntityRef, None)
 
 
 class LinkedTxnMixinTests(unittest.TestCase):
@@ -116,6 +116,6 @@ class LinkedTxnMixinTests(unittest.TestCase):
 
         linked_txn = deposit.to_linked_txn()
 
-        self.assertEquals(linked_txn.TxnId, 100)
-        self.assertEquals(linked_txn.TxnType, "Deposit")
-        self.assertEquals(linked_txn.TxnLineId, 1)
+        self.assertEqual(linked_txn.TxnId, 100)
+        self.assertEqual(linked_txn.TxnType, "Deposit")
+        self.assertEqual(linked_txn.TxnLineId, 1)

@@ -8,7 +8,7 @@ class BudgetDetailTests(unittest.TestCase):
         budget_detail = BudgetDetail()
         budget_detail.Amount = 10
 
-        self.assertEquals(str(budget_detail), "10")
+        self.assertEqual(str(budget_detail), "10")
 
 
 class BudgetTests(unittest.TestCase):
@@ -16,4 +16,4 @@ class BudgetTests(unittest.TestCase):
         budget = Budget()
         budget.Name = "test"
 
-        self.assertEquals(str(budget), "test")
+        self.assertEqual(str(budget), "test")

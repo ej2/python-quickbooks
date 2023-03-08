@@ -9,7 +9,7 @@ class TaxAgencyTests(unittest.TestCase):
         credit_card_payment = CreditCardPayment()
         credit_card_payment.Amount = 100
 
-        self.assertEquals(str(credit_card_payment), "100")
+        self.assertEqual(str(credit_card_payment), "100")
 
     def test_valid_object_name(self):
         obj = CreditCardPayment()

@@ -10,7 +10,7 @@ class InvoiceTests(unittest.TestCase):
         invoice = Invoice()
         invoice.TotalAmt = 10
 
-        self.assertEquals(str(invoice), "10")
+        self.assertEqual(str(invoice), "10")
 
     def test_to_LinkedTxn(self):
         invoice = Invoice()
@@ -19,9 +19,9 @@ class InvoiceTests(unittest.TestCase):
 
         linked_txn = invoice.to_linked_txn()
 
-        self.assertEquals(linked_txn.TxnId, invoice.Id)
-        self.assertEquals(linked_txn.TxnType, "Invoice")
-        self.assertEquals(linked_txn.TxnLineId, 1)
+        self.assertEqual(linked_txn.TxnId, invoice.Id)
+        self.assertEqual(linked_txn.TxnType, "Invoice")
+        self.assertEqual(linked_txn.TxnLineId, 1)
 
     def test_email_sent_true(self):
         invoice = Invoice()
@@ -47,14 +47,14 @@ class InvoiceTests(unittest.TestCase):
 
         ref = invoice.to_ref()
         self.assertIsInstance(ref, Ref)
-        self.assertEquals(ref.type, "Invoice")
-        self.assertEquals(ref.name, 1)  # should be DocNumber
-        self.assertEquals(ref.value, 2)  # should be Id
+        self.assertEqual(ref.type, "Invoice")
+        self.assertEqual(ref.name, 1)  # should be DocNumber
+        self.assertEqual(ref.value, 2)  # should be Id
 
 
 class DeliveryInfoTests(unittest.TestCase):
     def test_init(self):
         info = DeliveryInfo()
 
-        self.assertEquals(info.DeliveryType, "")
-        self.assertEquals(info.DeliveryTime, "")
+        self.assertEqual(info.DeliveryType, "")
+        self.assertEqual(info.DeliveryTime, "")

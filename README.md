@@ -1,7 +1,7 @@
 python-quickbooks
 =================
 
-[![](https://travis-ci.org/ej2/python-quickbooks.svg?branch=master)](https://travis-ci.org/ej2/python-quickbooks)
+[![Python package](https://github.com/ej2/python-quickbooks/actions/workflows/python-package.yml/badge.svg)](https://github.com/ej2/python-quickbooks/actions/workflows/python-package.yml)
 [![Coverage Status](https://coveralls.io/repos/github/ej2/python-quickbooks/badge.svg?branch=master)](https://coveralls.io/github/ej2/python-quickbooks?branch=master)
 [![](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/ej2/python-quickbooks/blob/master/LICENSE)
  
@@ -159,12 +159,12 @@ Batch update a list of objects:
     
     results = batch_update(customers, qb=client)
 
-Batch delete a list of objects:
+Batch delete a list of objects (only entities that support delete can use batch delete):
 
     from quickbooks.batch import batch_delete
 
-    customers = Customer.filter(Active=False)
-    results = batch_delete(customers, qb=client)
+    payments = Payment.filter(TxnDate=date.today())
+    results = batch_delete(payments, qb=client)
 
 Review results for batch operation:
 
@@ -233,21 +233,25 @@ Attaching a file to customer:
     attachment.ContentType = 'application/pdf'
     attachment.save(qb=client)
 
+Passing in optional params
+----------------
+Some QBO objects have options that need to be set on the query string of an API call. 
+One example is `include=allowduplicatedocnum` on the Purchase object. You can add these params when calling save:  
+
+    purchase.save(qb=self.qb_client, params={'include': 'allowduplicatedocnum'})
+
 Other operations
 ----------------
+Add Sharable link for an invoice sent to external customers (minorversion must be set to 36 or greater):
+
+    invoice.invoice_link = true
+
+
 Void an invoice:
 
     invoice = Invoice()
     invoice.Id = 7
     invoice.void(qb=client)
-
-If your company_id never changes you can enable the client to stay running (deprecation warning: will be removed in next release):
-
-    QuickBooks.enable_global()
-
-You can disable the global client like so (deprecation warning: will be removed in next release):
-
-    QuickBooks.disable_global()
 
 
 Working with JSON data
