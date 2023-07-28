@@ -115,7 +115,6 @@ class SalesItemLineDetail(QuickbooksBaseObject):
         self.UnitPrice = 0
         self.Qty = 0
         self.ServiceDate = ""
-        self.TaxInclusiveAmt = 0
 
         self.MarkupInfo = None
         self.ItemRef = None
@@ -177,8 +176,6 @@ class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
     def __init__(self):
         super(AccountBasedExpenseLineDetail, self).__init__()
         self.BillableStatus = None
-        self.TaxAmount = 0
-        self.TaxInclusiveAmt = 0
 
         self.CustomerRef = None
         self.AccountRef = None
@@ -237,7 +234,6 @@ class ItemBasedExpenseLineDetail(QuickbooksBaseObject):
         super(ItemBasedExpenseLineDetail, self).__init__()
         self.BillableStatus = None
         self.UnitPrice = 0
-        self.TaxInclusiveAmt = 0
         self.Qty = 0
         self.ItemRef = None
         self.ClassRef = None
