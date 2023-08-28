@@ -51,5 +51,5 @@ setup(
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
     ],
-    packages=find_packages(),
+    packages=find_packages(exclude=("tests",)),
 )

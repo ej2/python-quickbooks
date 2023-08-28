@@ -1,4 +1,3 @@
-
 publish: clean
 	python setup.py sdist
 	twine upload dist/*
