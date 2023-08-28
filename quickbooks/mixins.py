@@ -1,4 +1,4 @@
-from future.moves.urllib.parse import quote
+from urllib.parse import quote
 
 try: import simplejson as json
 except ImportError: import json
