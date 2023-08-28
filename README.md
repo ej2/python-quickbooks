@@ -4,6 +4,7 @@ python-quickbooks
 [![Python package](https://github.com/ej2/python-quickbooks/actions/workflows/python-package.yml/badge.svg)](https://github.com/ej2/python-quickbooks/actions/workflows/python-package.yml)
 [![Coverage Status](https://coveralls.io/repos/github/ej2/python-quickbooks/badge.svg?branch=master)](https://coveralls.io/github/ej2/python-quickbooks?branch=master)
 [![](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/ej2/python-quickbooks/blob/master/LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/python-quickbooks)](https://pypi.org/project/python-quickbooks/)
  
 A Python 3 library for accessing the Quickbooks API. Complete rework of
 [quickbooks-python](https://github.com/troolee/quickbooks-python).
@@ -13,6 +14,13 @@ change it to whatever framework/method you’re using.
 You can find additional examples of usage in [Integration tests folder](https://github.com/ej2/python-quickbooks/tree/master/tests/integration).
 
 For information about contributing, see the [Contributing Page](https://github.com/ej2/python-quickbooks/blob/master/contributing.md).
+
+Installation
+------------
+
+```bash
+pip install python-quickbooks
+```
 
 QuickBooks OAuth
 ------------------------------------------------
