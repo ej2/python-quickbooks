@@ -1,5 +1,3 @@
-from six import python_2_unicode_compatible
-
 from quickbooks.objects.detailline import DetailLine, ItemBasedExpenseLine, AccountBasedExpenseLine, \
     TDSLine
 from .base import Ref, Address, QuickbooksManagedObject, LinkedTxnMixin, \
@@ -8,7 +6,6 @@ from .tax import TxnTaxDetail
 from ..mixins import DeleteMixin, SendMixin
 
 
-@python_2_unicode_compatible
 class PurchaseOrder(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin, SendMixin):
     """
     QBO definition: The PurchaseOrder entity is a non-posting transaction representing a request to purchase

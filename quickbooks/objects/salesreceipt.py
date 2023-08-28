@@ -1,4 +1,3 @@
-from six import python_2_unicode_compatible
 from .base import Ref, CustomField, QuickbooksManagedObject, LinkedTxnMixin, Address, \
     EmailAddress, QuickbooksTransactionEntity, LinkedTxn
 from .tax import TxnTaxDetail
@@ -6,7 +5,6 @@ from .detailline import DetailLine
 from ..mixins import QuickbooksPdfDownloadable, DeleteMixin
 
 
-@python_2_unicode_compatible
 class SalesReceipt(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject,
                    QuickbooksTransactionEntity, LinkedTxnMixin):
     """

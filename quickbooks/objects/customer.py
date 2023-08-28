@@ -1,9 +1,7 @@
-from six import python_2_unicode_compatible
 from .base import Address, PhoneNumber, EmailAddress, WebAddress, Ref, QuickbooksManagedObject, \
     QuickbooksTransactionEntity
 
 
-@python_2_unicode_compatible
 class Customer(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: A customer is a consumer of the service or product that your business offers. The Customer object

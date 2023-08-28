@@ -1,8 +1,6 @@
-from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, CustomField, LinkedTxn, MarkupInfo
 
 
-@python_2_unicode_compatible
 class DetailLine(QuickbooksBaseObject):
     list_dict = {
         "LinkedTxn": LinkedTxn,
@@ -100,7 +98,6 @@ class DescriptionLineDetail(QuickbooksBaseObject):
         self.TaxCodeRef = None
 
 
-@python_2_unicode_compatible
 class SalesItemLineDetail(QuickbooksBaseObject):
     class_dict = {
         "ItemRef": Ref,
@@ -164,7 +161,6 @@ class DescriptionOnlyLine(DetailLine):
         self.DescriptionLineDetail = None
 
 
-@python_2_unicode_compatible
 class AccountBasedExpenseLineDetail(QuickbooksBaseObject):
     class_dict = {
         "CustomerRef": Ref,
@@ -201,7 +197,6 @@ class AccountBasedExpenseLine(DetailLine):
         self.AccountBasedExpenseLineDetail = None
 
 
-@python_2_unicode_compatible
 class TDSLineDetail(QuickbooksBaseObject):
     def __init__(self):
         super(TDSLineDetail, self).__init__()

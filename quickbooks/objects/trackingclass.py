@@ -1,8 +1,6 @@
-from six import python_2_unicode_compatible
 from .base import QuickbooksManagedObject, QuickbooksTransactionEntity, Ref
 
 
-@python_2_unicode_compatible
 class Class(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: Classes provide a way to track different segments of the business so they're

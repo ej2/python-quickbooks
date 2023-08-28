@@ -1,9 +1,7 @@
-from six import python_2_unicode_compatible
 from .base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin, MetaData
 from ..mixins import DeleteMixin
 
 
-@python_2_unicode_compatible
 class CreditCardPayment(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: A Represents a financial transaction to record a Credit Card balance payment

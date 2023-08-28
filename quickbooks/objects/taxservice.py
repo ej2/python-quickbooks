@@ -1,10 +1,8 @@
-from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject
 from ..mixins import UpdateMixin
 from ..client import QuickBooks
 
 
-@python_2_unicode_compatible
 class TaxRateDetails(QuickbooksBaseObject):
     qbo_object_name = "TaxRateDetails"
 
@@ -20,7 +18,6 @@ class TaxRateDetails(QuickbooksBaseObject):
         return self.TaxRateName
 
 
-@python_2_unicode_compatible
 class TaxService(QuickbooksBaseObject, UpdateMixin):
     """
     QBO definition: The TaxService endpoint allows you to perform the following actions:

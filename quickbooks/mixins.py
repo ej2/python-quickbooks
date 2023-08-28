@@ -3,7 +3,6 @@ from future.moves.urllib.parse import quote
 try: import simplejson as json
 except ImportError: import json
 
-import six
 from .utils import build_where_clause, build_choose_clause
 from .client import QuickBooks
 from .exceptions import QuickbooksException
@@ -70,14 +69,9 @@ def to_dict(obj, classkey=None):
     elif hasattr(obj, "__iter__") and not isinstance(obj, str):
         return [to_dict(v, classkey) for v in obj]
     elif hasattr(obj, "__dict__"):
-        if six.PY2:
-            data = dict([(key, to_dict(value, classkey))
-                        for key, value in obj.__dict__.iteritems()
-                        if not callable(value) and not key.startswith('_')])
-        else:
-            data = dict([(key, to_dict(value, classkey))
-                        for key, value in obj.__dict__.items()
-                        if not callable(value) and not key.startswith('_')])
+        data = dict([(key, to_dict(value, classkey))
+                    for key, value in obj.__dict__.items()
+                    if not callable(value) and not key.startswith('_')])
 
         if classkey is not None and hasattr(obj, "__class__"):
             data[classkey] = obj.__class__.__name__
