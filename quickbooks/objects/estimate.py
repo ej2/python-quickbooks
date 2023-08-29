@@ -1,4 +1,3 @@
-from six import python_2_unicode_compatible
 from .base import CustomField, Ref, CustomerMemo, Address, EmailAddress, QuickbooksManagedObject, \
     LinkedTxnMixin, QuickbooksTransactionEntity, LinkedTxn
 from .tax import TxnTaxDetail
@@ -6,7 +5,6 @@ from .detailline import DetailLine, SalesItemLine, GroupLine, DescriptionOnlyLin
 from ..mixins import QuickbooksPdfDownloadable, DeleteMixin, SendMixin
 
 
-@python_2_unicode_compatible
 class Estimate(DeleteMixin,
                QuickbooksPdfDownloadable,
                QuickbooksManagedObject,

@@ -1,5 +1,3 @@
-from six import python_2_unicode_compatible
-
 from quickbooks.objects import CreditCardPayment
 from .base import Ref, CustomField, QuickbooksManagedObject, \
     LinkedTxnMixin, QuickbooksTransactionEntity, LinkedTxn, Address, EmailAddress, QuickbooksBaseObject, CustomerMemo
@@ -8,7 +6,6 @@ from .detailline import DetailLine
 from ..mixins import DeleteMixin
 
 
-@python_2_unicode_compatible
 class RefundReceiptCheckPayment(QuickbooksBaseObject):
     qbo_object_name = "CheckPayment"
 
@@ -24,7 +21,6 @@ class RefundReceiptCheckPayment(QuickbooksBaseObject):
         return self.CheckNum
 
 
-@python_2_unicode_compatible
 class RefundReceipt(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: RefundReceipt represents a refund to the customer for a product or service that was given.
@@ -35,8 +31,8 @@ class RefundReceipt(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionE
         "TxnTaxDetail": TxnTaxDetail,
         "DepositToAccountRef": Ref,
         "CustomerRef": Ref,
-        "BillAddr":  Address,
-        "ShipAddr":  Address,
+        "BillAddr": Address,
+        "ShipAddr": Address,
         "ClassRef": Ref,
         "BillEmail": EmailAddress,
         "PaymentMethodRef": Ref,

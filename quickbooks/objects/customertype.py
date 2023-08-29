@@ -1,9 +1,7 @@
-from six import python_2_unicode_compatible
 from .base import Address, PhoneNumber, EmailAddress, WebAddress, MetaData, QuickbooksReadOnlyObject, \
     QuickbooksTransactionEntity
 
 
-@python_2_unicode_compatible
 class CustomerType(QuickbooksReadOnlyObject, QuickbooksTransactionEntity):
     """
     QBO definition: Customer types allow categorizing customers in ways that are meaningful to the business.

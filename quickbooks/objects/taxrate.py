@@ -1,10 +1,7 @@
-from six import python_2_unicode_compatible
-
 from quickbooks.mixins import ListMixin, ReadMixin
 from .base import QuickbooksTransactionEntity, Ref, QuickbooksBaseObject
 
 
-@python_2_unicode_compatible
 class TaxRate(QuickbooksTransactionEntity, QuickbooksBaseObject, ReadMixin, ListMixin):
     """
     QBO definition: A TaxRate object represents rate applied to calculate tax liability. Use the TaxService
@@ -34,5 +31,3 @@ class TaxRate(QuickbooksTransactionEntity, QuickbooksBaseObject, ReadMixin, List
 
     def __str__(self):
         return self.Name
-
-

@@ -1,5 +1,3 @@
-from six import python_2_unicode_compatible
-
 from .bill import Bill
 from .creditmemo import CreditMemo
 from .deposit import Deposit
@@ -15,6 +13,7 @@ from .vendorcredit import VendorCredit
 from .base import Ref, QuickbooksBaseObject
 from ..mixins import UpdateNoIdMixin, ListMixin, ReadMixin, DeleteNoIdMixin
 
+
 class ScheduleInfo(QuickbooksBaseObject):
     def __init__(self):
         super(ScheduleInfo, self).__init__()
@@ -23,20 +22,20 @@ class ScheduleInfo(QuickbooksBaseObject):
         self.EndDate = None
         self.DaysBefore = None
         self.MaxOccurrences = None
-        
+
         self.RemindDays = None
         self.IntervalType = None
         self.NumInterval = None
-        
+
         self.DayOfMonth = None
         self.DayOfWeek = None
         self.MonthOfYear = None
         self.WeekOfMonth = None
-        
+
         self.NextDate = None
         self.PreviousDate = None
 
-        
+
 class RecurringInfo(QuickbooksBaseObject):
     class_dict = {
         "ScheduleInfo": ScheduleInfo
@@ -52,7 +51,7 @@ class RecurringInfo(QuickbooksBaseObject):
         self.Active = False
 
 
-class Recurring():    
+class Recurring():
     class_dict = {
         "RecurringInfo": RecurringInfo,
         "RecurDataRef": Ref
@@ -107,7 +106,6 @@ class RecurringPurchaseOrder(PurchaseOrder):
     class_dict = {**PurchaseOrder.class_dict, **Recurring.class_dict}
 
 
-@python_2_unicode_compatible
 class RecurringTransaction(QuickbooksBaseObject, ReadMixin, UpdateNoIdMixin, ListMixin, DeleteNoIdMixin):
     """
     QBO definition: A RecurringTransaction object refers to scheduling creation of transactions,

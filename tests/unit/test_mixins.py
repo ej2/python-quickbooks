@@ -2,7 +2,7 @@
 import os
 
 import unittest
-from future.moves.urllib.parse import quote
+from urllib.parse import quote
 
 from quickbooks.objects import Bill, Invoice
 

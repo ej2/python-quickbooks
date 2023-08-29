@@ -1,4 +1,3 @@
-from six import python_2_unicode_compatible
 from quickbooks.mixins import ListMixin, ReadMixin
 from .base import QuickbooksTransactionEntity, Ref, QuickbooksBaseObject
 
@@ -29,7 +28,6 @@ class TaxRateList(QuickbooksBaseObject):
         self.TaxRateDetail = []
 
 
-@python_2_unicode_compatible
 class TaxCode(QuickbooksTransactionEntity, QuickbooksBaseObject, ReadMixin, ListMixin):
     """
     QBO definition: A TaxCode object is used to track the taxable or non-taxable status of products,

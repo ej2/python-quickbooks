@@ -1,12 +1,9 @@
-from six import python_2_unicode_compatible
-
 from .base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, \
     LinkedTxnMixin
 from .detailline import DetailLine, AccountBasedExpenseLine, ItemBasedExpenseLine, TDSLine
 from ..mixins import DeleteMixin
 
 
-@python_2_unicode_compatible
 class VendorCredit(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: The Vendor Credit entity is an accounts payable transaction that represents a refund or credit

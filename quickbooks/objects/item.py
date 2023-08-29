@@ -1,8 +1,6 @@
-from six import python_2_unicode_compatible
 from .base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity
 
 
-@python_2_unicode_compatible
 class Item(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: An item is a thing that your company buys, sells, or re-sells,

@@ -1,4 +1,3 @@
-from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, \
     LinkedTxnMixin
 from .tax import TxnTaxDetail
@@ -51,7 +50,6 @@ class JournalEntryLine(DetailLine):
         self.JournalEntryLineDetail = None
 
 
-@python_2_unicode_compatible
 class JournalEntry(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: Journal Entry is a transaction in which:
@@ -83,7 +81,7 @@ class JournalEntry(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEn
         super(JournalEntry, self).__init__()
         self.Adjustment = False
         self.TxnDate = ""
-        #self.TxnSource = ""
+        # self.TxnSource = ""
         self.DocNumber = ""
         self.PrivateNote = ""
         self.TotalAmt = 0
