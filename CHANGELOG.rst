@@ -1,5 +1,11 @@
 Changelog
 =========
+* 0.9.4 (August 29, 2023)
+    * Removed python 2 compatible decorators
+    * Removed python 2 dependencies
+    * Fixed issue with MarkupInfo field on AccountBasedExpenseLineDetail
+    * Removed test files from package
+
 * 0.9.3 (March 7, 2023)
     * Added support for Recurring Transaction
     * Added support for optional query params
