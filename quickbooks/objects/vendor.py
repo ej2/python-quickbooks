@@ -1,4 +1,5 @@
 from six import python_2_unicode_compatible
+
 from .base import Address, PhoneNumber, EmailAddress, WebAddress, Ref, QuickbooksBaseObject, \
     QuickbooksManagedObject, QuickbooksTransactionEntity
 
@@ -51,7 +52,7 @@ class Vendor(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.Balance = 0
         self.BillRate = 0
         self.AcctNum = ""
-        self.Vendor1099 = True
+        self.Vendor1099 = False
         self.TaxReportingBasis = ""
 
         self.BillAddr = None
