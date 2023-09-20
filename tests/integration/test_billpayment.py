@@ -33,12 +33,12 @@ class BillPaymentTest(QuickbooksTestCase):
 
         return bill.save(qb=self.qb_client)
 
-    def create_bill_payment(self, bill):
+    def create_bill_payment(self, bill, amount, private_note, pay_type):
         bill_payment = BillPayment()
 
-        bill_payment.PayType = "Check"
-        bill_payment.TotalAmt = 200
-        bill_payment.PrivateNote = "Private Note"
+        bill_payment.PayType = pay_type
+        bill_payment.TotalAmt = amount
+        bill_payment.PrivateNote = private_note
 
         vendor = Vendor.all(max_results=1, qb=self.qb_client)[0]
         bill_payment.VendorRef = vendor.to_ref()
@@ -61,7 +61,7 @@ class BillPaymentTest(QuickbooksTestCase):
         # create new bill for testing, reusing the same bill will cause Line to be empty
         # and the new bill payment will be voided automatically
         bill = self.create_bill()
-        bill_payment = self.create_bill_payment(bill)
+        bill_payment = self.create_bill_payment(bill, 200, "Private Note", "Check")
 
         query_bill_payment = BillPayment.get(bill_payment.Id, qb=self.qb_client)
 
@@ -74,7 +74,7 @@ class BillPaymentTest(QuickbooksTestCase):
 
     def test_void(self):
         bill = self.create_bill()
-        bill_payment = self.create_bill_payment(bill)
+        bill_payment = self.create_bill_payment(bill, 200, "Private Note", "Check")
         query_payment = BillPayment.get(bill_payment.Id, qb=self.qb_client)
         self.assertEqual(query_payment.TotalAmt, 200.0)
         self.assertNotIn('Voided', query_payment.PrivateNote)
