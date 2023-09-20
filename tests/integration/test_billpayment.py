@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from quickbooks.objects import AccountBasedExpenseLine, Ref, AccountBasedExpenseLineDetail
 from quickbooks.objects.account import Account
 from quickbooks.objects.bill import Bill
 from quickbooks.objects.billpayment import BillPayment, BillPaymentLine, CheckPayment
@@ -31,7 +32,24 @@ class BillPaymentTest(QuickbooksTestCase):
         ap_account = Account.where("AccountSubType = 'AccountsPayable'", qb=self.qb_client)[0]
         bill_payment.APAccountRef = ap_account.to_ref()
 
-        bill = Bill.all(max_results=1, qb=self.qb_client)[0]
+        # create new bill for testing, reusing the same bill will cause Line to be empty
+        # and the new bill payment will be voided automatically
+        bill = Bill()
+        line = AccountBasedExpenseLine()
+        line.Amount = 200
+        line.DetailType = "AccountBasedExpenseLineDetail"
+
+        account_ref = Ref()
+        account_ref.type = "Account"
+        account_ref.value = 1
+        line.AccountBasedExpenseLineDetail = AccountBasedExpenseLineDetail()
+        line.AccountBasedExpenseLineDetail.AccountRef = account_ref
+        bill.Line.append(line)
+
+        vendor = Vendor.all(max_results=1, qb=self.qb_client)[0]
+        bill.VendorRef = vendor.to_ref()
+
+        bill.save(qb=self.qb_client)
 
         line = BillPaymentLine()
         line.LinkedTxn.append(bill.to_linked_txn())
@@ -48,3 +66,55 @@ class BillPaymentTest(QuickbooksTestCase):
 
         self.assertEqual(len(query_bill_payment.Line), 1)
         self.assertEqual(query_bill_payment.Line[0].Amount, 200.0)
+
+    def test_void(self):
+        bill_payment = BillPayment()
+
+        bill_payment.PayType = "Check"
+        bill_payment.TotalAmt = 200
+        bill_payment.PrivateNote = "Private Note"
+
+        vendor = Vendor.all(max_results=1, qb=self.qb_client)[0]
+        bill_payment.VendorRef = vendor.to_ref()
+
+        bill_payment.CheckPayment = CheckPayment()
+        account = Account.where("AccountSubType = 'Checking'", qb=self.qb_client)[0]
+        bill_payment.CheckPayment.BankAccountRef = account.to_ref()
+
+        ap_account = Account.where("AccountSubType = 'AccountsPayable'", qb=self.qb_client)[0]
+        bill_payment.APAccountRef = ap_account.to_ref()
+
+        # create new bill for testing, reusing the same bill will cause Line to be empty
+        # and the new bill payment will be voided automatically
+        bill = Bill()
+        line = AccountBasedExpenseLine()
+        line.Amount = 200
+        line.DetailType = "AccountBasedExpenseLineDetail"
+
+        account_ref = Ref()
+        account_ref.type = "Account"
+        account_ref.value = 1
+        line.AccountBasedExpenseLineDetail = AccountBasedExpenseLineDetail()
+        line.AccountBasedExpenseLineDetail.AccountRef = account_ref
+        bill.Line.append(line)
+
+        vendor = Vendor.all(max_results=1, qb=self.qb_client)[0]
+        bill.VendorRef = vendor.to_ref()
+
+        bill.save(qb=self.qb_client)
+
+        line = BillPaymentLine()
+        line.LinkedTxn.append(bill.to_linked_txn())
+        line.Amount = 200
+
+        bill_payment.Line.append(line)
+        bill_payment.save(qb=self.qb_client)
+        query_payment = BillPayment.get(bill_payment.Id, qb=self.qb_client)
+        self.assertEqual(query_payment.TotalAmt, 200.0)
+        self.assertNotIn('Voided', query_payment.PrivateNote)
+
+        bill_payment.void(qb=self.qb_client)
+        query_payment = BillPayment.get(bill_payment.Id, qb=self.qb_client)
+
+        self.assertEqual(query_payment.TotalAmt, 0.0)
+        self.assertIn('Voided', query_payment.PrivateNote)
