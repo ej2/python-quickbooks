@@ -15,10 +15,10 @@ class BillPaymentTest(QuickbooksTestCase):
         self.account_number = datetime.now().strftime('%d%H%M')
         self.name = "Test Account {0}".format(self.account_number)
 
-    def create_bill(self):
+    def create_bill(self, amount):
         bill = Bill()
         line = AccountBasedExpenseLine()
-        line.Amount = 200
+        line.Amount = amount
         line.DetailType = "AccountBasedExpenseLineDetail"
 
         account_ref = Ref()
@@ -60,7 +60,7 @@ class BillPaymentTest(QuickbooksTestCase):
     def test_create(self):
         # create new bill for testing, reusing the same bill will cause Line to be empty
         # and the new bill payment will be voided automatically
-        bill = self.create_bill()
+        bill = self.create_bill(amount=200)
         bill_payment = self.create_bill_payment(bill, 200, "Private Note", "Check")
 
         query_bill_payment = BillPayment.get(bill_payment.Id, qb=self.qb_client)
@@ -73,7 +73,7 @@ class BillPaymentTest(QuickbooksTestCase):
         self.assertEqual(query_bill_payment.Line[0].Amount, 200.0)
 
     def test_void(self):
-        bill = self.create_bill()
+        bill = self.create_bill(amount=200)
         bill_payment = self.create_bill_payment(bill, 200, "Private Note", "Check")
         query_payment = BillPayment.get(bill_payment.Id, qb=self.qb_client)
         self.assertEqual(query_payment.TotalAmt, 200.0)
