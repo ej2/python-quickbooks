@@ -1,6 +1,6 @@
 from .base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject, LinkedTxnMixin, \
     QuickbooksTransactionEntity
-from ..mixins import DeleteMixin
+from ..mixins import DeleteMixin, VoidMixin
 
 
 class CheckPayment(QuickbooksBaseObject):
@@ -47,7 +47,7 @@ class BillPaymentLine(QuickbooksBaseObject):
         return str(self.Amount)
 
 
-class BillPayment(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
+class BillPayment(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin, VoidMixin):
     """
     QBO definition: A BillPayment entity represents the financial transaction of payment
     of bills that the business owner receives from a vendor for goods or services purchased
