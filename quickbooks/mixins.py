@@ -119,6 +119,53 @@ class SendMixin(object):
 
 
 class VoidMixin(object):
+
+    def get_void_params(self):
+        qb_object_params_map = {
+            "Payment": {
+                "operation": "update",
+                "include": "void"
+            },
+            "SalesReceipt": {
+                "operation": "update",
+                "include": "void"
+            },
+            "BillPayment": {
+                "operation": "update",
+                "include": "void"
+            },
+            "Invoice": {
+                "operation": "void",
+            },
+        }
+        # setting the default operation to void (the original behavior)
+        return qb_object_params_map.get(self.qbo_object_name, {"operation": "void"})
+
+    def get_void_data(self):
+        qb_object_params_map = {
+            "Payment": {
+                "Id": self.Id,
+                "SyncToken": self.SyncToken,
+                "sparse": True
+            },
+            "SalesReceipt": {
+                "Id": self.Id,
+                "SyncToken": self.SyncToken,
+                "sparse": True
+            },
+            "BillPayment": {
+                "Id": self.Id,
+                "SyncToken": self.SyncToken,
+                "sparse": True
+            },
+            "Invoice": {
+                "Id": self.Id,
+                "SyncToken": self.SyncToken,
+            },
+        }
+        # setting the default operation to void (the original behavior)
+        return qb_object_params_map.get(self.qbo_object_name, {"operation": "void"})
+
     def void(self, qb=None):
         if not qb:
             qb = QuickBooks()
@@ -126,14 +173,12 @@ class VoidMixin(object):
         if not self.Id:
             raise QuickbooksException('Cannot void unsaved object')
 
-        data = {
-            'Id': self.Id,
-            'SyncToken': self.SyncToken,
-        }
-
         endpoint = self.qbo_object_name.lower()
         url = "{0}/company/{1}/{2}".format(qb.api_url, qb.company_id, endpoint)
-        results = qb.post(url, json.dumps(data), params={'operation': 'void'})
+
+        data = self.get_void_data()
+        params = self.get_void_params()
+        results = qb.post(url, json.dumps(data), params=params)
 
         return results
 

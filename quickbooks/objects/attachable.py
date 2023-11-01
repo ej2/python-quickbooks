@@ -58,7 +58,7 @@ class Attachable(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEnti
         else:
             json_data = qb.create_object(self.qbo_object_name, self.to_json(), _file_path=self._FilePath)
 
-        if self.FileName:
+        if self.Id is None and self.FileName:
             obj = type(self).from_json(json_data['AttachableResponse'][0]['Attachable'])
         else:
             obj = type(self).from_json(json_data['Attachable'])

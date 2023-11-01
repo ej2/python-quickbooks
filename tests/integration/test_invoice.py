@@ -75,3 +75,14 @@ class InvoiceTest(QuickbooksTestCase):
 
         query_invoice = Invoice.filter(Id=invoice_id, qb=self.qb_client)
         self.assertEqual([], query_invoice)
+
+    def test_void(self):
+        customer = Customer.all(max_results=1, qb=self.qb_client)[0]
+        invoice = self.create_invoice(customer)
+        invoice_id = invoice.Id
+        invoice.void(qb=self.qb_client)
+
+        query_invoice = Invoice.get(invoice_id, qb=self.qb_client)
+        self.assertEqual(query_invoice.Balance, 0.0)
+        self.assertEqual(query_invoice.TotalAmt, 0.0)
+        self.assertIn('Voided', query_invoice.PrivateNote)
