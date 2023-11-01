@@ -1,6 +1,7 @@
 Changelog
 =========
 * 0.9.5 (November 1, 2023)
+    * Added the ability to void all voidable QB types
     * Added to_ref to CreditMemo object
     * Added ProjectRef and ShipFromAddr to Estimate
     * Added missing initialization for objects on DiscountLineDetail, Estimate, Employee, and Invoice
