@@ -70,3 +70,11 @@ class CreditMemo(DeleteMixin, QuickbooksTransactionEntity, QuickbooksManagedObje
 
     def __str__(self):
         return str(self.TotalAmt)
+
+    def to_ref(self):
+        ref = Ref()
+
+        ref.type = self.qbo_object_name
+        ref.value = self.Id
+
+        return ref
