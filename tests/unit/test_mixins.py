@@ -4,7 +4,7 @@ import os
 import unittest
 from urllib.parse import quote
 
-from quickbooks.objects import Bill, Invoice
+from quickbooks.objects import Bill, Invoice, Payment, BillPayment
 
 from tests.integration.test_base import QuickbooksUnitTestCase
 
@@ -381,10 +381,31 @@ class SendMixinTest(QuickbooksUnitTestCase):
 
 class VoidMixinTest(QuickbooksUnitTestCase):
     @patch('quickbooks.mixins.QuickBooks.post')
-    def test_void(self, post):
+    def test_void_invoice(self, post):
         invoice = Invoice()
         invoice.Id = 2
         invoice.void(qb=self.qb_client)
+        self.assertTrue(post.called)
+
+    @patch('quickbooks.mixins.QuickBooks.post')
+    def test_void_payment(self, post):
+        payment = Payment()
+        payment.Id = 2
+        payment.void(qb=self.qb_client)
+        self.assertTrue(post.called)
+
+    @patch('quickbooks.mixins.QuickBooks.post')
+    def test_void_sales_receipt(self, post):
+        sales_receipt = SalesReceipt()
+        sales_receipt.Id = 2
+        sales_receipt.void(qb=self.qb_client)
+        self.assertTrue(post.called)
+
+    @patch('quickbooks.mixins.QuickBooks.post')
+    def test_void_bill_payment(self, post):
+        bill_payment = BillPayment()
+        bill_payment.Id = 2
+        bill_payment.void(qb=self.qb_client)
         self.assertTrue(post.called)
 
     def test_delete_unsaved_exception(self):
