@@ -35,6 +35,7 @@ class Employee(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.BillableTime = False
 
         self.PrimaryAddr = None
+        self.PrimaryPhone = None
 
     def __str__(self):
         return self.DisplayName

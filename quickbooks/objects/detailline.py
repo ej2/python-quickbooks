@@ -51,6 +51,7 @@ class DiscountLineDetail(QuickbooksBaseObject):
         self.Discount = None
         self.ClassRef = None
         self.TaxCodeRef = None
+        self.DiscountAccountRef = None
         self.PercentBased = False
         self.DiscountPercent = 0
 

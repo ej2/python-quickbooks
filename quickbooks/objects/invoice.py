@@ -95,6 +95,8 @@ class Invoice(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject, Q
         self.TxnTaxDetail = None
         self.DeliveryInfo = None
         self.RecurDataRef = None
+        self.SalesTermRef = None
+        self.ShipMethodRef = None
         self.TaxExemptionRef = None
         self.MetaData = None
 

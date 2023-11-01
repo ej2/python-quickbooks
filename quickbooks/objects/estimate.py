@@ -66,6 +66,7 @@ class Estimate(DeleteMixin,
         self.AcceptedDate = None
         self.GlobalTaxCalculation = "TaxExcluded"
         self.BillAddr = None
+        self.DepartmentRef = None
         self.ShipAddr = None
         self.ShipFromAddr = None
         self.BillEmail = None
