@@ -1,5 +1,3 @@
-from six import python_2_unicode_compatible
-
 from quickbooks.objects.detailline import DetailLine, AccountBasedExpenseLine, ItemBasedExpenseLine, \
     TDSLine
 from .base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin, \
@@ -8,7 +6,6 @@ from .tax import TxnTaxDetail
 from ..mixins import DeleteMixin
 
 
-@python_2_unicode_compatible
 class Purchase(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: This entity represents expenses, such as a purchase made from a vendor.

@@ -1,16 +1,12 @@
-from six import python_2_unicode_compatible
-
 from quickbooks.mixins import ListMixin, UpdateNoIdMixin, FromJsonMixin
 from .base import CustomField, QuickbooksBaseObject
 
 
-@python_2_unicode_compatible
 class ExchangeRateMetaData(FromJsonMixin):
     def __init__(self):
         self.LastUpdatedTime = ""
 
 
-@python_2_unicode_compatible
 class ExchangeRate(QuickbooksBaseObject, ListMixin, UpdateNoIdMixin):
     """
     QBO definition: Applicable only for those companies that enable multicurrency,

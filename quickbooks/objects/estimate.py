@@ -1,4 +1,3 @@
-from six import python_2_unicode_compatible
 from .base import CustomField, Ref, CustomerMemo, Address, EmailAddress, QuickbooksManagedObject, \
     LinkedTxnMixin, QuickbooksTransactionEntity, LinkedTxn
 from .tax import TxnTaxDetail
@@ -6,7 +5,6 @@ from .detailline import DetailLine, SalesItemLine, GroupLine, DescriptionOnlyLin
 from ..mixins import QuickbooksPdfDownloadable, DeleteMixin, SendMixin
 
 
-@python_2_unicode_compatible
 class Estimate(DeleteMixin,
                QuickbooksPdfDownloadable,
                QuickbooksManagedObject,
@@ -21,7 +19,9 @@ class Estimate(DeleteMixin,
     class_dict = {
         "BillAddr": Address,
         "ShipAddr": Address,
+        "ShipFromAddr": Address,
         "CustomerRef": Ref,
+        "ProjectRef": Ref,
         "TxnTaxDetail": TxnTaxDetail,
         "CustomerMemo": CustomerMemo,
         "BillEmail": EmailAddress,
@@ -66,9 +66,12 @@ class Estimate(DeleteMixin,
         self.AcceptedDate = None
         self.GlobalTaxCalculation = "TaxExcluded"
         self.BillAddr = None
+        self.DepartmentRef = None
         self.ShipAddr = None
+        self.ShipFromAddr = None
         self.BillEmail = None
         self.CustomerRef = None
+        self.ProjectRef = None
         self.TxnTaxDetail = None
         self.CustomerMemo = None
         self.ClassRef = None

@@ -1,10 +1,8 @@
-from six import python_2_unicode_compatible
 from .base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, AttachableRef
 from ..client import QuickBooks
 from ..mixins import DeleteMixin
 
 
-@python_2_unicode_compatible
 class Attachable(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: This page covers the Attachable, Upload, and Download resources used for attachment management. Attachments are supplemental information linked to a transaction or Item object. They can be files, notes, or a combination of both.
@@ -60,7 +58,7 @@ class Attachable(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEnti
         else:
             json_data = qb.create_object(self.qbo_object_name, self.to_json(), _file_path=self._FilePath)
 
-        if self.FileName:
+        if self.Id is None and self.FileName:
             obj = type(self).from_json(json_data['AttachableResponse'][0]['Attachable'])
         else:
             obj = type(self).from_json(json_data['Attachable'])

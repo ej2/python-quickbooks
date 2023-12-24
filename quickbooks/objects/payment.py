@@ -1,14 +1,12 @@
-from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, LinkedTxn, \
     QuickbooksManagedObject, QuickbooksTransactionEntity, \
     LinkedTxnMixin, MetaData
 from ..client import QuickBooks
 from .creditcardpayment import CreditCardPayment
-from ..mixins import DeleteMixin
+from ..mixins import DeleteMixin, VoidMixin
 import json
 
 
-@python_2_unicode_compatible
 class PaymentLine(QuickbooksBaseObject):
     list_dict = {
         "LinkedTxn": LinkedTxn,
@@ -23,8 +21,7 @@ class PaymentLine(QuickbooksBaseObject):
         return str(self.Amount)
 
 
-@python_2_unicode_compatible
-class Payment(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
+class Payment(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin, VoidMixin):
     """
     QBO definition: A Payment entity records a payment in QuickBooks. The payment can be
     applied for a particular customer against multiple Invoices and Credit Memos. It can also
@@ -83,25 +80,6 @@ class Payment(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity,
 
         # These fields are for minor version 4
         self.TransactionLocationType = None
-
-    def void(self, qb=None):
-        if not qb:
-            qb = QuickBooks()
-
-        if not self.Id:
-            raise qb.QuickbooksException('Cannot void unsaved object')
-
-        data = {
-            'Id': self.Id,
-            'SyncToken': self.SyncToken,
-            'sparse': True
-        }
-
-        endpoint = self.qbo_object_name.lower()
-        url = "{0}/company/{1}/{2}".format(qb.api_url, qb.company_id, endpoint)
-        results = qb.post(url, json.dumps(data), params={'operation': 'update', 'include': 'void'})
-
-        return results
 
     def __str__(self):
         return str(self.TotalAmt)

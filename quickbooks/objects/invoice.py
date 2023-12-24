@@ -1,4 +1,3 @@
-from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, CustomField, Address, EmailAddress, CustomerMemo, QuickbooksManagedObject, \
     QuickbooksTransactionEntity, LinkedTxn, LinkedTxnMixin, MetaData
 from .tax import TxnTaxDetail
@@ -13,7 +12,6 @@ class DeliveryInfo(QuickbooksBaseObject):
         self.DeliveryTime = ""
 
 
-@python_2_unicode_compatible
 class Invoice(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject, QuickbooksTransactionEntity,
               LinkedTxnMixin, SendMixin, VoidMixin):
     """
@@ -97,6 +95,8 @@ class Invoice(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject, Q
         self.TxnTaxDetail = None
         self.DeliveryInfo = None
         self.RecurDataRef = None
+        self.SalesTermRef = None
+        self.ShipMethodRef = None
         self.TaxExemptionRef = None
         self.MetaData = None
 

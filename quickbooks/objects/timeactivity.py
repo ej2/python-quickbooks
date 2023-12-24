@@ -1,9 +1,7 @@
-from six import python_2_unicode_compatible
 from .base import Ref, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin, AttachableRef
 from ..mixins import DeleteMixin
 
 
-@python_2_unicode_compatible
 class TimeActivity(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: The TimeActivity entity represents a record of time worked by a vendor or employee.

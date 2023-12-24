@@ -1,5 +1,3 @@
-from six import python_2_unicode_compatible
-
 from quickbooks.objects.detailline import DetailLine, ItemBasedExpenseLine, AccountBasedExpenseLine, \
     TDSLine
 from .base import Ref, LinkedTxn, QuickbooksManagedObject, QuickbooksTransactionEntity, \
@@ -8,7 +6,6 @@ from .tax import TxnTaxDetail
 from ..mixins import DeleteMixin
 
 
-@python_2_unicode_compatible
 class Bill(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
     """
     QBO definition: A Bill entity is an AP transaction representing a request-for-payment from a third party for
@@ -79,4 +76,3 @@ class Bill(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, Li
         ref.value = self.Id
 
         return ref
-

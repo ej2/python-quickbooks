@@ -1,10 +1,7 @@
-from six import python_2_unicode_compatible
-
 from quickbooks.mixins import PrefMixin, UpdateNoIdMixin
 from .base import QuickbooksBaseObject, QuickbooksTransactionEntity, Ref, EmailAddress
 
 
-@python_2_unicode_compatible
 class PreferencesCustomField(QuickbooksBaseObject):
     def __init__(self):
         self.Type = ""
@@ -202,7 +199,6 @@ class CurrencyPrefs(QuickbooksBaseObject):
         self.MultiCurrencyEnabled = False
 
 
-@python_2_unicode_compatible
 class Preferences(PrefMixin, UpdateNoIdMixin, QuickbooksTransactionEntity):
     """
     QBO definition: The Preferences resource represents a set of company preferences that

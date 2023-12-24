@@ -1,9 +1,7 @@
-from six import python_2_unicode_compatible
 from .base import Address, PhoneNumber, EmailAddress, WebAddress, \
     QuickbooksManagedObject, Ref, MetaData
 
 
-@python_2_unicode_compatible
 class CompanyInfo(QuickbooksManagedObject):
     """
     QBO definition: The CompanyInfo entity contains basic company information.

@@ -1,8 +1,6 @@
-from six import python_2_unicode_compatible
 from .base import QuickbooksManagedObject, QuickbooksTransactionEntity, Ref
 
 
-@python_2_unicode_compatible
 class Department(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: The Department entity provides a way to track different segments of the business, divisions, or

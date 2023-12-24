@@ -1,10 +1,8 @@
-from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, LinkedTxn, QuickbooksManagedObject, LinkedTxnMixin, \
     QuickbooksTransactionEntity
-from ..mixins import DeleteMixin
+from ..mixins import DeleteMixin, VoidMixin
 
 
-@python_2_unicode_compatible
 class CheckPayment(QuickbooksBaseObject):
     class_dict = {
         "BankAccountRef": Ref
@@ -33,7 +31,6 @@ class BillPaymentCreditCard(QuickbooksBaseObject):
         self.CCAccountRef = None
 
 
-@python_2_unicode_compatible
 class BillPaymentLine(QuickbooksBaseObject):
     list_dict = {
         "LinkedTxn": LinkedTxn
@@ -50,8 +47,7 @@ class BillPaymentLine(QuickbooksBaseObject):
         return str(self.Amount)
 
 
-@python_2_unicode_compatible
-class BillPayment(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin):
+class BillPayment(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, LinkedTxnMixin, VoidMixin):
     """
     QBO definition: A BillPayment entity represents the financial transaction of payment
     of bills that the business owner receives from a vendor for goods or services purchased

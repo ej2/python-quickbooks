@@ -1,5 +1,4 @@
 from six import python_2_unicode_compatible
-
 from .base import Address, PhoneNumber, EmailAddress, WebAddress, Ref, QuickbooksBaseObject, \
     QuickbooksManagedObject, QuickbooksTransactionEntity
 
@@ -16,7 +15,6 @@ class ContactInfo(QuickbooksBaseObject):
         self.Telephone = None
 
 
-@python_2_unicode_compatible
 class Vendor(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: The Vendor represents the seller from whom your company purchases any service or product.

@@ -1,9 +1,8 @@
-from future.moves.urllib.parse import quote
+from urllib.parse import quote
 
 try: import simplejson as json
 except ImportError: import json
 
-import six
 from .utils import build_where_clause, build_choose_clause
 from .client import QuickBooks
 from .exceptions import QuickbooksException
@@ -70,14 +69,9 @@ def to_dict(obj, classkey=None):
     elif hasattr(obj, "__iter__") and not isinstance(obj, str):
         return [to_dict(v, classkey) for v in obj]
     elif hasattr(obj, "__dict__"):
-        if six.PY2:
-            data = dict([(key, to_dict(value, classkey))
-                        for key, value in obj.__dict__.iteritems()
-                        if not callable(value) and not key.startswith('_')])
-        else:
-            data = dict([(key, to_dict(value, classkey))
-                        for key, value in obj.__dict__.items()
-                        if not callable(value) and not key.startswith('_')])
+        data = dict([(key, to_dict(value, classkey))
+                    for key, value in obj.__dict__.items()
+                    if not callable(value) and not key.startswith('_')])
 
         if classkey is not None and hasattr(obj, "__class__"):
             data[classkey] = obj.__class__.__name__
@@ -125,6 +119,53 @@ class SendMixin(object):
 
 
 class VoidMixin(object):
+
+    def get_void_params(self):
+        qb_object_params_map = {
+            "Payment": {
+                "operation": "update",
+                "include": "void"
+            },
+            "SalesReceipt": {
+                "operation": "update",
+                "include": "void"
+            },
+            "BillPayment": {
+                "operation": "update",
+                "include": "void"
+            },
+            "Invoice": {
+                "operation": "void",
+            },
+        }
+        # setting the default operation to void (the original behavior)
+        return qb_object_params_map.get(self.qbo_object_name, {"operation": "void"})
+
+    def get_void_data(self):
+        qb_object_params_map = {
+            "Payment": {
+                "Id": self.Id,
+                "SyncToken": self.SyncToken,
+                "sparse": True
+            },
+            "SalesReceipt": {
+                "Id": self.Id,
+                "SyncToken": self.SyncToken,
+                "sparse": True
+            },
+            "BillPayment": {
+                "Id": self.Id,
+                "SyncToken": self.SyncToken,
+                "sparse": True
+            },
+            "Invoice": {
+                "Id": self.Id,
+                "SyncToken": self.SyncToken,
+            },
+        }
+        # setting the default operation to void (the original behavior)
+        return qb_object_params_map.get(self.qbo_object_name, {"operation": "void"})
+
     def void(self, qb=None):
         if not qb:
             qb = QuickBooks()
@@ -132,14 +173,12 @@ class VoidMixin(object):
         if not self.Id:
             raise QuickbooksException('Cannot void unsaved object')
 
-        data = {
-            'Id': self.Id,
-            'SyncToken': self.SyncToken,
-        }
-
         endpoint = self.qbo_object_name.lower()
         url = "{0}/company/{1}/{2}".format(qb.api_url, qb.company_id, endpoint)
-        results = qb.post(url, json.dumps(data), params={'operation': 'void'})
+
+        data = self.get_void_data()
+        params = self.get_void_params()
+        results = qb.post(url, json.dumps(data), params=params)
 
         return results
 

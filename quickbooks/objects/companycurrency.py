@@ -1,8 +1,6 @@
-from six import python_2_unicode_compatible
 from .base import QuickbooksManagedObject, QuickbooksTransactionEntity, Ref, CustomField, MetaData
 
 
-@python_2_unicode_compatible
 class CompanyCurrency(QuickbooksManagedObject, QuickbooksTransactionEntity):
     """
     QBO definition: Applicable only for those companies that enable multicurrency, a companycurrency object
