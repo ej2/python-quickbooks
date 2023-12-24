@@ -1,4 +1,3 @@
-from six import python_2_unicode_compatible
 from .base import Address, PhoneNumber, EmailAddress, WebAddress, Ref, QuickbooksBaseObject, \
     QuickbooksManagedObject, QuickbooksTransactionEntity
 

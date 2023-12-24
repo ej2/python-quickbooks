@@ -1,4 +1,3 @@
-from six import python_2_unicode_compatible
 from .base import QuickbooksBaseObject, Ref, CustomField, LinkedTxn, MarkupInfo
 
 
