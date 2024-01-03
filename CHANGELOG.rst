@@ -6,6 +6,7 @@ Changelog
     * Added new fields to Employee object
     * Added VendorAddr to Bill object
     * Added new fields to Estimate object
+    * Fix taxinclusiveamt and vendor setting 1099 creation
 
 * 0.9.5 (November 1, 2023)
     * Added the ability to void all voidable QB types
