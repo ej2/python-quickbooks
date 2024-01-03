@@ -1,8 +1,11 @@
 Changelog
 =========
 * 0.9.6 (January 2, 2024)
+    * Replace RAuth with requests_oauthlib
+    * Removed python 2 code from client.py
     * Added new fields to Employee object
-
+    * Added VendorAddr to Bill object
+    * Added new fields to Estimate object
 
 * 0.9.5 (November 1, 2023)
     * Added the ability to void all voidable QB types

@@ -61,7 +61,7 @@ details) pass in minorversion when setting up the client:
         auth_client=auth_client,
         refresh_token='REFRESH_TOKEN',
         company_id='COMPANY_ID',
-        minorversion=59
+        minorversion=69
     )
 
 Object Operations
