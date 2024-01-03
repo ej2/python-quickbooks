@@ -1,4 +1,4 @@
-import unittest
+from tests.integration.test_base import QuickbooksUnitTestCase
 
 try:
     from mock import patch
@@ -8,7 +8,6 @@ except ImportError:
 from quickbooks.exceptions import QuickbooksException, SevereException, AuthorizationException
 from quickbooks import client
 from quickbooks.objects.salesreceipt import SalesReceipt
-from intuitlib.client import AuthClient
 
 
 TEST_SIGNATURE = 'nfPLN16u3vMvv08ghDs+dOkLuirEVDy5wAeG/lmM2OA='
@@ -17,26 +16,11 @@ TEST_VERIFIER_TOKEN = 'verify_me'
 TEST_REFRESH_TOKEN = 'refresh'
 
 
-class ClientTest(unittest.TestCase):
+class ClientTest(QuickbooksUnitTestCase):
     def setUp(self):
         super(ClientTest, self).setUp()
 
-        self.auth_client = AuthClient(
-            client_id='CLIENTID',
-            client_secret='CLIENT_SECRET',
-            environment='sandbox',
-            redirect_uri='http://localhost:8000/callback',
-        )
-
         self.auth_client.access_token = 'ACCESS_TOKEN'
-
-        self.qb_client = client.QuickBooks(
-            # auth_client=self.auth_client,
-            refresh_token='REFRESH_TOKEN',
-            company_id='COMPANY_ID',
-        )
-
-        self.qb_client.sandbox = True
 
     def tearDown(self):
         self.qb_client = client.QuickBooks()
