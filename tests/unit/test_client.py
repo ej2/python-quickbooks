@@ -1,4 +1,4 @@
-from tests.integration.test_base import QuickbooksUnitTestCase
+import unittest
 
 try:
     from mock import patch
@@ -17,7 +17,7 @@ TEST_VERIFIER_TOKEN = 'verify_me'
 TEST_REFRESH_TOKEN = 'refresh'
 
 
-class ClientTest(QuickbooksUnitTestCase):
+class ClientTest(unittest.TestCase):
     def setUp(self):
         super(ClientTest, self).setUp()
 
@@ -30,6 +30,13 @@ class ClientTest(QuickbooksUnitTestCase):
 
         self.auth_client.access_token = 'ACCESS_TOKEN'
 
+        self.qb_client = client.QuickBooks(
+            # auth_client=self.auth_client,
+            refresh_token='REFRESH_TOKEN',
+            company_id='COMPANY_ID',
+        )
+
+        self.qb_client.sandbox = True
 
     def tearDown(self):
         self.qb_client = client.QuickBooks()
@@ -160,7 +167,6 @@ class ClientTest(QuickbooksUnitTestCase):
         process_request.assert_called_with(
                 "GET", url, data={},
                 headers={'Content-Type': 'application/json', 'Accept': 'application/json', 'User-Agent': 'python-quickbooks V3 library'}, params={})
-
 
     def test_handle_exceptions(self):
         qb_client = client.QuickBooks()

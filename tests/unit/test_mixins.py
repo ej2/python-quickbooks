@@ -1,6 +1,3 @@
-
-import os
-
 import unittest
 from urllib.parse import quote
 
@@ -12,8 +9,6 @@ try:
     from mock import patch
 except ImportError:
     from unittest.mock import patch
-
-from quickbooks import client
 
 from quickbooks.objects.base import PhoneNumber, QuickbooksBaseObject
 from quickbooks.objects.department import Department
