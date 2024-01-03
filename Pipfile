@@ -4,9 +4,10 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-nose = "*"
 coverage = "*"
 twine = "*"
+pytest = "*"
+pytest-cov = "*"
 
 [packages]
 urllib3 = ">=2.1.0"
