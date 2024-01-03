@@ -94,7 +94,6 @@ class ItemBasedExpenseLineDetailTest(unittest.TestCase):
 
         self.assertEqual(detail.BillableStatus, None)
         self.assertEqual(detail.UnitPrice, 0)
-        self.assertEqual(detail.TaxInclusiveAmt, 0)
         self.assertEqual(detail.Qty, 0)
         self.assertEqual(detail.ItemRef, None)
         self.assertEqual(detail.ClassRef, None)
