@@ -2,7 +2,7 @@ python-quickbooks
 =================
 
 [![Python package](https://github.com/ej2/python-quickbooks/actions/workflows/python-package.yml/badge.svg)](https://github.com/ej2/python-quickbooks/actions/workflows/python-package.yml)
-[![Coverage Status](https://coveralls.io/repos/github/ej2/python-quickbooks/badge.svg?branch=master)](https://coveralls.io/github/ej2/python-quickbooks?branch=master)
+[![codecov](https://codecov.io/gh/ej2/python-quickbooks/graph/badge.svg?token=AKXS2F7wvP)](https://codecov.io/gh/ej2/python-quickbooks)
 [![](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/ej2/python-quickbooks/blob/master/LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/python-quickbooks)](https://pypi.org/project/python-quickbooks/)
  

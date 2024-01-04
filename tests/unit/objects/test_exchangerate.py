@@ -1,7 +1,7 @@
 import unittest
 
 from quickbooks import QuickBooks
-from quickbooks.objects.exchangerate import ExchangeRate
+from quickbooks.objects.exchangerate import ExchangeRate, ExchangeRateMetaData
 
 
 class ExchangeRateTests(unittest.TestCase):
@@ -9,7 +9,11 @@ class ExchangeRateTests(unittest.TestCase):
         exchange_rate = ExchangeRate()
         exchange_rate.SourceCurrencyCode = "EUR"
 
+        exchange_rate.MetaData = ExchangeRateMetaData()
+        exchange_rate.MetaData.LastUpdatedTime = "1"
+
         self.assertEqual(str(exchange_rate), "EUR")
+        self.assertEqual(exchange_rate.MetaData.LastUpdatedTime, "1")
 
     def test_valid_object_name(self):
         obj = ExchangeRate()
