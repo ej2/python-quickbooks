@@ -77,6 +77,7 @@ class Estimate(DeleteMixin,
         self.ClassRef = None
         self.SalesTermRef = None
         self.ShipMethodRef = None
+        self.TrackingNum = ""
 
         self.CustomField = []
         self.LinkedTxn = []

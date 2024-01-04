@@ -1,7 +1,7 @@
 from quickbooks.objects.detailline import DetailLine, ItemBasedExpenseLine, AccountBasedExpenseLine, \
     TDSLine
 from .base import Ref, LinkedTxn, QuickbooksManagedObject, QuickbooksTransactionEntity, \
-    LinkedTxnMixin
+    LinkedTxnMixin, Address
 from .tax import TxnTaxDetail
 from ..mixins import DeleteMixin
 
@@ -20,6 +20,7 @@ class Bill(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, Li
         "AttachableRef": Ref,
         "DepartmentRef": Ref,
         "TxnTaxDetail": TxnTaxDetail,
+        "VendorAddr": Address,
     }
 
     list_dict = {
@@ -53,6 +54,7 @@ class Bill(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEntity, Li
         self.VendorRef = None
         self.DepartmentRef = None
         self.APAccountRef = None
+        self.VendorAddr = None
 
         self.LinkedTxn = []
         self.Line = []

@@ -8,7 +8,6 @@ except ImportError:
 from quickbooks.exceptions import QuickbooksException, SevereException, AuthorizationException
 from quickbooks import client
 from quickbooks.objects.salesreceipt import SalesReceipt
-from intuitlib.client import AuthClient
 
 
 TEST_SIGNATURE = 'nfPLN16u3vMvv08ghDs+dOkLuirEVDy5wAeG/lmM2OA='
@@ -21,15 +20,7 @@ class ClientTest(QuickbooksUnitTestCase):
     def setUp(self):
         super(ClientTest, self).setUp()
 
-        self.auth_client = AuthClient(
-            client_id='CLIENTID',
-            client_secret='CLIENT_SECRET',
-            environment='sandbox',
-            redirect_uri='http://localhost:8000/callback',
-        )
-
         self.auth_client.access_token = 'ACCESS_TOKEN'
-
 
     def tearDown(self):
         self.qb_client = client.QuickBooks()
@@ -160,7 +151,6 @@ class ClientTest(QuickbooksUnitTestCase):
         process_request.assert_called_with(
                 "GET", url, data={},
                 headers={'Content-Type': 'application/json', 'Accept': 'application/json', 'User-Agent': 'python-quickbooks V3 library'}, params={})
-
 
     def test_handle_exceptions(self):
         qb_client = client.QuickBooks()

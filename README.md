@@ -54,14 +54,14 @@ Then create a QuickBooks client object passing in the AuthClient, refresh token,
             company_id='COMPANY_ID',
         )
 
-If you need to access a minor version (See [Minor versions](https://developer.intuit.com/docs/0100_quickbooks_online/0200_dev_guides/accounting/minor_versions) for
+If you need to access a minor version (See [Minor versions](https://developer.intuit.com/app/developer/qbo/docs/learn/explore-the-quickbooks-online-api/minor-versions#working-with-minor-versions) for
 details) pass in minorversion when setting up the client:
 
     client = QuickBooks(
         auth_client=auth_client,
         refresh_token='REFRESH_TOKEN',
         company_id='COMPANY_ID',
-        minorversion=59
+        minorversion=69
     )
 
 Object Operations
@@ -74,7 +74,9 @@ List of objects:
 
 **Note:** The maximum number of entities that can be returned in a
 response is 1000. If the result size is not specified, the default
-number is 100. (See [Intuit developer guide](https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/querying_data) for details)
+number is 100. (See [Query operations and syntax](https://developer.intuit.com/app/developer/qbo/docs/learn/explore-the-quickbooks-online-api/data-queries) for details)
+
+**Warning:** You should never allow user input to pass into a query without sanitizing it first! This library DOES NOT sanitize user input! 
 
 Filtered list of objects:
 
@@ -104,6 +106,8 @@ List with custom Where Clause (do not include the `"WHERE"`):
 
     customers = Customer.where("Active = True AND CompanyName LIKE 'S%'", qb=client)
 
+  
+
 List with custom Where and ordering
 
     customers = Customer.where("Active = True AND CompanyName LIKE 'S%'", order_by='DisplayName', qb=client)
@@ -112,7 +116,7 @@ List with custom Where Clause and paging:
 
     customers = Customer.where("CompanyName LIKE 'S%'", start_position=1, max_results=25, qb=client)
 
-Filtering a list with a custom query (See [Intuit developer guide](https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/querying_data) for
+Filtering a list with a custom query (See [Query operations and syntax](https://developer.intuit.com/app/developer/qbo/docs/learn/explore-the-quickbooks-online-api/data-queries) for
 supported SQL statements):
 
     customers = Customer.query("SELECT * FROM Customer WHERE Active = True", qb=client)

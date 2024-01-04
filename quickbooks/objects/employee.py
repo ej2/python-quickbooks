@@ -1,4 +1,4 @@
-from .base import Address, PhoneNumber, QuickbooksManagedObject, QuickbooksTransactionEntity, Ref
+from .base import Address, PhoneNumber, QuickbooksManagedObject, QuickbooksTransactionEntity, Ref, EmailAddress
 
 
 class Employee(QuickbooksManagedObject, QuickbooksTransactionEntity):
@@ -8,7 +8,9 @@ class Employee(QuickbooksManagedObject, QuickbooksTransactionEntity):
 
     class_dict = {
         "PrimaryAddr": Address,
-        "PrimaryPhone": PhoneNumber
+        "PrimaryPhone": PhoneNumber,
+        "Mobile": PhoneNumber,
+        "PrimaryEmailAddr": EmailAddress,
     }
 
     qbo_object_name = "Employee"
@@ -26,6 +28,7 @@ class Employee(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.EmployeeNumber = ""
         self.Title = ""
         self.BillRate = 0
+        self.CostRate = 0
         self.BirthDate = ""
         self.Gender = None
         self.HiredDate = ""
@@ -36,6 +39,8 @@ class Employee(QuickbooksManagedObject, QuickbooksTransactionEntity):
 
         self.PrimaryAddr = None
         self.PrimaryPhone = None
+        self.Mobile = None
+        self.EmailAddress = None
 
     def __str__(self):
         return self.DisplayName

@@ -1,30 +1,14 @@
-import warnings
-
-try:  # Python 3
-    import http.client as httplib
-    from urllib.parse import parse_qsl
-    from functools import partial
-    to_bytes = lambda value, *args, **kwargs: bytes(value, "utf-8", *args, **kwargs)
-except ImportError:  # Python 2
-    import httplib
-    from urlparse import parse_qsl
-    to_bytes = str
-
+import http.client as httplib
 import textwrap
-import codecs
 import json
-
-from . import exceptions
 import base64
 import hashlib
 import hmac
 
-try:
-    from rauth import OAuth1Session, OAuth1Service, OAuth2Session
-except ImportError:
-    print("Please import Rauth:\n\n")
-    print("http://rauth.readthedocs.org/en/latest/\n")
-    raise
+from . import exceptions
+from requests_oauthlib import OAuth2Session
+
+to_bytes = lambda value, *args, **kwargs: bytes(value, "utf-8", *args, **kwargs)
 
 
 class Environments(object):
@@ -102,10 +86,13 @@ class QuickBooks(object):
             self.auth_client.refresh(refresh_token=self.refresh_token)
 
         self.session = OAuth2Session(
-            client_id=self.auth_client.client_id,
-            client_secret=self.auth_client.client_secret,
-            access_token=self.auth_client.access_token,
+            self.auth_client.client_id,
+            token={
+                'access_token': self.auth_client.access_token,
+                'refresh_token': self.auth_client.refresh_token,
+            }
         )
+
         return self.auth_client.refresh_token
 
     def _drop(self):

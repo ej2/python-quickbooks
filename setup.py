@@ -10,7 +10,7 @@ def read(*parts):
         return fp.read()
 
 
-VERSION = (0, 9, 5)
+VERSION = (0, 9, 6)
 version = '.'.join(map(str, VERSION))
 
 setup(
@@ -32,7 +32,7 @@ setup(
     install_requires=[
         'setuptools',
         'intuit-oauth==1.2.4',
-        'rauth>=0.7.3',
+        'requests_oauthlib>=1.3.1',
         'requests>=2.31.0',
         'simplejson>=3.19.1',
         'python-dateutil',
@@ -50,6 +50,7 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
     ],
     packages=find_packages(exclude=("tests",)),
 )
