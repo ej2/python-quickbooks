@@ -28,6 +28,14 @@ class CreditMemoTests(unittest.TestCase):
 
         self.assertTrue(result)
 
+    def test_to_ref(self):
+        obj = CreditMemo()
+        obj.Id = 123
+
+        ref = obj.to_ref()
+        self.assertEqual(ref.value, obj.Id)
+        self.assertEqual(ref.type, "CreditMemo")
+
 
 class DiscountLineDetailTests(unittest.TestCase):
     def test_init(self):
