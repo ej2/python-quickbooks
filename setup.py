@@ -10,7 +10,7 @@ def read(*parts):
         return fp.read()
 
 
-VERSION = (0, 9, 6)
+VERSION = (0, 9, 7)
 version = '.'.join(map(str, VERSION))
 
 setup(
@@ -31,7 +31,7 @@ setup(
 
     install_requires=[
         'setuptools',
-        'intuit-oauth==1.2.4',
+        'intuit-oauth==1.2.5',
         'requests_oauthlib>=1.3.1',
         'requests>=2.31.0',
         'simplejson>=3.19.1',

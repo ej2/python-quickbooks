@@ -1,5 +1,11 @@
 Changelog
 =========
+* 0.9.7 (March 12, 2024)
+    * Update intuit-oauth dependency
+    * Updated CompanyCurrency to ref to use Code instead of Id
+    * Added missing CurrentRef property from customer object
+    * Made improvements to file attachment handling
+
 * 0.9.6 (January 2, 2024)
     * Replace RAuth with requests_oauthlib
     * Removed python 2 code from client.py
