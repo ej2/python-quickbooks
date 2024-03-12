@@ -1,9 +1,9 @@
 from tests.integration.test_base import QuickbooksUnitTestCase
 
 try:
-    from mock import patch
+    from mock import patch, mock_open
 except ImportError:
-    from unittest.mock import patch
+    from unittest.mock import patch, mock_open
 
 from quickbooks.exceptions import QuickbooksException, SevereException, AuthorizationException
 from quickbooks import client
@@ -216,6 +216,22 @@ class ClientTest(QuickbooksUnitTestCase):
         process_request.return_value = MockUnauthorizedResponse()
 
         self.assertRaises(AuthorizationException, receipt.download_pdf, self.qb_client)
+
+    @patch('quickbooks.client.QuickBooks.process_request')
+    def test_make_request_file_closed(self, process_request):
+        file_path = '/path/to/file.txt'
+        process_request.return_value = MockResponse()
+        with patch('builtins.open', mock_open(read_data=b'file content')) as mock_file:
+            qb_client = client.QuickBooks(auth_client=self.auth_client)
+            qb_client.make_request('POST', 
+                                   'https://sandbox-quickbooks.api.intuit.com/v3/company/COMPANY_ID/attachable', 
+                                   request_body='{"ContentType": "text/plain"}', 
+                                   file_path=file_path)
+            
+            mock_file.assert_called_once_with(file_path, 'rb')
+            mock_file.return_value.__enter__.return_value.read.assert_called_once()
+            mock_file.return_value.__exit__.assert_called_once()
+        process_request.assert_called_once()
 
 
 class MockResponse(object):
