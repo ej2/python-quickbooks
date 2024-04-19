@@ -31,7 +31,8 @@ setup(
 
     install_requires=[
         'setuptools',
-        'intuit-oauth @ git+https://github.com/uncategorizedexpense/oauth-pythonclient.git@master#egg=intuit-oauth',
+        # Not needed as installed by Uncat core
+        # 'intuit-oauth @ git+https://github.com/uncategorizedexpense/oauth-pythonclient.git@master#egg=intuit-oauth',
         'rauth>=0.7.3',
         'requests>=2.31.0',
         'simplejson>=3.19.1',
