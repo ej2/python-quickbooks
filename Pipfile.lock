@@ -234,7 +234,6 @@
             "version": "==7.1.0"
         },
         "intuit-oauth": {
-            "editable": true,
             "git": "git+https://github.com/uncategorizedexpense/oauth-pythonclient.git@master#egg=intuit-oauth",
             "ref": "68fcc8348ec3ec9bdf7192a64f1f9f51d199ed10"
         },
