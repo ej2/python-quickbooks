@@ -102,6 +102,7 @@ class DescriptionLineDetail(QuickbooksBaseObject):
 class SalesItemLineDetail(QuickbooksBaseObject):
     class_dict = {
         "ItemRef": Ref,
+        "ItemAccountRef": Ref,
         "ClassRef": Ref,
         "TaxCodeRef": Ref,
         "PriceLevelRef": Ref,
@@ -117,6 +118,7 @@ class SalesItemLineDetail(QuickbooksBaseObject):
 
         self.MarkupInfo = None
         self.ItemRef = None
+        self.ItemAccountRef = None
         self.ClassRef = None
         self.TaxCodeRef = None
         self.PriceLevelRef = None

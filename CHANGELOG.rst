@@ -1,5 +1,9 @@
 Changelog
 =========
+* 0.9.7 (May 20, 2024)
+    * Added ItemAccountRef to SalesItemLineDetail
+    * Updated from_json example in readme
+
 * 0.9.7 (March 12, 2024)
     * Update intuit-oauth dependency
     * Updated CompanyCurrency to ref to use Code instead of Id
