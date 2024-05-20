@@ -277,10 +277,10 @@ Converting an object to JSON data:
 
 Loading JSON data into a quickbooks object:
 
-    account = Account()
-    account.from_json(
+    account = Account.from_json(
      {
       "AccountType": "Accounts Receivable",
+      "AcctNum": "123123",
       "Name": "MyJobs"
      }
     )

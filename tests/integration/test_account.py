@@ -32,3 +32,12 @@ class AccountTest(QuickbooksTestCase):
 
         query_account = Account.get(account.Id, qb=self.qb_client)
         self.assertEqual(query_account.Name, "Updated Name {0}".format(self.account_number))
+
+    def test_create_using_from_json(self):
+        account = Account.from_json({
+            "AcctNum": self.account_number,
+            "Name": self.name,
+            "AccountSubType": "CashOnHand"
+        })
+
+        account.save(qb=self.qb_client)
