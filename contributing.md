@@ -27,7 +27,7 @@ I use [pytest](https://docs.pytest.org/en/7.4.x/contents.html), [Coverage](https
   
 6. Run all tests: ```pytest  --cov```  
    Run only unit tests: ```pytest tests/unit --cov```   
-   Run only integration tests: ```pytest tests/intergration --cov``` 
+   Run only integration tests: ```pytest tests/integration --cov``` 
 
 
 
