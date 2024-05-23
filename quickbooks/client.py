@@ -1,6 +1,6 @@
 import http.client as httplib
 import textwrap
-import json
+import simplejson as json
 import base64
 import hashlib
 import hmac
@@ -206,7 +206,7 @@ class QuickBooks(object):
                 "Application authentication failed", error_code=req.status_code, detail=req.text)
 
         try:
-            result = req.json()
+            result = json.loads(req.text, use_decimal=True)
         except:
             raise exceptions.QuickbooksException("Error reading json response: {0}".format(req.text), 10000)
 

@@ -1,16 +1,14 @@
 from urllib.parse import quote
 
-try: import simplejson as json
-except ImportError: import json
+import simplejson as json
 
 from .utils import build_where_clause, build_choose_clause
 from .client import QuickBooks
 from .exceptions import QuickbooksException
 
-
 class ToJsonMixin(object):
     def to_json(self):
-        return json.dumps(self, default=self.json_filter(), sort_keys=True, indent=4)
+        return json.dumps(self, default=self.json_filter(), sort_keys=True, indent=4, use_decimal=True)
 
     def json_filter(self):
         """
@@ -178,7 +176,7 @@ class VoidMixin(object):
 
         data = self.get_void_data()
         params = self.get_void_params()
-        results = qb.post(url, json.dumps(data), params=params)
+        results = qb.post(url, json.dumps(data, use_decimal=True), params=params)
 
         return results
 
@@ -232,7 +230,7 @@ class DeleteMixin(object):
             'Id': self.Id,
             'SyncToken': self.SyncToken,
         }
-        return qb.delete_object(self.qbo_object_name, json.dumps(data), request_id=request_id)
+        return qb.delete_object(self.qbo_object_name, json.dumps(data, use_decimal=True), request_id=request_id)
 
 
 class DeleteNoIdMixin(object):
