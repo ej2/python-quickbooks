@@ -1,7 +1,6 @@
+import json
 from urllib.parse import quote
 
-try: import simplejson as json
-except ImportError: import json
 
 from .utils import build_where_clause, build_choose_clause
 from .client import QuickBooks
