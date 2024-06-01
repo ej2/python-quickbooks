@@ -1,14 +1,16 @@
 import http.client as httplib
 import textwrap
-import simplejson as json
+import json
 import base64
 import hashlib
 import hmac
+import decimal
 
 from . import exceptions
 from requests_oauthlib import OAuth2Session
 
-to_bytes = lambda value, *args, **kwargs: bytes(value, "utf-8", *args, **kwargs)
+def to_bytes(value, *args, **kwargs):
+    return bytes(value, "utf-8", *args, **kwargs)
 
 
 class Environments(object):
@@ -206,7 +208,7 @@ class QuickBooks(object):
                 "Application authentication failed", error_code=req.status_code, detail=req.text)
 
         try:
-            result = json.loads(req.text, use_decimal=True)
+            result = json.loads(req.text, parse_float=decimal.Decimal)
         except:
             raise exceptions.QuickbooksException("Error reading json response: {0}".format(req.text), 10000)
 
