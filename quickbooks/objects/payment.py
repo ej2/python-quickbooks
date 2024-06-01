@@ -4,7 +4,6 @@ from .base import QuickbooksBaseObject, Ref, LinkedTxn, \
 from ..client import QuickBooks
 from .creditcardpayment import CreditCardPayment
 from ..mixins import DeleteMixin, VoidMixin
-import json
 
 
 class PaymentLine(QuickbooksBaseObject):
