@@ -26,6 +26,7 @@ class QuickBooks(object):
     minorversion = None
     verifier_token = None
     invoice_link = False
+    use_decimal = False
 
     sandbox_api_url_v3 = "https://sandbox-quickbooks.api.intuit.com/v3"
     api_url_v3 = "https://quickbooks.api.intuit.com/v3"
@@ -80,6 +81,9 @@ class QuickBooks(object):
 
         if 'verifier_token' in kwargs:
             instance.verifier_token = kwargs.get('verifier_token')
+
+        if 'use_decimal' in kwargs:
+            instance.use_decimal = kwargs.get('use_decimal')
 
         return instance
 
@@ -208,7 +212,10 @@ class QuickBooks(object):
                 "Application authentication failed", error_code=req.status_code, detail=req.text)
 
         try:
-            result = json.loads(req.text, parse_float=decimal.Decimal)
+            if (self.use_decimal):
+                result = json.loads(req.text, parse_float=decimal.Decimal)
+            else:
+                result = json.loads(req.text)
         except:
             raise exceptions.QuickbooksException("Error reading json response: {0}".format(req.text), 10000)
 
