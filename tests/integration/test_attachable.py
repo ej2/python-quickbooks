@@ -41,7 +41,11 @@ class AttachableTest(QuickbooksTestCase):
 
     def test_create_file(self):
         attachable = Attachable()
-        test_file = tempfile.NamedTemporaryFile(suffix=".txt")
+        test_file = tempfile.NamedTemporaryFile(mode='w+t', suffix=".txt", delete=False)
+
+        with test_file as f:
+            f.write("File contents")
+            f.flush()
 
         vendor = Vendor.all(max_results=1, qb=self.qb_client)[0]
 
@@ -49,12 +53,19 @@ class AttachableTest(QuickbooksTestCase):
         attachable_ref.EntityRef = vendor.to_ref()
         attachable.AttachableRef.append(attachable_ref)
 
+        attachable.Note = "Sample note"
         attachable.FileName = os.path.basename(test_file.name)
         attachable._FilePath = test_file.name
         attachable.ContentType = 'text/plain'
 
         attachable.save(qb=self.qb_client)
 
+        test_file.close()
+        os.unlink(test_file.name)
+
         query_attachable = Attachable.get(attachable.Id, qb=self.qb_client)
 
         self.assertEqual(query_attachable.AttachableRef[0].EntityRef.value, vendor.Id)
+        self.assertEqual(query_attachable.Note, "Sample note")
+
+

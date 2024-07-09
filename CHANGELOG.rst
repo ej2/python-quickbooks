@@ -1,8 +1,11 @@
 Changelog
 =========
-* 0.9.7 (May 20, 2024)
+
+* 0.9.8 (July 9, 2024)
     * Added ItemAccountRef to SalesItemLineDetail
     * Updated from_json example in readme
+    * Removed simplejson
+    * Added use_decimal option (See PR: https://github.com/ej2/python-quickbooks/pull/356 for details)
 
 * 0.9.7 (March 12, 2024)
     * Update intuit-oauth dependency

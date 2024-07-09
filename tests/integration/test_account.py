@@ -7,6 +7,7 @@ class AccountTest(QuickbooksTestCase):
     def setUp(self):
         super(AccountTest, self).setUp()
 
+        self.time = datetime.now()
         self.account_number = datetime.now().strftime('%d%H%M')
         self.name = "Test Account {0}".format(self.account_number)
 
@@ -35,8 +36,8 @@ class AccountTest(QuickbooksTestCase):
 
     def test_create_using_from_json(self):
         account = Account.from_json({
-            "AcctNum": self.account_number,
-            "Name": self.name,
+            "AcctNum": datetime.now().strftime('%d%H%M%S'),
+            "Name": "{} {}".format(self.name, self.time.strftime("%Y-%m-%d %H:%M:%S")),
             "AccountSubType": "CashOnHand"
         })
 
