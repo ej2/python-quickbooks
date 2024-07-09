@@ -34,7 +34,6 @@ setup(
         'intuit-oauth==1.2.5',
         'requests_oauthlib>=1.3.1',
         'requests>=2.31.0',
-        'simplejson>=3.19.1',
         'python-dateutil',
     ],
 
@@ -51,6 +50,7 @@ setup(
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
     ],
     packages=find_packages(exclude=("tests",)),
 )

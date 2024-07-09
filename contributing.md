@@ -27,12 +27,12 @@ I use [pytest](https://docs.pytest.org/en/7.4.x/contents.html), [Coverage](https
   
 6. Run all tests: ```pytest  --cov```  
    Run only unit tests: ```pytest tests/unit --cov```   
-   Run only integration tests: ```pytest tests/intergration --cov``` 
+   Run only integration tests: ```pytest tests/integration --cov``` 
 
 
 
 ## Creating new tests
-Normal Unit tests that do not connect to the QBO API should be located under `test/unit` Test that connect to QBO API should go under `tests/integration`. Inheriting from `QuickbooksTestCase` will automatically setup `self.qb_client` to use when connecting to QBO.
+Normal Unit tests that do not connect to the QBO API should be located under `test/unit`. Tests that connect to QBO API should go under `tests/integration`. Inheriting from `QuickbooksTestCase` will automatically setup `self.qb_client` to use when connecting to QBO.
 
 Example:
 ```
