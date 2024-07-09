@@ -1,3 +1,4 @@
+import json
 from tests.integration.test_base import QuickbooksUnitTestCase
 
 try:
@@ -6,7 +7,7 @@ except ImportError:
     from unittest.mock import patch, mock_open
 
 from quickbooks.exceptions import QuickbooksException, SevereException, AuthorizationException
-from quickbooks import client
+from quickbooks import client, mixins
 from quickbooks.objects.salesreceipt import SalesReceipt
 
 
@@ -141,7 +142,7 @@ class ClientTest(QuickbooksUnitTestCase):
 
     @patch('quickbooks.client.QuickBooks.process_request')
     def test_make_request(self, process_request):
-        process_request.return_value = MockResponse()
+        process_request.return_value = MockResponseJson()
 
         qb_client = client.QuickBooks()
         qb_client.company_id = "1234"
@@ -220,7 +221,7 @@ class ClientTest(QuickbooksUnitTestCase):
     @patch('quickbooks.client.QuickBooks.process_request')
     def test_make_request_file_closed(self, process_request):
         file_path = '/path/to/file.txt'
-        process_request.return_value = MockResponse()
+        process_request.return_value = MockResponseJson()
         with patch('builtins.open', mock_open(read_data=b'file content')) as mock_file:
             qb_client = client.QuickBooks(auth_client=self.auth_client)
             qb_client.make_request('POST', 
@@ -252,6 +253,18 @@ class MockResponse(object):
 
     def content(self):
         return ''
+
+class MockResponseJson:
+    def __init__(self, json_data=None, status_code=200):
+        self.json_data = json_data or {}
+        self.status_code = status_code
+
+    @property
+    def text(self):
+        return json.dumps(self.json_data, cls=mixins.DecimalEncoder)
+
+    def json(self):
+        return self.json_data
 
 
 class MockUnauthorizedResponse(object):
