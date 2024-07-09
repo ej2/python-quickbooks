@@ -1,15 +1,20 @@
+import decimal
 import json
 from urllib.parse import quote
 
-
-from .utils import build_where_clause, build_choose_clause
 from .client import QuickBooks
 from .exceptions import QuickbooksException
+from .utils import build_choose_clause, build_where_clause
 
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, decimal.Decimal):
+            return str(obj)
+        return super(DecimalEncoder, self).default(obj)
 
 class ToJsonMixin(object):
     def to_json(self):
-        return json.dumps(self, default=self.json_filter(), sort_keys=True, indent=4)
+        return json.dumps(self, cls=DecimalEncoder, default=self.json_filter(), sort_keys=True, indent=4)
 
     def json_filter(self):
         """
@@ -177,7 +182,7 @@ class VoidMixin(object):
 
         data = self.get_void_data()
         params = self.get_void_params()
-        results = qb.post(url, json.dumps(data), params=params)
+        results = qb.post(url, json.dumps(data, cls=DecimalEncoder), params=params)
 
         return results
 
@@ -231,7 +236,7 @@ class DeleteMixin(object):
             'Id': self.Id,
             'SyncToken': self.SyncToken,
         }
-        return qb.delete_object(self.qbo_object_name, json.dumps(data), request_id=request_id)
+        return qb.delete_object(self.qbo_object_name, json.dumps(data, cls=DecimalEncoder), request_id=request_id)
 
 
 class DeleteNoIdMixin(object):
