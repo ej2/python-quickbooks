@@ -155,9 +155,6 @@ class QuickBooks(object):
         if request_id:
             params['requestid'] = request_id
 
-        if self.invoice_link:
-            params['include'] = 'invoiceLink'
-
         if not request_body:
             request_body = {}
 
@@ -242,9 +239,9 @@ class QuickBooks(object):
         return self.session.request(
             request_type, url, headers=headers, params=params, data=data)
 
-    def get_single_object(self, qbbo, pk):
+    def get_single_object(self, qbbo, pk, params=None):
         url = "{0}/company/{1}/{2}/{3}/".format(self.api_url, self.company_id, qbbo.lower(), pk)
-        result = self.get(url, {})
+        result = self.get(url, {}, params=params)
 
         return result
 
