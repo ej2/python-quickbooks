@@ -1,15 +1,17 @@
+from datetime import datetime
+
 from quickbooks.objects.base import CustomerMemo
 from quickbooks.objects.customer import Customer
 from quickbooks.objects.detailline import SalesItemLine, SalesItemLineDetail
 from quickbooks.objects.invoice import Invoice
 from quickbooks.objects.item import Item
+from quickbooks.objects.base import EmailAddress
 from tests.integration.test_base import QuickbooksTestCase
 import uuid
 
-class InvoiceTest(QuickbooksTestCase):
-    def create_invoice(self, customer, request_id=None):
-        invoice = Invoice()
 
+class InvoiceTest(QuickbooksTestCase):
+    def create_invoice_line(self):
         line = SalesItemLine()
         line.LineNum = 1
         line.Description = "description"
@@ -18,7 +20,11 @@ class InvoiceTest(QuickbooksTestCase):
         item = Item.all(max_results=1, qb=self.qb_client)[0]
 
         line.SalesItemLineDetail.ItemRef = item.to_ref()
-        invoice.Line.append(line)
+        return line
+
+    def create_invoice(self, customer, request_id=None):
+        invoice = Invoice()
+        invoice.Line.append(self.create_invoice_line())
 
         invoice.CustomerRef = customer.to_ref()
 
@@ -86,3 +92,35 @@ class InvoiceTest(QuickbooksTestCase):
         self.assertEqual(query_invoice.Balance, 0.0)
         self.assertEqual(query_invoice.TotalAmt, 0.0)
         self.assertIn('Voided', query_invoice.PrivateNote)
+
+    def test_invoice_link(self):
+        # Sharable link for the invoice sent to external customers.
+        # The link is generated only for invoices with online payment enabled and having a valid customer email address.
+        # Include query param `include=invoiceLink` to get the link back on query response.
+
+        # Create test customer
+        customer_name = datetime.now().strftime('%d%H%M%S')
+        customer = Customer()
+        customer.DisplayName = customer_name
+        customer.save(qb=self.qb_client)
+
+        # Create an invoice with sharable link flags set
+        invoice = Invoice()
+        invoice.CustomerRef = customer.to_ref()
+
+        # BillEmail must be set for Sharable link to work!
+        invoice.BillEmail = EmailAddress()
+        invoice.BillEmail.Address = 'test@email.com'
+
+        invoice.PrivateNote = 'This is a test invoice'
+        invoice.DueDate = '2024-12-31'
+        invoice.AllowOnlineCreditCardPayment = True
+        invoice.AllowOnlineACHPayment = True
+        invoice.Line.append(self.create_invoice_line())
+        invoice.save(qb=self.qb_client)
+
+        # You must set the params when doing a query for the invoice
+        query_invoice = Invoice.get(invoice.Id, qb=self.qb_client, params={'include': 'invoiceLink'})
+
+        self.assertIsNotNone(query_invoice.InvoiceLink)
+        self.assertIn('https', query_invoice.InvoiceLink)

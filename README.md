@@ -252,15 +252,23 @@ One example is `include=allowduplicatedocnum` on the Purchase object. You can ad
 
     purchase.save(qb=self.qb_client, params={'include': 'allowduplicatedocnum'})
 
-Other operations
+Sharable Invoice Link
 ----------------
-Add Sharable link for an invoice sent to external customers (minorversion must be set to 36 or greater):
+To add a sharable link for an invoice, make sure the AllowOnlineCreditCardPayment is set to True and BillEmail is set to a invalid email address: 
 
-    invoice.invoice_link = true
+    invoice.AllowOnlineCreditCardPayment = True
+    invoice.BillEmail = EmailAddress()
+    invoice.BillEmail.Address = 'test@email.com'
+
+When you query the invoice include the following params (minorversion must be set to 36 or greater):
+
+    invoice = Invoice.get(id, qb=self.qb_client, params={'include': 'invoiceLink'})
 
 
-Void an invoice:
-
+Void an invoice
+----------------
+Call `void` on any invoice with an Id: 
+ 
     invoice = Invoice()
     invoice.Id = 7
     invoice.void(qb=client)

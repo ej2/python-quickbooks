@@ -94,11 +94,11 @@ class ReadMixin(object):
     qbo_json_object_name = ""
 
     @classmethod
-    def get(cls, id, qb=None):
+    def get(cls, id, qb=None, params=None):
         if not qb:
             qb = QuickBooks()
 
-        json_data = qb.get_single_object(cls.qbo_object_name, pk=id)
+        json_data = qb.get_single_object(cls.qbo_object_name, pk=id, params=params)
 
         if cls.qbo_json_object_name != '':
             return cls.from_json(json_data[cls.qbo_json_object_name])
