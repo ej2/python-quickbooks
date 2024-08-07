@@ -1,6 +1,11 @@
 Changelog
 =========
 
+* 0.9.10 (August 7, 2024)
+    * Update intuit-oauth dependency
+    * Fix issues with Invoice Sharable Link
+    * Added optional params to get
+
 * 0.9.9 (July 9, 2024)
     * Removed simplejson
     * Added use_decimal option (See PR: https://github.com/ej2/python-quickbooks/pull/356 for details)

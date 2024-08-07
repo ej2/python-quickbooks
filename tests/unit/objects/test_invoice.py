@@ -51,6 +51,7 @@ class InvoiceTests(unittest.TestCase):
         self.assertEqual(ref.name, 1)  # should be DocNumber
         self.assertEqual(ref.value, 2)  # should be Id
 
+
 class DeliveryInfoTests(unittest.TestCase):
     def test_init(self):
         info = DeliveryInfo()

@@ -210,7 +210,7 @@ class ReadMixinTest(QuickbooksUnitTestCase):
     @patch('quickbooks.mixins.QuickBooks.get_single_object')
     def test_get(self, get_single_object):
         Department.get(1)
-        get_single_object.assert_called_once_with("Department", pk=1)
+        get_single_object.assert_called_once_with("Department", pk=1, params=None)
 
     def test_get_with_qb(self):
         with patch.object(self.qb_client, 'get_single_object') as get_single_object:

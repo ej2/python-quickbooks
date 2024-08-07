@@ -138,7 +138,16 @@ class ClientTest(QuickbooksUnitTestCase):
 
         qb_client.get_single_object("test", 1)
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1/"
-        make_req.assert_called_with("GET", url, {})
+        make_req.assert_called_with("GET", url, {}, params=None)
+
+    @patch('quickbooks.client.QuickBooks.make_request')
+    def test_get_single_object_with_params(self, make_req):
+        qb_client = client.QuickBooks(auth_client=self.auth_client)
+        qb_client.company_id = "1234"
+
+        qb_client.get_single_object("test", 1, params={'param':'value'})
+        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1/"
+        make_req.assert_called_with("GET", url, {}, params={'param':'value'})
 
     @patch('quickbooks.client.QuickBooks.process_request')
     def test_make_request(self, process_request):
