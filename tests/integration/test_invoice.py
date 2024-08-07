@@ -107,19 +107,18 @@ class InvoiceTest(QuickbooksTestCase):
         # Create an invoice with sharable link flags set
         invoice = Invoice()
         invoice.CustomerRef = customer.to_ref()
+        invoice.DueDate = '2024-12-31'
+        invoice.AllowOnlineCreditCardPayment = True
+        invoice.AllowOnlineACHPayment = True
+        invoice.Line.append(self.create_invoice_line())
 
         # BillEmail must be set for Sharable link to work!
         invoice.BillEmail = EmailAddress()
         invoice.BillEmail.Address = 'test@email.com'
 
-        invoice.PrivateNote = 'This is a test invoice'
-        invoice.DueDate = '2024-12-31'
-        invoice.AllowOnlineCreditCardPayment = True
-        invoice.AllowOnlineACHPayment = True
-        invoice.Line.append(self.create_invoice_line())
         invoice.save(qb=self.qb_client)
 
-        # You must set the params when doing a query for the invoice
+        # You must add 'include': 'invoiceLink' to the params when doing a query for the invoice
         query_invoice = Invoice.get(invoice.Id, qb=self.qb_client, params={'include': 'invoiceLink'})
 
         self.assertIsNotNone(query_invoice.InvoiceLink)
