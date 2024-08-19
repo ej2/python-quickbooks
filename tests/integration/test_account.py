@@ -7,6 +7,7 @@ class AccountTest(QuickbooksTestCase):
     def setUp(self):
         super(AccountTest, self).setUp()
 
+        self.time = datetime.now()
         self.account_number = datetime.now().strftime('%d%H%M')
         self.name = "Test Account {0}".format(self.account_number)
 
@@ -32,3 +33,12 @@ class AccountTest(QuickbooksTestCase):
 
         query_account = Account.get(account.Id, qb=self.qb_client)
         self.assertEqual(query_account.Name, "Updated Name {0}".format(self.account_number))
+
+    def test_create_using_from_json(self):
+        account = Account.from_json({
+            "AcctNum": datetime.now().strftime('%d%H%M%S'),
+            "Name": "{} {}".format(self.name, self.time.strftime("%Y-%m-%d %H:%M:%S")),
+            "AccountSubType": "CashOnHand"
+        })
+
+        account.save(qb=self.qb_client)

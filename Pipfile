@@ -4,15 +4,15 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-
-[packages]
-urllib3 = ">=1.26.5"
-bleach = ">=3.3.0"
-# Not needed as installed by Uncat core
-# intuit-oauth = {git = "git+https://github.com/uncategorizedexpense/oauth-pythonclient.git@master#egg=intuit-oauth"}
-rauth = ">=0.7.3"
-requests = ">=2.31.0"
-simplejson = ">=3.19.1"
-nose = "*"
 coverage = "*"
 twine = "*"
+pytest = "*"
+pytest-cov = "*"
+
+[packages]
+bleach = ">=3.3.0"
+urllib3 = ">=2.1.0"
+# intuit-oauth = "==1.2.6"
+requests = ">=2.31.0"
+requests_oauthlib = ">=1.3.1"
+setuptools = "*"

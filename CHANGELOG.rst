@@ -1,5 +1,35 @@
 Changelog
 =========
+
+* 0.9.10 (August 7, 2024)
+    * Update intuit-oauth dependency
+    * Fix issues with Invoice Sharable Link
+    * Added optional params to get
+
+* 0.9.9 (July 9, 2024)
+    * Removed simplejson
+    * Added use_decimal option (See PR: https://github.com/ej2/python-quickbooks/pull/356 for details)
+
+* 0.9.8 (May 20, 2024)
+    * Added ItemAccountRef to SalesItemLineDetail
+    * Updated from_json example in readme
+
+* 0.9.7 (March 12, 2024)
+    * Update intuit-oauth dependency
+    * Updated CompanyCurrency to ref to use Code instead of Id
+    * Added missing CurrentRef property from customer object
+    * Made improvements to file attachment handling
+
+* 0.9.6 (January 2, 2024)
+    * Replace RAuth with requests_oauthlib
+    * Removed python 2 code from client.py
+    * Removed unused dependencies from Pipfile
+    * Added new fields to Employee object
+    * Added VendorAddr to Bill object
+    * Added new fields to Estimate object
+    * Fix TaxInclusiveAmt and vendor setting 1099 creation
+    * Updated readme and contributing
+
 * 0.9.5 (November 1, 2023)
     * Added the ability to void all voidable QB types
     * Added to_ref to CreditMemo object

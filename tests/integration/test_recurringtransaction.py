@@ -7,6 +7,7 @@ from quickbooks.objects.item import Item
 from quickbooks.objects.vendor import Vendor
 from tests.integration.test_base import QuickbooksTestCase
 
+
 class RecurringTransactionTest(QuickbooksTestCase):
     def setUp(self):
         super(RecurringTransactionTest, self).setUp()

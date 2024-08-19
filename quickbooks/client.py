@@ -1,30 +1,16 @@
-import warnings
-
-try:  # Python 3
-    import http.client as httplib
-    from urllib.parse import parse_qsl
-    from functools import partial
-    to_bytes = lambda value, *args, **kwargs: bytes(value, "utf-8", *args, **kwargs)
-except ImportError:  # Python 2
-    import httplib
-    from urlparse import parse_qsl
-    to_bytes = str
-
+import http.client as httplib
 import textwrap
-import codecs
 import json
-
-from . import exceptions
 import base64
 import hashlib
 import hmac
+import decimal
 
-try:
-    from rauth import OAuth1Session, OAuth1Service, OAuth2Session
-except ImportError:
-    print("Please import Rauth:\n\n")
-    print("http://rauth.readthedocs.org/en/latest/\n")
-    raise
+from . import exceptions
+from requests_oauthlib import OAuth2Session
+
+def to_bytes(value, *args, **kwargs):
+    return bytes(value, "utf-8", *args, **kwargs)
 
 
 class Environments(object):
@@ -40,6 +26,7 @@ class QuickBooks(object):
     minorversion = None
     verifier_token = None
     invoice_link = False
+    use_decimal = False
 
     sandbox_api_url_v3 = "https://sandbox-quickbooks.api.intuit.com/v3"
     api_url_v3 = "https://quickbooks.api.intuit.com/v3"
@@ -95,6 +82,9 @@ class QuickBooks(object):
         if 'verifier_token' in kwargs:
             instance.verifier_token = kwargs.get('verifier_token')
 
+        if 'use_decimal' in kwargs:
+            instance.use_decimal = kwargs.get('use_decimal')
+
         return instance
 
     def _start_session(self):
@@ -102,10 +92,13 @@ class QuickBooks(object):
             self.auth_client.refresh(refresh_token=self.refresh_token)
 
         self.session = OAuth2Session(
-            client_id=self.auth_client.client_id,
-            client_secret=self.auth_client.client_secret,
-            access_token=self.auth_client.access_token,
+            self.auth_client.client_id,
+            token={
+                'access_token': self.auth_client.access_token,
+                'refresh_token': self.auth_client.refresh_token,
+            }
         )
+
         return self.auth_client.refresh_token
 
     def _drop(self):
@@ -162,9 +155,6 @@ class QuickBooks(object):
         if request_id:
             params['requestid'] = request_id
 
-        if self.invoice_link:
-            params['include'] = 'invoiceLink'
-
         if not request_body:
             request_body = {}
 
@@ -175,7 +165,6 @@ class QuickBooks(object):
         }
 
         if file_path:
-            attachment = open(file_path, 'rb')
             url = url.replace('attachable', 'upload')
             boundary = '-------------PythonMultipartPost'
             headers.update({
@@ -186,7 +175,8 @@ class QuickBooks(object):
                 'Connection': 'close'
             })
 
-            binary_data = str(base64.b64encode(attachment.read()).decode('ascii'))
+            with open(file_path, 'rb') as attachment:
+                binary_data = str(base64.b64encode(attachment.read()).decode('ascii'))
 
             content_type = json.loads(request_body)['ContentType']
 
@@ -219,7 +209,10 @@ class QuickBooks(object):
                 "Application authentication failed", error_code=req.status_code, detail=req.text)
 
         try:
-            result = req.json()
+            if (self.use_decimal):
+                result = json.loads(req.text, parse_float=decimal.Decimal)
+            else:
+                result = json.loads(req.text)
         except:
             raise exceptions.QuickbooksException("Error reading json response: {0}".format(req.text), 10000)
 
@@ -246,9 +239,9 @@ class QuickBooks(object):
         return self.session.request(
             request_type, url, headers=headers, params=params, data=data)
 
-    def get_single_object(self, qbbo, pk):
+    def get_single_object(self, qbbo, pk, params=None):
         url = "{0}/company/{1}/{2}/{3}/".format(self.api_url, self.company_id, qbbo.lower(), pk)
-        result = self.get(url, {})
+        result = self.get(url, {}, params=params)
 
         return result
 

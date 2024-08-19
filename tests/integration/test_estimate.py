@@ -93,6 +93,7 @@ class EstimateTest(QuickbooksTestCase):
         line2.DetailType = "DiscountLineDetail"
 
         estimate.Line.append(line2)
+        estimate.TrackingNum = "42"
 
         estimate.save(qb=self.qb_client)
 
@@ -134,3 +135,4 @@ class EstimateTest(QuickbooksTestCase):
                          estimate.Line[1].DiscountLineDetail.DiscountAccountRef.value)
         self.assertEqual(query_estimate.Line[2].DiscountLineDetail.DiscountAccountRef.name,
                          estimate.Line[1].DiscountLineDetail.DiscountAccountRef.name)
+        self.assertEqual(query_estimate.TrackingNum, estimate.TrackingNum)

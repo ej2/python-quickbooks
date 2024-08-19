@@ -1,14 +1,14 @@
+import json
 from tests.integration.test_base import QuickbooksUnitTestCase
 
 try:
-    from mock import patch
+    from mock import patch, mock_open
 except ImportError:
-    from unittest.mock import patch
+    from unittest.mock import patch, mock_open
 
 from quickbooks.exceptions import QuickbooksException, SevereException, AuthorizationException
-from quickbooks import client
+from quickbooks import client, mixins
 from quickbooks.objects.salesreceipt import SalesReceipt
-from intuitlib.client import AuthClient
 
 
 TEST_SIGNATURE = 'nfPLN16u3vMvv08ghDs+dOkLuirEVDy5wAeG/lmM2OA='
@@ -21,15 +21,7 @@ class ClientTest(QuickbooksUnitTestCase):
     def setUp(self):
         super(ClientTest, self).setUp()
 
-        self.auth_client = AuthClient(
-            client_id='CLIENTID',
-            client_secret='CLIENT_SECRET',
-            environment='sandbox',
-            redirect_uri='http://localhost:8000/callback',
-        )
-
         self.auth_client.access_token = 'ACCESS_TOKEN'
-
 
     def tearDown(self):
         self.qb_client = client.QuickBooks()
@@ -146,11 +138,20 @@ class ClientTest(QuickbooksUnitTestCase):
 
         qb_client.get_single_object("test", 1)
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1/"
-        make_req.assert_called_with("GET", url, {})
+        make_req.assert_called_with("GET", url, {}, params=None)
+
+    @patch('quickbooks.client.QuickBooks.make_request')
+    def test_get_single_object_with_params(self, make_req):
+        qb_client = client.QuickBooks(auth_client=self.auth_client)
+        qb_client.company_id = "1234"
+
+        qb_client.get_single_object("test", 1, params={'param':'value'})
+        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1/"
+        make_req.assert_called_with("GET", url, {}, params={'param':'value'})
 
     @patch('quickbooks.client.QuickBooks.process_request')
     def test_make_request(self, process_request):
-        process_request.return_value = MockResponse()
+        process_request.return_value = MockResponseJson()
 
         qb_client = client.QuickBooks()
         qb_client.company_id = "1234"
@@ -160,7 +161,6 @@ class ClientTest(QuickbooksUnitTestCase):
         process_request.assert_called_with(
                 "GET", url, data={},
                 headers={'Content-Type': 'application/json', 'Accept': 'application/json', 'User-Agent': 'python-quickbooks V3 library'}, params={})
-
 
     def test_handle_exceptions(self):
         qb_client = client.QuickBooks()
@@ -227,6 +227,22 @@ class ClientTest(QuickbooksUnitTestCase):
 
         self.assertRaises(AuthorizationException, receipt.download_pdf, self.qb_client)
 
+    @patch('quickbooks.client.QuickBooks.process_request')
+    def test_make_request_file_closed(self, process_request):
+        file_path = '/path/to/file.txt'
+        process_request.return_value = MockResponseJson()
+        with patch('builtins.open', mock_open(read_data=b'file content')) as mock_file:
+            qb_client = client.QuickBooks(auth_client=self.auth_client)
+            qb_client.make_request('POST', 
+                                   'https://sandbox-quickbooks.api.intuit.com/v3/company/COMPANY_ID/attachable', 
+                                   request_body='{"ContentType": "text/plain"}', 
+                                   file_path=file_path)
+            
+            mock_file.assert_called_once_with(file_path, 'rb')
+            mock_file.return_value.__enter__.return_value.read.assert_called_once()
+            mock_file.return_value.__exit__.assert_called_once()
+        process_request.assert_called_once()
+
 
 class MockResponse(object):
     @property
@@ -246,6 +262,18 @@ class MockResponse(object):
 
     def content(self):
         return ''
+
+class MockResponseJson:
+    def __init__(self, json_data=None, status_code=200):
+        self.json_data = json_data or {}
+        self.status_code = status_code
+
+    @property
+    def text(self):
+        return json.dumps(self.json_data, cls=mixins.DecimalEncoder)
+
+    def json(self):
+        return self.json_data
 
 
 class MockUnauthorizedResponse(object):

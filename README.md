@@ -2,7 +2,7 @@ python-quickbooks
 =================
 
 [![Python package](https://github.com/ej2/python-quickbooks/actions/workflows/python-package.yml/badge.svg)](https://github.com/ej2/python-quickbooks/actions/workflows/python-package.yml)
-[![Coverage Status](https://coveralls.io/repos/github/ej2/python-quickbooks/badge.svg?branch=master)](https://coveralls.io/github/ej2/python-quickbooks?branch=master)
+[![codecov](https://codecov.io/gh/ej2/python-quickbooks/graph/badge.svg?token=AKXS2F7wvP)](https://codecov.io/gh/ej2/python-quickbooks)
 [![](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/ej2/python-quickbooks/blob/master/LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/python-quickbooks)](https://pypi.org/project/python-quickbooks/)
  
@@ -54,14 +54,14 @@ Then create a QuickBooks client object passing in the AuthClient, refresh token,
             company_id='COMPANY_ID',
         )
 
-If you need to access a minor version (See [Minor versions](https://developer.intuit.com/docs/0100_quickbooks_online/0200_dev_guides/accounting/minor_versions) for
+If you need to access a minor version (See [Minor versions](https://developer.intuit.com/app/developer/qbo/docs/learn/explore-the-quickbooks-online-api/minor-versions#working-with-minor-versions) for
 details) pass in minorversion when setting up the client:
 
     client = QuickBooks(
         auth_client=auth_client,
         refresh_token='REFRESH_TOKEN',
         company_id='COMPANY_ID',
-        minorversion=59
+        minorversion=69
     )
 
 Object Operations
@@ -74,7 +74,9 @@ List of objects:
 
 **Note:** The maximum number of entities that can be returned in a
 response is 1000. If the result size is not specified, the default
-number is 100. (See [Intuit developer guide](https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/querying_data) for details)
+number is 100. (See [Query operations and syntax](https://developer.intuit.com/app/developer/qbo/docs/learn/explore-the-quickbooks-online-api/data-queries) for details)
+
+**Warning:** You should never allow user input to pass into a query without sanitizing it first! This library DOES NOT sanitize user input! 
 
 Filtered list of objects:
 
@@ -104,6 +106,8 @@ List with custom Where Clause (do not include the `"WHERE"`):
 
     customers = Customer.where("Active = True AND CompanyName LIKE 'S%'", qb=client)
 
+  
+
 List with custom Where and ordering
 
     customers = Customer.where("Active = True AND CompanyName LIKE 'S%'", order_by='DisplayName', qb=client)
@@ -112,7 +116,7 @@ List with custom Where Clause and paging:
 
     customers = Customer.where("CompanyName LIKE 'S%'", start_position=1, max_results=25, qb=client)
 
-Filtering a list with a custom query (See [Intuit developer guide](https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/querying_data) for
+Filtering a list with a custom query (See [Query operations and syntax](https://developer.intuit.com/app/developer/qbo/docs/learn/explore-the-quickbooks-online-api/data-queries) for
 supported SQL statements):
 
     customers = Customer.query("SELECT * FROM Customer WHERE Active = True", qb=client)
@@ -248,15 +252,23 @@ One example is `include=allowduplicatedocnum` on the Purchase object. You can ad
 
     purchase.save(qb=self.qb_client, params={'include': 'allowduplicatedocnum'})
 
-Other operations
+Sharable Invoice Link
 ----------------
-Add Sharable link for an invoice sent to external customers (minorversion must be set to 36 or greater):
+To add a sharable link for an invoice, make sure the AllowOnlineCreditCardPayment is set to True and BillEmail is set to a invalid email address: 
 
-    invoice.invoice_link = true
+    invoice.AllowOnlineCreditCardPayment = True
+    invoice.BillEmail = EmailAddress()
+    invoice.BillEmail.Address = 'test@email.com'
+
+When you query the invoice include the following params (minorversion must be set to 36 or greater):
+
+    invoice = Invoice.get(id, qb=self.qb_client, params={'include': 'invoiceLink'})
 
 
-Void an invoice:
-
+Void an invoice
+----------------
+Call `void` on any invoice with an Id: 
+ 
     invoice = Invoice()
     invoice.Id = 7
     invoice.void(qb=client)
@@ -273,10 +285,10 @@ Converting an object to JSON data:
 
 Loading JSON data into a quickbooks object:
 
-    account = Account()
-    account.from_json(
+    account = Account.from_json(
      {
       "AccountType": "Accounts Receivable",
+      "AcctNum": "123123",
       "Name": "MyJobs"
      }
     )
