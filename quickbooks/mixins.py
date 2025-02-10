@@ -7,10 +7,10 @@ from .exceptions import QuickbooksException
 from .utils import build_choose_clause, build_where_clause
 
 class DecimalEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, decimal.Decimal):
-            return str(obj)
-        return super(DecimalEncoder, self).default(obj)
+    def default(self, o):
+        if isinstance(o, decimal.Decimal):
+            return str(o)
+        return super(DecimalEncoder, self).default(o)
 
 class ToJsonMixin(object):
     def to_json(self):
@@ -21,7 +21,7 @@ class ToJsonMixin(object):
         filter out properties that have names starting with _
         or properties that have a value of None
         """
-        return lambda obj: dict((k, v) for k, v in obj.__dict__.items()
+        return lambda obj: str(obj) if isinstance(obj, decimal.Decimal) else dict((k, v) for k, v in obj.__dict__.items()
                                 if not k.startswith('_') and getattr(obj, k) is not None)
 
 
