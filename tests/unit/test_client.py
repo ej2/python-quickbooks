@@ -1,4 +1,5 @@
 import json
+import warnings
 from tests.integration.test_base import QuickbooksUnitTestCase
 
 try:
@@ -31,12 +32,28 @@ class ClientTest(QuickbooksUnitTestCase):
         self.qb_client = client.QuickBooks(
             company_id="company_id",
             verbose=True,
-            minorversion=4,
+            minorversion=75,
             verifier_token=TEST_VERIFIER_TOKEN,
         )
 
         self.assertEqual(self.qb_client.company_id, "company_id")
-        self.assertEqual(self.qb_client.minorversion, 4)
+        self.assertEqual(self.qb_client.minorversion, 75)
+
+    def test_client_with_deprecated_minor_version(self):
+        with warnings.catch_warnings(record=True) as w:
+            self.qb_client = client.QuickBooks(
+                company_id="company_id",
+                verbose=True,
+                minorversion=74,
+                verifier_token=TEST_VERIFIER_TOKEN,
+            )
+
+            warnings.simplefilter("always")
+            self.assertEqual(self.qb_client.company_id, "company_id")
+            self.assertEqual(self.qb_client.minorversion, 74)
+            self.assertEqual(len(w), 1)
+            self.assertTrue(issubclass(w[-1].category, DeprecationWarning))
+            self.assertTrue("Minor Version no longer supported." in str(w[-1].message))
 
     def test_api_url(self):
         qb_client = client.QuickBooks(sandbox=False)
