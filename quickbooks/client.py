@@ -5,6 +5,7 @@ import base64
 import hashlib
 import hmac
 import decimal
+import warnings
 
 from . import exceptions
 from requests_oauthlib import OAuth2Session
@@ -19,6 +20,7 @@ class Environments(object):
 
 
 class QuickBooks(object):
+    MINIMUM_MINOR_VERSION = 75
     company_id = 0
     session = None
     auth_client = None
@@ -76,6 +78,12 @@ class QuickBooks(object):
 
         if 'minorversion' in kwargs:
             instance.minorversion = kwargs['minorversion']
+
+            if instance.minorversion < instance.MINIMUM_MINOR_VERSION:
+                warnings.warn(
+                    'Minor Version no longer supported.'
+                    'See: https://blogs.intuit.com/2025/01/21/changes-to-our-accounting-api-that-may-impact-your-application/',
+                    DeprecationWarning)
 
         instance.invoice_link = kwargs.get('invoice_link', False)
 
