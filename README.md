@@ -64,6 +64,8 @@ details) pass in minorversion when setting up the client:
         minorversion=69
     )
 
+**Note:** Beginning August 1, 2025, Intuit will be deprecating support for minor versions 1–74. See [Intuit Blog](https://blogs.intuit.com/2025/01/21/changes-to-our-accounting-api-that-may-impact-your-application/) for more details
+
 Object Operations
 -----------------
 

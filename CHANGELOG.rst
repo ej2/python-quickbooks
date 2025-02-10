@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* 0.9.11 (February 10, 2025)
+    * Add warning for unsupported minorversion
+    * Fix issue with new versions of jsonEncoder
+
 * 0.9.10 (August 7, 2024)
     * Update intuit-oauth dependency
     * Fix issues with Invoice Sharable Link
