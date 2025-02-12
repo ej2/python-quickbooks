@@ -30,7 +30,6 @@ setup(
     },
 
     install_requires=[
-        'setuptools',
         'intuit-oauth==1.2.6',
         'requests_oauthlib>=1.3.1',
         'requests>=2.31.0',
