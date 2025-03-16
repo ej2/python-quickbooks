@@ -1,9 +1,12 @@
 import unittest
 from urllib.parse import quote
+from unittest import TestCase
+from datetime import datetime
 
 from quickbooks.objects import Bill, Invoice, Payment, BillPayment
 
 from tests.integration.test_base import QuickbooksUnitTestCase
+from tests.unit.test_client import MockSession
 
 try:
     from mock import patch
@@ -136,9 +139,10 @@ class ListMixinTest(QuickbooksUnitTestCase):
         where.assert_called_once_with('', order_by='', max_results=100, start_position='', qb=None)
 
     def test_all_with_qb(self):
+        self.qb_client.session = MockSession()  # Add a mock session
         with patch.object(self.qb_client, 'query') as query:
             Department.all(qb=self.qb_client)
-            self.assertTrue(query.called)
+            query.assert_called_once()
 
     @patch('quickbooks.mixins.ListMixin.where')
     def test_filter(self, where):

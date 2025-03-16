@@ -32,12 +32,10 @@ class ClientTest(QuickbooksUnitTestCase):
         self.qb_client = client.QuickBooks(
             company_id="company_id",
             verbose=True,
-            minorversion=75,
             verifier_token=TEST_VERIFIER_TOKEN,
         )
 
         self.assertEqual(self.qb_client.company_id, "company_id")
-        self.assertEqual(self.qb_client.minorversion, 75)
 
     def test_client_with_deprecated_minor_version(self):
         with warnings.catch_warnings(record=True) as w:
@@ -154,7 +152,7 @@ class ClientTest(QuickbooksUnitTestCase):
         qb_client.company_id = "1234"
 
         qb_client.get_single_object("test", 1)
-        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1/"
+        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1"
         make_req.assert_called_with("GET", url, {}, params=None)
 
     @patch('quickbooks.client.QuickBooks.make_request')
@@ -163,7 +161,7 @@ class ClientTest(QuickbooksUnitTestCase):
         qb_client.company_id = "1234"
 
         qb_client.get_single_object("test", 1, params={'param':'value'})
-        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1/"
+        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1"
         make_req.assert_called_with("GET", url, {}, params={'param':'value'})
 
     @patch('quickbooks.client.QuickBooks.process_request')
