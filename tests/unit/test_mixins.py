@@ -2,16 +2,12 @@ import unittest
 from urllib.parse import quote
 from unittest import TestCase
 from datetime import datetime
+from unittest.mock import patch, ANY
 
 from quickbooks.objects import Bill, Invoice, Payment, BillPayment
 
 from tests.integration.test_base import QuickbooksUnitTestCase
 from tests.unit.test_client import MockSession
-
-try:
-    from mock import patch
-except ImportError:
-    from unittest.mock import patch
 
 from quickbooks.objects.base import PhoneNumber, QuickbooksBaseObject
 from quickbooks.objects.department import Department
@@ -135,7 +131,6 @@ class ToDictMixinTest(unittest.TestCase):
 class ListMixinTest(QuickbooksUnitTestCase):
     @patch('quickbooks.mixins.ListMixin.query')
     def test_all(self, query):
-        from mock import ANY
         query.return_value = []
         Department.all()
         query.assert_called_once_with("SELECT * FROM Department MAXRESULTS 100", qb=ANY)

@@ -1,11 +1,7 @@
 import json
 import warnings
 from tests.integration.test_base import QuickbooksUnitTestCase
-
-try:
-    from mock import patch, mock_open
-except ImportError:
-    from unittest.mock import patch, mock_open
+from unittest.mock import patch, mock_open
 
 from quickbooks.exceptions import QuickbooksException, SevereException, AuthorizationException
 from quickbooks import client, mixins
