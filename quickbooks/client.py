@@ -152,7 +152,7 @@ class QuickBooks(object):
         return result
 
     def make_request(self, request_type, url, request_body=None, content_type='application/json',
-                     params=None, file_path=None, request_id=None):
+                     params=None, file_path=None, file_bytes=None, request_id=None):
 
         if not params:
             params = {}
@@ -172,7 +172,7 @@ class QuickBooks(object):
             'User-Agent': 'python-quickbooks V3 library'
         }
 
-        if file_path:
+        if file_path or file_bytes:
             url = url.replace('attachable', 'upload')
             boundary = '-------------PythonMultipartPost'
             headers.update({
@@ -183,8 +183,11 @@ class QuickBooks(object):
                 'Connection': 'close'
             })
 
-            with open(file_path, 'rb') as attachment:
-                binary_data = str(base64.b64encode(attachment.read()).decode('ascii'))
+            if file_path:
+                with open(file_path, 'rb') as attachment:
+                    binary_data = str(base64.b64encode(attachment.read()).decode('ascii'))
+            else:
+                binary_data = str(base64.b64encode(file_bytes).decode('ascii'))
 
             content_type = json.loads(request_body)['ContentType']
 
@@ -287,11 +290,11 @@ class QuickBooks(object):
             else:
                 raise exceptions.QuickbooksException(message, code, detail)
 
-    def create_object(self, qbbo, request_body, _file_path=None, request_id=None, params=None):
+    def create_object(self, qbbo, request_body, _file_path=None, _file_bytes=None, request_id=None, params=None):
         self.isvalid_object_name(qbbo)
 
         url = "{0}/company/{1}/{2}".format(self.api_url, self.company_id, qbbo.lower())
-        results = self.post(url, request_body, file_path=_file_path, request_id=request_id, params=params)
+        results = self.post(url, request_body, file_path=_file_path, file_bytes=_file_bytes, request_id=request_id, params=params)
 
         return results
 
@@ -307,9 +310,9 @@ class QuickBooks(object):
 
         return True
 
-    def update_object(self, qbbo, request_body, _file_path=None, request_id=None, params=None):
+    def update_object(self, qbbo, request_body, _file_path=None, _file_bytes=None, request_id=None, params=None):
         url = "{0}/company/{1}/{2}".format(self.api_url, self.company_id,  qbbo.lower())
-        result = self.post(url, request_body, file_path=_file_path, request_id=request_id, params=params)
+        result = self.post(url, request_body, file_path=_file_path, file_bytes=_file_bytes, request_id=request_id, params=params)
 
         return result
 
