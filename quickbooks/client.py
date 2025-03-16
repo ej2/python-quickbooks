@@ -157,7 +157,14 @@ class QuickBooks(object):
         if not params:
             params = {}
 
-        if self.minorversion:
+        if self.minorversion is None:
+            warnings.warn(
+                'No minor version specified. Defaulting to minimum supported version (75). '
+                'Please specify minorversion explicitly when initializing QuickBooks. '
+                'See: https://blogs.intuit.com/2025/01/21/changes-to-our-accounting-api-that-may-impact-your-application/',
+                DeprecationWarning)
+            params['minorversion'] = self.MINIMUM_MINOR_VERSION
+        else:
             params['minorversion'] = self.minorversion
         
         if request_id:
