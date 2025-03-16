@@ -32,6 +32,7 @@ class TimeActivity(DeleteMixin, QuickbooksManagedObject, QuickbooksTransactionEn
         self.StartTime = None
         self.EndTime = None
         self.Description = None
+        self.CostRate = None
 
         self.VendorRef = None
         self.CustomerRef = None
