@@ -133,10 +133,12 @@ class ToDictMixinTest(unittest.TestCase):
 
 
 class ListMixinTest(QuickbooksUnitTestCase):
-    @patch('quickbooks.mixins.ListMixin.where')
-    def test_all(self, where):
+    @patch('quickbooks.mixins.ListMixin.query')
+    def test_all(self, query):
+        from mock import ANY
+        query.return_value = []
         Department.all()
-        where.assert_called_once_with('', order_by='', max_results=100, start_position='', qb=None)
+        query.assert_called_once_with("SELECT * FROM Department MAXRESULTS 100", qb=ANY)
 
     def test_all_with_qb(self):
         self.qb_client.session = MockSession()  # Add a mock session

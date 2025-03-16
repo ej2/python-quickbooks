@@ -262,7 +262,7 @@ class ClientTest(QuickbooksUnitTestCase):
 class MockResponse(object):
     @property
     def text(self):
-        return "oauth_token_secret=secretvalue&oauth_callback_confirmed=true&oauth_token=tokenvalue"
+        return '{"QueryResponse": {"Department": []}}'
 
     @property
     def status_code(self):
@@ -273,10 +273,8 @@ class MockResponse(object):
         return httplib.OK
 
     def json(self):
-        return "{}"
+        return json.loads(self.text)
 
-    def content(self):
-        return ''
 
 class MockResponseJson:
     def __init__(self, json_data=None, status_code=200):
@@ -325,5 +323,8 @@ class MockSessionManager(object):
 
 
 class MockSession(object):
-    def request(self, request_type, url, no_idea, company_id, **kwargs):
+    def __init__(self):
+        self.access_token = "test_access_token"
+
+    def request(self, request_type, url, headers=None, params=None, data=None, **kwargs):
         return MockResponse()
