@@ -10,7 +10,7 @@ A Python 3 library for accessing the Quickbooks API. Complete rework of
 [quickbooks-python](https://github.com/troolee/quickbooks-python).
 
 These instructions were written for a Django application. Make sure to
-change it to whatever framework/method you’re using.
+change it to whatever framework/method you're using.
 You can find additional examples of usage in [Integration tests folder](https://github.com/ej2/python-quickbooks/tree/master/tests/integration).
 
 For information about contributing, see the [Contributing Page](https://github.com/ej2/python-quickbooks/blob/master/contributing.md).
@@ -246,6 +246,22 @@ Attaching a file to customer:
     attachment._FilePath = '/folder/filename'  # full path to file
     attachment.ContentType = 'application/pdf'
     attachment.save(qb=client)
+
+Attaching file bytes to customer:
+
+    attachment = Attachable()
+
+    attachable_ref = AttachableRef()
+    attachable_ref.EntityRef = customer.to_ref()
+
+    attachment.AttachableRef.append(attachable_ref)
+
+    attachment.FileName = 'Filename'
+    attachment._FileBytes = pdf_bytes  # bytes object containing the file content
+    attachment.ContentType = 'application/pdf'
+    attachment.save(qb=client)
+
+**Note:** You can use either `_FilePath` or `_FileBytes` to attach a file, but not both at the same time.
 
 Passing in optional params
 ----------------
