@@ -22,6 +22,7 @@ class TimeActivityTest(QuickbooksTestCase):
         time_activity.Description = "Test description"
         time_activity.StartTime = qb_datetime_utc_offset_format(datetime(2016, 7, 22, 10, 0), '-07:00')
         time_activity.EndTime = qb_datetime_utc_offset_format(datetime(2016, 7, 22, 11, 0), '-07:00')
+        time_activity.CostRate = 50.0
         time_activity.save(qb=self.qb_client)
 
         query_time_activity = TimeActivity.get(time_activity.Id, qb=self.qb_client)
@@ -30,6 +31,7 @@ class TimeActivityTest(QuickbooksTestCase):
         self.assertEqual(query_time_activity.NameOf, "Employee")
         self.assertEqual(query_time_activity.Description, "Test description")
         self.assertEqual(query_time_activity.EmployeeRef.value, employee.Id)
+        self.assertEqual(query_time_activity.CostRate, 50.0)
 
         # Quickbooks has issues with returning the correct StartTime and EndTime
         #self.assertEqual(query_time_activity.StartTime, '2016-07-22T10:00:00-07:00')
@@ -38,8 +40,10 @@ class TimeActivityTest(QuickbooksTestCase):
     def test_update(self):
         time_activity = TimeActivity.all(max_results=1, qb=self.qb_client)[0]
         time_activity.Description = "Updated test description"
+        time_activity.CostRate = 75.0
         time_activity.save(qb=self.qb_client)
 
         query_time_activity = TimeActivity.get(time_activity.Id, qb=self.qb_client)
 
         self.assertEqual(query_time_activity.Description, "Updated test description")
+        self.assertEqual(query_time_activity.CostRate, 75.0)
