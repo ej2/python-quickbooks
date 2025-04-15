@@ -47,7 +47,8 @@ class ClientTest(QuickbooksUnitTestCase):
             self.assertEqual(self.qb_client.minorversion, 74)
             self.assertEqual(len(w), 1)
             self.assertTrue(issubclass(w[-1].category, DeprecationWarning))
-            self.assertTrue("Minor Version no longer supported." in str(w[-1].message))
+            self.assertTrue("Minor Version 74 is no longer supported" in str(w[-1].message))
+            self.assertTrue("Minimum supported version is 75" in str(w[-1].message))
 
     def test_api_url(self):
         qb_client = client.QuickBooks(sandbox=False)
@@ -122,7 +123,7 @@ class ClientTest(QuickbooksUnitTestCase):
         qb_client.update_object("Customer", "request_body", request_id="123")
 
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/customer"
-        make_req.assert_called_with("POST", url, "request_body", file_path=None, file_bytes=None, request_id="123", params=None)
+        make_req.assert_called_with("POST", url, "request_body", file_path=None, file_bytes=None, request_id="123", params={'minorversion': client.QuickBooks.MINIMUM_MINOR_VERSION})
 
     @patch('quickbooks.client.QuickBooks.get')
     def test_get_current_user(self, get):
@@ -140,7 +141,8 @@ class ClientTest(QuickbooksUnitTestCase):
 
         qb_client.get_report("profitandloss", {1: 2})
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/reports/profitandloss"
-        make_req.assert_called_with("GET", url, params={1: 2})
+        expected_params = {1: 2, 'minorversion': client.QuickBooks.MINIMUM_MINOR_VERSION}
+        make_req.assert_called_with("GET", url, params=expected_params)
 
     @patch('quickbooks.client.QuickBooks.make_request')
     def test_get_single_object(self, make_req):
@@ -149,7 +151,7 @@ class ClientTest(QuickbooksUnitTestCase):
 
         qb_client.get_single_object("test", 1)
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1"
-        make_req.assert_called_with("GET", url, {}, params=None)
+        make_req.assert_called_with("GET", url, {}, params={'minorversion': client.QuickBooks.MINIMUM_MINOR_VERSION})
 
     @patch('quickbooks.client.QuickBooks.make_request')
     def test_get_single_object_with_params(self, make_req):
@@ -158,7 +160,7 @@ class ClientTest(QuickbooksUnitTestCase):
 
         qb_client.get_single_object("test", 1, params={'param':'value'})
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1"
-        make_req.assert_called_with("GET", url, {}, params={'param':'value'})
+        make_req.assert_called_with("GET", url, {}, params={'param':'value', 'minorversion': client.QuickBooks.MINIMUM_MINOR_VERSION})
 
     @patch('quickbooks.client.QuickBooks.process_request')
     def test_make_request(self, process_request):
@@ -171,7 +173,8 @@ class ClientTest(QuickbooksUnitTestCase):
 
         process_request.assert_called_with(
                 "GET", url, data={},
-                headers={'Content-Type': 'application/json', 'Accept': 'application/json', 'User-Agent': 'python-quickbooks V3 library'}, params={})
+                headers={'Content-Type': 'application/json', 'Accept': 'application/json', 'User-Agent': 'python-quickbooks V3 library'}, 
+                params={'minorversion': client.QuickBooks.MINIMUM_MINOR_VERSION})
 
     def test_handle_exceptions(self):
         qb_client = client.QuickBooks()
