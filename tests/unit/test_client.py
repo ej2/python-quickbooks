@@ -122,7 +122,7 @@ class ClientTest(QuickbooksUnitTestCase):
         qb_client.update_object("Customer", "request_body", request_id="123")
 
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/customer"
-        make_req.assert_called_with("POST", url, "request_body", file_path=None, params=None, request_id="123")
+        make_req.assert_called_with("POST", url, "request_body", file_path=None, file_bytes=None, request_id="123", params=None)
 
     @patch('quickbooks.client.QuickBooks.get')
     def test_get_current_user(self, get):
