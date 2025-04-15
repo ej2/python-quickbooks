@@ -1,8 +1,5 @@
 import unittest
-try:
-	from mock import patch
-except ImportError:
-	from unittest.mock import patch
+from unittest.mock import patch
 from quickbooks.cdc import change_data_capture
 from quickbooks.objects import Invoice, Customer
 from quickbooks import QuickBooks

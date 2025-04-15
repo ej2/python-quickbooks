@@ -255,14 +255,26 @@ class ListMixin(object):
 
     @classmethod
     def all(cls, order_by="", start_position="", max_results=100, qb=None):
-        """
-        :param start_position:
-        :param max_results: The max number of entities that can be returned in a response is 1000.
-        :param qb:
-        :return: Returns list
-        """
-        return cls.where("", order_by=order_by, start_position=start_position,
-                         max_results=max_results, qb=qb)
+        """Returns list of objects containing all objects in the QuickBooks database"""
+        if qb is None:
+            qb = QuickBooks()
+
+        # For Item objects, we need to explicitly request the SKU field
+        if cls.qbo_object_name == "Item":
+            select = "SELECT *, Sku FROM {0}".format(cls.qbo_object_name)
+        else:
+            select = "SELECT * FROM {0}".format(cls.qbo_object_name)
+
+        if order_by:
+            select += " ORDER BY {0}".format(order_by)
+
+        if start_position:
+            select += " STARTPOSITION {0}".format(start_position)
+
+        if max_results:
+            select += " MAXRESULTS {0}".format(max_results)
+
+        return cls.query(select, qb=qb)
 
     @classmethod
     def filter(cls, order_by="", start_position="", max_results="", qb=None, **kwargs):

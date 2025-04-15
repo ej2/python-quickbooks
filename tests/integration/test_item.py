@@ -45,3 +45,22 @@ class ItemTest(QuickbooksTestCase):
         self.assertEqual(query_item.IncomeAccountRef.value, self.income_account.Id)
         self.assertEqual(query_item.ExpenseAccountRef.value, self.expense_account.Id)
         self.assertEqual(query_item.AssetAccountRef.value, self.asset_account.Id)
+
+    def test_sku_in_all(self):
+        """Test that SKU is properly returned when using Item.all()"""
+        # First create an item with a SKU
+        unique_name = "Test SKU Item {0}".format(datetime.now().strftime('%d%H%M%S'))
+        item = Item()
+        item.Name = unique_name
+        item.Type = "Service"
+        item.Sku = "TEST_SKU_" + self.account_number
+        item.IncomeAccountRef = self.income_account.to_ref()
+        item.ExpenseAccountRef = self.expense_account.to_ref()
+        item.save(qb=self.qb_client)
+
+        # Now fetch all items and verify the SKU is present
+        items = Item.all(max_results=100, qb=self.qb_client)
+        found_item = next((i for i in items if i.Id == item.Id), None)
+        
+        self.assertIsNotNone(found_item, "Created item not found in Item.all() results")
+        self.assertEqual(found_item.Sku, "TEST_SKU_" + self.account_number)

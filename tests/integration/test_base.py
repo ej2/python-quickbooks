@@ -17,7 +17,6 @@ class QuickbooksTestCase(TestCase):
         )
 
         self.qb_client = QuickBooks(
-            minorversion=73,
             auth_client=self.auth_client,
             refresh_token=os.environ.get('REFRESH_TOKEN'),
             company_id=os.environ.get('COMPANY_ID'),
