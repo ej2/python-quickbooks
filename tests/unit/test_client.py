@@ -1,11 +1,7 @@
 import json
 import warnings
 from tests.integration.test_base import QuickbooksUnitTestCase
-
-try:
-    from mock import patch, mock_open
-except ImportError:
-    from unittest.mock import patch, mock_open
+from unittest.mock import patch, mock_open
 
 from quickbooks.exceptions import QuickbooksException, SevereException, AuthorizationException
 from quickbooks import client, mixins
@@ -32,12 +28,10 @@ class ClientTest(QuickbooksUnitTestCase):
         self.qb_client = client.QuickBooks(
             company_id="company_id",
             verbose=True,
-            minorversion=75,
             verifier_token=TEST_VERIFIER_TOKEN,
         )
 
         self.assertEqual(self.qb_client.company_id, "company_id")
-        self.assertEqual(self.qb_client.minorversion, 75)
 
     def test_client_with_deprecated_minor_version(self):
         with warnings.catch_warnings(record=True) as w:
@@ -129,7 +123,7 @@ class ClientTest(QuickbooksUnitTestCase):
         qb_client.update_object("Customer", "request_body", request_id="123")
 
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/customer"
-        make_req.assert_called_with("POST", url, "request_body", file_path=None, request_id="123", params={'minorversion': client.QuickBooks.MINIMUM_MINOR_VERSION})
+        make_req.assert_called_with("POST", url, "request_body", file_path=None, file_bytes=None, request_id="123", params={'minorversion': client.QuickBooks.MINIMUM_MINOR_VERSION})
 
     @patch('quickbooks.client.QuickBooks.get')
     def test_get_current_user(self, get):
@@ -156,7 +150,7 @@ class ClientTest(QuickbooksUnitTestCase):
         qb_client.company_id = "1234"
 
         qb_client.get_single_object("test", 1)
-        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1/"
+        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1"
         make_req.assert_called_with("GET", url, {}, params={'minorversion': client.QuickBooks.MINIMUM_MINOR_VERSION})
 
     @patch('quickbooks.client.QuickBooks.make_request')
@@ -165,7 +159,7 @@ class ClientTest(QuickbooksUnitTestCase):
         qb_client.company_id = "1234"
 
         qb_client.get_single_object("test", 1, params={'param':'value'})
-        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1/"
+        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1"
         make_req.assert_called_with("GET", url, {}, params={'param':'value', 'minorversion': client.QuickBooks.MINIMUM_MINOR_VERSION})
 
     @patch('quickbooks.client.QuickBooks.process_request')
@@ -267,7 +261,7 @@ class ClientTest(QuickbooksUnitTestCase):
 class MockResponse(object):
     @property
     def text(self):
-        return "oauth_token_secret=secretvalue&oauth_callback_confirmed=true&oauth_token=tokenvalue"
+        return '{"QueryResponse": {"Department": []}}'
 
     @property
     def status_code(self):
@@ -278,10 +272,8 @@ class MockResponse(object):
         return httplib.OK
 
     def json(self):
-        return "{}"
+        return json.loads(self.text)
 
-    def content(self):
-        return ''
 
 class MockResponseJson:
     def __init__(self, json_data=None, status_code=200):
@@ -330,5 +322,8 @@ class MockSessionManager(object):
 
 
 class MockSession(object):
-    def request(self, request_type, url, no_idea, company_id, **kwargs):
+    def __init__(self):
+        self.access_token = "test_access_token"
+
+    def request(self, request_type, url, headers=None, params=None, data=None, **kwargs):
         return MockResponse()

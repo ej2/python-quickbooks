@@ -1,5 +1,5 @@
 publish: clean
-	python setup.py sdist
+	python -m build
 	twine upload dist/*
 
 clean:
