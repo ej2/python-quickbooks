@@ -17,7 +17,7 @@ class Employee(QuickbooksManagedObject, QuickbooksTransactionEntity):
 
     def __init__(self):
         super(Employee, self).__init__()
-        self.SSN = ""
+        self.SSN = None
 
         self.GivenName = ""
         self.FamilyName = ""
@@ -29,9 +29,9 @@ class Employee(QuickbooksManagedObject, QuickbooksTransactionEntity):
         self.Title = ""
         self.BillRate = 0
         self.CostRate = 0
-        self.BirthDate = ""
+        self.BirthDate = None
         self.Gender = None
-        self.HiredDate = ""
+        self.HiredDate = None
         self.ReleasedDate = ""
         self.Active = True
         self.Organization = False

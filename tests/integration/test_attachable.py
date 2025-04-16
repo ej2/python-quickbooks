@@ -68,4 +68,26 @@ class AttachableTest(QuickbooksTestCase):
         self.assertEqual(query_attachable.AttachableRef[0].EntityRef.value, vendor.Id)
         self.assertEqual(query_attachable.Note, "Sample note")
 
+    def test_create_file_from_bytes(self):
+        attachable = Attachable()
+        file_content = b"File contents in bytes"
+
+        vendor = Vendor.all(max_results=1, qb=self.qb_client)[0]
+
+        attachable_ref = AttachableRef()
+        attachable_ref.EntityRef = vendor.to_ref()
+        attachable.AttachableRef.append(attachable_ref)
+
+        attachable.Note = "Sample note with bytes"
+        attachable.FileName = "test.txt"
+        attachable._FileBytes = file_content
+        attachable.ContentType = 'text/plain'
+
+        attachable.save(qb=self.qb_client)
+
+        query_attachable = Attachable.get(attachable.Id, qb=self.qb_client)
+
+        self.assertEqual(query_attachable.AttachableRef[0].EntityRef.value, vendor.Id)
+        self.assertEqual(query_attachable.Note, "Sample note with bytes")
+
 

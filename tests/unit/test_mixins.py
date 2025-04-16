@@ -1,14 +1,13 @@
 import unittest
 from urllib.parse import quote
+from unittest import TestCase
+from datetime import datetime
+from unittest.mock import patch, ANY
 
 from quickbooks.objects import Bill, Invoice, Payment, BillPayment
 
 from tests.integration.test_base import QuickbooksUnitTestCase
-
-try:
-    from mock import patch
-except ImportError:
-    from unittest.mock import patch
+from tests.unit.test_client import MockSession
 
 from quickbooks.objects.base import PhoneNumber, QuickbooksBaseObject
 from quickbooks.objects.department import Department
@@ -130,15 +129,17 @@ class ToDictMixinTest(unittest.TestCase):
 
 
 class ListMixinTest(QuickbooksUnitTestCase):
-    @patch('quickbooks.mixins.ListMixin.where')
-    def test_all(self, where):
+    @patch('quickbooks.mixins.ListMixin.query')
+    def test_all(self, query):
+        query.return_value = []
         Department.all()
-        where.assert_called_once_with('', order_by='', max_results=100, start_position='', qb=None)
+        query.assert_called_once_with("SELECT * FROM Department MAXRESULTS 100", qb=ANY)
 
     def test_all_with_qb(self):
+        self.qb_client.session = MockSession()  # Add a mock session
         with patch.object(self.qb_client, 'query') as query:
             Department.all(qb=self.qb_client)
-            self.assertTrue(query.called)
+            query.assert_called_once()
 
     @patch('quickbooks.mixins.ListMixin.where')
     def test_filter(self, where):

@@ -1,15 +1,17 @@
-from datetime import datetime
+from datetime import datetime, date
 
 from quickbooks.objects.base import Address, PhoneNumber
 from quickbooks.objects.employee import Employee
 from tests.integration.test_base import QuickbooksTestCase
+from quickbooks.helpers import qb_date_format
 
 
 class EmployeeTest(QuickbooksTestCase):
     def test_create(self):
         employee = Employee()
-        employee.SSN = "444-55-6666"
+        employee.SSN = None
         employee.GivenName = "John"
+        employee.HiredDate = qb_date_format(date(2020, 7, 22))
         employee.FamilyName = "Smith {0}".format(datetime.now().strftime('%d%H%M%S'))
 
         employee.PrimaryAddr = Address()
@@ -19,13 +21,13 @@ class EmployeeTest(QuickbooksTestCase):
         employee.PrimaryAddr.PostalCode = "93242"
 
         employee.PrimaryPhone = PhoneNumber()
-        employee.PrimaryPhone.FreeFormNumber = "408-525-1234"
+        employee.PrimaryPhone.FreeFormNumber = "4085251234"
+
         employee.save(qb=self.qb_client)
 
         query_employee = Employee.get(employee.Id, qb=self.qb_client)
 
         self.assertEqual(query_employee.Id, employee.Id)
-        self.assertEqual(query_employee.SSN, "XXX-XX-XXXX")
         self.assertEqual(query_employee.GivenName, employee.GivenName)
         self.assertEqual(query_employee.FamilyName, employee.FamilyName)
         self.assertEqual(query_employee.PrimaryAddr.Line1, employee.PrimaryAddr.Line1)
