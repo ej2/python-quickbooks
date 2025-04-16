@@ -20,6 +20,7 @@ class QuickbooksTestCase(TestCase):
             auth_client=self.auth_client,
             refresh_token=os.environ.get('REFRESH_TOKEN'),
             company_id=os.environ.get('COMPANY_ID'),
+            minorversion=75
         )
 
         self.qb_client.sandbox = True
@@ -40,6 +41,7 @@ class QuickbooksUnitTestCase(TestCase):
             # auth_client=self.auth_client,
             refresh_token='REFRESH_TOKEN',
             company_id='COMPANY_ID',
+            minorversion=75
         )
 
         self.qb_client.sandbox = True

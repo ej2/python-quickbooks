@@ -242,15 +242,13 @@ class QuickBooks(object):
     def get(self, *args, **kwargs):
         if 'params' not in kwargs:
             kwargs['params'] = {}
-        if 'minorversion' not in kwargs['params']:
-            kwargs['params']['minorversion'] = self.MINIMUM_MINOR_VERSION
+
         return self.make_request('GET', *args, **kwargs)
 
     def post(self, *args, **kwargs):
         if 'params' not in kwargs:
             kwargs['params'] = {}
-        if 'minorversion' not in kwargs['params']:
-            kwargs['params']['minorversion'] = self.MINIMUM_MINOR_VERSION
+
         return self.make_request('POST', *args, **kwargs)
 
     def process_request(self, request_type, url, headers="", params="", data=""):

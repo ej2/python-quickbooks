@@ -1,6 +1,13 @@
 Changelog
 =========
 
+* 0.9.11 (April 15, 2025)
+    * Add CostRate to TimeActivity
+    * Fix retrieval of Item SKU field
+    * Added support for attaching files using byte streams
+    * Default minor version to minimum supported version
+    * Fix incompatibility issues with setuptools
+
 * 0.9.11 (February 10, 2025)
     * Add warning for unsupported minorversion
     * Fix issue with new versions of jsonEncoder

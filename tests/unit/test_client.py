@@ -123,7 +123,7 @@ class ClientTest(QuickbooksUnitTestCase):
         qb_client.update_object("Customer", "request_body", request_id="123")
 
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/customer"
-        make_req.assert_called_with("POST", url, "request_body", file_path=None, file_bytes=None, request_id="123", params={'minorversion': client.QuickBooks.MINIMUM_MINOR_VERSION})
+        make_req.assert_called_with("POST", url, "request_body", file_path=None, file_bytes=None, request_id="123", params={})
 
     @patch('quickbooks.client.QuickBooks.get')
     def test_get_current_user(self, get):
@@ -141,7 +141,7 @@ class ClientTest(QuickbooksUnitTestCase):
 
         qb_client.get_report("profitandloss", {1: 2})
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/reports/profitandloss"
-        expected_params = {1: 2, 'minorversion': client.QuickBooks.MINIMUM_MINOR_VERSION}
+        expected_params = {1: 2}
         make_req.assert_called_with("GET", url, params=expected_params)
 
     @patch('quickbooks.client.QuickBooks.make_request')
@@ -151,7 +151,7 @@ class ClientTest(QuickbooksUnitTestCase):
 
         qb_client.get_single_object("test", 1)
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1"
-        make_req.assert_called_with("GET", url, {}, params={'minorversion': client.QuickBooks.MINIMUM_MINOR_VERSION})
+        make_req.assert_called_with("GET", url, {}, params={})
 
     @patch('quickbooks.client.QuickBooks.make_request')
     def test_get_single_object_with_params(self, make_req):
@@ -160,7 +160,7 @@ class ClientTest(QuickbooksUnitTestCase):
 
         qb_client.get_single_object("test", 1, params={'param':'value'})
         url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1"
-        make_req.assert_called_with("GET", url, {}, params={'param':'value', 'minorversion': client.QuickBooks.MINIMUM_MINOR_VERSION})
+        make_req.assert_called_with("GET", url, {}, params={'param':'value'})
 
     @patch('quickbooks.client.QuickBooks.process_request')
     def test_make_request(self, process_request):

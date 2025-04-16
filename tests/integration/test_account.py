@@ -24,7 +24,7 @@ class AccountTest(QuickbooksTestCase):
         account.AccountSubType = "CashOnHand"
 
         created_account = account.save(qb=self.qb_client)
-        
+
         # Verify the save was successful
         self.assertIsNotNone(created_account)
         self.assertIsNotNone(created_account.Id)
