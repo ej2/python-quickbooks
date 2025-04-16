@@ -1,7 +1,7 @@
 Changelog
 =========
 
-* 0.9.11 (April 15, 2025)
+* 0.9.12 (April 15, 2025)
     * Add CostRate to TimeActivity
     * Fix retrieval of Item SKU field
     * Added support for attaching files using byte streams
